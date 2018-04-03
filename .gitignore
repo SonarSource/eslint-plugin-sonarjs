@@ -8,6 +8,9 @@ yarn-error.log*
 # Coverage directory used by tools like istanbul
 coverage
 
+# Test reports
+test-report.xml
+
 # Dependency directories
 node_modules/
 
