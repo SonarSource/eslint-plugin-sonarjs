@@ -1,4 +1,4 @@
-# eslint-plugin-sonarjs
+# eslint-plugin-sonarjs [![Build Status](https://travis-ci.org/SonarSource/eslint-plugin-sonarjs.svg?branch=master)](https://travis-ci.org/SonarSource/eslint-plugin-sonarjs)
 
 ESLint rules from SonarSource
 

@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "6"
+  - "8"
+script:
+  - yarn build
+  - yarn test
+  - yarn prettier --list-different "{src,tests}/**/*.{js,ts}"
+cache: yarn
+notifications:
+  email: false
+  webhooks:
+    - secure: "kIENwirW6kMeclDO71Ov4e9hpsSHd6U6ZiMBbSg48l6Pkat1Xjwzp/Gk32buNVGyDK9l/kIXBLwtHBovu49cKCd6NkckW7Jyl5iyEmi2kPg+ue8hQU+X+81if3qX/iJGxDpe3UUd8M4JSqDHvSVc+SO2eKZyN5/wN+w9fTJ/o4bMKKkZt2BRWehB71N7X2IYSdx5qSMxn0ldpxwP/NeueoG9+1kHRyjniKtKvsXvKBX96axfl3Xfu54XiuECEKHf7421V2TPgqEiaBvKZWjn2X2lTMU4OZ0jgthMNU1GaRJUxXPJJttJxvXyW+Sd79mgjjKeKsi7GHSGQukK015/8cvwWbDJvvVhwh/ALqMpDM3U5njLklZpv6D0pnpXcbhop5kxFQWtpim8NghaKMZ3Slk1K8kTwJs3hl854E4mSbiNSmTNV1SZIMxQD3IEwxTT+DLfChfkwCPt3eqTW6Q4Vqnk70PufxwQSjwvfI4v0DSRtAJT4TBD0ioN56rxOUvJbV+qbmj+65UWrMqRpbcJRETpDQ1rIP+neXHcXIWbSpVmXlrn5U7Hv3mZNCYwLUGl0qq6gbwBiW4itb09k+DIpJDMkIcQBu1WrL3IuWVSuq98scTPyXTi5tzrXj532bEIftxpbZUJHN/Y2C73eBeD705agxzxdiwci/gX/wvSMvY="
+  on_start: always
