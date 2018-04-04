@@ -4,6 +4,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-identical-expressions", "error"],
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],
+  ["no-use-of-empty-return-value", "error"],
 ];
 
 const sonarjsRuleModules: any = {};

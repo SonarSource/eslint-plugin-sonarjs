@@ -39,9 +39,14 @@ function run() {
   });
 
   const sourcesPath = path.join(__dirname, "javascript-test-sources/src");
+  if (!fs.existsSync(sourcesPath)) {
+    console.error("No sources found!");
+    process.exit(1); 
+  }
   const report = cli.executeOnFiles([sourcesPath]);
 
   let results: Results = {};
+  rules.forEach(rule => results[rule] = {});
 
   report.results.forEach(result => {
     result.messages.forEach(message => {
