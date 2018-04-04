@@ -1,5 +1,6 @@
 export const rules = {
   "no-identical-expressions": require("./rules/no-identical-expressions"),
+  "no-redundant-boolean": require("./rules/no-redundant-boolean"),
   "no-small-switch": require("./rules/no-small-switch"),
 };
 
