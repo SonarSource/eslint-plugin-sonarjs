@@ -5,6 +5,7 @@ node_js:
   - "6"
   - "8"
 script:
+  - yarn typecheck
   - yarn build
   - ./scripts/test-ci.sh
   - yarn prettier --list-different "{src,tests}/**/*.{js,ts}"

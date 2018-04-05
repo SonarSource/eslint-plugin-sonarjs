@@ -14,8 +14,9 @@
     "node": ">=6"
   },
   "scripts": {
-    "build": "rimraf lib && tsc",
-    "test": "jest"
+    "build": "rimraf lib && tsc -p tsconfig-src.json",
+    "test": "jest",
+    "typecheck": "tsc"
   },
   "peerDependencies": {
     "eslint": "^3.0.0 || ^4.0.0"

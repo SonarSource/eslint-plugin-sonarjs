@@ -4,11 +4,11 @@
     "module": "commonjs",
     "lib": ["es2017"],
     "strict": true,
-    "sourceMap": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "lib"
+    "noEmit": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["ruling/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["ruling/javascript-test-sources"]
 }

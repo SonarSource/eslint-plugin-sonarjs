@@ -9,7 +9,7 @@ it("should declare all rules in recommended config", () => {
   existingRules.forEach(rule => {
     expect(configs.recommended.rules).toHaveProperty(`sonarjs/${rule}`);
   });
-  expect(Object.keys(configs.recommended.rules)).toHaveLength(existingRules.length);
+  expect(Object.keys(configs.recommended.rules!)).toHaveLength(existingRules.length);
 });
 
 it("should declare all rules", () => {
