@@ -23,10 +23,6 @@ function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
   return node.operator === "<<" && isLiteral(node.left) && node.left.value === 1;
 }
 
-function message(operator: string) {
-  return `Correct one of the identical sub-expressions on both sides of operator "${operator}"`;
-}
-
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
@@ -44,7 +40,11 @@ const rule: Rule.RuleModule = {
         !isOneOntoOneShifting(expr) &&
         areEquivalent(expr.left, expr.right, context.getSourceCode())
       ) {
-        context.report({ message: message(expr.operator), node: expr });
+        context.report({
+          message: `Correct one of the identical sub-expressions on both sides of operator "{{operator}}"`,
+          data: { operator: expr.operator },
+          node: expr,
+        });
       }
     }
   },

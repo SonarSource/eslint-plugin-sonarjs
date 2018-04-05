@@ -1,4 +1,5 @@
 # no-identical-expressions
+
 Using the same value on either side of a binary operator is almost always a mistake. In the case 
 of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted 
 code, and should be simplified. In the case of bitwise operators and most binary mathematical 
@@ -10,19 +11,10 @@ This rule ignores `*`, `+`, and `=`.
 ## Noncompliant Code Example
 
 ```javascript
-if ( a == a ) { // always true
-  doZ();
-}
-
-if ( a != a ) { // always false
-  doY();
-}
-
-if ( a == b && a == b ) { // if the first one is true, the second one is too
+if (a == b && a == b) { // if the first one is true, the second one is too
   doX();
 }
-
-if ( a == b || a == b ) { // if the first one is true, the second one is too
+if (a > a) { // always false
   doW();
 }
 

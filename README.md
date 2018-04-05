@@ -12,5 +12,5 @@ SonarJS rules for ESLint
 
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 
-[`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
+[`no-small-switch`]: ./docs/rules/no-small-switch.md
