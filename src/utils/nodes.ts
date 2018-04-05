@@ -46,6 +46,10 @@ export function isLogicalExpression(node: estree.Node): node is estree.LogicalEx
   return node.type === "LogicalExpression";
 }
 
+export function isMethodDefinition(node: estree.Node | undefined): node is estree.MethodDefinition {
+  return node !== undefined && node.type === "MethodDefinition";
+}
+
 export function isNumericLiteral(node: estree.Node): node is estree.Literal {
   return isLiteral(node) && typeof node.value === "number";
 }
