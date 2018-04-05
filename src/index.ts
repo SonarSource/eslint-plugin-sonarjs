@@ -1,9 +1,18 @@
-export const rules = {
-  "no-identical-expressions": require("./rules/no-identical-expressions"),
-  "no-redundant-boolean": require("./rules/no-redundant-boolean"),
-  "no-small-switch": require("./rules/no-small-switch"),
+import { Linter } from "eslint";
+
+const sonarjsRules: [string, Linter.RuleLevel][] = [
+  ["no-identical-expressions", "error"],
+  ["no-redundant-boolean", "error"],
+  ["no-small-switch", "error"],
+];
+
+const sonarjsRuleModules: any = {};
+
+const configs: { recommended: Linter.Config } = {
+  recommended: { rules: {} },
 };
 
-export const configs = {
-  recommended: require("./config-recommended"),
-};
+sonarjsRules.forEach(rule => (sonarjsRuleModules[rule[0]] = require(`./rules/${rule[0]}`)));
+sonarjsRules.forEach(rule => (configs.recommended.rules![`sonarjs/${rule[0]}`] = rule[1]));
+
+export { sonarjsRuleModules as rules, configs };
