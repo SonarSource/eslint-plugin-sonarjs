@@ -16,6 +16,7 @@ yarn-error.log*
 
 coverage/
 docs/
+ruling/
 scripts/
 src/
 tests/
