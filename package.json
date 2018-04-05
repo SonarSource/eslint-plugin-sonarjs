@@ -17,7 +17,7 @@
     "build": "rimraf lib && tsc -p tsconfig-src.json",
     "test": "jest",
     "ruling": "ts-node ruling/index.ts",
-    "typecheck": "tsc"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "eslint": "^3.0.0 || ^4.0.0"
