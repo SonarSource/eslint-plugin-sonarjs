@@ -44,6 +44,7 @@
     "trailingComma": "all"
   },
   "jest": {
+    "roots": ["tests", "src"],
     "collectCoverageFrom": ["src/**/*.ts"],
     "globals": {
       "ts-jest": {
