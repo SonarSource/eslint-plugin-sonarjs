@@ -14,8 +14,10 @@
     "node": ">=6"
   },
   "scripts": {
-    "build": "rimraf lib && tsc",
-    "test": "jest"
+    "build": "rimraf lib && tsc -p tsconfig-src.json",
+    "test": "jest",
+    "ruling": "ts-node ruling/index.ts",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "eslint": "^3.0.0 || ^4.0.0"
@@ -24,12 +26,17 @@
     "@types/eslint": "4.16.0",
     "@types/estree": "0.0.38",
     "@types/jest": "22.2.2",
+    "@types/lodash": "4.14.106",
+    "@types/minimist": "1.2.0",
     "@types/node": "9.6.1",
     "eslint": "4.19.1",
     "jest": "22.4.3",
+    "lodash": "4.17.5",
+    "minimist": "1.2.0",
     "prettier": "1.11.1",
     "rimraf": "2.6.2",
     "ts-jest": "22.4.2",
+    "ts-node": "5.0.1",
     "typescript": "2.8.1"
   },
   "prettier": {
@@ -37,6 +44,7 @@
     "trailingComma": "all"
   },
   "jest": {
+    "roots": ["tests", "src"],
     "collectCoverageFrom": ["src/**/*.ts"],
     "globals": {
       "ts-jest": {
