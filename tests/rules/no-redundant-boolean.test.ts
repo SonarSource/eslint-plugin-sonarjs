@@ -24,6 +24,8 @@ ruleTester.run("no-redundant-boolean", rule, {
     { code: "if (x || false) {}", errors: 1 },
     { code: "if (x && false) {}", errors: 1 },
 
+    { code: "x || false ? 1 : 2", errors: 1 },
+
     { code: "fn(!false)", errors: 1 },
 
     { code: "a == true == b;", errors: 1 },
@@ -32,5 +34,7 @@ ruleTester.run("no-redundant-boolean", rule, {
 
     { code: "!(true);", errors: 1 },
     { code: "a == (false);", errors: 1 },
+
+    { code: "true && a;", errors: 1 },
   ],
 });

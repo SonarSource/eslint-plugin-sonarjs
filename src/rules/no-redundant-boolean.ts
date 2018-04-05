@@ -1,5 +1,6 @@
 import { Rule } from "eslint";
-import { BinaryExpression, Node, Literal, LogicalExpression, UnaryExpression, Expression, IfStatement } from "estree";
+import { BinaryExpression, Node, LogicalExpression, UnaryExpression, Expression } from "estree";
+import { getParent, isBooleanLiteral, isIfStatement, isConditionalExpression } from "../utils/nodes";
 
 const MESSAGE = "Remove the unnecessary boolean literal.";
 
@@ -18,8 +19,13 @@ const rule: Rule.RuleModule = {
         const expression = node as LogicalExpression;
         checkBooleanLiteral(expression.left);
 
-        // ignore `x || true` and `x || false` expressions outside of `if` statements
-        if (expression.operator === "&&" || (expression.operator === "||" && isIfStatement(getParent(context)))) {
+        if (expression.operator === "&&") {
+          checkBooleanLiteral(expression.right);
+        }
+
+        // ignore `x || true` and `x || false` expressions outside of conditional expressions and `if` statements
+        const parent = getParent(context);
+        if (expression.operator === "||" && (isConditionalExpression(parent) || isIfStatement(parent))) {
           checkBooleanLiteral(expression.right);
         }
       },
@@ -41,19 +47,3 @@ const rule: Rule.RuleModule = {
 };
 
 export = rule;
-
-// TODO move to utils/nodes
-function isIfStatement(node: Node | undefined): node is IfStatement {
-  return node !== undefined && node.type === "IfStatement";
-}
-
-// TODO move to utils/nodes
-function isBooleanLiteral(node: Node): node is Literal {
-  return node.type === "Literal" && typeof node.value === "boolean";
-}
-
-// TODO move to utils/nodes
-function getParent(context: Rule.RuleContext) {
-  const ancestors = context.getAncestors();
-  return ancestors.length > 0 ? ancestors[ancestors.length - 1] : undefined;
-}
