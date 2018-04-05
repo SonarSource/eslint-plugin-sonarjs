@@ -10,7 +10,9 @@ SonarJS rules for ESLint
 
 ### Code Smell Detection :pig:
 
+* Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
+[`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
