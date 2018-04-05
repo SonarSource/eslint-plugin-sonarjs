@@ -14,6 +14,7 @@ ruleTester.run("no-redundant-boolean", rule, {
     { code: "~true;" },
     { code: "!foo;" },
     { code: "if (foo(mayBeSomething || false)) {}" },
+    { code: "x ? y || false : z" },
   ],
   invalid: [
     {

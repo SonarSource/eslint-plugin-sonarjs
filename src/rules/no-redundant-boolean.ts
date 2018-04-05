@@ -25,7 +25,10 @@ const rule: Rule.RuleModule = {
 
         // ignore `x || true` and `x || false` expressions outside of conditional expressions and `if` statements
         const parent = getParent(context);
-        if (expression.operator === "||" && (isConditionalExpression(parent) || isIfStatement(parent))) {
+        if (
+          expression.operator === "||" &&
+          ((isConditionalExpression(parent) && parent.test === expression) || isIfStatement(parent))
+        ) {
           checkBooleanLiteral(expression.right);
         }
       },
