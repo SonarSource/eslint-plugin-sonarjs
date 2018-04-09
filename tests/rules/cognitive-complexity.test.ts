@@ -4,9 +4,7 @@ const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018, sourceTy
 import rule = require("../../src/rules/cognitive-complexity");
 
 ruleTester.run("cognitive-complexity", rule, {
-  valid: [
-    // { code: `function zero_complexity() {}`, options: [0] }
-  ],
+  valid: [{ code: `function zero_complexity() {}`, options: [0] }],
   invalid: [
     // if
     {
@@ -144,7 +142,7 @@ ruleTester.run("cognitive-complexity", rule, {
       code: `
       function break_continue_with_label() {
         label:
-        while (condition) {
+        while (condition) {      // +1
           break label;           // +1
           continue label;        // +1
         }
@@ -380,6 +378,18 @@ ruleTester.run("cognitive-complexity", rule, {
       options: [0],
       errors: [message(3, { line: 2 })],
     },
+    {
+      code: `
+      function nested_async_method() {
+        class X {
+          async method() {
+            if (condition) {}      // +1
+          }
+        }
+      }`,
+      options: [0],
+      errors: [message(1, { line: 4, column: 17, endColumn: 23 })],
+    },
 
     // spaghetti
     {
@@ -390,6 +400,44 @@ ruleTester.run("cognitive-complexity", rule, {
       })(function(b) {return b + 1})(0);`,
       options: [0],
       errors: [message(1)],
+    },
+  ],
+});
+
+ruleTester.run("cognitive-complexity 15", rule, {
+  valid: [
+    {
+      code: `
+      function foo() {
+        if (a) {             // +1 (nesting level +1)
+          if (b) {           // +2 (nesting level +1)
+            if (c) {         // +3 (nesting level +1)
+              if (d) {       // +4 (nesting level +1)
+                if (e) {}    // +5 (nesting level +1)
+              }
+            }
+          }
+        }
+      }`,
+    },
+  ],
+  invalid: [
+    {
+      code: `
+      function foo() {
+        if (a) {             // +1 (nesting level +1)
+          if (b) {           // +2 (nesting level +1)
+            if (c) {         // +3 (nesting level +1)
+              if (d) {       // +4 (nesting level +1)
+                if (e) {     // +5 (nesting level +1)
+                  if (f) {}  // +6 (nesting level +1)
+                }
+              }
+            }
+          }
+        }
+      }`,
+      errors: [{ message: `Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed.` }],
     },
   ],
 });
