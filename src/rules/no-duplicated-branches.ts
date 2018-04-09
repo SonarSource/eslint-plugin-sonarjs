@@ -2,6 +2,7 @@ import { Rule } from "eslint";
 import * as estree from "estree";
 import { getParent, isIfStatement, isBlockStatement } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";
+import { collectIfBranches, takeWithoutBreak } from "../utils/conditions";
 
 const MESSAGE = "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
@@ -19,7 +20,7 @@ const rule: Rule.RuleModule = {
     function visitIfStatement(ifStmt: estree.IfStatement) {
       const parent = getParent(context);
       if (!isIfStatement(parent)) {
-        const branches = collectIfBranches(ifStmt);
+        const { branches } = collectIfBranches(ifStmt);
 
         for (let i = 1; i < branches.length; i++) {
           if (hasRequiredSize([branches[i]])) {
@@ -57,23 +58,6 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function collectIfBranches(node: estree.IfStatement) {
-      const branches: estree.Statement[] = [node.consequent];
-      let statement = node.alternate;
-
-      while (statement) {
-        if (isIfStatement(statement)) {
-          branches.push(statement.consequent);
-          statement = statement.alternate;
-        } else {
-          branches.push(statement);
-          break;
-        }
-      }
-
-      return branches;
-    }
-
     function hasRequiredSize(nodes: estree.Statement[]) {
       if (nodes.length > 0) {
         const tokens = [
@@ -98,10 +82,6 @@ const rule: Rule.RuleModule = {
         });
       }
       return equivalent;
-    }
-
-    function takeWithoutBreak(nodes: estree.Statement[]) {
-      return nodes.length > 0 && nodes[nodes.length - 1].type === "BreakStatement" ? nodes.slice(0, -1) : nodes;
     }
 
     function expandSingleBlockStatement(nodes: estree.Statement[]) {

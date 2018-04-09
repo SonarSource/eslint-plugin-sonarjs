@@ -1,0 +1,7 @@
+src/react/packages/react-reconciler/src/__tests__/ReactFragment-test.js: 138,737
+src/spectrum/src/components/linkPreview/style.js: 6
+src/vue/packages/vue-server-renderer/basic.js: 1898
+src/vue/packages/vue-server-renderer/build.js: 1904
+src/vue/packages/vue-template-compiler/browser.js: 821,1688
+src/vue/packages/vue-template-compiler/build.js: 778,1645
+src/vue/packages/weex-template-compiler/build.js: 942,2936
