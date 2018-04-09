@@ -93,6 +93,7 @@ src/jest/packages/jest-mock/src/__tests__/jest_mock.test.js: 794,852,909,910,974
 src/jest/packages/jest-runtime/src/__tests__/runtime_node_path.test.js: 41,53
 src/jest/packages/jest-runtime/src/__tests__/runtime_require_module_or_mock_transitive_deps.test.js: 109
 src/jest/packages/jest-runtime/src/__tests__/runtime_require_module.test.js: 294
+src/jest/packages/jest-validate/src/__tests__/validate.test.js: 61
 src/react/packages/react-art/src/ReactART.js: 152,489,504
 src/react/packages/react-dom/src/__tests__/ReactDOMServerIntegrationForms-test.js: 375,416
 src/react/packages/react-dom/src/__tests__/ReactRenderDocument-test.js: 102,179,211,254,281,305,318,345,378,405
@@ -105,11 +106,17 @@ src/react/packages/react-reconciler/src/__tests__/ReactPersistent-test.internal.
 src/react/packages/react-test-renderer/src/__tests__/ReactTestRendererAsync-test.js: 72
 src/react/packages/react/src/ReactBaseClasses.js: 126
 src/react/scripts/rollup/utils.js: 52,64
+src/spectrum/admin/src/components/buttons/style.js: 98,113,121,127
+src/spectrum/admin/src/views/navbar/style.js: 96,103
 src/spectrum/api/routes/api/slackImporter.js: 58
 src/spectrum/api/test/message/mutations/addMessage.test.js: 107,117
 src/spectrum/cypress/integration/channel/view/composer_spec.js: 57,70
 src/spectrum/cypress/integration/channel/view/threads_spec.js: 34
 src/spectrum/cypress/integration/thread/action_bar_spec.js: 120,262,268,288,294,358
+src/spectrum/src/components/avatar/style.js: 95,113
+src/spectrum/src/components/buttons/style.js: 108,124,132,139,150,154,162,169
+src/spectrum/src/components/chatInput/style.js: 86,92,98
+src/spectrum/src/views/pages/style.js: 434
 src/spectrum/vulcan/models/user.js: 60
 src/vue/packages/weex-vue-framework/factory.js: 6593
 src/vue/test/e2e/specs/svg.js: 39

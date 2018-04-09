@@ -1,6 +1,5 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
-import { getParent } from "./nodes";
 
 /**
  * Returns a location of the "main" function token:
@@ -8,7 +7,11 @@ import { getParent } from "./nodes";
  * - "function" keyword for a function expression
  * - "=>" for an arrow function
  */
-export function getMainFunctionTokenLocation(fn: estree.Function, context: Rule.RuleContext) {
+export function getMainFunctionTokenLocation(
+  fn: estree.Function,
+  parent: estree.Node | undefined,
+  context: Rule.RuleContext,
+) {
   let location: estree.SourceLocation | null | undefined;
 
   if (fn.type === "FunctionDeclaration") {
@@ -16,15 +19,14 @@ export function getMainFunctionTokenLocation(fn: estree.Function, context: Rule.
     if (fn.id) {
       location = fn.id.loc;
     } else {
-      const token = context.getSourceCode().getFirstToken(fn);
+      const token = getTokenByValue(fn, "function", context);
       location = token && token.loc;
     }
   } else if (fn.type === "FunctionExpression") {
-    const parent = getParent(context);
-    if (parent && parent.type === "MethodDefinition") {
+    if (parent && (parent.type === "MethodDefinition" || parent.type === "Property")) {
       location = parent.key.loc;
     } else {
-      const token = context.getSourceCode().getFirstToken(fn);
+      const token = getTokenByValue(fn, "function", context);
       location = token && token.loc;
     }
   } else if (fn.type === "ArrowFunctionExpression") {
@@ -33,4 +35,11 @@ export function getMainFunctionTokenLocation(fn: estree.Function, context: Rule.
   }
 
   return location!;
+}
+
+function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleContext) {
+  return context
+    .getSourceCode()
+    .getTokens(node)
+    .find(token => token.value === value);
 }

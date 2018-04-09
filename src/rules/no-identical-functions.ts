@@ -1,14 +1,14 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { areEquivalent } from "../utils/equivalence";
-import { isBlockStatement } from "../utils/nodes";
 import { getMainFunctionTokenLocation } from "../utils/locations";
+import { getParent } from "../utils/nodes";
 
 const MESSAGE = "Update this function so that its implementation is not identical to the one on line {{line}}.";
 
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
-    const functions: estree.Function[] = [];
+    const functions: Array<{ function: estree.Function; parent: estree.Node | undefined }> = [];
 
     return {
       FunctionDeclaration(node: estree.Node) {
@@ -27,8 +27,8 @@ const rule: Rule.RuleModule = {
     };
 
     function visitFunction(node: estree.Function) {
-      if (isBlockStatement(node.body) && isBigEnough(node.body)) {
-        functions.push(node);
+      if (isBigEnough(node.body)) {
+        functions.push({ function: node, parent: getParent(context) });
       }
     }
 
@@ -36,16 +36,19 @@ const rule: Rule.RuleModule = {
       if (functions.length < 2) return;
 
       for (let i = 1; i < functions.length; i++) {
-        const duplicatingFunctionBlock = functions[i].body;
+        const duplicatingFunction = functions[i].function;
 
         for (let j = 0; j < i; j++) {
-          const originalFunctionBlock = functions[j].body;
+          const originalFunction = functions[j].function;
 
-          if (areEquivalent(duplicatingFunctionBlock, originalFunctionBlock, context.getSourceCode())) {
-            const loc = getMainFunctionTokenLocation(functions[i], context);
+          if (
+            areEquivalent(duplicatingFunction.body, originalFunction.body, context.getSourceCode()) &&
+            originalFunction.loc
+          ) {
+            const loc = getMainFunctionTokenLocation(duplicatingFunction, functions[i].parent, context);
             context.report({
               message: MESSAGE,
-              data: { line: String(functions[j].loc!.start.line) },
+              data: { line: String(originalFunction.loc.start.line) },
               loc,
             });
             break;
@@ -54,10 +57,21 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function isBigEnough(block: estree.BlockStatement) {
-      if (block.body.length > 0) {
-        const firstLine = block.body[0].loc!.start.line;
-        const lastLine = block.body[block.body.length - 1].loc!.end.line;
+    function isBigEnough(node: estree.Expression | estree.Statement) {
+      const tokens = context.getSourceCode().getTokens(node);
+
+      if (tokens.length > 0 && tokens[0].value === "{") {
+        tokens.shift();
+      }
+
+      if (tokens.length > 0 && tokens[tokens.length - 1].value === "}") {
+        tokens.pop();
+      }
+
+      if (tokens.length > 0) {
+        const firstLine = tokens[0].loc.start.line;
+        const lastLine = tokens[tokens.length - 1].loc.end.line;
+
         return lastLine - firstLine > 1;
       }
 

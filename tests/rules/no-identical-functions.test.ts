@@ -79,13 +79,13 @@ ruleTester.run("no-identical-functions", rule, {
         return 42;
       }
 
-      let funcExpression = function () {
+      let funcExpression = function () { // Noncompliant
         console.log("Hello");
         console.log("World");
         return 42;
       }
 
-      let arrowFunction = () => {
+      let arrowFunction = () => { // Noncompliant
         console.log("Hello");
         console.log("World");
         return 42;
@@ -110,21 +110,50 @@ ruleTester.run("no-identical-functions", rule, {
           return 42;
         }
 
-        get getter() {// Noncompliant
+        get getter() { // Noncompliant
           console.log("Hello");
           console.log("World");
           return 42;
         }
+      }
+      
+      async function asyncFunction() { // Noncompliant
+        console.log("Hello");
+        console.log("World");
+        return 42;
+      }
+      
+      let asyncExpression = async function () { // Noncompliant
+        console.log("Hello");
+        console.log("World");
+        return 42;
       }`,
       errors: [
         // prettier-ignore
         message(2, 8),
         message(2, 14),
-        message(2, 21),
-        message(2, 27),
-        message(2, 33),
-        message(2, 39),
+        { line: 21, column: 9, endColumn: 20 }, // constructor
+        { line: 27, column: 9, endColumn: 15 }, // method
+        { line: 33, column: 13, endColumn: 19 }, // setter
+        { line: 39, column: 13, endColumn: 19 }, // getter
+        { line: 46, column: 22, endColumn: 35 }, // async declaration
+        { line: 52, column: 35, endColumn: 43 }, // async expression
       ],
+    },
+    {
+      code: `
+      let foo = () => (
+        [
+          1,
+        ]
+      )
+
+      let bar = () => (
+        [
+          1,
+        ]
+      )`,
+      errors: [message(2, 8)],
     },
     {
       // few nodes, but many lines
@@ -141,6 +170,42 @@ ruleTester.run("no-identical-functions", rule, {
         ];
       }`,
       errors: [message(2, 8)],
+    },
+    {
+      code: `
+      const x = {
+        data: function () {
+          return {
+            a: 2
+          }
+        }
+      }
+
+      const y = {
+        data: function () {
+          return {
+            a: 2
+          }
+        }
+      }`,
+      errors: [message(3, 11)],
+    },
+    {
+      code: `
+      const x = {
+        foo() {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        },
+      
+        bar() {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        },
+      };`,
+      errors: [{ line: 9, column: 9, endColumn: 12 }],
     },
   ],
 });
