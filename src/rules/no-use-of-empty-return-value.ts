@@ -1,22 +1,23 @@
 import { Rule } from "eslint";
 import { Node, CallExpression, Function, ReturnStatement, Identifier, ArrowFunctionExpression } from "estree";
-import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from "../utils/nodes";
+import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement, getParent } from "../utils/nodes";
 
-function message(name: string) {
-  return `Remove this use of the output from "${name}"; "${name}" doesn't return anything.`;
-}
+function isReturnValueUsed(callExpr: Node, context: Rule.RuleContext) {
+  const parent = getParent(context);
+  if (!parent) {
+    return false;
+  }
 
-function isReturnValueUsed(node: Node, parent: Node) {
   if (parent.type === "LogicalExpression") {
-    return parent.left === node;
+    return parent.left === callExpr;
   }
 
   if (parent.type === "SequenceExpression") {
-    return parent.expressions[parent.expressions.length - 1] === node;
+    return parent.expressions[parent.expressions.length - 1] === callExpr;
   }
 
   if (parent.type === "ConditionalExpression") {
-    return parent.test === node;
+    return parent.test === callExpr;
   }
 
   return (
@@ -32,15 +33,14 @@ function isReturnValueUsed(node: Node, parent: Node) {
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     const callExpressionsToCheck: Map<Identifier, Function> = new Map();
-    const functionsWithReturnValue: Function[] = [];
+    const functionsWithReturnValue: Set<Function> = new Set();
 
     return {
       CallExpression(node: Node) {
-        const ancestors = context.getAncestors();
-        if (!isReturnValueUsed(node, ancestors[ancestors.length - 1])) {
+        const callExpr = node as CallExpression;
+        if (!isReturnValueUsed(callExpr, context)) {
           return;
         }
-        const callExpr = node as CallExpression;
         const scope = context.getScope();
         const reference = scope.references.find(ref => ref.identifier === callExpr.callee);
         if (reference && reference.resolved) {
@@ -61,37 +61,41 @@ const rule: Rule.RuleModule = {
 
       ReturnStatement(node: Node) {
         const returnStmt = node as ReturnStatement;
-        const ancestors = [...context.getAncestors()].reverse();
-        const functionNode = ancestors.find(
-          node =>
-            node.type === "FunctionExpression" ||
-            node.type === "FunctionDeclaration" ||
-            node.type === "ArrowFunctionExpression",
-        );
-
         if (returnStmt.argument) {
-          functionsWithReturnValue.push(functionNode as Function);
+          const ancestors = [...context.getAncestors()].reverse();
+          const functionNode = ancestors.find(
+            node =>
+              node.type === "FunctionExpression" ||
+              node.type === "FunctionDeclaration" ||
+              node.type === "ArrowFunctionExpression",
+          );
+
+          functionsWithReturnValue.add(functionNode as Function);
         }
       },
 
       ArrowFunctionExpression(node: Node) {
         const arrowFunc = node as ArrowFunctionExpression;
-        if (!isBlockStatement(arrowFunc.body)) {
-          functionsWithReturnValue.push(arrowFunc);
+        if (arrowFunc.expression) {
+          functionsWithReturnValue.add(arrowFunc);
         }
       },
 
       ":function"(node: Node) {
         const func = node as Function;
-        if (func.async || (isBlockStatement(func.body) && func.body.body.length === 0)) {
-          functionsWithReturnValue.push(func);
+        if (func.async || func.generator || (isBlockStatement(func.body) && func.body.body.length === 0)) {
+          functionsWithReturnValue.add(func);
         }
       },
 
       "Program:exit": function() {
         callExpressionsToCheck.forEach((functionDeclaration, callee) => {
-          if (!functionsWithReturnValue.includes(functionDeclaration)) {
-            context.report({ message: message(callee.name), node: callee });
+          if (!functionsWithReturnValue.has(functionDeclaration)) {
+            context.report({
+              message: `Remove this use of the output from "{{name}}"; "{{name}}" doesn't return anything.`,
+              node: callee,
+              data: { name: callee.name },
+            });
           }
         });
       },

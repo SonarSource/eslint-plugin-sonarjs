@@ -27,6 +27,8 @@ ruleTester.run("no-use-of-empty-return-value", rule, {
     { code: "var arrowImplicitReturn = (a) => a*2;  x = arrowImplicitReturn(1);" },
     { code: "var arrowReturnsPromise = async () => {  var x = () => {return 1} };   x = arrowReturnsPromise();" },
     { code: "async function statementReturnsPromise() { var x = () => {return 1} }\n  x = statementReturnsPromise();" },
+    { code: "function* noReturn() { yield 1; } noReturn().next();" },
+    { code: "function* noReturn() { yield 1; } noReturn();" },
   ],
   invalid: [
     invalidPrefixWithFunction("console.log(noReturn());"),
