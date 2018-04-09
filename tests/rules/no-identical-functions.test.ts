@@ -35,7 +35,6 @@ ruleTester.run("no-identical-functions", rule, {
       }`,
     },
     {
-      // ignore not block statement body
       code: `
       let foo = (a, b) => {
         [
