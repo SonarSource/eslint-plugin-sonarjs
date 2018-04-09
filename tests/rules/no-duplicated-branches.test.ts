@@ -9,8 +9,10 @@ ruleTester.run("no-duplicated-branches if", rule, {
       code: `
       if (a) { 
         first('const'); 
+        first('foo'); 
       } else { 
         first('var'); 
+        first('foo'); 
       }`,
     },
     {

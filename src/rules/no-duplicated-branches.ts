@@ -87,12 +87,12 @@ const rule: Rule.RuleModule = {
 
     function compareIfBranches(a: estree.Statement, b: estree.Statement) {
       const equivalent = areEquivalent(a, b, context.getSourceCode());
-      if (equivalent) {
+      if (equivalent && b.loc) {
         context.report({
           message: MESSAGE,
           data: {
             type: "branch",
-            line: String(b.loc!.start.line),
+            line: String(b.loc.start.line),
           },
           node: a,
         });
