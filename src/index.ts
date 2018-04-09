@@ -1,6 +1,7 @@
 import { Linter } from "eslint";
 
 const sonarjsRules: [string, Linter.RuleLevel][] = [
+  ["no-duplicated-branches", "error"],
   ["no-identical-expressions", "error"],
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],

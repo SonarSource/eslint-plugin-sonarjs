@@ -10,8 +10,8 @@ export function isBinaryExpression(node: estree.Node): node is estree.BinaryExpr
   return node.type === "BinaryExpression";
 }
 
-export function isBlockStatement(node: estree.Node): node is estree.BlockStatement {
-  return node.type === "BlockStatement";
+export function isBlockStatement(node: estree.Node | undefined): node is estree.BlockStatement {
+  return node !== undefined && node.type === "BlockStatement";
 }
 
 export function isBooleanLiteral(node: estree.Node): node is estree.Literal {
