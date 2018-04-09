@@ -1,9 +1,8 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { areEquivalent } from "../utils/equivalence";
-import { getParent, isBlockStatement } from "../utils/nodes";
-
-type OptionalLocation = estree.SourceLocation | null | undefined;
+import { isBlockStatement } from "../utils/nodes";
+import { getMainFunctionTokenLocation } from "../utils/locations";
 
 const MESSAGE = "Update this function so that its implementation is not identical to the one on line {{line}}.";
 
@@ -43,12 +42,11 @@ const rule: Rule.RuleModule = {
           const originalFunctionBlock = functions[j].body;
 
           if (areEquivalent(duplicatingFunctionBlock, originalFunctionBlock, context.getSourceCode())) {
-            const loc = getLocationToReport(functions[i]);
-            const location = loc ? { loc } : { node: functions[i] };
+            const loc = getMainFunctionTokenLocation(functions[i], context);
             context.report({
               message: MESSAGE,
               data: { line: String(functions[j].loc!.start.line) },
-              ...location,
+              loc,
             });
             break;
           }
@@ -64,38 +62,6 @@ const rule: Rule.RuleModule = {
       }
 
       return false;
-    }
-
-    // TODO reuse the one from `cognitive-complexity` rule
-
-    /**
-     * Returns
-     * - function name token for function declarations, methods and accessors
-     * - "function" keyword for function expressions
-     * - "=>" for arrow functions
-     */
-    function getLocationToReport(functionLike: estree.Function): OptionalLocation {
-      switch (functionLike.type) {
-        case "FunctionDeclaration":
-          // `FunctionDeclaration.id` can be null when it is `export default function` (despite of the @types/estree definition)
-          if (functionLike.id) {
-            return functionLike.id.loc;
-          } else {
-            const token = context.getSourceCode().getFirstToken(functionLike);
-            return token && token.loc;
-          }
-        case "FunctionExpression":
-          const parent = getParent(context);
-          if (parent && parent.type === "MethodDefinition") {
-            return parent.key.loc;
-          } else {
-            const token = context.getSourceCode().getFirstToken(functionLike);
-            return token && token.loc;
-          }
-        case "ArrowFunctionExpression":
-          const token = context.getSourceCode().getTokenBefore(functionLike.body);
-          return token && token.loc;
-      }
     }
   },
 };
