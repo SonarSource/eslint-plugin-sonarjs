@@ -10,12 +10,24 @@ export function isBinaryExpression(node: estree.Node): node is estree.BinaryExpr
   return node.type === "BinaryExpression";
 }
 
+export function isBlockStatement(node: estree.Node): node is estree.BlockStatement {
+  return node.type === "BlockStatement";
+}
+
 export function isBooleanLiteral(node: estree.Node): node is estree.Literal {
   return isLiteral(node) && typeof node.value === "boolean";
 }
 
 export function isConditionalExpression(node: estree.Node | undefined): node is estree.ConditionalExpression {
   return node !== undefined && node.type === "ConditionalExpression";
+}
+
+export function isFunctionExpression(node: estree.Node | undefined): node is estree.FunctionExpression {
+  return node !== undefined && node.type === "FunctionExpression";
+}
+
+export function isArrowFunctionExpression(node: estree.Node | undefined): node is estree.ArrowFunctionExpression {
+  return node !== undefined && node.type === "ArrowFunctionExpression";
 }
 
 export function isIdentifier(node: estree.Node): node is estree.Identifier {
