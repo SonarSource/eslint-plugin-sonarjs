@@ -7,6 +7,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-extra-arguments", "error"],
   ["no-identical-functions", "error"],
   ["no-identical-expressions", "error"],
+  ["no-one-iteration-loop", "error"],
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],
   ["no-use-of-empty-return-value", "error"],

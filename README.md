@@ -9,6 +9,7 @@ SonarJS rules for ESLint
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
+* Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
 * The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
 
 ### Code Smell Detection :pig:
@@ -25,6 +26,7 @@ SonarJS rules for ESLint
 [`no-extra-arguments`]: ./docs/rules/no-extra-arguments.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
+[`no-one-iteration-loop`]: ./docs/rules/no-one-iteration-loop.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
