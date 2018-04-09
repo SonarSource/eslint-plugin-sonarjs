@@ -88,7 +88,7 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      "Program:exit": function() {
+      "Program:exit"() {
         callExpressionsToCheck.forEach((functionDeclaration, callee) => {
           if (!functionsWithReturnValue.has(functionDeclaration)) {
             context.report({
