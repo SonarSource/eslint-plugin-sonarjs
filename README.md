@@ -11,9 +11,11 @@ SonarJS rules for ESLint
 
 ### Code Smell Detection :pig:
 
+* Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 
+[`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
