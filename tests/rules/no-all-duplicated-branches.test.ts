@@ -7,6 +7,7 @@ ruleTester.run("no-all-duplicated-branches if", rule, {
   valid: [
     { code: "if (a) { first('const'); } else { first('var'); }" },
     { code: "if (a) { first(); } else { second(); }" },
+    { code: "if (a) { first(); } else if (b) { first(); }" }, // ok, no `else`
     { code: "if (a) { first(); } else if (b) { second(); }" },
     { code: "if (a) { second(); } else if (b) { first(); } else { first(); }" },
     { code: "if (a) { first(); } else if (b) { second(); } else { first(); }" },
