@@ -22,14 +22,15 @@ const rule: Rule.RuleModule = {
         const declaredIdentifier = getOnlyDeclaredVariable(lastButOne);
 
         if (returnedIdentifier && declaredIdentifier) {
-          const isSameVariable = context.getScope().variables.some(variable => {
+          const sameVariable = context.getScope().variables.find(variable => {
             return (
               variable.references.find(ref => ref.identifier === returnedIdentifier) !== undefined &&
               variable.references.find(ref => ref.identifier === declaredIdentifier.id) !== undefined
             );
           });
 
-          if (isSameVariable) {
+          // there must be only one "read" - in `return` or `throw`
+          if (sameVariable && sameVariable.references.filter(ref => ref.isRead()).length < 2) {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,

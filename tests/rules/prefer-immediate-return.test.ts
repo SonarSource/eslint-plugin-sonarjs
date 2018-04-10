@@ -125,19 +125,19 @@ ruleTester.run("prefer-immediate-return", rule, {
         let arrow_function_no_block = (a, b) => a + b;
       `,
     },
-    // {
-    //   code: `
-    //     function variable_is_used() {
-    //       var bar = {
-    //         doSomethingElse(p) {},
-    //         doSomething() {
-    //           bar.doSomethingElse(1);
-    //         },
-    //       };
-    //       return bar;
-    //     }
-    //   `,
-    // },
+    {
+      code: `
+        function variable_is_used() {
+          var bar = {
+            doSomethingElse(p) {},
+            doSomething() {
+              bar.doSomethingElse(1);
+            },
+          };
+          return bar;
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -200,7 +200,7 @@ ruleTester.run("prefer-immediate-return", rule, {
             let x = foo();
             return x;
           }
-
+          
           try {
             let x = foo();
             return x;
