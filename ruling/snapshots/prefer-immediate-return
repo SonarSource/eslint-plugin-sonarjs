@@ -1,1 +1,17 @@
-
+src/Ghost/core/server/adapters/storage/LocalFileStorage.js: 48
+src/Ghost/core/server/api/configuration.js: 13
+src/Ghost/core/server/api/mail.js: 120
+src/Ghost/core/server/lib/mobiledoc/cards/html.js: 19
+src/Ghost/core/server/models/relations/authors.js: 40
+src/jest/integration-tests/babel-plugin-jest-hoist/mock-file.js: 9
+src/jest/packages/jest-haste-map/src/crawlers/__tests__/node.test.js: 103
+src/jest/packages/jest-jasmine2/src/jasmine/Env.js: 310
+src/react/packages/react-dom/src/events/ChangeEventPlugin.js: 281
+src/react/packages/react-dom/src/server/ReactDOMStringRenderer.js: 17,28
+src/react/packages/react/src/ReactElement.js: 275
+src/spectrum/api/migrations/seed/generate.js: 136
+src/spectrum/api/routes/api/graphql.js: 27
+src/spectrum/shared/sort-by-date.js: 20
+src/vue/packages/vue-server-renderer/basic.js: 7559,8054
+src/vue/packages/vue-server-renderer/build.js: 7304
+src/vue/packages/weex-vue-framework/index.js: 168
