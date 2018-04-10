@@ -6,8 +6,6 @@ import { SourceCode, AST } from "eslint";
  * Classic implementation would recursively compare children,
  * but "estree" doesn't provide access to children when node type is unknown
  */
-export function areEquivalent(first: Node, second: Node, sourceCode: SourceCode): boolean;
-export function areEquivalent(first: Node[], second: Node[], sourceCode: SourceCode): boolean;
 export function areEquivalent(first: Node | Node[], second: Node | Node[], sourceCode: SourceCode): boolean {
   if (Array.isArray(first) && Array.isArray(second)) {
     return (

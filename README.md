@@ -6,8 +6,9 @@ SonarJS rules for ESLint
 
 ### Bug Detection :bug:
 
+* All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
-* The output of functions that don't return anything should not be used  ([`no-use-of-empty-return-value`])
+* The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
 
 ### Code Smell Detection :pig:
 
@@ -16,6 +17,7 @@ SonarJS rules for ESLint
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 
+[`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
