@@ -30,7 +30,12 @@ export function getMainFunctionTokenLocation(
       location = token && token.loc;
     }
   } else if (fn.type === "ArrowFunctionExpression") {
-    const token = context.getSourceCode().getTokenBefore(fn.body);
+    const token = context
+      .getSourceCode()
+      .getTokensBefore(fn.body)
+      .reverse()
+      .find(token => token.value === "=>");
+
     location = token && token.loc;
   }
 

@@ -1,6 +1,7 @@
 import { Linter } from "eslint";
 
 const sonarjsRules: [string, Linter.RuleLevel][] = [
+  ["cognitive-complexity", "error"],
   ["no-all-duplicated-branches", "error"],
   ["no-duplicated-branches", "error"],
   ["no-identical-functions", "error"],

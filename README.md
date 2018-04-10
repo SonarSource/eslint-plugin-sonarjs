@@ -12,11 +12,13 @@ SonarJS rules for ESLint
 
 ### Code Smell Detection :pig:
 
+* Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 
+[`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
