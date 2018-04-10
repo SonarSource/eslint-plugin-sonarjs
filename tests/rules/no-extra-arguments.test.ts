@@ -46,6 +46,15 @@ ruleTester.run("no-extra-arguments", rule, {
         }
       `,
     },
+    {
+      code: `
+        let x = () => {}; 
+        if (cond) {
+          x = (p1, p2) => 1;
+        } 
+        x(1, 2);
+      `,
+    },
   ],
   invalid: [
     {
@@ -61,10 +70,12 @@ ruleTester.run("no-extra-arguments", rule, {
     },
     {
       code: `
-        var foo = function() {}
+        var foo = function() {
+          console.log('hello');
+        }
         foo(1);
       `,
-      errors: [message(0, 1, { line: 3, column: 9, endColumn: 15 })],
+      errors: [message(0, 1, { line: 5, column: 9, endColumn: 15 })],
     },
     {
       code: `

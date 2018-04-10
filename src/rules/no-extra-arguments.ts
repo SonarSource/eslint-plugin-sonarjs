@@ -1,6 +1,12 @@
 import { Rule, Scope } from "eslint";
 import * as estree from "estree";
-import { isArrowFunctionExpression, isFunctionDeclaration, isFunctionExpression, isIdentifier } from "../utils/nodes";
+import {
+  isArrowFunctionExpression,
+  isFunctionDeclaration,
+  isFunctionExpression,
+  isIdentifier,
+  isBlockStatement,
+} from "../utils/nodes";
 
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
@@ -9,6 +15,7 @@ const rule: Rule.RuleModule = {
       functionNode: estree.Function;
     }> = [];
     const usingArguments: Set<estree.Node> = new Set();
+    const emptyFunctions: Set<estree.Node> = new Set();
 
     return {
       CallExpression(node: estree.Node) {
@@ -32,6 +39,13 @@ const rule: Rule.RuleModule = {
         }
       },
 
+      ":function"(node: estree.Node) {
+        const fn = node as estree.Function;
+        if (isBlockStatement(fn.body) && fn.body.body.length === 0 && fn.params.length === 0) {
+          emptyFunctions.add(node);
+        }
+      },
+
       "FunctionDeclaration > BlockStatement Identifier"(node: estree.Node) {
         checkArguments(node as estree.Identifier);
       },
@@ -42,7 +56,7 @@ const rule: Rule.RuleModule = {
 
       "Program:exit"() {
         callExpressionsToCheck.forEach(({ callExpr, functionNode }) => {
-          if (!usingArguments.has(functionNode)) {
+          if (!usingArguments.has(functionNode) && !emptyFunctions.has(functionNode)) {
             report(callExpr, functionNode.params.length, callExpr.arguments.length);
           }
         });
