@@ -22,6 +22,10 @@ export function isConditionalExpression(node: estree.Node | undefined): node is 
   return node !== undefined && node.type === "ConditionalExpression";
 }
 
+export function isFunctionDeclaration(node: estree.Node | undefined): node is estree.FunctionDeclaration {
+  return node !== undefined && node.type === "FunctionDeclaration";
+}
+
 export function isFunctionExpression(node: estree.Node | undefined): node is estree.FunctionExpression {
   return node !== undefined && node.type === "FunctionExpression";
 }
