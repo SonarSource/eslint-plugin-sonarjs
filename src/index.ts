@@ -4,6 +4,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["cognitive-complexity", "error"],
   ["no-all-duplicated-branches", "error"],
   ["no-duplicated-branches", "error"],
+  ["no-element-overwrite", "error"],
   ["no-extra-arguments", "error"],
   ["no-identical-conditions", "error"],
   ["no-identical-functions", "error"],
