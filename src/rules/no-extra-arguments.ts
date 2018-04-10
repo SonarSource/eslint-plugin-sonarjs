@@ -98,9 +98,18 @@ const rule: Rule.RuleModule = {
     }
 
     function report(callExpr: estree.SimpleCallExpression, expected: number, provided: number) {
-      const expectedArguments =
-        expected === 0 ? "no arguments" : expected === 1 ? "1 argument" : `${expected} arguments`;
-      const providedArguments = provided === 0 ? "none was" : provided === 1 ? "1 was" : `${provided} were`;
+      // prettier-ignore
+      const expectedArguments = 
+        expected === 0 ? "no arguments" : 
+        expected === 1 ? "1 argument" : 
+        `${expected} arguments`;
+
+      // prettier-ignore
+      const providedArguments = 
+        provided === 0 ? "none was" : 
+        provided === 1 ? "1 was" : 
+        `${provided} were`;
+
       const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
 
       context.report({ message, node: callExpr });
