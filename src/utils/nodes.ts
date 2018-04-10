@@ -22,17 +22,16 @@ export function isConditionalExpression(node: estree.Node | undefined): node is 
   return node !== undefined && node.type === "ConditionalExpression";
 }
 
-<<<<<<< HEAD
 export function isFunctionDeclaration(node: estree.Node | undefined): node is estree.FunctionDeclaration {
   return node !== undefined && node.type === "FunctionDeclaration";
-=======
+}
+
 export function isContinueStatement(node: estree.Node | undefined): node is estree.ContinueStatement {
   return node !== undefined && node.type === "ContinueStatement";
 }
 
 export function isForStatement(node: estree.Node | undefined): node is estree.ForStatement {
   return node !== undefined && node.type === "ForStatement";
->>>>>>> add rule no-one-iteration-loop
 }
 
 export function isFunctionExpression(node: estree.Node | undefined): node is estree.FunctionExpression {

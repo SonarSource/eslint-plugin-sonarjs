@@ -1,12 +1,12 @@
 import { Rule } from "eslint";
-import { Node } from "estree";
-import { isContinueStatement, getParent, isWhileStatement, isForStatement } from "../utils/nodes";
+import { Node, WhileStatement, ForStatement } from "estree";
+import { isContinueStatement, getParent } from "../utils/nodes";
 
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     const loopingNodes: Set<Node> = new Set();
     const loops: Set<Node> = new Set();
-    const loopsAndTheirSegments: { loop: Node; segments: Rule.CodePathSegment[] }[] = [];
+    const loopsAndTheirSegments: Array<{ loop: WhileStatement | ForStatement; segments: Rule.CodePathSegment[] }> = [];
 
     let currentCodePaths: Rule.CodePath[] = [];
 
@@ -29,23 +29,23 @@ const rule: Rule.RuleModule = {
         currentCodePaths.pop();
       },
 
-      "*"() {
+      //
+      "WhileStatement > *"() {
         const parent = getParent(context);
-        // required to correctly process "continue" looping
-        if (isWhileStatement(parent) || isForStatement(parent)) {
-          const currentCodePath = currentCodePaths[currentCodePaths.length - 1];
-          loopsAndTheirSegments.push({ segments: currentCodePath.currentSegments, loop: parent });
-        }
+        visitLoopChild(parent as WhileStatement);
+      },
+
+      "ForStatement > *"() {
+        const parent = getParent(context);
+        visitLoopChild(parent as ForStatement);
       },
 
       onCodePathSegmentLoop(_, toSegment: Rule.CodePathSegment, node: Node) {
         if (isContinueStatement(node)) {
-          loopsAndTheirSegments.find(({ segments, loop }) => {
+          loopsAndTheirSegments.forEach(({ segments, loop }) => {
             if (segments.includes(toSegment)) {
               loopingNodes.add(loop);
-              return true;
             }
-            return false;
           });
         } else {
           loopingNodes.add(node);
@@ -63,6 +63,19 @@ const rule: Rule.RuleModule = {
         });
       },
     };
+
+    // Required to correctly process "continue" looping.
+    // When a loop has a "continue" statement, this "continue" statement triggers a "onCodePathSegmentLoop" event,
+    // and the corresponding event node is that "continue" statement. Current implementation is based on the fact
+    // that the "onCodePathSegmentLoop" event is triggerent with a loop node. To work this special case around,
+    // we visit loop children and collect corresponding path segments as these segments are "toSegment"
+    // in "onCodePathSegmentLoop" event.
+    function visitLoopChild(parent: WhileStatement | ForStatement) {
+      if (currentCodePaths.length > 0) {
+        const currentCodePath = currentCodePaths[currentCodePaths.length - 1];
+        loopsAndTheirSegments.push({ segments: currentCodePath.currentSegments, loop: parent });
+      }
+    }
   },
 };
 

@@ -144,6 +144,16 @@ ruleTester.run("no-one-iteration-loop", rule, {
         doSomethingElse();
       }
     }`),
+
+    valid(`
+    function foo() {
+      while(foo()) {
+        bar();
+        if (baz()) {
+          return;
+        }
+      } 
+    }`),
   ],
 
   invalid: [
@@ -171,12 +181,6 @@ ruleTester.run("no-one-iteration-loop", rule, {
 
     invalid(`
     function f() {
-      while(foo()) {
-        bar();
-        if (baz()) {
-          return;
-        }
-      }
       while(foo()) {
         bar();
         return;

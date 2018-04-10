@@ -13,7 +13,7 @@ for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
 }
 ...
 for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
-  if(i == x) {
+  if (i == x) {
     break;
   } else {
     console.log("i is " + i);
@@ -23,13 +23,14 @@ for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
 ```
 
 ## Compliant Solution
+
 ```javascript
 for (int i = 0; i < 10; i++) {
   console.log("i is " + i);
 }
 ...
 for (int i = 0; i < 10; i++) {
-  if(i == x) {
+  if (i == x) {
     break;
   } else {
     console.log("i is " + i);
