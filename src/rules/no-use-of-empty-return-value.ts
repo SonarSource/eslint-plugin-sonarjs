@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-3699
+
 import { Rule } from "eslint";
 import { Node, CallExpression, Function, ReturnStatement, Identifier, ArrowFunctionExpression } from "estree";
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement, getParent } from "../utils/nodes";

@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1301
+
 import { Rule } from "eslint";
 import { Node, SwitchStatement } from "estree";
 

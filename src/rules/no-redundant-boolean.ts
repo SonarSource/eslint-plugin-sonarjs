@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1125
+
 import { Rule } from "eslint";
 import { BinaryExpression, Node, LogicalExpression, UnaryExpression, Expression } from "estree";
 import { getParent, isBooleanLiteral, isIfStatement, isConditionalExpression } from "../utils/nodes";

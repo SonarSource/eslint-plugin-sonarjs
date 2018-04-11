@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-4144
+
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { areEquivalent } from "../utils/equivalence";

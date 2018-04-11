@@ -1,4 +1,6 @@
 import { Rule } from "eslint";
+// https://jira.sonarsource.com/browse/RSPEC-1862
+
 import * as estree from "estree";
 import { isIfStatement } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";

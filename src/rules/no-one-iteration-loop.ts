@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1751
+
 import { Rule } from "eslint";
 import { Node, WhileStatement, ForStatement } from "estree";
 import { isContinueStatement, getParent } from "../utils/nodes";

@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1126
+
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { isReturnStatement, isBlockStatement, isBooleanLiteral, isIfStatement, getParent } from "../utils/nodes";
