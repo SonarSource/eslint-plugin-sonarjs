@@ -8,4 +8,18 @@ fi
 
 set -euo pipefail
 
-sonar-scanner
+
+if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  sonar-scanner \
+      -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
+      -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
+      -Dsonar.analysis.sha1=$TRAVIS_COMMIT  \
+      -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+elif [ "$TRAVIS_PULL_REQUEST" != "false" ]
+  sonar-scanner \
+      -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
+      -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
+      -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
+      -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
+      -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST
+fi
