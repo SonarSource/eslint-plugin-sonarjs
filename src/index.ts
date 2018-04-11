@@ -13,6 +13,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-small-switch", "error"],
   ["no-use-of-empty-return-value", "error"],
   ["prefer-immediate-return", "error"],
+  ["prefer-single-boolean-return", "error"],
 ];
 
 const sonarjsRuleModules: any = {};
