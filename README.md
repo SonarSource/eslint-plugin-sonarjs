@@ -11,6 +11,7 @@ _[We also have a plugin for tslint](https://github.com/SonarSource/SonarTS)_
 Rules in this category aim to find places in code which have a high chance to be bugs, i.e. don't work as indented.
 
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
+* Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
 * Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
@@ -32,6 +33,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
+[`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md
 [`no-extra-arguments`]: ./docs/rules/no-extra-arguments.md
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md

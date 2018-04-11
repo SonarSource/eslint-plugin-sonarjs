@@ -6,8 +6,16 @@ export function getParent(context: Rule.RuleContext) {
   return ancestors.length > 0 ? ancestors[ancestors.length - 1] : undefined;
 }
 
-export function isBinaryExpression(node: estree.Node): node is estree.BinaryExpression {
-  return node.type === "BinaryExpression";
+export function isArrowFunctionExpression(node: estree.Node | undefined): node is estree.ArrowFunctionExpression {
+  return node !== undefined && node.type === "ArrowFunctionExpression";
+}
+
+export function isAssignmentExpression(node: estree.Node | undefined): node is estree.AssignmentExpression {
+  return node !== undefined && node.type === "AssignmentExpression";
+}
+
+export function isBinaryExpression(node: estree.Node | undefined): node is estree.BinaryExpression {
+  return node !== undefined && node.type === "BinaryExpression";
 }
 
 export function isBlockStatement(node: estree.Node | undefined): node is estree.BlockStatement {
@@ -18,16 +26,23 @@ export function isBooleanLiteral(node: estree.Node | undefined): node is estree.
   return isLiteral(node) && typeof node.value === "boolean";
 }
 
+export function isCallExpression(node: estree.Node | undefined): node is estree.CallExpression {
+  return node !== undefined && node.type === "CallExpression";
+}
+
 export function isConditionalExpression(node: estree.Node | undefined): node is estree.ConditionalExpression {
   return node !== undefined && node.type === "ConditionalExpression";
 }
 
-export function isFunctionDeclaration(node: estree.Node | undefined): node is estree.FunctionDeclaration {
-  return node !== undefined && node.type === "FunctionDeclaration";
-}
-
 export function isContinueStatement(node: estree.Node | undefined): node is estree.ContinueStatement {
   return node !== undefined && node.type === "ContinueStatement";
+}
+
+export function isExpressionStatement(node: estree.Node | undefined): node is estree.ExpressionStatement {
+  return node !== undefined && node.type === "ExpressionStatement";
+}
+export function isFunctionDeclaration(node: estree.Node | undefined): node is estree.FunctionDeclaration {
+  return node !== undefined && node.type === "FunctionDeclaration";
 }
 
 export function isForStatement(node: estree.Node | undefined): node is estree.ForStatement {
@@ -38,12 +53,8 @@ export function isFunctionExpression(node: estree.Node | undefined): node is est
   return node !== undefined && node.type === "FunctionExpression";
 }
 
-export function isArrowFunctionExpression(node: estree.Node | undefined): node is estree.ArrowFunctionExpression {
-  return node !== undefined && node.type === "ArrowFunctionExpression";
-}
-
-export function isIdentifier(node: estree.Node): node is estree.Identifier {
-  return node.type === "Identifier";
+export function isIdentifier(node: estree.Node | undefined): node is estree.Identifier {
+  return node !== undefined && node.type === "Identifier";
 }
 
 export function isIfStatement(node: estree.Node | undefined): node is estree.IfStatement {
@@ -54,19 +65,19 @@ export function isLiteral(node: estree.Node | undefined): node is estree.Literal
   return node !== undefined && node.type === "Literal";
 }
 
-export function isLogicalExpression(node: estree.Node): node is estree.LogicalExpression {
-  return node.type === "LogicalExpression";
+export function isLogicalExpression(node: estree.Node | undefined): node is estree.LogicalExpression {
+  return node !== undefined && node.type === "LogicalExpression";
+}
+
+export function isMemberExpression(node: estree.Node | undefined): node is estree.MemberExpression {
+  return node !== undefined && node.type === "MemberExpression";
 }
 
 export function isMethodDefinition(node: estree.Node | undefined): node is estree.MethodDefinition {
   return node !== undefined && node.type === "MethodDefinition";
 }
 
-export function isWhileStatement(node: estree.Node | undefined): node is estree.WhileStatement {
-  return node !== undefined && node.type === "WhileStatement";
-}
-
-export function isNumericLiteral(node: estree.Node): node is estree.Literal {
+export function isNumericLiteral(node: estree.Node | undefined): node is estree.Literal {
   return isLiteral(node) && typeof node.value === "number";
 }
 
@@ -80,4 +91,8 @@ export function isThrowStatement(node: estree.Node | undefined): node is estree.
 
 export function isVariableDeclaration(node: estree.Node | undefined): node is estree.VariableDeclaration {
   return node !== undefined && node.type === "VariableDeclaration";
+}
+
+export function isWhileStatement(node: estree.Node | undefined): node is estree.WhileStatement {
+  return node !== undefined && node.type === "WhileStatement";
 }
