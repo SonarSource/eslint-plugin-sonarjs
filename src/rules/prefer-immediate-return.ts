@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
           });
 
           // there must be only one "read" - in `return` or `throw`
-          if (sameVariable && sameVariable.references.filter(ref => ref.isRead()).length < 2) {
+          if (sameVariable && sameVariable.references.filter(ref => ref.isRead()).length === 1) {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,
