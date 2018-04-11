@@ -20,6 +20,7 @@ SonarJS rules for ESLint
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
+* Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`])
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
@@ -32,3 +33,4 @@ SonarJS rules for ESLint
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
+[`prefer-immediate-return`]: ./docs/rules/prefer-immediate-return.md

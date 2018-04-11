@@ -69,3 +69,15 @@ export function isWhileStatement(node: estree.Node | undefined): node is estree.
 export function isNumericLiteral(node: estree.Node): node is estree.Literal {
   return isLiteral(node) && typeof node.value === "number";
 }
+
+export function isReturnStatement(node: estree.Node | undefined): node is estree.ReturnStatement {
+  return node !== undefined && node.type === "ReturnStatement";
+}
+
+export function isThrowStatement(node: estree.Node | undefined): node is estree.ThrowStatement {
+  return node !== undefined && node.type === "ThrowStatement";
+}
+
+export function isVariableDeclaration(node: estree.Node | undefined): node is estree.VariableDeclaration {
+  return node !== undefined && node.type === "VariableDeclaration";
+}

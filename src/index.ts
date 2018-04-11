@@ -12,6 +12,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],
   ["no-use-of-empty-return-value", "error"],
+  ["prefer-immediate-return", "error"],
 ];
 
 const sonarjsRuleModules: any = {};
