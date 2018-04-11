@@ -62,7 +62,7 @@ function invalidPrefixWithFunction(
 
 function invalid(code: string): { code: string; errors: RuleTester.TestCaseError[] } {
   return {
-    code: code,
+    code,
     errors: [{ message: `Remove this use of the output from "noReturn"; "noReturn" doesn't return anything.` }],
   };
 }
