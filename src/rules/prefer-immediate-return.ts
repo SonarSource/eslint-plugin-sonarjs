@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1488
+
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { isReturnStatement, isThrowStatement, isIdentifier, isVariableDeclaration } from "../utils/nodes";

@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-1764
+
 import { Rule } from "eslint";
 import { Node, BinaryExpression, LogicalExpression } from "estree";
 import { isIdentifier, isLiteral } from "../utils/nodes";

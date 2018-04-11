@@ -1,3 +1,5 @@
+// https://jira.sonarsource.com/browse/RSPEC-930
+
 import { Rule, Scope } from "eslint";
 import * as estree from "estree";
 import {
