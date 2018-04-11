@@ -7,8 +7,7 @@ const rule: Rule.RuleModule = {
     const loopingNodes: Set<Node> = new Set();
     const loops: Set<Node> = new Set();
     const loopsAndTheirSegments: Array<{ loop: WhileStatement | ForStatement; segments: Rule.CodePathSegment[] }> = [];
-
-    let currentCodePaths: Rule.CodePath[] = [];
+    const currentCodePaths: Rule.CodePath[] = [];
 
     return {
       ForStatement(node: Node) {
@@ -29,7 +28,6 @@ const rule: Rule.RuleModule = {
         currentCodePaths.pop();
       },
 
-      //
       "WhileStatement > *"() {
         const parent = getParent(context);
         visitLoopChild(parent as WhileStatement);

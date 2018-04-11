@@ -146,7 +146,7 @@ ruleTester.run("no-one-iteration-loop", rule, {
     }`),
 
     valid(`
-    function foo() {
+    function fun() {
       while(foo()) {
         bar();
         if (baz()) {
