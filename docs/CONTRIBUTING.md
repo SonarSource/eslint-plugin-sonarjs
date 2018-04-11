@@ -9,9 +9,9 @@ Report bugs and suggest improvements. If something doesn't work well for you or 
 ## Create New Rule
 
 * Create a new file for the rule implementation in `src/rules`. File name should be lowercased, words must be separated by dashes (`-`).
-* Create a test file in `test/rules` with the same name than the rule.
+* Create a test file `<rule name>.test.ts` in `test/rules`.
 * Add the rule to `src/index.ts`.
-* In folder `docs/rules` create a rule documentation file `<rule key>.md`
+* In folder `docs/rules` create a rule documentation file `<rule name>.md`
 * In `README.md` add a reference to this documentation file.
 * Run [Ruling](#ruling) test.
 

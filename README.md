@@ -2,7 +2,7 @@
 
 SonarJS rules for ESLint detecting bugs and suspicious patterns in your code.
 
-_[We also have a plugin for tslint](https://github.com/SonarSource/SonarTS)_
+_[We also have a plugin for TSLint](https://github.com/SonarSource/SonarTS)_
 
 ## Rules
 
@@ -67,7 +67,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 }
 ```
 
-* Add `plugin:sonarjs/recommended` to the `extends` option to enable all rules:
+* Add `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
 
 ```json
 {
