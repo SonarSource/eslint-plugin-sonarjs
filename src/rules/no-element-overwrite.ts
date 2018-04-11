@@ -1,15 +1,5 @@
 import { Rule, AST } from "eslint";
-import {
-  Node,
-  SwitchCase,
-  BlockStatement,
-  Statement,
-  AssignmentExpression,
-  MemberExpression,
-  Expression,
-  Program,
-  ModuleDeclaration,
-} from "estree";
+import * as estree from "estree";
 import { areEquivalent } from "../utils/equivalence";
 import {
   isExpressionStatement,
@@ -23,25 +13,25 @@ import {
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
-      SwitchCase(node: Node) {
-        const switchCase = node as SwitchCase;
+      SwitchCase(node: estree.Node) {
+        const switchCase = node as estree.SwitchCase;
         checkStatements(switchCase.consequent);
       },
 
-      BlockStatement(node: Node) {
-        const block = node as BlockStatement;
+      BlockStatement(node: estree.Node) {
+        const block = node as estree.BlockStatement;
         checkStatements(block.body);
       },
 
-      Program(node: Node) {
-        const program = node as Program;
+      Program(node: estree.Node) {
+        const program = node as estree.Program;
         checkStatements(program.body);
       },
     };
 
-    function checkStatements(statements: Array<Statement | ModuleDeclaration>) {
+    function checkStatements(statements: Array<estree.Statement | estree.ModuleDeclaration>) {
       const usedKeys: Map<string, KeyWriteCollectionUsage> = new Map();
-      let collection: Node | null = null;
+      let collection: estree.Node | undefined;
       statements.forEach(statement => {
         const keyWriteUsage = getKeyWriteUsage(statement);
         if (keyWriteUsage) {
@@ -49,13 +39,13 @@ const rule: Rule.RuleModule = {
             usedKeys.clear();
           }
           const sameKeyWriteUsage = usedKeys.get(keyWriteUsage.indexOrKey);
-          if (sameKeyWriteUsage) {
+          if (sameKeyWriteUsage && sameKeyWriteUsage.node.loc) {
             context.report({
               node: keyWriteUsage.node,
               message: 'Verify this is the index that was intended; "{{index}}" was already set on line {{line}}.',
               data: {
                 index: keyWriteUsage.indexOrKey,
-                line: String(sameKeyWriteUsage.node.loc!.start.line),
+                line: String(sameKeyWriteUsage.node.loc.start.line),
               },
             });
           }
@@ -67,59 +57,59 @@ const rule: Rule.RuleModule = {
       });
     }
 
-    function getKeyWriteUsage(node: Node): KeyWriteCollectionUsage | undefined {
+    function getKeyWriteUsage(node: estree.Node): KeyWriteCollectionUsage | undefined {
       if (isExpressionStatement(node)) {
-        const expr = node.expression;
-        return arrayKeyWriteUsage(expr) || mapOrSetKeyWriteUsage(expr);
+        return arrayKeyWriteUsage(node.expression) || mapOrSetKeyWriteUsage(node.expression);
       }
     }
 
-    function arrayKeyWriteUsage(node: Node): KeyWriteCollectionUsage | undefined {
+    function arrayKeyWriteUsage(node: estree.Node): KeyWriteCollectionUsage | undefined {
       // a[b] = ...
       if (isSimpleAssignment(node) && isMemberExpression(node.left) && node.left.computed) {
-        const lhs = node.left as MemberExpression;
-        const index = extractIndex(lhs.property);
-        if (!index || isUsed(lhs.object, node.right)) return;
-
-        return {
-          collectionNode: lhs.object,
-          indexOrKey: index,
-          node: lhs.object,
-        };
+        const { left, right } = node;
+        const index = extractIndex(left.property);
+        if (index !== undefined && !isUsed(left.object, right)) {
+          return {
+            collectionNode: left.object,
+            indexOrKey: index,
+            node,
+          };
+        }
       }
     }
 
-    function mapOrSetKeyWriteUsage(node: Node): KeyWriteCollectionUsage | undefined {
+    function mapOrSetKeyWriteUsage(node: estree.Node): KeyWriteCollectionUsage | undefined {
       if (isCallExpression(node) && isMemberExpression(node.callee)) {
         const propertyAccess = node.callee;
         if (isIdentifier(propertyAccess.property)) {
           const methodName = propertyAccess.property.name;
-          const addMethod = methodName === "add" && node.arguments.length == 1;
-          const setMethod = methodName === "set" && node.arguments.length == 2;
+          const addMethod = methodName === "add" && node.arguments.length === 1;
+          const setMethod = methodName === "set" && node.arguments.length === 2;
 
           if (addMethod || setMethod) {
             const key = extractIndex(node.arguments[0]);
-            if (!key) return;
-            return {
-              collectionNode: propertyAccess.object,
-              indexOrKey: key,
-              node: propertyAccess.object,
-            };
+            if (key) {
+              return {
+                collectionNode: propertyAccess.object,
+                indexOrKey: key,
+                node,
+              };
+            }
           }
         }
       }
     }
 
-    function extractIndex(node: Node): string | undefined {
+    function extractIndex(node: estree.Node): string | undefined {
       if (isLiteral(node)) {
-        const value = node.value;
+        const { value } = node;
         return typeof value === "number" || typeof value === "string" ? String(value) : undefined;
       } else if (isIdentifier(node)) {
         return node.name;
       }
     }
 
-    function isUsed(value: Node, expression: Expression) {
+    function isUsed(value: estree.Node, expression: estree.Expression) {
       const valueTokens = context.getSourceCode().getTokens(value);
       const expressionTokens = context.getSourceCode().getTokens(expression);
 
@@ -149,14 +139,14 @@ function eq(token1: AST.Token, token2: AST.Token) {
   return token1.value === token2.value;
 }
 
-function isSimpleAssignment(node: Node): node is AssignmentExpression {
+function isSimpleAssignment(node: estree.Node): node is estree.AssignmentExpression {
   return isAssignmentExpression(node) && node.operator === "=";
 }
 
 interface KeyWriteCollectionUsage {
-  collectionNode: Node;
+  collectionNode: estree.Node;
   indexOrKey: string;
-  node: Node;
+  node: estree.Node;
 }
 
 export = rule;

@@ -18,7 +18,13 @@ ruleTester.run("no-element-overwrite", rule, {
     {
       code: `
       fruits[1] = "banana";
-      console.log("Hello");
+      console.log("Hello"); 
+      fruits[1] = "apple"; // FN`,
+    },
+    {
+      code: `
+      fruits[1] = "banana";
+      foo(fruits); 
       fruits[1] = "apple";`,
     },
     {
@@ -71,7 +77,14 @@ ruleTester.run("no-element-overwrite", rule, {
       code: `
       fruits[1] = "banana";
       fruits[1] = "apple";`,
-      errors: [{ message: `Verify this is the index that was intended; "1" was already set on line 2.` }],
+      errors: [
+        {
+          message: `Verify this is the index that was intended; "1" was already set on line 2.`,
+          line: 3,
+          column: 7,
+          endColumn: 26,
+        },
+      ],
     },
     {
       code: `
@@ -138,6 +151,12 @@ ruleTester.run("no-element-overwrite", rule, {
         { message: `Verify this is the index that was intended; "1" was already set on line 6.` },
         { message: `Verify this is the index that was intended; "2" was already set on line 10.` },
       ],
+    },
+    {
+      code: `
+        fruits[''] = "banana";
+        fruits[''] = "apple";`,
+      errors: [{ message: `Verify this is the index that was intended; "" was already set on line 2.` }],
     },
   ],
 });

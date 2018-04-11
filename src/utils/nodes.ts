@@ -10,12 +10,12 @@ export function isArrowFunctionExpression(node: estree.Node | undefined): node i
   return node !== undefined && node.type === "ArrowFunctionExpression";
 }
 
-export function isAssignmentExpression(node: estree.Node): node is estree.AssignmentExpression {
-  return node.type === "AssignmentExpression";
+export function isAssignmentExpression(node: estree.Node | undefined): node is estree.AssignmentExpression {
+  return node !== undefined && node.type === "AssignmentExpression";
 }
 
-export function isBinaryExpression(node: estree.Node): node is estree.BinaryExpression {
-  return node.type === "BinaryExpression";
+export function isBinaryExpression(node: estree.Node | undefined): node is estree.BinaryExpression {
+  return node !== undefined && node.type === "BinaryExpression";
 }
 
 export function isBlockStatement(node: estree.Node | undefined): node is estree.BlockStatement {
@@ -53,8 +53,8 @@ export function isFunctionExpression(node: estree.Node | undefined): node is est
   return node !== undefined && node.type === "FunctionExpression";
 }
 
-export function isIdentifier(node: estree.Node): node is estree.Identifier {
-  return node.type === "Identifier";
+export function isIdentifier(node: estree.Node | undefined): node is estree.Identifier {
+  return node !== undefined && node.type === "Identifier";
 }
 
 export function isIfStatement(node: estree.Node | undefined): node is estree.IfStatement {
@@ -65,8 +65,8 @@ export function isLiteral(node: estree.Node | undefined): node is estree.Literal
   return node !== undefined && node.type === "Literal";
 }
 
-export function isLogicalExpression(node: estree.Node): node is estree.LogicalExpression {
-  return node.type === "LogicalExpression";
+export function isLogicalExpression(node: estree.Node | undefined): node is estree.LogicalExpression {
+  return node !== undefined && node.type === "LogicalExpression";
 }
 
 export function isMemberExpression(node: estree.Node | undefined): node is estree.MemberExpression {
@@ -77,7 +77,7 @@ export function isMethodDefinition(node: estree.Node | undefined): node is estre
   return node !== undefined && node.type === "MethodDefinition";
 }
 
-export function isNumericLiteral(node: estree.Node): node is estree.Literal {
+export function isNumericLiteral(node: estree.Node | undefined): node is estree.Literal {
   return isLiteral(node) && typeof node.value === "number";
 }
 
