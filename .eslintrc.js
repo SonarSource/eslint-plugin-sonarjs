@@ -7,7 +7,7 @@ module.exports = {
     ecmaFeatures: { modules: true },
     sourceType: "module",
   },
-  plugins: ["import"],
+  plugins: ["import", "notice"],
   rules: {
     // possible errors
     "for-direction": "error",
@@ -119,5 +119,8 @@ module.exports = {
 
     // does not properly work with ts
     "import/no-unresolved": "off",
+
+    // notice
+    "notice/notice": ["error", { templateFile: "scripts/file-header.ts" }],
   },
 };
