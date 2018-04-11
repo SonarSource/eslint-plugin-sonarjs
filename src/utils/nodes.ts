@@ -26,6 +26,14 @@ export function isFunctionDeclaration(node: estree.Node | undefined): node is es
   return node !== undefined && node.type === "FunctionDeclaration";
 }
 
+export function isContinueStatement(node: estree.Node | undefined): node is estree.ContinueStatement {
+  return node !== undefined && node.type === "ContinueStatement";
+}
+
+export function isForStatement(node: estree.Node | undefined): node is estree.ForStatement {
+  return node !== undefined && node.type === "ForStatement";
+}
+
 export function isFunctionExpression(node: estree.Node | undefined): node is estree.FunctionExpression {
   return node !== undefined && node.type === "FunctionExpression";
 }
@@ -52,6 +60,10 @@ export function isLogicalExpression(node: estree.Node): node is estree.LogicalEx
 
 export function isMethodDefinition(node: estree.Node | undefined): node is estree.MethodDefinition {
   return node !== undefined && node.type === "MethodDefinition";
+}
+
+export function isWhileStatement(node: estree.Node | undefined): node is estree.WhileStatement {
+  return node !== undefined && node.type === "WhileStatement";
 }
 
 export function isNumericLiteral(node: estree.Node): node is estree.Literal {
