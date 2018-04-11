@@ -63,6 +63,7 @@ const rule: Rule.RuleModule = {
       if (isExpressionStatement(node)) {
         return arrayKeyWriteUsage(node.expression) || mapOrSetKeyWriteUsage(node.expression);
       }
+      return undefined;
     }
 
     function arrayKeyWriteUsage(node: estree.Node): KeyWriteCollectionUsage | undefined {
@@ -78,6 +79,7 @@ const rule: Rule.RuleModule = {
           };
         }
       }
+      return undefined;
     }
 
     function mapOrSetKeyWriteUsage(node: estree.Node): KeyWriteCollectionUsage | undefined {
@@ -100,6 +102,7 @@ const rule: Rule.RuleModule = {
           }
         }
       }
+      return undefined;
     }
 
     function extractIndex(node: estree.Node): string | undefined {
@@ -109,6 +112,7 @@ const rule: Rule.RuleModule = {
       } else if (isIdentifier(node)) {
         return node.name;
       }
+      return undefined;
     }
 
     function isUsed(value: estree.Node, expression: estree.Expression) {
