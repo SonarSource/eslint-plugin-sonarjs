@@ -50,7 +50,7 @@ const rule: Rule.RuleModule = {
             if (definition.type === "FunctionName") {
               callExpressionsToCheck.set(reference.identifier, definition.node);
             } else if (definition.type === "Variable") {
-              const init = definition.node.init;
+              const { init } = definition.node;
               if (init && (isFunctionExpression(init) || isArrowFunctionExpression(init))) {
                 callExpressionsToCheck.set(reference.identifier, init);
               }

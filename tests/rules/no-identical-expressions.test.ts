@@ -18,8 +18,10 @@ ruleTester.run("no-identical-expressions", rule, {
     { code: `name.charCodeAt(0) === CharacterCodes._ && name.charCodeAt(1) === CharacterCodes._;` },
     { code: `if (+a !== +b) { }` },
     { code: "first(`const`) || first(`var`);" },
+    // eslint-disable-next-line no-template-curly-in-string
     { code: "window[`${prefix}CancelAnimationFrame`] || window[`${prefix}CancelRequestAnimationFrame`];" },
     { code: "" },
+    // eslint-disable-next-line no-useless-escape
     { code: `dirPath.match(/localhost:\d+/) || dirPath.match(/localhost:\d+\s/);` },
     { code: `a == b || a == c;` },
     { code: `a == b;` },

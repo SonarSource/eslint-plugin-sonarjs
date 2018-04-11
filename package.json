@@ -18,6 +18,7 @@
     "test": "jest",
     "ruling": "ts-node ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint --ext js,ts src tests ruling/index.ts",
     "precommit": "lint-staged && yarn typecheck"
   },
   "peerDependencies": {
@@ -31,6 +32,8 @@
     "@types/minimist": "1.2.0",
     "@types/node": "9.6.1",
     "eslint": "4.19.1",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.10.0",
     "husky": "0.14.3",
     "jest": "22.4.3",
     "lint-staged": "7.0.4",
@@ -40,7 +43,8 @@
     "rimraf": "2.6.2",
     "ts-jest": "22.4.2",
     "ts-node": "5.0.1",
-    "typescript": "2.8.1"
+    "typescript": "2.8.1",
+    "typescript-eslint-parser": "14.0.0"
   },
   "prettier": {
     "printWidth": 120,
@@ -61,6 +65,7 @@
     "testMatch": ["<rootDir>/tests/**/*.test.ts"]
   },
   "lint-staged": {
-    "*.{ts,tsx,js,json,css}": ["prettier --write", "git add"]
+    "*.{ts,tsx,js}": ["eslint", "prettier --write", "git add"],
+    "*.json": ["prettier --write", "git add"]
   }
 }
