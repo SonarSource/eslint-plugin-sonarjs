@@ -84,3 +84,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
   }
 }
 ```
+
+## Contributing
+
+You want to participate to the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
