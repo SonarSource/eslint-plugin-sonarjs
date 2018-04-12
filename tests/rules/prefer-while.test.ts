@@ -46,12 +46,12 @@ ruleTester.run("prefer-while", rule, {
     },
     {
       code: `
-for(;i < 10;)
-  doSomething();`,
+        for(;i < 10;)
+          doSomething();`,
       errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
       output: `
-while (i < 10)
-  doSomething();`,
+        while (i < 10)
+          doSomething();`,
     },
     {
       code: "for(;;) {}",
