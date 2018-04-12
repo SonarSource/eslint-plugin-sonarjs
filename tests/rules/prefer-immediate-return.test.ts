@@ -175,7 +175,7 @@ ruleTester.run("prefer-immediate-return", rule, {
       ],
       output: `
         function var_returned() {
-          return 42
+          return 42;
         }`,
     },
     {
@@ -215,7 +215,7 @@ ruleTester.run("prefer-immediate-return", rule, {
       errors: [{ line: 3, column: 21, endColumn: 32 }],
       output: `
         function thrown_nok() {
-          throw new Error()
+          throw new Error();
         }`,
     },
     {
@@ -290,6 +290,18 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 5, column: 25, endColumn: 26 }, { line: 8, column: 25, endColumn: 26 }],
+    },
+    {
+      code: `
+        function var_returned() {
+          var x = 42;
+          return x
+        }`,
+      errors: 1,
+      output: `
+        function var_returned() {
+          return 42
+        }`,
     },
   ],
 });
