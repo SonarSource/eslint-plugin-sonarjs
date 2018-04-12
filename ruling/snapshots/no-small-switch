@@ -1,6 +1,17 @@
 src/Ghost/core/server/lib/ghost-version.js: 11
+src/react/fixtures/dom/src/components/fixtures/text-inputs/InputTestCase.js: 22
+src/react/packages/react-reconciler/src/ReactFiberCommitWork.js: 381
+src/react/packages/react-reconciler/src/ReactFiberReconciler.js: 488
+src/react/packages/react-test-renderer/src/ReactTestRenderer.js: 77
 src/react/scripts/rollup/forks.js: 96
 src/react/scripts/rollup/packaging.js: 46
+src/spectrum/api/queries/community/contextPermissions.js: 12
 src/spectrum/api/routes/api/stripe.js: 62
+src/spectrum/athena/utils/push-notifications/send-expo-push-notifications.js: 64
+src/spectrum/pluto/queues/processStripeChargeWebhook.js: 20
+src/spectrum/pluto/queues/processStripeInvoiceWebhook.js: 50
+src/spectrum/pluto/queues/processStripeSourceWebhook.js: 20
+src/spectrum/src/components/editForm/index.js: 8
 src/spectrum/src/reducers/newUserOnboarding.js: 6
 src/spectrum/src/reducers/notifications.js: 7
+src/spectrum/src/views/channelSettings/index.js: 138

@@ -1,5 +1,11 @@
 src/Ghost/core/server/models/relations/authors.js: 171
 src/jest/packages/expect/src/__tests__/matchers.test.js: 440,440
 src/spectrum/api/authentication.js: 359
+src/spectrum/mobile/components/Messages/index.js: 22
+src/spectrum/src/components/badges/index.js: 72
+src/spectrum/src/components/listItems/index.js: 81
+src/spectrum/src/views/communityMembers/components/editDropdown.js: 245
+src/spectrum/src/views/directMessages/index.js: 169
+src/spectrum/src/views/login/index.js: 37
 src/vue/packages/vue-server-renderer/basic.js: 2795,2798
 src/vue/packages/vue-template-compiler/browser.js: 2218,2221

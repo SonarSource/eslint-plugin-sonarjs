@@ -1,3 +1,4 @@
+src/jest/packages/jest-cli/src/search_source.js: 118
 src/vue/packages/vue-server-renderer/build.js: 1681
 src/vue/packages/weex-template-compiler/build.js: 1990,2030
 src/vue/packages/weex-vue-framework/factory.js: 1553,2035,4456,4559
