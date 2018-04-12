@@ -27,7 +27,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
-* Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`])
+* Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*) 
 
