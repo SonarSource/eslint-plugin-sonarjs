@@ -77,9 +77,14 @@ const rule: Rule.RuleModule = {
         const expressionText = context.getSourceCode().getText(expression);
         const fixedRangeStart = lastButOne.range[0];
         const fixedRangeEnd = last.range[1];
+        const semicolonToken = context.getSourceCode().getLastToken(last);
+        const semicolon = semicolonToken && semicolonToken.value === ";" ? ";" : "";
         return [
           fixer.removeRange([fixedRangeStart, fixedRangeEnd]),
-          fixer.insertTextAfterRange([1, fixedRangeStart], `${throwOrReturnKeyword.value} ${expressionText}`),
+          fixer.insertTextAfterRange(
+            [1, fixedRangeStart],
+            `${throwOrReturnKeyword.value} ${expressionText}${semicolon}`,
+          ),
         ];
       } else {
         return null;
