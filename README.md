@@ -29,6 +29,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`])
 * Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
+* A "while" loop should be used instead of a "for" loop ([`prefer-while`])
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
@@ -44,6 +45,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
 [`prefer-immediate-return`]: ./docs/rules/prefer-immediate-return.md
 [`prefer-single-boolean-return`]: ./docs/rules/prefer-single-boolean-return.md
+[`prefer-while`]: ./docs/rules/prefer-while.md
 
 ## Prerequisites
 
