@@ -47,6 +47,7 @@ function run() {
   console.log("");
 
   const cli = new CLIEngine({
+    parser: "babel-eslint",
     parserOptions: {
       ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
       ecmaVersion: 2018,
@@ -71,6 +72,8 @@ function run() {
     result.messages.forEach(message => {
       if (message.ruleId) {
         addToResults(results, getFileNameForSnapshot(result.filePath), message.ruleId, message.line);
+      } else {
+        throw new Error(`Unexpected error: ${message.message}`);
       }
     });
   });
