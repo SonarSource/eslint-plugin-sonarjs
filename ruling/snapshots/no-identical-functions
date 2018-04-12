@@ -23,8 +23,6 @@ src/brackets/src/LiveDevelopment/LiveDevelopment.js: 1192
 src/brackets/src/preferences/PreferencesBase.js: 1863
 src/brackets/src/project/WorkingSetView.js: 1242
 src/brackets/src/search/FindInFiles.js: 1000
-src/brackets/src/thirdparty/immutable.js: 1612,2648,3977
-src/brackets/src/thirdparty/jquery-2.1.3.js: 8695
 src/brackets/src/utils/StringMatch.js: 141
 src/brackets/src/view/MainViewManager.js: 1540
 src/Chart.js/src/core/core.layouts.js: 356
@@ -99,6 +97,5 @@ src/spectrum/src/views/notifications/components/newThreadNotification.js: 126,17
 src/spectrum/src/views/pages/style.js: 434
 src/spectrum/src/views/thread/components/actionBar.js: 161,191
 src/spectrum/vulcan/models/user.js: 60
-src/three.js/editor/js/libs/ui.js: 350,518,759,796,873,940
 src/three.js/editor/js/Sidebar.Object.js: 583
 src/vue/packages/weex-vue-framework/factory.js: 6593

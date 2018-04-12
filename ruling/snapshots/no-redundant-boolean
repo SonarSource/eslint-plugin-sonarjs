@@ -2,8 +2,6 @@ src/jest/packages/jest-cli/src/search_source.js: 118
 src/react-native/Libraries/Renderer/ReactFabric-dev.js: 4094,11584,11950,12022,12069,12104,12123,12159,12176,12246
 src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 4473,11954,12320,12392,12439,12474,12493,12529,12546,12616
 src/reveal.js/plugin/markdown/markdown.js: 333
-src/three.js/editor/js/libs/codemirror/codemirror.js: 8131
-src/three.js/editor/js/libs/codemirror/mode/javascript.js: 410,411,704
 src/vue/packages/vue-server-renderer/build.js: 1681
 src/vue/packages/weex-template-compiler/build.js: 1990,2030
 src/vue/packages/weex-vue-framework/factory.js: 1553,2035,4456,4559

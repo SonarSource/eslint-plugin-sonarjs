@@ -3,7 +3,6 @@ src/brackets/src/editor/Editor.js: 1558
 src/brackets/src/extensions/default/CodeFolding/unittests.js: 146
 src/brackets/src/JSUtils/Session.js: 550
 src/brackets/src/project/ProjectManager.js: 391
-src/brackets/src/thirdparty/immutable.js: 4953
 src/brackets/src/utils/ExtensionLoader.js: 177
 src/brackets/src/utils/HealthLogger.js: 60
 src/create-react-app/packages/react-error-overlay/src/utils/parser.js: 30

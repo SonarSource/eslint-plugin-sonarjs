@@ -13,9 +13,5 @@ src/react-native/local-cli/logIOS/logIOS.js: 19
 src/react/scripts/bench/benchmarks/pe-no-components/benchmark.js: 1069,4701,4702
 src/react/scripts/bench/build.js: 74
 src/redux/src/applyMiddleware.js: 32
-src/reveal.js/plugin/highlight/highlight.js: 76,76
 src/spectrum/src/views/notifications/utils.js: 196
-src/three.js/editor/js/libs/acorn/acorn.js: 106
-src/three.js/editor/js/libs/codemirror/codemirror.js: 2225
-src/three.js/editor/js/libs/esprima.js: 3570,3589
 src/three.js/src/geometries/ExtrudeGeometry.js: 75

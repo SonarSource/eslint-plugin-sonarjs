@@ -1,17 +1,5 @@
 src/brackets/src/extensions/default/QuickView/main.js: 302
-src/brackets/src/thirdparty/jquery-2.1.3.js: 1977,1985
-src/brackets/src/thirdparty/lodash.js: 13,16,21,22,24,24,24,33,35,52,55,56,78,91
 src/create-react-app/packages/react-error-overlay/src/utils/getSourceMap.js: 84
 src/react-native/Libraries/Renderer/ReactFabric-prod.js: 616,619,621,1249,1252,1347,1366,2197,3462,3513,3724,4090,4572,4678,4681,4782,4927,4944,5046,5065
 src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 712,715,717,1465,1468,1563,1582,2453,3855,3931,4166,4188,4227,4323,4365,4970,5076,5079,5180,5325,5342,5444,5463
-src/reveal.js/plugin/highlight/highlight.js: 76
-src/three.js/editor/js/libs/acorn/acorn_loose.js: 212,1220
-src/three.js/editor/js/libs/acorn/acorn.js: 1985,2725,2862,2885
-src/three.js/editor/js/libs/codemirror/addon/tern.js: 343,353
-src/three.js/editor/js/libs/codemirror/codemirror.js: 1999,2900,2931,4421,4883,4993,6748,7056,7098,8700
-src/three.js/editor/js/libs/esprima.js: 2555,2582
-src/three.js/editor/js/libs/glslprep.min.js: 23,24,26,27,36,37,39,40,40,41,43,44,46,47,51,52,65,68,72,73,74,75,90,97,99,102,104,112,117,119,122,125,126,129,131,133,135,136,138,149,150,152
-src/three.js/editor/js/libs/ternjs/def.js: 131
-src/three.js/editor/js/libs/ternjs/doc_comment.js: 179
-src/three.js/editor/js/libs/ternjs/tern.js: 345,449,540
 src/three.js/src/renderers/webgl/WebGLUniforms.js: 493
