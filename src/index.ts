@@ -34,6 +34,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-use-of-empty-return-value", "error"],
   ["prefer-immediate-return", "error"],
   ["prefer-single-boolean-return", "error"],
+  ["prefer-while", "error"],
 ];
 
 const sonarjsRuleModules: any = {};
