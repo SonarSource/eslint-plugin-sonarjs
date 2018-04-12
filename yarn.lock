@@ -1149,6 +1149,10 @@ eslint-plugin-notice@0.6.7:
     lodash ">=2.4.0"
     metric-lcs "^0.1.2"
 
+eslint-plugin-sonarjs@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sonarjs/-/eslint-plugin-sonarjs-0.1.0.tgz#fedf6e67296c30470002c48d10a701d69e40af8a"
+
 eslint-scope@^3.7.1, eslint-scope@~3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-3.7.1.tgz#3d63c3edfda02e06e01a452ad88caacc7cdcb6e8"
