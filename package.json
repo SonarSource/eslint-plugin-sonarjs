@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-sonarjs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "SonarJS rules for ESLint",
   "main": "lib/index.js",
   "repository": "git@github.com:SonarSource/eslint-plugin-sonarjs.git",
