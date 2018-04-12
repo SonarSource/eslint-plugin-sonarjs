@@ -28,11 +28,32 @@ const rule: Rule.RuleModule = {
       ForStatement(node: estree.Node) {
         const forLoop = node as estree.ForStatement;
         const forKeyword = context.getSourceCode().getFirstToken(node);
-        if (!forLoop.init && !forLoop.update && forLoop.test && forKeyword) {
-          context.report({ message: `Replace this "for" loop with a "while" loop.`, loc: forKeyword.loc });
+        if (!forLoop.init && !forLoop.update && forKeyword) {
+          context.report({
+            message: `Replace this "for" loop with a "while" loop.`,
+            loc: forKeyword.loc,
+            fix: getFix(forLoop),
+          });
         }
       },
     };
+
+    function getFix(forLoop: estree.ForStatement): any {
+      const forLoopRange = forLoop.range;
+      const closingParenthesisToken = context.getSourceCode().getTokenBefore(forLoop.body);
+      const condition = forLoop.test;
+
+      if (condition && forLoopRange && closingParenthesisToken) {
+        return (fixer: Rule.RuleFixer) => {
+          const start = forLoopRange[0];
+          const end = closingParenthesisToken.range[1];
+          const conditionText = context.getSourceCode().getText(condition);
+          return fixer.replaceTextRange([start, end], `while (${conditionText})`);
+        };
+      }
+
+      return undefined;
+    }
   },
 };
 

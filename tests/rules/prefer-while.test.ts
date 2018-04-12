@@ -24,7 +24,6 @@ import rule = require("../../src/rules/prefer-while");
 
 ruleTester.run("prefer-while", rule, {
   valid: [
-    { code: "for(;;) { }" },
     { code: "for(var i = 0; condition;) { }" },
     { code: "for(var i = 0; condition; i++) { }" },
     { code: "for(var i = 0;; i++) { }" },
@@ -38,10 +37,26 @@ ruleTester.run("prefer-while", rule, {
     {
       code: "for(;condition;) {}",
       errors: [{ message: 'Replace this "for" loop with a "while" loop.', line: 1, column: 1, endColumn: 4 }],
+      output: "while (condition) {}",
     },
     {
-      code: "for(;i < 10;) {}",
-      errors: [{ message: 'Replace this "for" loop with a "while" loop.', line: 1, column: 1, endColumn: 4 }],
+      code: "for (;condition; ) foo();",
+      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      output: "while (condition) foo();",
+    },
+    {
+      code: `
+for(;i < 10;)
+  doSomething();`,
+      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      output: `
+while (i < 10)
+  doSomething();`,
+    },
+    {
+      code: "for(;;) {}",
+      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      output: "for(;;) {}", // no fix
     },
   ],
 });
