@@ -164,8 +164,7 @@ ruleTester.run("prefer-immediate-return", rule, {
         function var_returned() {
           var x = 42;
           return x;
-        }
-      `,
+        }`,
       errors: [
         {
           message: 'Immediately return this expression instead of assigning it to the temporary variable "x".',
@@ -174,6 +173,10 @@ ruleTester.run("prefer-immediate-return", rule, {
           endColumn: 21,
         },
       ],
+      output: `
+        function var_returned() {
+          return 42
+        }`,
     },
     {
       code: `
@@ -208,9 +211,12 @@ ruleTester.run("prefer-immediate-return", rule, {
         function thrown_nok() {
           const x = new Error();
           throw x;
-        }
-      `,
+        }`,
       errors: [{ line: 3, column: 21, endColumn: 32 }],
+      output: `
+        function thrown_nok() {
+          throw new Error()
+        }`,
     },
     {
       code: `

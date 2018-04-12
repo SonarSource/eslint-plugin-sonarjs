@@ -24,6 +24,9 @@ import * as estree from "estree";
 import { isReturnStatement, isThrowStatement, isIdentifier, isVariableDeclaration } from "../utils/nodes";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    fixable: "code",
+  },
   create(context: Rule.RuleContext) {
     return {
       BlockStatement(node: estree.Node) {
@@ -55,9 +58,31 @@ const rule: Rule.RuleModule = {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,
+              fix: fixer => fix(fixer, last, lastButOne, declaredIdentifier.init),
             });
           }
         }
+      }
+    }
+
+    function fix(
+      fixer: Rule.RuleFixer,
+      last: estree.Statement,
+      lastButOne: estree.Statement,
+      expression: estree.Expression,
+    ): any {
+      const throwOrReturnKeyword = context.getSourceCode().getFirstToken(last);
+
+      if (lastButOne.range && last.range && throwOrReturnKeyword) {
+        const expressionText = context.getSourceCode().getText(expression);
+        const fixedRangeStart = lastButOne.range[0];
+        const fixedRangeEnd = last.range[1];
+        return [
+          fixer.removeRange([fixedRangeStart, fixedRangeEnd]),
+          fixer.insertTextAfterRange([1, fixedRangeStart], `${throwOrReturnKeyword.value} ${expressionText}`),
+        ];
+      } else {
+        return null;
       }
     }
 
