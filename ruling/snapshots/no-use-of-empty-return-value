@@ -1,1 +1,6 @@
-
+src/brackets/src/extensions/default/InlineColorEditor/unittests.js: 410
+src/brackets/src/extensions/default/JavaScriptCodeHints/thirdparty/requirejs/require.js: 15,16,16,21,29
+src/freeCodeCamp/common/app/Map/redux/utils.js: 8
+src/react-native/Libraries/Renderer/ReactFabric-prod.js: 723,744,819,1621,3238,3572,4858,4942,4953,5299
+src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 819,840,915,1809,3503,5256,5340,5351,5697
+src/react-native/local-cli/link/ios/unlinkAssets.js: 53

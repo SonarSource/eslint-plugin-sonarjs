@@ -1,2 +1,6 @@
+src/react-native/Libraries/Renderer/ReactFabric-dev.js: 12235
+src/react-native/Libraries/Renderer/ReactFabric-prod.js: 4675
+src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 12605
+src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 5073
 src/react/packages/react-reconciler/src/ReactFiberScheduler.js: 948
 src/spectrum/src/views/directMessages/components/avatars.js: 93

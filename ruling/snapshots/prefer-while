@@ -1,1 +1,5 @@
-src/react/scripts/babel/__tests__/transform-prevent-infinite-loops-test.js: 30
+src/brackets/src/extensions/default/QuickView/main.js: 302
+src/create-react-app/packages/react-error-overlay/src/utils/getSourceMap.js: 84
+src/react-native/Libraries/Renderer/ReactFabric-prod.js: 616,619,621,1249,1252,1347,1366,2197,3462,3513,3724,4090,4572,4678,4681,4782,4927,4944,5046,5065
+src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 712,715,717,1465,1468,1563,1582,2453,3855,3931,4166,4188,4227,4323,4365,4970,5076,5079,5180,5325,5342,5444,5463
+src/three.js/src/renderers/webgl/WebGLUniforms.js: 493
