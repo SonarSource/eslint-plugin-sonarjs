@@ -13,6 +13,7 @@ yarn-error.log*
 
 .idea/
 .vscode/
+.github/
 
 coverage/
 docs/
@@ -21,9 +22,13 @@ scripts/
 src/
 tests/
 .gitignore
+.gitattributes
+.gitmodules
 .npmignore
 .travis.yml
+.eslintrc.js
 sonar-project.properties
 test-report.xml
 tsconfig.json
+tsconfig-src.json
 yarn.lock
