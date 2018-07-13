@@ -49,7 +49,7 @@ export function collectSwitchBranches(node: estree.SwitchStatement) {
         endsWithDefault = true;
       }
       // if a branch has no implementation, it's fall-through and it should not be considered
-      // the only expection is the last case
+      // the only exception is the last case
       const isLast = index === node.cases.length - 1;
       return isLast || clause.consequent.length > 0;
     })
