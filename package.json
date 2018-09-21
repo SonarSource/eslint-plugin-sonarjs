@@ -15,7 +15,7 @@
     "node": ">=6"
   },
   "scripts": {
-    "build": "rimraf lib && tsc --declaration -p tsconfig-src.json",
+    "build": "rimraf lib && tsc -d -p tsconfig-src.json",
     "test": "jest",
     "ruling": "ts-node ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
