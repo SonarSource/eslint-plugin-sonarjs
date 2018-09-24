@@ -28,6 +28,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-identical-conditions", "error"],
   ["no-identical-functions", "error"],
   ["no-identical-expressions", "error"],
+  ["no-inverted-boolean-check", "error"],
   ["no-one-iteration-loop", "error"],
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],

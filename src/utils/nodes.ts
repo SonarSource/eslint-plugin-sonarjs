@@ -33,6 +33,10 @@ export function isAssignmentExpression(node: estree.Node | undefined): node is e
   return node !== undefined && node.type === "AssignmentExpression";
 }
 
+export function isBinaryExpression(node: estree.Node | undefined): node is estree.BinaryExpression {
+  return node !== undefined && node.type === "BinaryExpression";
+}
+
 export function isBlockStatement(node: estree.Node | undefined): node is estree.BlockStatement {
   return node !== undefined && node.type === "BlockStatement";
 }
