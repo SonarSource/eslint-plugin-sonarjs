@@ -25,6 +25,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
+* Boolean checks should not be inverted ([`no-inverted-boolean-check`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
@@ -39,6 +40,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
+[`no-inverted-boolean-check`]: ./docs/rules/no-inverted-boolean-check.md
 [`no-one-iteration-loop`]: ./docs/rules/no-one-iteration-loop.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
