@@ -53,46 +53,66 @@ ruleTester.run("no-inverted-boolean-check", rule, {
           endColumn: 14,
         },
       ],
+      output: `if (x != 1) {}`,
     },
     // `!=` => `==`
     {
       code: `if (!(x != 1)) {}`,
       errors: [message("==")],
+      output: `if (x == 1) {}`,
     },
     // `===` => `!==`
     {
       code: `if (!(x === 1)) {}`,
       errors: [message("!==")],
+      output: `if (x !== 1) {}`,
     },
     // `!==` => `===`
     {
       code: `if (!(x !== 1)) {}`,
       errors: [message("===")],
+      output: `if (x === 1) {}`,
     },
     // `>` => `<=`
     {
       code: `if (!(x > 1)) {}`,
       errors: [message("<=")],
+      output: `if (x <= 1) {}`,
     },
     // `<` => `>=`
     {
       code: `if (!(x < 1)) {}`,
       errors: [message(">=")],
+      output: `if (x >= 1) {}`,
     },
     // `>=` => `<`
     {
       code: `if (!(x >= 1)) {}`,
       errors: [message("<")],
+      output: `if (x < 1) {}`,
     },
     // `<=` => `>`
     {
       code: `if (!(x <= 1)) {}`,
       errors: [message(">")],
+      output: `if (x > 1) {}`,
     },
     // ternary operator
     {
       code: `!(x != 1) ? 1 : 2`,
       errors: [message("==")],
+      output: `x == 1 ? 1 : 2`,
+    },
+    // not conditional
+    {
+      code: `foo(!(x === 1))`,
+      errors: [message("!==")],
+      output: `foo(x !== 1)`,
+    },
+    {
+      code: `let foo = !(x <= 4)`,
+      errors: [message(">")],
+      output: `let foo = x > 4`,
     },
   ],
 });

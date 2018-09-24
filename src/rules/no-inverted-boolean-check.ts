@@ -44,14 +44,19 @@ const rule: Rule.RuleModule = {
 
 function visitUnaryExpression(unaryExpression: UnaryExpression, context: Rule.RuleContext) {
   if (unaryExpression.operator === "!" && isBinaryExpression(unaryExpression.argument)) {
-    const invertedOperator = invertedOperators[unaryExpression.argument.operator];
+    const condition = unaryExpression.argument;
+    const invertedOperator = invertedOperators[condition.operator];
     if (invertedOperator) {
+      const left = context.getSourceCode().getText(condition.left);
+      const right = context.getSourceCode().getText(condition.right);
       context.report({
         message: MESSAGE,
         data: { invertedOperator },
         node: unaryExpression,
+        fix: fixer => fixer.replaceText(unaryExpression, `${left} ${invertedOperator} ${right}`),
       });
     }
   }
 }
+
 export = rule;
