@@ -40,7 +40,7 @@
     "eslint-plugin-sonarjs": "0.1.0",
     "husky": "0.14.3",
     "jest": "22.4.3",
-    "lint-staged": "7.0.4",
+    "lint-staged": "7.3.0",
     "lodash": "4.17.5",
     "minimist": "1.2.0",
     "prettier": "1.11.1",
