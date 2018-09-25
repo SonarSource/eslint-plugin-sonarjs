@@ -23,6 +23,7 @@ Rules in this category aim to find places in code which have a high chance to be
 Code Smells, or maintainability issues, are raised for places of code which might be costly to change in the future. These rules also help to keep the high code quality and readability. And finally some rules report issues on different suspicious code patters.
 
 * Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
+* "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`])
@@ -34,6 +35,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*) 
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
+[`max-switch-cases`]: ./docs/rules/max-switch-cases.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md

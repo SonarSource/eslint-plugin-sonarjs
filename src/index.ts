@@ -21,6 +21,7 @@ import { Linter } from "eslint";
 
 const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["cognitive-complexity", "error"],
+  ["max-switch-cases", "error"],
   ["no-all-duplicated-branches", "error"],
   ["no-duplicated-branches", "error"],
   ["no-element-overwrite", "error"],
