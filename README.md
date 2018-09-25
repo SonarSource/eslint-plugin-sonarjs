@@ -28,6 +28,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
+* "catch" clauses should do more than rethrow ([`no-useless-catch`])
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*) 
@@ -45,6 +46,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
+[`no-useless-catch`]: ./docs/rules/no-useless-catch.md
 [`prefer-immediate-return`]: ./docs/rules/prefer-immediate-return.md
 [`prefer-single-boolean-return`]: ./docs/rules/prefer-single-boolean-return.md
 [`prefer-while`]: ./docs/rules/prefer-while.md

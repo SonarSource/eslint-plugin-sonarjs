@@ -33,6 +33,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["no-redundant-boolean", "error"],
   ["no-small-switch", "error"],
   ["no-use-of-empty-return-value", "error"],
+  ["no-useless-catch", "error"],
   ["prefer-immediate-return", "error"],
   ["prefer-single-boolean-return", "error"],
   ["prefer-while", "error"],
