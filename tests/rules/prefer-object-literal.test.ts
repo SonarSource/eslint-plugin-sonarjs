@@ -51,7 +51,8 @@ ruleTester.run("prefer-literal", rule, {
       code: `var x = {a : 2}; doSomething(); x.b = 3;`,
     },
     {
-      code: `function foo() { 
+      code: `
+      function foo() { 
         var x = {a : 2};
         doSomething();
       }`,
@@ -61,8 +62,13 @@ ruleTester.run("prefer-literal", rule, {
     },
     // No Issue on function declaration, may be done for readibility
     {
-      code: `var x = {};
+      code: `
+      var x = {};
       x.foo = function () {}`,
+    },
+    // OK, report only when empty object
+    {
+      code: `var x = {a : 2}; x.b = 5;`,
     },
   ],
   invalid: [

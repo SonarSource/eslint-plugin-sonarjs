@@ -20,7 +20,7 @@
 // https://jira.sonarsource.com/browse/RSPEC-2428
 
 import { Rule, SourceCode } from "eslint";
-import { Node, Statement, Program, Identifier, BlockStatement } from "estree";
+import { Node, Statement, Program, Identifier, BlockStatement, Expression } from "estree";
 import {
   isModuleDeclaration,
   isVariableDeclaration,
@@ -64,9 +64,13 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
 
 function getObjectDeclaration(statement: Statement) {
   if (isVariableDeclaration(statement)) {
-    return statement.declarations.find(declaration => !!declaration.init && isObjectExpression(declaration.init));
+    return statement.declarations.find(declaration => !!declaration.init && isEmptyObjectExpression(declaration.init));
   }
   return undefined;
+}
+
+function isEmptyObjectExpression(expression: Expression) {
+  return isObjectExpression(expression) && expression.properties.length === 0;
 }
 
 function isPropertyAssignement(statement: Statement, objectIdentifier: Identifier, sourceCode: SourceCode) {
