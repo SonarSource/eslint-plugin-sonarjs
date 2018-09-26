@@ -32,6 +32,7 @@ const rule: Rule.RuleModule = {
     schema: [
       {
         type: "integer",
+        minimum: 0,
       },
     ],
   },
