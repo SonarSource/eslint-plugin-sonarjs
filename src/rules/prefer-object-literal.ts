@@ -38,18 +38,18 @@ const MESSAGE = "Convert this declaration to object literal syntax.";
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
-      BlockStatement: (node: Node) => checkPropertyAssignment((node as BlockStatement).body, context),
+      BlockStatement: (node: Node) => checkObjectInitialization((node as BlockStatement).body, context),
       Program: (node: Node) => {
         const statements = (node as Program).body.filter(
           (statement): statement is Statement => !isModuleDeclaration(statement),
         );
-        checkPropertyAssignment(statements, context);
+        checkObjectInitialization(statements, context);
       },
     };
   },
 };
 
-function checkPropertyAssignment(statements: Statement[], context: Rule.RuleContext) {
+function checkObjectInitialization(statements: Statement[], context: Rule.RuleContext) {
   let index = 0;
   while (index <= statements.length - 2) {
     const objectDeclaration = getObjectDeclaration(statements[index]);

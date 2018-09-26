@@ -34,6 +34,18 @@ ruleTester.run("prefer-literal", rule, {
       };
       var x = new Foo(2);`,
     },
+    {
+      code: `
+      var x = {a : 2};
+      y = "foo";`,
+    },
+    // FN
+    {
+      code: `
+      var x;
+      x = {};
+      x.a = 2`,
+    },
     // FN
     {
       code: `var x = {a : 2}; doSomething(); x.b = 3;`,
