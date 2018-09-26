@@ -20,6 +20,15 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 
+const MODULE_DECLARATION_NODES = [
+  "ImportDeclaration",
+  "ExportNamedDeclaration",
+  "ExportDefaultDeclaration",
+  "ExportAllDeclaration",
+];
+
+const FUNCTION_LIKE_NODES = ["FunctionDeclaration", "FunctionExpression", "ArrowFunctionExpression"];
+
 export function getParent(context: Rule.RuleContext) {
   const ancestors = context.getAncestors();
   return ancestors.length > 0 ? ancestors[ancestors.length - 1] : undefined;
@@ -69,6 +78,10 @@ export function isFunctionExpression(node: estree.Node | undefined): node is est
   return node !== undefined && node.type === "FunctionExpression";
 }
 
+export function isFunctionLike(node: estree.Node | undefined): node is estree.Function {
+  return node !== undefined && FUNCTION_LIKE_NODES.includes(node.type);
+}
+
 export function isIdentifier(node: estree.Node | undefined): node is estree.Identifier {
   return node !== undefined && node.type === "Identifier";
 }
@@ -87,6 +100,14 @@ export function isLogicalExpression(node: estree.Node | undefined): node is estr
 
 export function isMemberExpression(node: estree.Node | undefined): node is estree.MemberExpression {
   return node !== undefined && node.type === "MemberExpression";
+}
+
+export function isModuleDeclaration(node: estree.Node | undefined): node is estree.ModuleDeclaration {
+  return node !== undefined && MODULE_DECLARATION_NODES.includes(node.type);
+}
+
+export function isObjectExpression(node: estree.Node | undefined): node is estree.ObjectExpression {
+  return node !== undefined && node.type === "ObjectExpression";
 }
 
 export function isReturnStatement(node: estree.Node | undefined): node is estree.ReturnStatement {
