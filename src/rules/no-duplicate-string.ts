@@ -21,6 +21,7 @@
 
 import { Rule } from "eslint";
 import { Node, SimpleLiteral } from "estree";
+import { getParent } from "../utils/nodes";
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -31,7 +32,7 @@ const MESSAGE = "Define a constant instead of duplicating this literal {{times}}
 
 const rule: Rule.RuleModule = {
   meta: {
-    schema: [{ type: "integer", minimum: 0 }],
+    schema: [{ type: "integer", minimum: 2 }],
   },
 
   create(context: Rule.RuleContext) {
@@ -72,9 +73,9 @@ const rule: Rule.RuleModule = {
 };
 
 function isExcludedByUsageContext(context: Rule.RuleContext) {
-  const ancestors = context.getAncestors();
-  const parent = ancestors[ancestors.length - 1];
+  const parent = getParent(context)!;
   const parentType = parent.type;
+
   return EXCLUDED_CONTEXTS.includes(parentType) || isRequireContext(parent, context);
 }
 

@@ -3,7 +3,7 @@ Duplicated string literals make the process of refactoring error-prone, since yo
 On the other hand, constants can be referenced from many places, but only need to be updated in a single place.
 
 ## Exceptions
-To prevent generating some false-positives, literals having less than 10 characters are excluded as well as literals matching /^\w*$/.
+To prevent generating some false-positives, literals having less than 10 characters are excluded as well as literals matching /^\w*$/. String literals inside import/export statements are also ignored.
 
 ## Configuration
 
