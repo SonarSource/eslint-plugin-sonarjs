@@ -27,8 +27,6 @@ const MODULE_DECLARATION_NODES = [
   "ExportAllDeclaration",
 ];
 
-const FUNCTION_LIKE_NODES = ["FunctionDeclaration", "FunctionExpression", "ArrowFunctionExpression"];
-
 export function getParent(context: Rule.RuleContext) {
   const ancestors = context.getAncestors();
   return ancestors.length > 0 ? ancestors[ancestors.length - 1] : undefined;
@@ -76,10 +74,6 @@ export function isFunctionDeclaration(node: estree.Node | undefined): node is es
 
 export function isFunctionExpression(node: estree.Node | undefined): node is estree.FunctionExpression {
   return node !== undefined && node.type === "FunctionExpression";
-}
-
-export function isFunctionLike(node: estree.Node | undefined): node is estree.Function {
-  return node !== undefined && FUNCTION_LIKE_NODES.includes(node.type);
 }
 
 export function isIdentifier(node: estree.Node | undefined): node is estree.Identifier {

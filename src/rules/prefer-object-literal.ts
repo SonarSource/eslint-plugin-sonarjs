@@ -29,11 +29,11 @@ import {
   isAssignmentExpression,
   isMemberExpression,
   isIdentifier,
-  isFunctionLike,
 } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";
 
-const MESSAGE = "Convert this declaration to object literal syntax.";
+const MESSAGE =
+  "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.";
 
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
@@ -51,7 +51,7 @@ const rule: Rule.RuleModule = {
 
 function checkObjectInitialization(statements: Statement[], context: Rule.RuleContext) {
   let index = 0;
-  while (index <= statements.length - 2) {
+  while (index < statements.length - 1) {
     const objectDeclaration = getObjectDeclaration(statements[index]);
     if (objectDeclaration && isIdentifier(objectDeclaration.id)) {
       if (isPropertyAssignement(statements[index + 1], objectDeclaration.id, context.getSourceCode())) {
@@ -77,10 +77,20 @@ function isPropertyAssignement(statement: Statement, objectIdentifier: Identifie
   if (isExpressionStatement(statement) && isAssignmentExpression(statement.expression)) {
     const { left, right } = statement.expression;
     if (isMemberExpression(left)) {
-      return !left.computed && !isFunctionLike(right) && areEquivalent(left.object, objectIdentifier, sourceCode);
+      return (
+        !left.computed &&
+        isSingleLineExpression(right, sourceCode) &&
+        areEquivalent(left.object, objectIdentifier, sourceCode)
+      );
     }
   }
   return false;
+}
+
+function isSingleLineExpression(expression: Expression, sourceCode: SourceCode) {
+  const first = sourceCode.getFirstToken(expression)!.loc;
+  const last = sourceCode.getLastToken(expression)!.loc;
+  return first.start.line === last.end.line;
 }
 
 export = rule;

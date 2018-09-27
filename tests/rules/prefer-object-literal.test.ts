@@ -25,7 +25,7 @@ import rule = require("../../src/rules/prefer-object-literal");
 ruleTester.run("prefer-literal", rule, {
   valid: [
     {
-      code: `var x = {a : 2}`,
+      code: `var x = {a: 2}`,
     },
     {
       code: `
@@ -36,7 +36,7 @@ ruleTester.run("prefer-literal", rule, {
     },
     {
       code: `
-      var x = {a : 2};
+      var x = {a: 2};
       y = "foo";`,
     },
     // FN
@@ -48,27 +48,34 @@ ruleTester.run("prefer-literal", rule, {
     },
     // FN
     {
-      code: `var x = {a : 2}; doSomething(); x.b = 3;`,
+      code: `var x = {a: 2}; doSomething(); x.b = 3;`,
     },
     {
       code: `
       function foo() { 
-        var x = {a : 2};
+        var x = {a: 2};
         doSomething();
       }`,
     },
     {
       code: `var x = {}; x["a"] = 2;`,
     },
-    // No Issue on function declaration, may be done for readibility
+    // No issue on multiline expressions, may be done for readibility
     {
       code: `
       var x = {};
-      x.foo = function () {}`,
+      x.foo = function () {
+        doSomething();
+      }
+      var y = {};
+      y.prop = {
+        a: 1,
+        b: 2
+      }`,
     },
     // OK, report only when empty object
     {
-      code: `var x = {a : 2}; x.b = 5;`,
+      code: `var x = {a: 2}; x.b = 5;`,
     },
   ],
   invalid: [
@@ -76,7 +83,8 @@ ruleTester.run("prefer-literal", rule, {
       code: `var x = {}; x.a = 2;`,
       errors: [
         {
-          message: "Convert this declaration to object literal syntax.",
+          message:
+            "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.",
           line: 1,
           endLine: 1,
           column: 5,
@@ -85,14 +93,18 @@ ruleTester.run("prefer-literal", rule, {
       ],
     },
     {
-      code: `var x = {}, y = "hello"; x.a = 2;`,
+      code: `
+        var x = {},
+            y = "hello";
+        x.a = 2;`,
       errors: [
         {
-          message: "Convert this declaration to object literal syntax.",
-          line: 1,
-          endLine: 1,
-          column: 5,
-          endColumn: 11,
+          message:
+            "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.",
+          line: 2,
+          endLine: 2,
+          column: 13,
+          endColumn: 19,
         },
       ],
     },
