@@ -19,18 +19,6 @@ person.lastName = "Public";
 ## Compliant Solution
 
 ```javascript
-function Person(firstName, middleInitial, lastName) {
-  this.firstName = firstName;
-  this.middleInitial = middleInitial;
-  this.lastName = lastName;
-}
-
-var person = new Person("John", "Q", "Public");
-```
-
-or
-
-```javascript
 var person = {
   firstName: "John",
   middleInitial: "Q",
