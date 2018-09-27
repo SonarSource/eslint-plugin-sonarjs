@@ -11,8 +11,6 @@ src/Ghost/core/server/lib/image/image-size.js: 23
 src/Ghost/core/server/update-check.js: 87
 src/jest/packages/pretty-format/perf/test.js: 182
 src/jquery/external/sinon/sinon.js: 4500
-src/react-native/Libraries/Components/Subscribable.js: 22
-src/react-native/Libraries/Components/View/ReactNativeViewAttributes.js: 14
 src/reveal.js/plugin/search/search.js: 165
 src/spectrum/api/models/user.js: 407
 src/three.js/editor/js/Command.js: 32
@@ -24,4 +22,7 @@ src/vue/packages/vue-server-renderer/build.js: 3686
 src/vue/packages/vue-template-compiler/browser.js: 3058
 src/vue/packages/vue-template-compiler/build.js: 2660
 src/vue/packages/weex-template-compiler/build.js: 1459
+src/vue/packages/weex-vue-framework/factory.js: 3570,3572,5203
 src/vue/src/compiler/parser/index.js: 373
+src/vue/src/core/global-api/index.js: 22
+src/vue/src/core/instance/state.js: 314,316
