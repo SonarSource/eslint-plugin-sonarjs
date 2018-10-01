@@ -303,5 +303,21 @@ ruleTester.run("prefer-immediate-return", rule, {
           return 42
         }`,
     },
+    {
+      // hoisted variables
+      code: `
+      function foo() {
+        if (cond) {
+          var x = 42;
+          return x;
+      }
+      }
+      `,
+      errors: [
+        {
+          message: 'Immediately return this expression instead of assigning it to the temporary variable "x".',
+        },
+      ],
+    },
   ],
 });
