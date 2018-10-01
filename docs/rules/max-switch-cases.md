@@ -8,7 +8,7 @@ This rule has a numeric option (defaulted to 30) to specify the maximum number o
 
 ```json
 {
-  "max-switch-cases": "error",
-  "max-switch-cases": ["error", 10]
+  "max-cases": "error",
+  "max-cases": ["error", 10]
 }
 ```
