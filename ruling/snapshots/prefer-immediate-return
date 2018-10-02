@@ -17,8 +17,8 @@ src/jest/packages/jest-resolve/src/index.js: 378
 src/react-native/jest/mockComponent.js: 13
 src/react-native/Libraries/Animated/src/nodes/AnimatedInterpolation.js: 359
 src/react-native/Libraries/Components/ScrollResponder.js: 385
-src/react-native/Libraries/Renderer/ReactFabric-dev.js: 3139,10554,10585,13532
-src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 3589,10924,10955
+src/react-native/Libraries/Renderer/ReactFabric-dev.js: 3139,10554,10585,12291,13532
+src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 3589,10924,10955,12661
 src/react-native/local-cli/bundle/assetPathUtils.js: 52
 src/react-native/local-cli/util/PackageManager.js: 40
 src/react-native/RNTester/js/ScrollViewSimpleExample.js: 63
