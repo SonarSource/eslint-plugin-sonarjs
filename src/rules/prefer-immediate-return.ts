@@ -46,12 +46,7 @@ const rule: Rule.RuleModule = {
         const declaredIdentifier = getOnlyDeclaredVariable(lastButOne);
 
         if (returnedIdentifier && declaredIdentifier) {
-          const variableScope = context.getScope().variableScope;
-          let variables = context.getScope().variables;
-          if (variableScope !== context.getScope()) {
-            variables = variables.concat(variableScope.variables);
-          }
-          const sameVariable = variables.find(variable => {
+          const sameVariable = getVariables(context).find(variable => {
             return (
               variable.references.find(ref => ref.identifier === returnedIdentifier) !== undefined &&
               variable.references.find(ref => ref.identifier === declaredIdentifier.id) !== undefined
@@ -115,6 +110,15 @@ const rule: Rule.RuleModule = {
     function formatMessage(node: estree.Node, variable: string) {
       const action = isReturnStatement(node) ? "return" : "throw";
       return `Immediately ${action} this expression instead of assigning it to the temporary variable "${variable}".`;
+    }
+
+    function getVariables(context: Rule.RuleContext) {
+      const { variableScope, variables: currentScopeVariables } = context.getScope();
+      if (variableScope === context.getScope()) {
+        return currentScopeVariables;
+      } else {
+        return currentScopeVariables.concat(variableScope.variables);
+      }
     }
   },
 };
