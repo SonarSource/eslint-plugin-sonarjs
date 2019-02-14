@@ -28,8 +28,21 @@ import {
   isIdentifier,
   isBlockStatement,
 } from "../utils/nodes";
+import {
+  reportWithSecondaryLocationsAndCost,
+  issueLocation,
+  getMainFunctionTokenLocation,
+  IssueLocation,
+} from "../utils/locations";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    schema: [
+      {
+        enum: ["sonar-runtime"],
+      },
+    ],
+  },
   create(context: Rule.RuleContext) {
     const callExpressionsToCheck: Array<{
       callExpr: estree.SimpleCallExpression;
@@ -78,7 +91,7 @@ const rule: Rule.RuleModule = {
       "Program:exit"() {
         callExpressionsToCheck.forEach(({ callExpr, functionNode }) => {
           if (!usingArguments.has(functionNode) && !emptyFunctions.has(functionNode)) {
-            report(callExpr, functionNode.params.length, callExpr.arguments.length);
+            report(callExpr, functionNode);
           }
         });
       },
@@ -118,7 +131,9 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function report(callExpr: estree.SimpleCallExpression, expected: number, provided: number) {
+    function report(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
+      const expected = functionNode.params.length;
+      const provided = callExpr.arguments.length;
       // prettier-ignore
       const expectedArguments = 
         expected === 0 ? "no arguments" : 
@@ -132,8 +147,31 @@ const rule: Rule.RuleModule = {
         `${provided} were`;
 
       const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
+      let locToHighlight: IssueLocation | undefined;
+      if (expected > 0) {
+        const startLoc = functionNode.params[0].loc;
+        const endLoc = functionNode.params[expected - 1].loc;
+        // defensive check as `loc` property may be undefined according to
+        // its type declaration
+        if (startLoc && endLoc) {
+          locToHighlight = issueLocation(startLoc, endLoc);
+        }
+      } else {
+        const fnToken = getMainFunctionTokenLocation(functionNode, undefined, context);
+        if (fnToken) {
+          locToHighlight = issueLocation(fnToken);
+        }
+      }
 
-      context.report({ message, node: callExpr });
+      if (locToHighlight) {
+        reportWithSecondaryLocationsAndCost(context, {
+          message,
+          secondaryLocations: [{ ...locToHighlight, message: "Formal parameters" }],
+          node: callExpr,
+        });
+        return;
+      }
+      context.report({ node: callExpr, message });
     }
   },
 };

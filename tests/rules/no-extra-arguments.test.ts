@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import { IssueLocation } from "../../src/utils/locations";
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require("../../src/rules/no-extra-arguments");
@@ -89,12 +90,34 @@ ruleTester.run("no-extra-arguments", rule, {
     },
     {
       code: `
+        function foo(p1, p2) {}
+        foo(1, 2, 3);
+      `,
+      errors: [
+        checkEncodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
+      ],
+      options: ["sonar-runtime"],
+    },
+    {
+      code: `
         var foo = function() {
           console.log('hello');
         }
         foo(1);
       `,
       errors: [message(0, 1, { line: 5, column: 9, endColumn: 15 })],
+    },
+    {
+      code: `
+        var foo = function() {
+          console.log('hello');
+        }
+        foo(1);
+      `,
+      errors: [
+        checkEncodedMessage(0, 1, [{ line: 2, column: 18, endLine: 2, endColumn: 26, message: "Formal parameters" }]),
+      ],
+      options: ["sonar-runtime"],
     },
     {
       code: `
@@ -171,4 +194,8 @@ function message(
     message: `This function expects ${expectedArguments}, but ${providedArguments} provided.`,
     ...extra,
   };
+}
+
+function checkEncodedMessage(expected: number, provided: number, secondaryLocations: IssueLocation[]) {
+  return JSON.stringify({ secondaryLocations, message: message(expected, provided).message });
 }

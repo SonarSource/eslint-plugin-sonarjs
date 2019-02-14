@@ -20,6 +20,20 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 
+export interface IssueLocation {
+  column: number;
+  line: number;
+  endColumn?: number;
+  endLine?: number;
+  message?: string;
+}
+
+export interface EncodedMessage {
+  message: string;
+  cost?: number;
+  secondaryLocations: IssueLocation[];
+}
+
 /**
  * Returns a location of the "main" function token:
  * - function name for a function declaration, method or accessor
@@ -59,6 +73,40 @@ export function getMainFunctionTokenLocation(
   }
 
   return location!;
+}
+
+/**
+ * Wrapper for `context.report`, supporting secondary locations and cost.
+ * Encode those extra information in the issue message when rule is executed
+ * in Sonar* environment.
+ */
+export function reportWithSecondaryLocationsAndCost(
+  context: Rule.RuleContext,
+  { secondaryLocations, cost, message, ...descriptor }: Rule.ReportDescriptor & EncodedMessage,
+) {
+  if (context.options[context.options.length - 1] === "sonar-runtime") {
+    const encodedMessage: EncodedMessage = { secondaryLocations, message };
+    if (cost) {
+      encodedMessage.cost = cost;
+    }
+    message = JSON.stringify(encodedMessage);
+  }
+  context.report({ ...descriptor, message });
+}
+
+/**
+ * Converts `SourceLocation` range into `IssueLocation`
+ */
+export function issueLocation(
+  startLoc: estree.SourceLocation,
+  endLoc: estree.SourceLocation = startLoc,
+): IssueLocation {
+  return {
+    line: startLoc.start.line,
+    column: startLoc.start.column,
+    endLine: endLoc.end.line,
+    endColumn: endLoc.end.column,
+  };
 }
 
 function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleContext) {
