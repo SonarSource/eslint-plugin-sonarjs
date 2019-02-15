@@ -108,6 +108,20 @@ ruleTester.run("no-element-overwrite", rule, {
     {
       code: `
       fruits[1] = "banana";
+    //^^^^^^^^^^^^^^^^^^^^>
+      fruits[1] = "apple";
+    //^^^^^^^^^^^^^^^^^^^`,
+      options: ["sonar-runtime"],
+      errors: [
+        JSON.stringify({
+          secondaryLocations: [{ line: 2, column: 6, endLine: 2, endColumn: 26, message: "Original value" }],
+          message: `Verify this is the index that was intended; "1" was already set on line 2.`,
+        }),
+      ],
+    },
+    {
+      code: `
+      fruits[1] = "banana";
       fruits[2] = "orange";
       fruits[1] = "apple";`,
       errors: [{ message: `Verify this is the index that was intended; "1" was already set on line 2.` }],
