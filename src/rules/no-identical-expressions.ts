@@ -23,11 +23,15 @@ import { Rule } from "eslint";
 import { Node, BinaryExpression, LogicalExpression } from "estree";
 import { isIdentifier, isLiteral } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";
+import { report, issueLocation, IssueLocation } from "../utils/locations";
 
 const EQUALITY_OPERATOR_TOKEN_KINDS = new Set(["==", "===", "!=", "!=="]);
 
 // consider only binary expressions with these operators
 const RELEVANT_OPERATOR_TOKEN_KINDS = new Set(["&&", "||", "/", "-", "<<", ">>", "<", "<=", ">", ">="]);
+
+const message = (operator: string) =>
+  `Correct one of the identical sub-expressions on both sides of operator "${operator}"`;
 
 function hasRelevantOperator(node: BinaryExpression | LogicalExpression) {
   return (
@@ -45,6 +49,14 @@ function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
 }
 
 const rule: Rule.RuleModule = {
+  meta: {
+    schema: [
+      {
+        // internal parameter
+        enum: ["sonar-runtime"],
+      },
+    ],
+  },
   create(context: Rule.RuleContext) {
     return {
       LogicalExpression(node: Node) {
@@ -61,12 +73,23 @@ const rule: Rule.RuleModule = {
         !isOneOntoOneShifting(expr) &&
         areEquivalent(expr.left, expr.right, context.getSourceCode())
       ) {
-        context.report({
-          message: `Correct one of the identical sub-expressions on both sides of operator "{{operator}}"`,
-          data: { operator: expr.operator },
-          node: expr,
-        });
+        const secondaryLocations: IssueLocation[] = [];
+        if (expr.left.loc) {
+          secondaryLocations.push(issueLocation(expr.left.loc));
+        }
+        report(
+          context,
+          {
+            message: message(expr.operator),
+            node: isSonarRuntime() ? expr.right : expr,
+          },
+          secondaryLocations,
+        );
       }
+    }
+
+    function isSonarRuntime() {
+      return context.options[context.options.length - 1] === "sonar-runtime";
     }
   },
 };

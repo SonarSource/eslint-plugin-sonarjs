@@ -61,6 +61,31 @@ ruleTester.run("no-identical-expressions", rule, {
       errors: 1,
     },
     {
+      code: `a == b || a == b
+      //     ^^^^^^>   ^^^^^^`,
+      options: ["sonar-runtime"],
+      errors: [
+        {
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 1,
+                column: 0,
+                endLine: 1,
+                endColumn: 6,
+                message: "",
+              },
+            ],
+            message: `Correct one of the identical sub-expressions on both sides of operator "||"`,
+          }),
+          line: 1,
+          endLine: 1,
+          column: 11,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
       code: "a > a",
       errors: 1,
     },
