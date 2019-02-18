@@ -22,12 +22,19 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { areEquivalent } from "../utils/equivalence";
-import { getMainFunctionTokenLocation } from "../utils/locations";
+import { getMainFunctionTokenLocation, report, issueLocation } from "../utils/locations";
 import { getParent } from "../utils/nodes";
 
 const MESSAGE = "Update this function so that its implementation is not identical to the one on line {{line}}.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    schema: [
+      {
+        enum: ["sonar-runtime"],
+      },
+    ],
+  },
   create(context: Rule.RuleContext) {
     const functions: Array<{ function: estree.Function; parent: estree.Node | undefined }> = [];
 
@@ -67,11 +74,19 @@ const rule: Rule.RuleModule = {
             originalFunction.loc
           ) {
             const loc = getMainFunctionTokenLocation(duplicatingFunction, functions[i].parent, context);
-            context.report({
-              message: MESSAGE,
-              data: { line: String(originalFunction.loc.start.line) },
-              loc,
-            });
+            const originalFunctionLoc = getMainFunctionTokenLocation(originalFunction, functions[j].parent, context);
+            const secondaryLocations = [
+              issueLocation(originalFunctionLoc, originalFunctionLoc, "Original implementation"),
+            ];
+            report(
+              context,
+              {
+                message: MESSAGE,
+                data: { line: String(originalFunction.loc.start.line) },
+                loc,
+              },
+              secondaryLocations,
+            );
             break;
           }
         }
