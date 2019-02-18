@@ -32,6 +32,9 @@ import {
 } from "../utils/nodes";
 import { report, issueLocation } from "../utils/locations";
 
+const message = (index: string, line: string) =>
+  `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
+
 const rule: Rule.RuleModule = {
   meta: {
     schema: [
@@ -76,11 +79,7 @@ const rule: Rule.RuleModule = {
               context,
               {
                 node: keyWriteUsage.node,
-                message: 'Verify this is the index that was intended; "{{index}}" was already set on line {{line}}.',
-                data: {
-                  index: keyWriteUsage.indexOrKey,
-                  line: String(sameKeyWriteUsage.node.loc.start.line),
-                },
+                message: message(keyWriteUsage.indexOrKey, String(sameKeyWriteUsage.node.loc.start.line)),
               },
               secondaryLocations,
             );
