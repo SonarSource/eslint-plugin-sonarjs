@@ -75,7 +75,9 @@ export function getMainFunctionTokenLocation(
   return location!;
 }
 
-type ReportDescriptor = Rule.ReportDescriptor & { message: string };
+// As `ReportDescriptor` may contain either `message` or `messageId` prop,
+// we force the presence of `message` property by using the following type alias.
+export type ReportDescriptor = Rule.ReportDescriptor & { message: string };
 
 /**
  * Wrapper for `context.report`, supporting secondary locations and cost.

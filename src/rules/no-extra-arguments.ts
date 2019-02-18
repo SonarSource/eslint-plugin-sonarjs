@@ -166,6 +166,7 @@ const rule: Rule.RuleModule = {
           secondaryLocations.push(issueLocation(startLoc, endLoc, "Formal parameters"));
         }
       } else {
+        // as we're not providing parent node, `getMainFunctionTokenLocation` may return `undefined`
         const fnToken = getMainFunctionTokenLocation(functionNode, undefined, context);
         if (fnToken) {
           secondaryLocations.push(issueLocation(fnToken, fnToken, "Formal parameters"));
