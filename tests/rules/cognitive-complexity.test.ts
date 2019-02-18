@@ -199,16 +199,46 @@ ruleTester.run("cognitive-complexity", rule, {
     },
     {
       code: `
-      function nested_try_catch() {
-        try {
-          if (condition) {       // +1 (nesting level +1)
-            try {}
-            catch (someError) {} // +2
-          }
-        } finally {}
+      function check_secondaries() {
+        if (condition) {       // +1 "if"
+          if (condition) {} else {} // +2 "if", +1 "else"
+          try {}
+          catch (someError) {} // +2 "catch"
+        } else { // +1 
+        }
+
+        foo:
+        while (cond) { // +1 "while"
+          break foo; // +1 "break"
+        }
+
+        a ? 1 : 2; // +1 "?"
+
+        switch (a) {} // +1 "switch"
+
+        return foo(a && b) && c; // +1 "&&", +1 "&&"
       }`,
-      options: [0],
-      errors: [message(3)],
+      options: [0, "sonar-runtime"],
+      errors: [
+        JSON.stringify({
+          secondaryLocations: [
+            { line: 3, column: 8, endLine: 3, endColumn: 10, message: "+1" }, // if
+            { line: 7, column: 10, endLine: 7, endColumn: 14, message: "+1" }, // else
+            { line: 4, column: 10, endLine: 4, endColumn: 12, message: "+2 (incl. 1 for nesting)" }, // if
+            { line: 4, column: 28, endLine: 4, endColumn: 32, message: "+1" }, // else
+            { line: 6, column: 10, endLine: 6, endColumn: 15, message: "+2 (incl. 1 for nesting)" }, // catch
+            { line: 11, column: 8, endLine: 11, endColumn: 13, message: "+1" }, // while
+            { line: 12, column: 10, endLine: 12, endColumn: 15, message: "+1" }, // break
+            { line: 15, column: 10, endLine: 15, endColumn: 11, message: "+1" }, // ?
+            { line: 17, column: 8, endLine: 17, endColumn: 14, message: "+1" }, // switch
+            { line: 19, column: 27, endLine: 19, endColumn: 29, message: "+1" }, // &&
+            { line: 19, column: 21, endLine: 19, endColumn: 23, message: "+1" }, // &&
+          ],
+          ...message(13),
+
+          cost: 13,
+        }),
+      ],
     },
 
     // expressions
