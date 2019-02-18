@@ -22,10 +22,15 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 import { getParent, isIfStatement, isLogicalExpression } from "../utils/nodes";
-import { getMainFunctionTokenLocation } from "../utils/locations";
+import {
+  getMainFunctionTokenLocation,
+  getFirstToken,
+  getFirstTokenAfter,
+  report,
+  IssueLocation,
+  issueLocation,
+} from "../utils/locations";
 
-const MESSAGE =
-  "Refactor this function to reduce its Cognitive Complexity from {{complexity}} to the {{threshold}} allowed.";
 const DEFAULT_THRESHOLD = 15;
 
 type LoopStatement =
@@ -39,16 +44,22 @@ type OptionalLocation = estree.SourceLocation | null | undefined;
 
 const rule: Rule.RuleModule = {
   meta: {
-    schema: [{ type: "integer", minimum: 0 }],
+    schema: [
+      { type: "integer", minimum: 0 },
+      {
+        // internal parameter
+        enum: ["sonar-runtime"],
+      },
+    ],
   },
   create(context: Rule.RuleContext) {
     const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
 
     /** Complexity of the current function if it is *not* considered nested to the first level function */
-    let complexityIfNotNested = 0;
+    let complexityIfNotNested: ComplexityPoint[] = [];
 
     /** Complexity of the current function if it is considered nested to the first level function */
-    let complexityIfNested = 0;
+    let complexityIfNested: ComplexityPoint[] = [];
 
     /** Current nesting level (number of enclosing control flow statements and functions) */
     let nesting = 0;
@@ -57,7 +68,7 @@ const rule: Rule.RuleModule = {
     let topLevelHasStructuralComplexity = false;
 
     /** Own (not including nested functions) complexity of the current top function */
-    let topLevelOwnComplexity = 0;
+    let topLevelOwnComplexity: ComplexityPoint[] = [];
 
     /** Nodes that should increase nesting level  */
     const nestingNodes: Set<estree.Node> = new Set();
@@ -71,8 +82,8 @@ const rule: Rule.RuleModule = {
     let secondLevelFunctions: Array<{
       node: estree.Function;
       parent: estree.Node | undefined;
-      complexityIfThisSecondaryIsTopLevel: number;
-      complexityIfNested: number;
+      complexityIfThisSecondaryIsTopLevel: ComplexityPoint[];
+      complexityIfNested: ComplexityPoint[];
       loc: OptionalLocation;
     }> = [];
 
@@ -138,12 +149,12 @@ const rule: Rule.RuleModule = {
       if (enclosingFunctions.length === 0) {
         // top level function
         topLevelHasStructuralComplexity = false;
-        topLevelOwnComplexity = 0;
+        topLevelOwnComplexity = [];
         secondLevelFunctions = [];
       } else if (enclosingFunctions.length === 1) {
         // second level function
-        complexityIfNotNested = 0;
-        complexityIfNested = 0;
+        complexityIfNotNested = [];
+        complexityIfNested = [];
       } else {
         nesting++;
         nestingNodes.add(node);
@@ -158,7 +169,7 @@ const rule: Rule.RuleModule = {
         if (topLevelHasStructuralComplexity) {
           let totalComplexity = topLevelOwnComplexity;
           secondLevelFunctions.forEach(secondLevelFunction => {
-            totalComplexity += secondLevelFunction.complexityIfNested;
+            totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
           checkFunction(totalComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
         } else {
@@ -187,11 +198,12 @@ const rule: Rule.RuleModule = {
 
     function visitIfStatement(ifStatement: estree.IfStatement) {
       const parent = getParent(context);
+      const { loc: ifLoc } = getFirstToken(ifStatement, context);
       // if the current `if` statement is `else if`, do not count it in structural complexity
       if (isIfStatement(parent) && parent.alternate === ifStatement) {
-        addComplexity();
+        addComplexity(ifLoc);
       } else {
-        addStructuralComplexity();
+        addStructuralComplexity(ifLoc);
       }
 
       // always increase nesting level inside `then` statement
@@ -202,17 +214,18 @@ const rule: Rule.RuleModule = {
       // - add +1 complexity
       if (ifStatement.alternate && !isIfStatement(ifStatement.alternate)) {
         nestingNodes.add(ifStatement.alternate);
-        addComplexity();
+        const elseTokenLoc = getFirstTokenAfter(ifStatement.consequent, context)!.loc;
+        addComplexity(elseTokenLoc);
       }
     }
 
     function visitLoop(loop: LoopStatement) {
-      addStructuralComplexity();
+      addStructuralComplexity(getFirstToken(loop, context).loc);
       nestingNodes.add(loop.body);
     }
 
     function visitSwitchStatement(switchStatement: estree.SwitchStatement) {
-      addStructuralComplexity();
+      addStructuralComplexity(getFirstToken(switchStatement, context).loc);
       for (const switchCase of switchStatement.cases) {
         nestingNodes.add(switchCase);
       }
@@ -220,17 +233,18 @@ const rule: Rule.RuleModule = {
 
     function visitContinueOrBreakStatement(statement: estree.ContinueStatement | estree.BreakStatement) {
       if (statement.label) {
-        addComplexity();
+        addComplexity(getFirstToken(statement, context).loc);
       }
     }
 
     function visitCatchClause(catchClause: estree.CatchClause) {
-      addStructuralComplexity();
+      addStructuralComplexity(getFirstToken(catchClause, context).loc);
       nestingNodes.add(catchClause.body);
     }
 
     function visitConditionalExpression(conditionalExpression: estree.ConditionalExpression) {
-      addStructuralComplexity();
+      const questionTokenLoc = getFirstTokenAfter(conditionalExpression.test, context)!.loc;
+      addStructuralComplexity(questionTokenLoc);
       nestingNodes.add(conditionalExpression.consequent);
       nestingNodes.add(conditionalExpression.alternate);
     }
@@ -242,7 +256,8 @@ const rule: Rule.RuleModule = {
         let previous: estree.LogicalExpression | undefined;
         for (const current of flattenedLogicalExpressions) {
           if (!previous || previous.operator !== current.operator) {
-            addComplexity();
+            const operatorTokenLoc = getFirstTokenAfter(logicalExpression.left, context)!.loc;
+            addComplexity(operatorTokenLoc);
           }
           previous = current;
         }
@@ -257,40 +272,58 @@ const rule: Rule.RuleModule = {
       return [];
     }
 
-    function addStructuralComplexity() {
+    function addStructuralComplexity(location: estree.SourceLocation) {
       const added = nesting + 1;
+      const complexityPoint = { complexity: added, location };
       if (enclosingFunctions.length === 1) {
         // top level function
         topLevelHasStructuralComplexity = true;
-        topLevelOwnComplexity += added;
+        topLevelOwnComplexity.push(complexityPoint);
       } else {
         // second+ level function
-        complexityIfNested += added + 1;
-        complexityIfNotNested += added;
+        complexityIfNested.push({ complexity: added + 1, location });
+        complexityIfNotNested.push(complexityPoint);
       }
     }
 
-    function addComplexity() {
+    function addComplexity(location: estree.SourceLocation) {
+      const complexityPoint = { complexity: 1, location };
       if (enclosingFunctions.length === 1) {
         // top level function
-        topLevelOwnComplexity++;
+        topLevelOwnComplexity.push(complexityPoint);
       } else {
         // second+ level function
-        complexityIfNested++;
-        complexityIfNotNested++;
+        complexityIfNested.push(complexityPoint);
+        complexityIfNotNested.push(complexityPoint);
       }
     }
 
-    function checkFunction(complexity: number, loc: estree.SourceLocation) {
-      if (complexity > threshold) {
-        context.report({
-          message: MESSAGE,
-          data: { complexity: String(complexity), threshold: String(threshold) },
-          loc,
+    function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
+      const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
+      if (complexityAmount > threshold) {
+        const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
+          const { complexity, location } = complexityPoint;
+          const message = complexity === 1 ? "+1" : `+${complexity} (incl. ${complexity - 1} for nesting)`;
+          return issueLocation(location, undefined, message);
         });
+
+        report(
+          context,
+          {
+            message: `Refactor this function to reduce its Cognitive Complexity from ${complexityAmount} to the ${threshold} allowed.`,
+            loc,
+          },
+          secondaryLocations,
+          complexityAmount - threshold,
+        );
       }
     }
   },
 };
 
 export = rule;
+
+type ComplexityPoint = {
+  complexity: number;
+  location: estree.SourceLocation;
+};

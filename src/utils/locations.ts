@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Rule } from "eslint";
+import { Rule, AST } from "eslint";
 import * as estree from "estree";
 
 export interface IssueLocation {
@@ -120,4 +120,12 @@ function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleCon
     .getSourceCode()
     .getTokens(node)
     .find(token => token.value === value);
+}
+
+export function getFirstTokenAfter(node: estree.Node, context: Rule.RuleContext): AST.Token | null {
+  return context.getSourceCode().getTokenAfter(node);
+}
+
+export function getFirstToken(node: estree.Node, context: Rule.RuleContext): AST.Token {
+  return context.getSourceCode().getTokens(node)[0];
 }
