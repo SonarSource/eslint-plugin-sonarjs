@@ -41,6 +41,29 @@ ruleTester.run("no-identical-conditions", rule, {
     },
     {
       code: `
+        if (a) {} 
+        //  ^>
+        else if (a) {}
+        //       ^
+      `,
+      options: ["sonar-runtime"],
+      errors: [
+        JSON.stringify({
+          secondaryLocations: [
+            {
+              line: 2,
+              column: 12,
+              endLine: 2,
+              endColumn: 13,
+              message: "Original",
+            },
+          ],
+          message: "This branch duplicates the one on line 2",
+        }),
+      ],
+    },
+    {
+      code: `
         if (b) {} 
         else if (a) {}
         else if (a) {}
