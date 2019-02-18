@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import { IssueLocation } from "../../src/utils/locations";
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require("../../src/rules/no-identical-functions");
@@ -225,12 +226,69 @@ ruleTester.run("no-identical-functions", rule, {
       };`,
       errors: [{ line: 9, column: 9, endColumn: 12 }],
     },
+    {
+      code: `
+      const x = {
+        foo() {
+      //^^^>
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        },
+      
+        bar() {
+      //^^^
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        },
+      };`,
+      options: ["sonar-runtime"],
+      errors: [
+        encodedMessage(3, 10, [{ line: 3, column: 8, endLine: 3, endColumn: 11, message: "Original implementation" }]),
+      ],
+    },
+    {
+      // few nodes, but many lines
+      code: `
+      function foo1() {
+        //     ^^^^>
+        return [
+          1,
+        ];
+      }
+      function bar1() {
+    //         ^^^^
+        return [
+          1,
+        ];
+      }`,
+      options: ["sonar-runtime"],
+      errors: [
+        encodedMessage(2, 8, [{ line: 2, column: 15, endLine: 2, endColumn: 19, message: "Original implementation" }]),
+      ],
+    },
   ],
 });
 
 function message(originalLine: number, duplicationLine: number): RuleTester.TestCaseError {
   return {
     message: `Update this function so that its implementation is not identical to the one on line ${originalLine}.`,
+    line: duplicationLine,
+    endLine: duplicationLine,
+  };
+}
+
+function encodedMessage(
+  originalLine: number,
+  duplicationLine: number,
+  secondaries: IssueLocation[],
+): RuleTester.TestCaseError {
+  return {
+    message: JSON.stringify({
+      secondaryLocations: secondaries,
+      message: `Update this function so that its implementation is not identical to the one on line ${originalLine}.`,
+    }),
     line: duplicationLine,
     endLine: duplicationLine,
   };
