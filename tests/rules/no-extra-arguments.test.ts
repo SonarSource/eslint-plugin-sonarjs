@@ -91,7 +91,7 @@ ruleTester.run("no-extra-arguments", rule, {
     {
       code: `
         function foo(p1, p2) {}
-        //           ^^^^^^<
+        //           ^^^^^^>
         foo(1, 2, 3);
       //^^^^^^^^^^^^  
       `,
@@ -111,15 +111,15 @@ ruleTester.run("no-extra-arguments", rule, {
     },
     {
       code: `
-        var foo = function() {
-          //      ^^^^^^^^<
-          console.log('hello');
-        }
         foo(1);
       //^^^^^^
+        var foo = function() {
+          //      ^^^^^^^^>
+          console.log('hello');
+        }
       `,
       errors: [
-        encodedMessage(0, 1, [{ line: 2, column: 18, endLine: 2, endColumn: 26, message: "Formal parameters" }]),
+        encodedMessage(0, 1, [{ line: 4, column: 18, endLine: 4, endColumn: 26, message: "Formal parameters" }]),
       ],
       options: ["sonar-runtime"],
     },
