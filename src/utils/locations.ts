@@ -23,8 +23,8 @@ import * as estree from "estree";
 export interface IssueLocation {
   column: number;
   line: number;
-  endColumn?: number;
-  endLine?: number;
+  endColumn: number;
+  endLine: number;
   message?: string;
 }
 
@@ -75,23 +75,25 @@ export function getMainFunctionTokenLocation(
   return location!;
 }
 
+type ReportDescriptor = Rule.ReportDescriptor & { message: string };
+
 /**
  * Wrapper for `context.report`, supporting secondary locations and cost.
  * Encode those extra information in the issue message when rule is executed
  * in Sonar* environment.
  */
-export function reportWithSecondaryLocationsAndCost(
+export function report(
   context: Rule.RuleContext,
-  { secondaryLocations, cost, message, ...descriptor }: Rule.ReportDescriptor & EncodedMessage,
+  reportDescriptor: ReportDescriptor,
+  secondaryLocations: IssueLocation[] = [],
+  cost?: number,
 ) {
+  const { message } = reportDescriptor;
   if (context.options[context.options.length - 1] === "sonar-runtime") {
-    const encodedMessage: EncodedMessage = { secondaryLocations, message };
-    if (cost) {
-      encodedMessage.cost = cost;
-    }
-    message = JSON.stringify(encodedMessage);
+    const encodedMessage: EncodedMessage = { secondaryLocations, message, cost };
+    reportDescriptor.message = JSON.stringify(encodedMessage);
   }
-  context.report({ ...descriptor, message });
+  context.report(reportDescriptor);
 }
 
 /**
@@ -100,12 +102,14 @@ export function reportWithSecondaryLocationsAndCost(
 export function issueLocation(
   startLoc: estree.SourceLocation,
   endLoc: estree.SourceLocation = startLoc,
+  message: string = "",
 ): IssueLocation {
   return {
     line: startLoc.start.line,
     column: startLoc.start.column,
     endLine: endLoc.end.line,
     endColumn: endLoc.end.column,
+    message,
   };
 }
 

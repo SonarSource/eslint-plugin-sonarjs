@@ -28,17 +28,13 @@ import {
   isIdentifier,
   isBlockStatement,
 } from "../utils/nodes";
-import {
-  reportWithSecondaryLocationsAndCost,
-  issueLocation,
-  getMainFunctionTokenLocation,
-  IssueLocation,
-} from "../utils/locations";
+import { report, issueLocation, getMainFunctionTokenLocation, IssueLocation } from "../utils/locations";
 
 const rule: Rule.RuleModule = {
   meta: {
     schema: [
       {
+        // internal parameter
         enum: ["sonar-runtime"],
       },
     ],
@@ -91,7 +87,7 @@ const rule: Rule.RuleModule = {
       "Program:exit"() {
         callExpressionsToCheck.forEach(({ callExpr, functionNode }) => {
           if (!usingArguments.has(functionNode) && !emptyFunctions.has(functionNode)) {
-            report(callExpr, functionNode);
+            reportIssue(callExpr, functionNode);
           }
         });
       },
@@ -131,47 +127,51 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function report(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
-      const expected = functionNode.params.length;
-      const provided = callExpr.arguments.length;
+    function reportIssue(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
+      const paramLength = functionNode.params.length;
+      const argsLength = callExpr.arguments.length;
       // prettier-ignore
       const expectedArguments = 
-        expected === 0 ? "no arguments" : 
-        expected === 1 ? "1 argument" : 
-        `${expected} arguments`;
+        paramLength === 0 ? "no arguments" : 
+        paramLength === 1 ? "1 argument" : 
+        `${paramLength} arguments`;
 
       // prettier-ignore
       const providedArguments = 
-        provided === 0 ? "none was" : 
-        provided === 1 ? "1 was" : 
-        `${provided} were`;
+        argsLength === 0 ? "none was" : 
+        argsLength === 1 ? "1 was" : 
+        `${argsLength} were`;
 
       const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
-      let locToHighlight: IssueLocation | undefined;
-      if (expected > 0) {
+
+      report(
+        context,
+        {
+          message,
+          node: callExpr,
+        },
+        getSecondaryLocations(functionNode),
+      );
+    }
+
+    function getSecondaryLocations(functionNode: estree.Function) {
+      const paramLength = functionNode.params.length;
+      const secondaryLocations: IssueLocation[] = [];
+      if (paramLength > 0) {
         const startLoc = functionNode.params[0].loc;
-        const endLoc = functionNode.params[expected - 1].loc;
+        const endLoc = functionNode.params[paramLength - 1].loc;
         // defensive check as `loc` property may be undefined according to
         // its type declaration
         if (startLoc && endLoc) {
-          locToHighlight = issueLocation(startLoc, endLoc);
+          secondaryLocations.push(issueLocation(startLoc, endLoc, "Formal parameters"));
         }
       } else {
         const fnToken = getMainFunctionTokenLocation(functionNode, undefined, context);
         if (fnToken) {
-          locToHighlight = issueLocation(fnToken);
+          secondaryLocations.push(issueLocation(fnToken, fnToken, "Formal parameters"));
         }
       }
-
-      if (locToHighlight) {
-        reportWithSecondaryLocationsAndCost(context, {
-          message,
-          secondaryLocations: [{ ...locToHighlight, message: "Formal parameters" }],
-          node: callExpr,
-        });
-        return;
-      }
-      context.report({ node: callExpr, message });
+      return secondaryLocations;
     }
   },
 };

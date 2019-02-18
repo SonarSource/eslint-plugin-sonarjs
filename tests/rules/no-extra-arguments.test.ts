@@ -91,10 +91,12 @@ ruleTester.run("no-extra-arguments", rule, {
     {
       code: `
         function foo(p1, p2) {}
+        //           ^^^^^^<
         foo(1, 2, 3);
+      //^^^^^^^^^^^^  
       `,
       errors: [
-        checkEncodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
+        encodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
       ],
       options: ["sonar-runtime"],
     },
@@ -110,12 +112,14 @@ ruleTester.run("no-extra-arguments", rule, {
     {
       code: `
         var foo = function() {
+          //      ^^^^^^^^<
           console.log('hello');
         }
         foo(1);
+      //^^^^^^
       `,
       errors: [
-        checkEncodedMessage(0, 1, [{ line: 2, column: 18, endLine: 2, endColumn: 26, message: "Formal parameters" }]),
+        encodedMessage(0, 1, [{ line: 2, column: 18, endLine: 2, endColumn: 26, message: "Formal parameters" }]),
       ],
       options: ["sonar-runtime"],
     },
@@ -196,6 +200,6 @@ function message(
   };
 }
 
-function checkEncodedMessage(expected: number, provided: number, secondaryLocations: IssueLocation[]) {
+function encodedMessage(expected: number, provided: number, secondaryLocations: IssueLocation[]) {
   return JSON.stringify({ secondaryLocations, message: message(expected, provided).message });
 }
