@@ -104,7 +104,7 @@ export function report(
 export function issueLocation(
   startLoc: estree.SourceLocation,
   endLoc: estree.SourceLocation = startLoc,
-  message: string = "",
+  message = "",
 ): IssueLocation {
   return {
     line: startLoc.start.line,
