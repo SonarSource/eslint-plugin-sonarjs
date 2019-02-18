@@ -30,8 +30,20 @@ import {
   isIdentifier,
   isCallExpression,
 } from "../utils/nodes";
+import { report, issueLocation } from "../utils/locations";
+
+const message = (index: string, line: string) =>
+  `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
 
 const rule: Rule.RuleModule = {
+  meta: {
+    schema: [
+      {
+        // internal parameter
+        enum: ["sonar-runtime"],
+      },
+    ],
+  },
   create(context: Rule.RuleContext) {
     return {
       SwitchCase(node: estree.Node) {
@@ -61,14 +73,16 @@ const rule: Rule.RuleModule = {
           }
           const sameKeyWriteUsage = usedKeys.get(keyWriteUsage.indexOrKey);
           if (sameKeyWriteUsage && sameKeyWriteUsage.node.loc) {
-            context.report({
-              node: keyWriteUsage.node,
-              message: 'Verify this is the index that was intended; "{{index}}" was already set on line {{line}}.',
-              data: {
-                index: keyWriteUsage.indexOrKey,
-                line: String(sameKeyWriteUsage.node.loc.start.line),
+            const sameKeyWriteUsageLoc = sameKeyWriteUsage.node.loc;
+            const secondaryLocations = [issueLocation(sameKeyWriteUsageLoc, sameKeyWriteUsageLoc, "Original value")];
+            report(
+              context,
+              {
+                node: keyWriteUsage.node,
+                message: message(keyWriteUsage.indexOrKey, String(sameKeyWriteUsage.node.loc.start.line)),
               },
-            });
+              secondaryLocations,
+            );
           }
           usedKeys.set(keyWriteUsage.indexOrKey, keyWriteUsage);
           collection = keyWriteUsage.collectionNode;
