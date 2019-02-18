@@ -20,6 +20,20 @@
 import { Rule } from "eslint";
 import * as estree from "estree";
 
+export interface IssueLocation {
+  column: number;
+  line: number;
+  endColumn: number;
+  endLine: number;
+  message?: string;
+}
+
+export interface EncodedMessage {
+  message: string;
+  cost?: number;
+  secondaryLocations: IssueLocation[];
+}
+
 /**
  * Returns a location of the "main" function token:
  * - function name for a function declaration, method or accessor
@@ -59,6 +73,46 @@ export function getMainFunctionTokenLocation(
   }
 
   return location!;
+}
+
+// As `ReportDescriptor` may contain either `message` or `messageId` prop,
+// we force the presence of `message` property by using the following type alias.
+export type ReportDescriptor = Rule.ReportDescriptor & { message: string };
+
+/**
+ * Wrapper for `context.report`, supporting secondary locations and cost.
+ * Encode those extra information in the issue message when rule is executed
+ * in Sonar* environment.
+ */
+export function report(
+  context: Rule.RuleContext,
+  reportDescriptor: ReportDescriptor,
+  secondaryLocations: IssueLocation[] = [],
+  cost?: number,
+) {
+  const { message } = reportDescriptor;
+  if (context.options[context.options.length - 1] === "sonar-runtime") {
+    const encodedMessage: EncodedMessage = { secondaryLocations, message, cost };
+    reportDescriptor.message = JSON.stringify(encodedMessage);
+  }
+  context.report(reportDescriptor);
+}
+
+/**
+ * Converts `SourceLocation` range into `IssueLocation`
+ */
+export function issueLocation(
+  startLoc: estree.SourceLocation,
+  endLoc: estree.SourceLocation = startLoc,
+  message = "",
+): IssueLocation {
+  return {
+    line: startLoc.start.line,
+    column: startLoc.start.column,
+    endLine: endLoc.end.line,
+    endColumn: endLoc.end.column,
+    message,
+  };
 }
 
 function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleContext) {
