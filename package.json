@@ -20,7 +20,8 @@
     "ruling": "ts-node ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint --ext js,ts src tests ruling/index.ts",
-    "precommit": "lint-staged && yarn typecheck"
+    "precommit": "lint-staged && yarn typecheck",
+    "prepack": "yarn build"
   },
   "peerDependencies": {
     "eslint": "^3.0.0 || ^4.0.0 || ^5.0.0"
