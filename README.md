@@ -1,6 +1,6 @@
 # eslint-plugin-sonarjs [![npm version](https://badge.fury.io/js/eslint-plugin-sonarjs.svg)](https://badge.fury.io/js/eslint-plugin-sonarjs) [![Build Status](https://travis-ci.org/SonarSource/eslint-plugin-sonarjs.svg?branch=master)](https://travis-ci.org/SonarSource/eslint-plugin-sonarjs) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=alert_status)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=coverage)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs)
 
-SonarJS rules for ESLint detecting bugs and suspicious patterns in your code.
+SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
 
 _[We also have a plugin for TSLint](https://github.com/SonarSource/SonarTS)_
 
@@ -8,7 +8,7 @@ _[We also have a plugin for TSLint](https://github.com/SonarSource/SonarTS)_
 
 ### Bug Detection :bug:
 
-Rules in this category aim to find places in code which have a high chance to be bugs, i.e. don't work as indented.
+Rules in this category aim to find places in code which have a high chance of being bugs, i.e. don't work as intended.
 
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
@@ -63,7 +63,7 @@ Node.js (>=6.x).
 
 ## Usage
 
-* If you don't have ESLint yet configured for your project follow [these instructions](https://github.com/eslint/eslint#installation-and-usage).
+* If you don't have ESLint yet configured for your project, follow [these instructions](https://github.com/eslint/eslint#installation-and-usage).
 * Install `eslint-plugin-sonarjs` using `npm` (or `yarn`) for you project or globally:
 
 ```sh
@@ -101,4 +101,4 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 
 ## Contributing
 
-You want to participate to the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
+You want to participate in the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
