@@ -31,7 +31,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 * "catch" clauses should do more than rethrow ([`no-useless-catch`])
-* Local variables should not be declared and then be immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
+* Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Object literal syntax should be used ([`prefer-object-literal`])
 * Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*) 
