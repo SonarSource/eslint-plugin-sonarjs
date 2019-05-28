@@ -23,7 +23,7 @@ import { Rule } from "eslint";
 import * as estree from "estree";
 import { getParent, isIfStatement, isBlockStatement } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";
-import { collectIfBranches, takeWithoutBreak } from "../utils/conditions";
+import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from "../utils/conditions";
 
 const MESSAGE = "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
@@ -41,7 +41,12 @@ const rule: Rule.RuleModule = {
     function visitIfStatement(ifStmt: estree.IfStatement) {
       const parent = getParent(context);
       if (!isIfStatement(parent)) {
-        const { branches } = collectIfBranches(ifStmt);
+        const { branches, endsWithElse } = collectIfBranches(ifStmt);
+
+        if (allEquivalentWithoutDefault(branches, endsWithElse)) {
+          branches.slice(1).forEach((branch, i) => reportIssue(branch, branches[i], "branch"));
+          return;
+        }
 
         for (let i = 1; i < branches.length; i++) {
           if (hasRequiredSize([branches[i]])) {
@@ -55,23 +60,27 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function visitSwitchStatement({ cases }: estree.SwitchStatement) {
-      for (let i = 1; i < cases.length; i++) {
-        const firstClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[i].consequent));
+    function visitSwitchStatement(switchStmt: estree.SwitchStatement) {
+      const { cases } = switchStmt;
+      const { endsWithDefault } = collectSwitchBranches(switchStmt);
+      const nonEmptyCases = cases
+        .map(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)))
+        .filter(c => c.length > 0);
+
+      if (allEquivalentWithoutDefault(nonEmptyCases, endsWithDefault)) {
+        cases.slice(1).forEach((caseStmt, i) => reportIssue(caseStmt, cases[i], "case"));
+        return;
+      }
+
+      for (let i = 1; i < nonEmptyCases.length; i++) {
+        const firstClauseWithoutBreak = nonEmptyCases[i];
 
         if (hasRequiredSize(firstClauseWithoutBreak)) {
           for (let j = 0; j < i; j++) {
-            const secondClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[j].consequent));
+            const secondClauseWithoutBreak = nonEmptyCases[j];
 
             if (areEquivalent(firstClauseWithoutBreak, secondClauseWithoutBreak, context.getSourceCode())) {
-              context.report({
-                message: MESSAGE,
-                data: {
-                  type: "case",
-                  line: String(cases[j].loc!.start.line),
-                },
-                node: cases[i],
-              });
+              reportIssue(cases[i], cases[j], "case");
               break;
             }
           }
@@ -93,14 +102,7 @@ const rule: Rule.RuleModule = {
     function compareIfBranches(a: estree.Statement, b: estree.Statement) {
       const equivalent = areEquivalent(a, b, context.getSourceCode());
       if (equivalent && b.loc) {
-        context.report({
-          message: MESSAGE,
-          data: {
-            type: "branch",
-            line: String(b.loc.start.line),
-          },
-          node: a,
-        });
+        reportIssue(a, b, "branch");
       }
       return equivalent;
     }
@@ -113,6 +115,25 @@ const rule: Rule.RuleModule = {
         }
       }
       return nodes;
+    }
+
+    function allEquivalentWithoutDefault(branches: Array<estree.Node | estree.Node[]>, endsWithDefault: boolean) {
+      return (
+        !endsWithDefault &&
+        branches.length > 1 &&
+        branches.slice(1).every((branch, index) => areEquivalent(branch, branches[index], context.getSourceCode()))
+      );
+    }
+
+    function reportIssue(node: estree.Node, equivalentNode: estree.Node, type: string) {
+      context.report({
+        message: MESSAGE,
+        data: {
+          type,
+          line: String(equivalentNode.loc!.start.line),
+        },
+        node,
+      });
     }
   },
 };

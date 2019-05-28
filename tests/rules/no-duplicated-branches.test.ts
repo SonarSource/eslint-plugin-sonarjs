@@ -82,6 +82,16 @@ ruleTester.run("no-duplicated-branches if", rule, {
         first();
       }`,
     },
+    {
+      code: `
+      if(a == 1) {
+        doSomething();  //no issue, usually this is done on purpose to increase the readability
+      } else if (a == 2) {
+        doSomethingElse();
+      } else {
+        doSomething();
+      }`,
+    },
   ],
   invalid: [
     {
@@ -127,6 +137,29 @@ ruleTester.run("no-duplicated-branches if", rule, {
         second();
       }`,
       errors: [{ line: 8 }],
+    },
+    {
+      code: `
+      if(a == 1) {
+        doSomething();
+      } else if (a == 2) {
+        doSomething();
+      }`,
+      errors: [{ line: 4, message: "This branch's code block is the same as the block for the branch on line 2." }],
+    },
+    {
+      code: `
+      if(a == 1) {
+        doSomething();
+      } else if (a == 2) {
+        doSomething();
+      } else if (a == 3) {
+        doSomething();
+      }`,
+      errors: [
+        { line: 4, message: "This branch's code block is the same as the block for the branch on line 2." },
+        { line: 6, message: "This branch's code block is the same as the block for the branch on line 4." },
+      ],
     },
   ],
 });
@@ -273,6 +306,18 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           break;
       }`,
       errors: [{ line: 7 }, { line: 11 }, { line: 15 }],
+    },
+    {
+      code: `
+      switch(a) {
+        case 1:
+          doSomething();
+          break;
+        case 2:
+          doSomething();
+          break;
+      }`,
+      errors: [{ line: 6, message: "This case's code block is the same as the block for the case on line 3." }],
     },
   ],
 });
