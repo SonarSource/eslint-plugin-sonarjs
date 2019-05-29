@@ -23,6 +23,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["cognitive-complexity", "error"],
   ["max-switch-cases", "error"],
   ["no-all-duplicated-branches", "error"],
+  ["no-collapsible-if", "error"],
   ["no-duplicate-string", "error"],
   ["no-duplicated-branches", "error"],
   ["no-element-overwrite", "error"],
