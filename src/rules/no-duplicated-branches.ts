@@ -24,10 +24,19 @@ import * as estree from "estree";
 import { getParent, isIfStatement, isBlockStatement } from "../utils/nodes";
 import { areEquivalent } from "../utils/equivalence";
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from "../utils/conditions";
+import { report, issueLocation } from "../utils/locations";
 
 const MESSAGE = "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    schema: [
+      {
+        // internal parameter
+        enum: ["sonar-runtime"],
+      },
+    ],
+  },
   create(context: Rule.RuleContext) {
     return {
       IfStatement(node: estree.Node) {
@@ -126,14 +135,10 @@ const rule: Rule.RuleModule = {
     }
 
     function reportIssue(node: estree.Node, equivalentNode: estree.Node, type: string) {
-      context.report({
-        message: MESSAGE,
-        data: {
-          type,
-          line: String(equivalentNode.loc!.start.line),
-        },
-        node,
-      });
+      const equivalentNodeLoc = equivalentNode.loc as estree.SourceLocation;
+      report(context, { message: MESSAGE, data: { type, line: String(equivalentNode.loc!.start.line) }, node }, [
+        issueLocation(equivalentNodeLoc, equivalentNodeLoc, "Original"),
+      ]);
     }
   },
 };

@@ -122,7 +122,24 @@ ruleTester.run("no-duplicated-branches if", rule, {
         first();
         second();
       }`,
-      errors: [{ line: 5 }],
+      options: ["sonar-runtime"],
+      errors: [
+        {
+          line: 5,
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 2,
+                column: 13,
+                endLine: 5,
+                endColumn: 7,
+                message: "Original",
+              },
+            ],
+            message: "This branch's code block is the same as the block for the branch on line 2.",
+          }),
+        },
+      ],
     },
     {
       code: `
@@ -249,7 +266,24 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           second();
           break;
       }`,
-      errors: [{ line: 7 }],
+      options: ["sonar-runtime"],
+      errors: [
+        {
+          line: 7,
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 3,
+                column: 8,
+                endLine: 6,
+                endColumn: 16,
+                message: "Original",
+              },
+            ],
+            message: `This case's code block is the same as the block for the case on line 3.`,
+          }),
+        },
+      ],
     },
     {
       code: `
