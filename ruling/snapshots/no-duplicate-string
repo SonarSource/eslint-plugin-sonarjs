@@ -74,7 +74,6 @@ src/brackets/src/extensions/default/PrefsCodeHints/unittests.js: 201,501,501
 src/brackets/src/extensions/default/QuickView/unittests.js: 458
 src/brackets/src/extensions/default/RecentProjects/unittests.js: 60
 src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/lib/middleware/directory.js: 120,121
-src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/lib/middleware/errorHandler.js: 63
 src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/lib/middleware/staticCache.js: 70
 src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/node_modules/multiparty/index.js: 160
 src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/node_modules/send/node_modules/mime/test.js: 21,29,40
@@ -91,9 +90,9 @@ src/brackets/src/language/HTMLUtils.js: 116
 src/brackets/src/language/JSONUtils.js: 112
 src/brackets/src/language/XMLUtils.js: 101
 src/brackets/src/LiveDevelopment/Agents/CSSAgent.js: 184
-src/brackets/src/LiveDevelopment/Agents/RemoteFunctions.js: 183,950
+src/brackets/src/LiveDevelopment/Agents/RemoteFunctions.js: 950
 src/brackets/src/LiveDevelopment/Agents/ScriptAgent.js: 152
-src/brackets/src/LiveDevelopment/main.js: 68,68,86,271
+src/brackets/src/LiveDevelopment/main.js: 68,68,271
 src/brackets/src/LiveDevelopment/MultiBrowserImpl/documents/LiveDocument.js: 71
 src/brackets/src/nls/de/strings.js: 345
 src/brackets/src/nls/el/strings.js: 125
@@ -119,7 +118,6 @@ src/brackets/tasks/pack-web-dependencies.js: 28
 src/Chart.js/src/platforms/platform.dom.js: 174
 src/create-react-app/packages/create-react-app/createReactApp.js: 67,126,189,208
 src/create-react-app/packages/react-dev-utils/launchEditor.js: 42
-src/create-react-app/packages/react-error-overlay/src/styles.js: 33
 src/create-react-app/packages/react-scripts/config/paths.js: 58
 src/create-react-app/packages/react-scripts/scripts/eject.js: 147
 src/create-react-app/packages/react-scripts/scripts/init.js: 84
@@ -127,8 +125,8 @@ src/create-react-app/packages/react-scripts/scripts/utils/verifyPackageTree.js: 
 src/express/lib/application.js: 79,92
 src/express/lib/request.js: 310
 src/express/lib/response.js: 132,194
-src/freeCodeCamp/common/app/redux/utils.test.js: 44
-src/freeCodeCamp/common/app/routes/Challenges/utils/index.test.js: 24,25,28,90,105,164,274,321,322,350,405,477,596,811
+src/freeCodeCamp/common/app/redux/utils.test.js: 54
+src/freeCodeCamp/common/app/routes/Challenges/utils/index.test.js: 24,25,28,90,112,164,274,321,322,350,405,477,597,811
 src/freeCodeCamp/common/app/routes/Challenges/views/step/redux/step-challenge-epic.test.js: 48,62,69
 src/freeCodeCamp/common/utils/ajax-stream.js: 283
 src/freeCodeCamp/public/js/calculator.js: 9,16,149
@@ -140,7 +138,6 @@ src/freeCodeCamp/server/middlewares/csp.js: 23,24,25,37
 src/freeCodeCamp/server/utils/date-utils.test.js: 13,14
 src/freeCodeCamp/server/utils/user-stats.test.js: 21,21,98,121,123,125,126
 src/Ghost/core/server/adapters/scheduling/SchedulingDefault.js: 104
-src/Ghost/core/server/api/index.js: 207,218
 src/Ghost/core/server/api/posts.js: 99
 src/Ghost/core/server/api/subscribers.js: 70
 src/Ghost/core/server/config/utils.js: 53
@@ -186,8 +183,6 @@ src/react-native/Libraries/Utilities/BackAndroid.js: 25
 src/react-native/Libraries/Utilities/PerformanceLogger.js: 74
 src/react-native/Libraries/vendor/core/toIterator.js: 27
 src/react-native/local-cli/__mocks__/fs.js: 95
-src/react-native/local-cli/core/__fixtures__/android.js: 10
-src/react-native/local-cli/core/__fixtures__/dependencies.js: 5
 src/react-native/local-cli/server/util/launchChrome.js: 35
 src/react-native/react-native-cli/index.js: 66
 src/react-native/react-native-git-upgrade/cliEntry.js: 97,97
@@ -209,7 +204,6 @@ src/react-native/RNTester/js/TouchableExample.js: 60
 src/react-native/RNTester/js/XHRExampleBinaryUpload.js: 57
 src/react-native/scripts/android-e2e-test.js: 101
 src/react-native/scripts/bump-oss-version.js: 65
-src/react-router/packages/react-router-dom/modules/NavLink.js: 19
 src/react/fixtures/art/VectorWidget.js: 134
 src/react/fixtures/attribute-behavior/src/attributes.js: 34,59,67,109,182,226,302,316,330,344,464,526,571,611,625,640,652,658,664,670,676,801,807,813,847,878,884,916,1053,1065,1095,1101,1107,1292,1298,1316,1371,1469,1574,1695,1701,1719,1725,1755,1767,1773,1779,1785,1791,1797,1895,1901,1907,1971,1977,2001,2007,2045,2057,2063,2103,2118,2206,2219,2268,2269,2270,2271,2272,2273,2274,2289
 src/react/fixtures/dom/src/components/fixtures/error-handling/index.js: 99
@@ -222,9 +216,9 @@ src/react/packages/react-reconciler/src/ReactFiberContext.js: 165
 src/react/packages/react-reconciler/src/ReactFiberScheduler.js: 496,553,921
 src/react/packages/react-reconciler/src/ReactFiberTreeReflection.js: 93
 src/react/packages/react-reconciler/src/ReactStrictModeWarnings.js: 98,139,141
-src/react/scripts/bench/benchmarks/pe-class-components/benchmark.js: 9,275,277,489,518,746,1158,1225,1544,1602,2408,2556,2627,2630,2640,3170,3200,3401,3406,3409,4011,4077,4134,4530,4756
-src/react/scripts/bench/benchmarks/pe-functional-components/benchmark.js: 8,272,274,482,511,739,1112,1175,1459,1511,2213,2345,2408,2411,2421,2878,2908,3107,3112,3115,3715,3771,3821,4120,4338
-src/react/scripts/bench/benchmarks/pe-no-components/benchmark.js: 8,272,274,482,511,739,1085,1148,1415,1467,2131,2255,2315,2318,2328,2735,2765,2964,2969,2972,3572,3628,3678,3977,4183
+src/react/scripts/bench/benchmarks/pe-class-components/benchmark.js: 9,489,1158,1225,1602,2408,2556,2627,2630,2640,3170,3200,3401,3406,3409,4011,4077,4134,4530,4756
+src/react/scripts/bench/benchmarks/pe-functional-components/benchmark.js: 8,482,1112,1175,1511,2213,2345,2408,2411,2421,2878,2908,3107,3112,3115,3715,3771,3821,4120,4338
+src/react/scripts/bench/benchmarks/pe-no-components/benchmark.js: 8,482,1085,1148,1467,2131,2255,2315,2318,2328,2735,2765,2964,2969,2972,3572,3628,3678,3977,4183
 src/react/scripts/bench/build.js: 13
 src/react/scripts/jest/matchers/toWarnDev.js: 54
 src/react/scripts/release/build-commands/update-noop-renderer-dependencies.js: 11
@@ -269,7 +263,6 @@ src/spectrum/src/views/pages/style.js: 242
 src/spectrum/src/views/userSettings/components/emailSettings.js: 36
 src/spectrum/src/views/userSettings/components/notificationSettings.js: 53
 src/three.js/editor/js/History.js: 96
-src/three.js/editor/js/Sidebar.Object.js: 20,21,22
 src/three.js/editor/js/Sidebar.Project.js: 83,104,114,126,136
 src/three.js/editor/js/Sidebar.Scene.js: 59
 src/three.js/src/audio/Audio.js: 77

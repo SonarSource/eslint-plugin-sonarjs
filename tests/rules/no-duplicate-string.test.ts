@@ -121,6 +121,18 @@ ruleTester.run("no-duplicate-string", rule, {
     console.log('some message');
     console.log("some message");`,
     },
+    {
+      code: `
+    const obj1 = {
+      "some property": 1
+    };
+    const obj2 = {
+      "some property": 1
+    };
+    const obj3 = {
+      "some property": 1
+    };`,
+    },
   ],
   invalid: [
     {
@@ -156,6 +168,19 @@ ruleTester.run("no-duplicate-string", rule, {
     console.log('some message');`,
       errors: 1,
       options: [2],
+    },
+    {
+      code: `
+    const obj1 = {
+      key: "some message"
+    };
+    const obj2 = {
+      key: "some message"
+    };
+    const obj3 = {
+      key: "some message"
+    };`,
+      errors: 1,
     },
   ],
 });
