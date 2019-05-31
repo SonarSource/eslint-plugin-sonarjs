@@ -24,6 +24,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 
 * Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
 * "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
+* Collapsible "if" statements should be merged ([`no-collapsible-if`])
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
@@ -39,6 +40,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`max-switch-cases`]: ./docs/rules/max-switch-cases.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
+[`no-collapsible-if`]: ./docs/rules/no-collapsible-if.md
 [`no-duplicate-string`]: ./docs/rules/no-duplicate-string.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md
