@@ -62,9 +62,9 @@ ruleTester.run("no-collapsible-if", rule, {
     {
       code: `
       if (x) {
-    //^^ > {{Enclosing "if" statement}}
+    //^^ > {{Merge this if statement with the nested one.}}
         if (y) {}
-      //^^ {{Merge this if statement with the enclosing one.}}
+      //^^ {{Nested "if" statement.}}
       }`,
       options: ["sonar-runtime"],
       errors: [
@@ -72,19 +72,19 @@ ruleTester.run("no-collapsible-if", rule, {
           message: JSON.stringify({
             secondaryLocations: [
               {
-                line: 2,
-                column: 6,
-                endLine: 2,
-                endColumn: 8,
-                message: `Enclosing "if" statement`,
+                line: 4,
+                column: 8,
+                endLine: 4,
+                endColumn: 10,
+                message: `Nested "if" statement.`,
               },
             ],
-            message: "Merge this if statement with the enclosing one.",
+            message: "Merge this if statement with the nested one.",
           }),
-          line: 4,
-          column: 9,
-          endLine: 4,
-          endColumn: 11,
+          line: 2,
+          column: 7,
+          endLine: 2,
+          endColumn: 9,
         },
       ],
     },
@@ -92,7 +92,7 @@ ruleTester.run("no-collapsible-if", rule, {
       code: `
       if (x)
         if(y) {}`,
-      errors: [{ message: "Merge this if statement with the enclosing one." }],
+      errors: [{ message: "Merge this if statement with the nested one." }],
     },
     {
       code: `

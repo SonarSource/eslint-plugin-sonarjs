@@ -47,10 +47,10 @@ const rule: Rule.RuleModule = {
             report(
               context,
               {
-                message: `Merge this if statement with the enclosing one.`,
-                loc: ifKeyword.loc,
+                message: `Merge this if statement with the nested one.`,
+                loc: enclosingIfKeyword.loc,
               },
-              [issueLocation(enclosingIfKeyword.loc, enclosingIfKeyword.loc, `Enclosing "if" statement`)],
+              [issueLocation(ifKeyword.loc, ifKeyword.loc, `Nested "if" statement.`)],
             );
           }
         }
