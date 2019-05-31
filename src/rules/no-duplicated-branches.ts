@@ -72,21 +72,20 @@ const rule: Rule.RuleModule = {
     function visitSwitchStatement(switchStmt: estree.SwitchStatement) {
       const { cases } = switchStmt;
       const { endsWithDefault } = collectSwitchBranches(switchStmt);
-      const nonEmptyCases = cases
-        .map(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)))
-        .filter(c => c.length > 0);
+      const nonEmptyCases = cases.filter(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)).length > 0);
+      const casesWithoutBreak = nonEmptyCases.map(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)));
 
-      if (allEquivalentWithoutDefault(nonEmptyCases, endsWithDefault)) {
-        cases.slice(1).forEach((caseStmt, i) => reportIssue(caseStmt, cases[i], "case"));
+      if (allEquivalentWithoutDefault(casesWithoutBreak, endsWithDefault)) {
+        nonEmptyCases.slice(1).forEach((caseStmt, i) => reportIssue(caseStmt, nonEmptyCases[i], "case"));
         return;
       }
 
-      for (let i = 1; i < nonEmptyCases.length; i++) {
-        const firstClauseWithoutBreak = nonEmptyCases[i];
+      for (let i = 1; i < cases.length; i++) {
+        const firstClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[i].consequent));
 
         if (hasRequiredSize(firstClauseWithoutBreak)) {
           for (let j = 0; j < i; j++) {
-            const secondClauseWithoutBreak = nonEmptyCases[j];
+            const secondClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[j].consequent));
 
             if (areEquivalent(firstClauseWithoutBreak, secondClauseWithoutBreak, context.getSourceCode())) {
               reportIssue(cases[i], cases[j], "case");

@@ -235,6 +235,21 @@ ruleTester.run("no-duplicated-branches switch", rule, {
   invalid: [
     {
       code: `
+      switch(a) {
+        case 2:
+        case 1:
+          first();
+          second();
+          break;
+        case 3:
+          first();
+          second();
+          break;
+      }`,
+      errors: [{ line: 8 }],
+    },
+    {
+      code: `
       switch (a) {
         case 1:
           first();
@@ -352,6 +367,25 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           break;
       }`,
       errors: [{ line: 6, message: "This case's code block is the same as the block for the case on line 3." }],
+    },
+    {
+      code: `
+      switch(a) {
+        case 0:
+          foo();
+          bar();
+          break;
+        case 2:
+        case 1:
+          first();
+          second();
+          break;
+        case 3:
+          first();
+          second();
+          break;
+      }`,
+      errors: [{ line: 12, message: "This case's code block is the same as the block for the case on line 8." }],
     },
   ],
 });
