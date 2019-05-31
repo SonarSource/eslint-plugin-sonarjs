@@ -46,7 +46,7 @@ const rule: Rule.RuleModule = {
           const stringContent = literal.value.trim();
 
           if (
-            !isExcludedByUsageContext(context) &&
+            !isExcludedByUsageContext(context, literal) &&
             stringContent.length >= MIN_LENGTH &&
             !stringContent.match(NO_SEPARATOR_REGEXP)
           ) {
@@ -72,15 +72,21 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function isExcludedByUsageContext(context: Rule.RuleContext) {
+function isExcludedByUsageContext(context: Rule.RuleContext, literal: SimpleLiteral) {
   const parent = getParent(context)!;
   const parentType = parent.type;
 
-  return EXCLUDED_CONTEXTS.includes(parentType) || isRequireContext(parent, context);
+  return (
+    EXCLUDED_CONTEXTS.includes(parentType) || isRequireContext(parent, context) || isObjectPropertyKey(parent, literal)
+  );
 }
 
 function isRequireContext(parent: Node, context: Rule.RuleContext) {
   return parent.type === "CallExpression" && context.getSourceCode().getText(parent.callee) === "require";
+}
+
+function isObjectPropertyKey(parent: Node, literal: SimpleLiteral) {
+  return parent.type === "Property" && parent.key === literal;
 }
 
 export = rule;
