@@ -48,12 +48,17 @@ const rule: Rule.RuleModule = {
       { type: "integer", minimum: 0 },
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ["sonar-runtime", "metric"],
       },
     ],
   },
   create(context: Rule.RuleContext) {
     const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+    const isOverallComplexity: boolean =
+      context.options.length > 0 && context.options[context.options.length - 1] === "metric";
+
+    /** Overall complexity */
+    let complexity = 0;
 
     /** Complexity of the current function if it is *not* considered nested to the first level function */
     let complexityIfNotNested: ComplexityPoint[] = [];
@@ -104,6 +109,13 @@ const rule: Rule.RuleModule = {
         if (nestingNodes.has(node)) {
           nesting--;
           nestingNodes.delete(node);
+        }
+      },
+      "Program:exit"(node: estree.Node) {
+        if (isOverallComplexity) {
+          // as issues are the only communication channel of a rule
+          // we pass data as serialized json as an issue message
+          context.report({ node, message: complexity.toString() });
         }
       },
 
@@ -284,6 +296,7 @@ const rule: Rule.RuleModule = {
         complexityIfNested.push({ complexity: added + 1, location });
         complexityIfNotNested.push(complexityPoint);
       }
+      complexity += added;
     }
 
     function addComplexity(location: estree.SourceLocation) {
@@ -296,9 +309,13 @@ const rule: Rule.RuleModule = {
         complexityIfNested.push(complexityPoint);
         complexityIfNotNested.push(complexityPoint);
       }
+      complexity++;
     }
 
     function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
+      if (isOverallComplexity) {
+        return;
+      }
       const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
       if (complexityAmount > threshold) {
         const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
