@@ -745,9 +745,6 @@ function message(complexity: number, other: Partial<RuleTester.TestCaseError> = 
   };
 }
 
-function complexity(complexity: number, other: Partial<RuleTester.TestCaseError> = {}) {
-  return {
-    message: complexity.toString(),
-    ...other,
-  };
+function complexity(complexity: number) {
+  return { message: complexity.toString() };
 }
