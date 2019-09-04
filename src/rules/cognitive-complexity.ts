@@ -54,7 +54,7 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
-    const isOverallComplexity: boolean =
+    const isFileComplexity: boolean =
       context.options.length > 0 && context.options[context.options.length - 1] === "metric";
 
     /** Overall complexity */
@@ -112,7 +112,7 @@ const rule: Rule.RuleModule = {
         }
       },
       "Program:exit"(node: estree.Node) {
-        if (isOverallComplexity) {
+        if (isFileComplexity) {
           // as issues are the only communication channel of a rule
           // we pass data as serialized json as an issue message
           context.report({ node, message: complexity.toString() });
@@ -313,7 +313,7 @@ const rule: Rule.RuleModule = {
     }
 
     function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
-      if (isOverallComplexity) {
+      if (isFileComplexity) {
         return;
       }
       const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
