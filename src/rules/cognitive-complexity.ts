@@ -54,11 +54,10 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
-    const isFileComplexity: boolean =
-      context.options.length > 0 && context.options[context.options.length - 1] === "metric";
+    const isFileComplexity: boolean = context.options.includes("metric");
 
-    /** Overall complexity */
-    let complexity = 0;
+    /** Complexity of the file */
+    let fileComplexity = 0;
 
     /** Complexity of the current function if it is *not* considered nested to the first level function */
     let complexityIfNotNested: ComplexityPoint[] = [];
@@ -115,7 +114,7 @@ const rule: Rule.RuleModule = {
         if (isFileComplexity) {
           // as issues are the only communication channel of a rule
           // we pass data as serialized json as an issue message
-          context.report({ node, message: complexity.toString() });
+          context.report({ node, message: fileComplexity.toString() });
         }
       },
 
@@ -296,7 +295,7 @@ const rule: Rule.RuleModule = {
         complexityIfNested.push({ complexity: added + 1, location });
         complexityIfNotNested.push(complexityPoint);
       }
-      complexity += added;
+      fileComplexity += added;
     }
 
     function addComplexity(location: estree.SourceLocation) {
@@ -309,7 +308,7 @@ const rule: Rule.RuleModule = {
         complexityIfNested.push(complexityPoint);
         complexityIfNotNested.push(complexityPoint);
       }
-      complexity++;
+      fileComplexity++;
     }
 
     function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
