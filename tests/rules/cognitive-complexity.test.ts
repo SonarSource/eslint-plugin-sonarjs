@@ -491,249 +491,65 @@ ruleTester.run("cognitive-complexity 15", rule, {
   ],
 });
 
-ruleTester.run("overall-cognitive-complexity", rule, {
+ruleTester.run("file-cognitive-complexity", rule, {
   valid: [],
   invalid: [
-    // if
-    {
-      code: `if (x) {} // +1`,
-      options: [0, "metric"],
-      errors: [complexity(1)],
-    },
     {
       code: `
-      if (condition) {        // +1
-      } else if (condition) { // +1
-      } else {}               // +1
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-    {
-      code: `
-      if (condition) {      // +1
-      } else {              // +1 (nesting level +1)
-          if (condition) {} // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(4)],
-    },
-    {
-      code: `
-      if (condition) {      // +1 (nesting level +1)
-        if (condition) {    // +2
-        } else {}           // +1
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(4)],
-    },
-    {
-      code: `
-      if (condition)          // +1 (nesting level +1)
-        if (condition)        // +2 (nesting level +1)
-          if (condition) {}   // +3
-      `,
-      options: [0, "metric"],
-      errors: [complexity(6)],
-    },
-    {
-      code: `
-      if (condition) {         // +1
-      } else if (condition) {  // +1 (nesting level +1)
-        if (condition) {}      // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(4)],
-    },
-
-    // loops
-    {
-      code: `
-      while (condition) {                 // +1 (nesting level +1)
-        if (condition) {}                 // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-    {
-      code: `
-      do {                                // +1 (nesting level +1)
-        if (condition) {}                 // +2
-      } while (condition)
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-    {
-      code: `
-      for (i = 0; i < length; i++) {      // +1 (nesting level +1)
-        if (condition) {}                 // +2
-
-        for (i = 0; i < length; i++) {}  // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(5)],
-    },
-    {
-      code: `
-      for (x in obj) {                    // +1 (nesting level +1)
-        if (condition) {}                 // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-    {
-      code: `
-      for (x of obj) {                    // +1 (nesting level +1)
-        if (condition) {}                 // +2
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-
-    // switch
-    {
-      code: `
-      switch (expr) {                // +1 (nesting level +1)
-        case "1":
-          if (condition) {}          // +2
-          break;
-        case "2":
-          break;
-        default:
-          foo();
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-    {
-      code: `
-      if (condition) {                 // +1 (nesting level +1)
-        switch (expr) {                // +2 (nesting level +1)
-          case "1":
-            if (condition) {}          // +3
-            break;
-          case "2":
-            break;
-          default:
-            foo();
+      import foo from "bar"
+      class A {
+        constructor(a, b, c) {
+          if (a) {                  // +1 (nesting level +1)
+            if (b) {                // +2 (nesting level +1)
+              if (c) {}             // +3 (nesting level +1)
+            }
+          }
+        }
+        static f() {
+          foo((1 && 2) && (3 && 4)); // +1
+          foo(((1 && 2) && 3) && 4); // +1
+          foo(1 && (2 && (3 && 4))); // +1
+          foo(1 || 2 || 3 || 4);     // +1
+          foo(1 && 2 || 3 || 4);     // +2
+          foo(1 && 2 || 3 && 4);     // +3
+          foo(1 && 2 && !(3 && 4));  // +2
+        }
+        g(x, y) {
+          if (b) {                   // +1 (nesting level +1)
+            switch (x) {             // +2 (nesting level +1)
+              case "1":
+                if (y) {}            // +3
+                break;
+              case "2":
+                break;
+              default:
+                foo();
+            }
+          }
+        }
+        h(a, b) {
+          for (var i = a && b; a && b; a && b) {  // +1(for) +1(&&) +1(&&) +1(&&) (nesting level +1)
+            while (a && b) {                      // +1(while) +1(&&)             (nesting level +1)
+              do {} while (a && b)                // +1(do) +1(&&)
+            }
+          }
+        }
+        i(a, b) {
+          foo(a && b);                   // +1
+          return function (c, d) {
+            foo(c && d);                 // +1
+            return function (e, f) {
+              foo(e && f);               // +1
+              return function (g, h) {
+                foo(g && h);             // +1
+              }
+            }
+          }
         }
       }
       `,
       options: [0, "metric"],
-      errors: [complexity(6)],
-    },
-
-    // continue & break
-    {
-      code: `
-      while (condition) {      // +1 (nesting level +1)
-        if (condition)         // +2
-          break;
-        else if (condition)    // +1
-          continue;
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(4)],
-    },
-    {
-      code: `
-      label:
-      while (condition) {      // +1
-        break label;           // +1
-        continue label;        // +1
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(3)],
-    },
-
-    // try-catch-finally
-    {
-      code: `
-      try {
-        if (condition) {}      // +1
-      } catch (someError) {    // +1 (nesting level +1)
-        if (condition)  {}     // +2
-      } finally {
-        if (condition) {}      // +1
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(5)],
-    },
-    {
-      code: `
-      try {
-        if (condition) {}      // +1
-      } finally {
-        if (condition) {}      // +1
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(2)],
-    },
-
-    // expressions
-    {
-      code: `
-      foo(1 && 2 && 3 && 4); // +1
-      foo((1 && 2) && (3 && 4)); // +1
-      foo(((1 && 2) && 3) && 4); // +1
-      foo(1 && (2 && (3 && 4))); // +1
-      foo(1 || 2 || 3 || 4); // +1
-      foo(1 && 2 || 3 || 4); // +2
-      foo(1 && 2 || 3 && 4); // +3
-      foo(1 && 2 && !(3 && 4)); // +2
-      `,
-      options: [0, "metric"],
-      errors: [complexity(12)],
-    },
-    {
-      code: `condition ? trueValue : falseValue; // +1`,
-      options: [0, "metric"],
-      errors: [complexity(1)],
-    },
-    {
-      code: `
-      x = condition1 ? (condition2 ? trueValue2 : falseValue2) : falseValue1 ; // +3
-      x = condition1 ? trueValue1 : (condition2 ? trueValue2 : falseValue2)  ; // +3
-      x = condition1 ? (condition2 ? trueValue2 : falseValue2) : (condition3 ? trueValue3 : falseValue3); // +5
-      `,
-      options: [0, "metric"],
-      errors: [complexity(11)],
-    },
-    {
-      code: `
-      if (a && b) {                            // +1(if) +1(&&)
-        a && b;                                // +1 (no nesting)
-      }
-      while (a && b) {}                        // +1(while) +1(&&)
-      do {} while (a && b)                     // +1(do) +1(&&)
-      for (var i = a && b; a && b; a && b) {}  // +1(for) +1(&&) +1(&&) +1(&&)
-      `,
-      options: [0, "metric"],
-      errors: [complexity(11)],
-    },
-
-    // function
-    {
-      code: `
-      function single_if() {
-        if (x) {} // +1
-      }
-      `,
-      options: [0, "metric"],
-      errors: [complexity(1)],
+      errors: [complexity(38)],
     },
   ],
 });
