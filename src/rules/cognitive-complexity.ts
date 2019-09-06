@@ -289,13 +289,13 @@ const rule: Rule.RuleModule = {
     function addStructuralComplexity(location: estree.SourceLocation) {
       const added = nesting + 1;
       const complexityPoint = { complexity: added, location };
-      if (enclosingFunctions.length === 1) {
+      if (enclosingFunctions.length === 0) {
+        // top level scope
+        fileComplexity += added;
+      } else if (enclosingFunctions.length === 1) {
         // top level function
         topLevelHasStructuralComplexity = true;
         topLevelOwnComplexity.push(complexityPoint);
-      } else if (enclosingFunctions.length === 0) {
-        // top level scope
-        fileComplexity += added;
       } else {
         // second+ level function
         complexityIfNested.push({ complexity: added + 1, location });
@@ -305,12 +305,12 @@ const rule: Rule.RuleModule = {
 
     function addComplexity(location: estree.SourceLocation) {
       const complexityPoint = { complexity: 1, location };
-      if (enclosingFunctions.length === 1) {
-        // top level function
-        topLevelOwnComplexity.push(complexityPoint);
-      } else if (enclosingFunctions.length === 0) {
+      if (enclosingFunctions.length === 0) {
         // top level scope
         fileComplexity += 1;
+      } else if (enclosingFunctions.length === 1) {
+        // top level function
+        topLevelOwnComplexity.push(complexityPoint);
       } else {
         // second+ level function
         complexityIfNested.push(complexityPoint);
