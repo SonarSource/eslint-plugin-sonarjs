@@ -496,60 +496,87 @@ ruleTester.run("file-cognitive-complexity", rule, {
   invalid: [
     {
       code: `
-      import foo from "bar"
-      class A {
-        constructor(a, b, c) {
-          if (a) {                  // +1 (nesting level +1)
-            if (b) {                // +2 (nesting level +1)
-              if (c) {}             // +3 (nesting level +1)
-            }
-          }
-        }
-        static f() {
-          foo((1 && 2) && (3 && 4)); // +1
-          foo(((1 && 2) && 3) && 4); // +1
-          foo(1 && (2 && (3 && 4))); // +1
-          foo(1 || 2 || 3 || 4);     // +1
-          foo(1 && 2 || 3 || 4);     // +2
-          foo(1 && 2 || 3 && 4);     // +3
-          foo(1 && 2 && !(3 && 4));  // +2
-        }
-        g(x, y) {
-          if (b) {                   // +1 (nesting level +1)
-            switch (x) {             // +2 (nesting level +1)
-              case "1":
-                if (y) {}            // +3
-                break;
-              case "2":
-                break;
-              default:
-                foo();
-            }
-          }
-        }
-        h(a, b) {
-          for (var i = a && b; a && b; a && b) {  // +1(for) +1(&&) +1(&&) +1(&&) (nesting level +1)
-            while (a && b) {                      // +1(while) +1(&&)             (nesting level +1)
-              do {} while (a && b)                // +1(do) +1(&&)
-            }
-          }
-        }
-        i(a, b) {
-          foo(a && b);                   // +1
-          return function (c, d) {
-            foo(c && d);                 // +1
-            return function (e, f) {
-              foo(e && f);               // +1
-              return function (g, h) {
-                foo(g && h);             // +1
-              }
-            }
-          }
+      a; // Noncompliant [[id=1]] {{25}}
+function foo() {
+  x && y;
+//S ^^ 1 {{+1}}
+  function foo1() {
+    if (x) {}
+//S ^^ 1 {{+1}}
+  }
+}
+
+function bar() {
+    if (x) {}
+//S ^^ 1 {{+1}}
+    function bar1() {
+      if (x) {}
+//S   ^^ 1 {{+2 (incl. 1 for nesting)}}
+    }
+}
+
+    if (x) {
+//S ^^ 1 {{+1}}
+      function zoo() {
+       x && y;
+//S      ^^ 1 {{+1}}
+       function zoo2() {
+         if (x) {}
+//S      ^^ 1 {{+2 (incl. 1 for nesting)}}
+       }
+      }
+
+      function zoo1() {
+        if (x) {}
+//S     ^^ 1 {{+2 (incl. 1 for nesting)}}
+      }
+
+    }
+
+x   && y;
+//S ^^ 1 {{+1}}
+
+    if (x) {
+//S ^^ 1
+      if (y) {
+//S   ^^ 1
+        function nested() {
+          if (z) {}
+//S       ^^ 1
+          x && y;
+//S         ^^ 1
         }
       }
+
+      class NestedClass {
+
+        innerMethod() {
+          if (x) {}
+//S       ^^ 1 {{+2 (incl. 1 for nesting)}}
+        }
+
+      }
+
+    }
+
+class TopLevel {
+
+  someMethod() {
+    if (x) {
+//S ^^ 1 {{+1}}
+      class ClassInClass {
+
+        innerMethod() {
+          if (x) {}
+//S       ^^ 1 {{+3 (incl. 2 for nesting)}}
+        }
+      }
+    }
+  }
+}
       `,
       options: [0, "metric"],
-      errors: [complexity(38)],
+      errors: [complexity(25)],
     },
   ],
 });

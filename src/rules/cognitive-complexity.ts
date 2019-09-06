@@ -110,6 +110,9 @@ const rule: Rule.RuleModule = {
           nestingNodes.delete(node);
         }
       },
+      Program() {
+        fileComplexity = 0;
+      },
       "Program:exit"(node: estree.Node) {
         if (isFileComplexity) {
           // as issues are the only communication channel of a rule
@@ -290,12 +293,14 @@ const rule: Rule.RuleModule = {
         // top level function
         topLevelHasStructuralComplexity = true;
         topLevelOwnComplexity.push(complexityPoint);
+      } else if (enclosingFunctions.length === 0) {
+        // top level scope
+        fileComplexity += added;
       } else {
         // second+ level function
         complexityIfNested.push({ complexity: added + 1, location });
         complexityIfNotNested.push(complexityPoint);
       }
-      fileComplexity += added;
     }
 
     function addComplexity(location: estree.SourceLocation) {
@@ -303,19 +308,22 @@ const rule: Rule.RuleModule = {
       if (enclosingFunctions.length === 1) {
         // top level function
         topLevelOwnComplexity.push(complexityPoint);
+      } else if (enclosingFunctions.length === 0) {
+        // top level scope
+        fileComplexity += 1;
       } else {
         // second+ level function
         complexityIfNested.push(complexityPoint);
         complexityIfNotNested.push(complexityPoint);
       }
-      fileComplexity++;
     }
 
     function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
+      const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
+      fileComplexity += complexityAmount;
       if (isFileComplexity) {
         return;
       }
-      const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
       if (complexityAmount > threshold) {
         const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
           const { complexity, location } = complexityPoint;
