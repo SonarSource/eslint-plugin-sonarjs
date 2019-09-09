@@ -48,12 +48,16 @@ const rule: Rule.RuleModule = {
       { type: "integer", minimum: 0 },
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ["sonar-runtime", "metric"],
       },
     ],
   },
   create(context: Rule.RuleContext) {
     const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+    const isFileComplexity: boolean = context.options.includes("metric");
+
+    /** Complexity of the file */
+    let fileComplexity = 0;
 
     /** Complexity of the current function if it is *not* considered nested to the first level function */
     let complexityIfNotNested: ComplexityPoint[] = [];
@@ -104,6 +108,16 @@ const rule: Rule.RuleModule = {
         if (nestingNodes.has(node)) {
           nesting--;
           nestingNodes.delete(node);
+        }
+      },
+      Program() {
+        fileComplexity = 0;
+      },
+      "Program:exit"(node: estree.Node) {
+        if (isFileComplexity) {
+          // as issues are the only communication channel of a rule
+          // we pass data as serialized json as an issue message
+          context.report({ node, message: fileComplexity.toString() });
         }
       },
 
@@ -275,7 +289,10 @@ const rule: Rule.RuleModule = {
     function addStructuralComplexity(location: estree.SourceLocation) {
       const added = nesting + 1;
       const complexityPoint = { complexity: added, location };
-      if (enclosingFunctions.length === 1) {
+      if (enclosingFunctions.length === 0) {
+        // top level scope
+        fileComplexity += added;
+      } else if (enclosingFunctions.length === 1) {
         // top level function
         topLevelHasStructuralComplexity = true;
         topLevelOwnComplexity.push(complexityPoint);
@@ -288,7 +305,10 @@ const rule: Rule.RuleModule = {
 
     function addComplexity(location: estree.SourceLocation) {
       const complexityPoint = { complexity: 1, location };
-      if (enclosingFunctions.length === 1) {
+      if (enclosingFunctions.length === 0) {
+        // top level scope
+        fileComplexity += 1;
+      } else if (enclosingFunctions.length === 1) {
         // top level function
         topLevelOwnComplexity.push(complexityPoint);
       } else {
@@ -300,6 +320,10 @@ const rule: Rule.RuleModule = {
 
     function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
       const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
+      fileComplexity += complexityAmount;
+      if (isFileComplexity) {
+        return;
+      }
       if (complexityAmount > threshold) {
         const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
           const { complexity, location } = complexityPoint;
