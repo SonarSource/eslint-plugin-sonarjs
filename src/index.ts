@@ -45,7 +45,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
 
 const sonarjsRuleModules: any = {};
 
-const configs: { recommended: Linter.Config } = {
+const configs: { recommended: Linter.Config & { plugins: string[] } } = {
   recommended: { plugins: ["sonarjs"], rules: {} },
 };
 
