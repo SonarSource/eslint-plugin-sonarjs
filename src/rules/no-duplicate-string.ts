@@ -46,8 +46,8 @@ const rule: Rule.RuleModule = {
           const stringContent = literal.value.trim();
 
           if (
+            stringContent.length > MIN_LENGTH &&
             !isExcludedByUsageContext(context, literal) &&
-            stringContent.length >= MIN_LENGTH &&
             !stringContent.match(NO_SEPARATOR_REGEXP)
           ) {
             const sameStringLiterals = literalsByValue.get(stringContent) || [];
