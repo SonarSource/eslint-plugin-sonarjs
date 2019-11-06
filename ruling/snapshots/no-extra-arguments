@@ -1,13 +1,13 @@
+src/Chart.js/src/platforms/platform.dom.js: 420
+src/Ghost/core/server/api/mail.js: 83,140
 src/angular.js/src/ngAnimate/animateCssDriver.js: 182,183
 src/angular.js/src/ngAnimate/animateJs.js: 131
 src/angular.js/src/ngMock/angular-mocks.js: 2412
 src/brackets/src/extensions/default/StaticServer/node/node_modules/connect/node_modules/multiparty/node_modules/readable-stream/lib/_stream_readable.js: 706
-src/Chart.js/src/platforms/platform.dom.js: 420
-src/Ghost/core/server/api/mail.js: 83,140
 src/jquery/external/sinon/sinon.js: 1669
-src/react-native/Libraries/polyfills/error-guard.js: 42
 src/react-native/Libraries/Renderer/ReactFabric-prod.js: 62,70,1470,1472,5192
 src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 127,135,1686,1688,5590
+src/react-native/Libraries/polyfills/error-guard.js: 42
 src/react-native/local-cli/logAndroid/logAndroid.js: 17
 src/react-native/local-cli/logIOS/logIOS.js: 19
 src/react/scripts/bench/benchmarks/pe-no-components/benchmark.js: 1069,4701,4702

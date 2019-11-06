@@ -2,4 +2,5 @@ src/angular.js/src/ng/sniffer.js: 61
 src/jest/packages/expect/src/matchers.js: 523
 src/react-native/Libraries/Renderer/ReactFabric-dev.js: 1447,5567,5796,8656,8743
 src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 1602,5903,6132,8992,9079
+src/spectrum/public/push-sw.js: 37
 src/three.js/src/math/Interpolant.js: 57,95

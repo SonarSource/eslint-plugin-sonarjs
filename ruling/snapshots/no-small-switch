@@ -1,5 +1,5 @@
-src/brackets/src/filesystem/impls/appshell/AppshellFileSystem.js: 429
 src/Ghost/core/server/lib/ghost-version.js: 11
+src/brackets/src/filesystem/impls/appshell/AppshellFileSystem.js: 429
 src/jquery/external/sinon/sinon.js: 5221
 src/react-native/Libraries/Renderer/ReactFabric-dev.js: 10010,13297
 src/react-native/Libraries/Renderer/ReactFabric-prod.js: 4043,5462

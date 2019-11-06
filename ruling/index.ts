@@ -136,10 +136,12 @@ function writeResults(results: Results) {
   Object.keys(results).forEach(rule => {
     const content: string[] = [];
 
-    Object.keys(results[rule]).forEach(file => {
-      const lines = results[rule][file];
-      content.push(`${file}: ${lines.join()}`);
-    });
+    Object.keys(results[rule])
+      .sort()
+      .forEach(file => {
+        const lines = results[rule][file];
+        content.push(`${file}: ${lines.join()}`);
+      });
 
     writeSnapshot(rule, content.join("\n") + "\n");
   });
