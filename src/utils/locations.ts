@@ -115,6 +115,32 @@ export function issueLocation(
   };
 }
 
+export function toEncodedMessage(
+  message: string,
+  secondaryLocationsHolder: Array<AST.Token | estree.Node>,
+  secondaryMessages?: string[],
+  cost?: number,
+): string {
+  const encodedMessage: EncodedMessage = {
+    message,
+    cost,
+    secondaryLocations: secondaryLocationsHolder.map((locationHolder, index) =>
+      toSecondaryLocation(locationHolder, secondaryMessages ? secondaryMessages[index] : undefined),
+    ),
+  };
+  return JSON.stringify(encodedMessage);
+}
+
+function toSecondaryLocation(locationHolder: AST.Token | estree.Node, message?: string): IssueLocation {
+  return {
+    message,
+    column: locationHolder.loc!.start.column,
+    line: locationHolder.loc!.start.line,
+    endColumn: locationHolder.loc!.end.column,
+    endLine: locationHolder.loc!.end.line,
+  };
+}
+
 function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleContext) {
   return context
     .getSourceCode()
