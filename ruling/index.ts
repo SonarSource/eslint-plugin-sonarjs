@@ -56,6 +56,7 @@ function run() {
     rulePaths: [rulesPath],
     rules: getEslintRules(rules),
     useEslintrc: false,
+    allowInlineConfig: false,
   });
 
   const sourcesPath = path.join(__dirname, "javascript-test-sources/src");
