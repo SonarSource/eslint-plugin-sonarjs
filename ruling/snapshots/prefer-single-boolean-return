@@ -1,5 +1,5 @@
-src/brackets/src/extensions/default/DebugCommands/main.js: 345
-src/brackets/src/search/FindUtils.js: 431
 src/Ghost/core/server/adapters/storage/utils.js: 39
 src/Ghost/core/server/api/notifications.js: 73
+src/brackets/src/extensions/default/DebugCommands/main.js: 345
+src/brackets/src/search/FindUtils.js: 431
 src/spectrum/src/components/message/index.js: 17

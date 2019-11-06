@@ -1,3 +1,6 @@
+src/Chart.js/src/scales/scale.linear.js: 116,122
+src/Chart.js/src/scales/scale.logarithmic.js: 155,161
+src/Ghost/core/server/models/post.js: 198
 src/angular.js/src/ng/parse.js: 760,1327
 src/angular.js/src/ngAnimate/animateQueue.js: 194
 src/brackets/src/document/TextRange.js: 133
@@ -5,10 +8,7 @@ src/brackets/src/extensions/default/JavaScriptQuickEdit/unittests.js: 151
 src/brackets/src/extensions/default/MDNDocs/InlineDocsViewer.js: 103
 src/brackets/src/language/CSSUtils.js: 1236
 src/brackets/src/utils/DragAndDrop.js: 54
-src/Chart.js/src/scales/scale.linear.js: 116,122
-src/Chart.js/src/scales/scale.logarithmic.js: 155,161
 src/freeCodeCamp/server/utils/user-stats.js: 30
-src/Ghost/core/server/models/post.js: 198
 src/jquery/external/sinon/sinon.js: 506
 src/react-native/Libraries/Renderer/ReactFabric-dev.js: 10298,10386
 src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 10668,10756

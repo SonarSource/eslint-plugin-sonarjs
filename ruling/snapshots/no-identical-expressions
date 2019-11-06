@@ -1,6 +1,6 @@
+src/Ghost/core/server/models/relations/authors.js: 171
 src/angular.js/src/ng/directive/input.js: 1530
 src/angular.js/src/ng/directive/ngModel.js: 1091
-src/Ghost/core/server/models/relations/authors.js: 171
 src/spectrum/api/authentication.js: 359
 src/spectrum/mobile/components/Messages/index.js: 22
 src/spectrum/src/components/badges/index.js: 72
