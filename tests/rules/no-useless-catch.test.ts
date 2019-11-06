@@ -19,17 +19,25 @@
  */
 import { RuleTester } from "eslint";
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: { ecmaVersion: 10 },
+});
 import rule = require("../../src/rules/no-useless-catch");
 
 ruleTester.run("no-useless-catch", rule, {
   valid: [
     { code: `try {} catch (e) {}` },
+    { code: `try {} catch { throw "Error"; }` },
     {
       code: `try {} catch (e) {
               foo();
               throw e;
             }`,
+    },
+    {
+      code: `try {} catch({ message }) {
+        throw { message }; // OK, not useless, we might ignore other properties of exception
+      }`,
     },
     {
       code: `try {} catch (e) {
@@ -62,12 +70,6 @@ ruleTester.run("no-useless-catch", rule, {
       code: `try {} catch(e) {
         // some comment
         throw e;
-      }`,
-      errors: 1,
-    },
-    {
-      code: `try {} catch({ message }) {
-        throw { message };
       }`,
       errors: 1,
     },

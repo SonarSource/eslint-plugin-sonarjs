@@ -34,7 +34,11 @@ const rule: Rule.RuleModule = {
 
 function visitCatchClause(catchClause: CatchClause, context: Rule.RuleContext) {
   const statements = catchClause.body.body;
-  if (statements.length === 1 && onlyRethrows(statements[0], catchClause.param, context.getSourceCode())) {
+  if (
+    catchClause.param &&
+    statements.length === 1 &&
+    onlyRethrows(statements[0], catchClause.param, context.getSourceCode())
+  ) {
     const catchKeyword = context.getSourceCode().getFirstToken(catchClause);
     context.report({
       message: MESSAGE,
