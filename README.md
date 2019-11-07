@@ -33,6 +33,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Jump statements should not be redundant ([`no-redundant-jump`])
 * Conditionals should start on new lines ([`no-same-line-conditional`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
+* Collection and array contents should be used ([`no-unused-collection`])
 * "catch" clauses should do more than rethrow ([`no-useless-catch`])
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Object literal syntax should be used ([`prefer-object-literal`])
@@ -57,6 +58,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-same-line-conditional`]: ./docs/rules/no-same-line-conditional.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
+[`no-unused-collection`]: ./docs/rules/no-unused-collection.md
 [`no-useless-catch`]: ./docs/rules/no-useless-catch.md
 [`prefer-immediate-return`]: ./docs/rules/prefer-immediate-return.md
 [`prefer-object-literal`]: ./docs/rules/prefer-object-literal.md

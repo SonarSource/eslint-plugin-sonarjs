@@ -1,0 +1,11 @@
+src/angular.js/benchmarks/bootstrap-compile-bp/app.js: 43
+src/brackets/src/extensions/default/DebugCommands/NodeDebugUtils.js: 42
+src/brackets/src/project/FileTreeViewModel.js: 232
+src/brackets/src/utils/Async.js: 87
+src/Chart.js/src/core/core.controller.js: 319
+src/react-native/Libraries/Renderer/ReactFabric-dev.js: 3724,3725
+src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 4103,4104
+src/react/packages/react-reconciler/src/ReactFiber.js: 55,56
+src/spectrum/api/migrations/seed/index.js: 116,128
+src/vue/packages/vue-server-renderer/basic.js: 6710
+src/vue/packages/vue-server-renderer/build.js: 6455

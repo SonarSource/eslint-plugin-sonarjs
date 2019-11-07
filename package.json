@@ -33,6 +33,7 @@
     "@types/lodash": "4.14.106",
     "@types/minimist": "1.2.0",
     "@types/node": "12.12.6",
+    "@typescript-eslint/experimental-utils": "2.6.1",
     "@typescript-eslint/parser": "2.6.1",
     "babel-eslint": "8.2.2",
     "eslint": "6.6.0",
