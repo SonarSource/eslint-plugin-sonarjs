@@ -24,6 +24,7 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ["max-switch-cases", "error"],
   ["no-all-duplicated-branches", "error"],
   ["no-collapsible-if", "error"],
+  ["no-collection-size-mischeck", "error"],
   ["no-duplicate-string", "error"],
   ["no-duplicated-branches", "error"],
   ["no-element-overwrite", "error"],

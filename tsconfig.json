@@ -7,7 +7,8 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["ruling/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
   "exclude": ["ruling/javascript-test-sources"]
