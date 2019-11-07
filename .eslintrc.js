@@ -1,7 +1,7 @@
 module.exports = {
   env: { es6: true, node: true, jest: true },
   extends: ["eslint:recommended", "plugin:import/errors", "prettier", "plugin:sonarjs/recommended"],
-  parser: "typescript-eslint-parser",
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2018,
     ecmaFeatures: { modules: true },
