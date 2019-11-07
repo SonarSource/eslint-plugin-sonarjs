@@ -1,0 +1,8 @@
+src/brackets/src/extensions/default/JavaScriptCodeHints/thirdparty/requirejs/require.js: 11,12,20
+src/three.js/src/renderers/webgl/WebGLRenderLists.js: 37
+src/vue/packages/vue-server-renderer/basic.js: 5095
+src/vue/packages/vue-server-renderer/build.js: 4838
+src/vue/packages/vue-template-compiler/browser.js: 4337
+src/vue/packages/vue-template-compiler/build.js: 3939
+src/vue/packages/weex-template-compiler/build.js: 3356
+src/vue/src/compiler/codegen/index.js: 438
