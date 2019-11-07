@@ -30,6 +30,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
+* Jump statements should not be redundant ([`no-redundant-jump`])
 * Conditionals should start on new lines ([`no-same-line-conditional`])
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 * "catch" clauses should do more than rethrow ([`no-useless-catch`])
@@ -52,6 +53,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-inverted-boolean-check`]: ./docs/rules/no-inverted-boolean-check.md
 [`no-one-iteration-loop`]: ./docs/rules/no-one-iteration-loop.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
+[`no-redundant-jump`]: ./docs/rules/no-redundant-jump.md
 [`no-same-line-conditional`]: ./docs/rules/no-same-line-conditional.md
 [`no-small-switch`]: ./docs/rules/no-small-switch.md
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
