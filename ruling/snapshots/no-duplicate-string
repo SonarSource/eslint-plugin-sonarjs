@@ -167,7 +167,7 @@ src/jest/packages/jest-util/src/fake_timers.js: 176
 src/jquery/external/npo/npo.js: 5
 src/jquery/external/qunit/qunit.js: 986,1939,2533,2535,2581,2756,2856,3014,3100
 src/jquery/external/requirejs/require.js: 358,359
-src/jquery/external/sinon/sinon.js: 37,538,1355,2394,3129,3146,4665
+src/jquery/external/sinon/sinon.js: 538,1355,2394,3129,3146,4665
 src/jquery/src/deferred.js: 59
 src/react-native/IntegrationTests/ImageCachePolicyTest.js: 32,32,66
 src/react-native/Libraries/Components/Keyboard/Keyboard.js: 111
@@ -181,7 +181,6 @@ src/react-native/Libraries/StyleSheet/TransformPropTypes.js: 86
 src/react-native/Libraries/Utilities/BackAndroid.js: 25
 src/react-native/Libraries/Utilities/PerformanceLogger.js: 74
 src/react-native/Libraries/polyfills/Object.es6.js: 24
-src/react-native/Libraries/polyfills/String.prototype.es6.js: 20
 src/react-native/Libraries/vendor/core/toIterator.js: 27
 src/react-native/RNTester/js/AlertExample.js: 37,49
 src/react-native/RNTester/js/AlertIOSExample.js: 68,113
