@@ -42,7 +42,8 @@ const rule: Rule.RuleModule = {
     return {
       Literal: (node: Node) => {
         const literal = node as SimpleLiteral;
-        if (typeof literal.value === "string") {
+        const parent = getParent(context);
+        if (typeof literal.value === "string" && (parent && parent.type !== "ExpressionStatement")) {
           const stringContent = literal.value.trim();
 
           if (

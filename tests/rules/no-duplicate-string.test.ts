@@ -133,6 +133,13 @@ ruleTester.run("no-duplicate-string", rule, {
       "some property": 1
     };`,
     },
+    {
+      code: `
+      'use strict';
+      'use strict';
+      'use strict';
+      `,
+    },
   ],
   invalid: [
     {
