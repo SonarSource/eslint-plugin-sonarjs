@@ -37,3 +37,12 @@ it("should declare all rules", () => {
   });
   expect(Object.keys(rules)).toHaveLength(existingRules.length);
 });
+
+it("should document all rules", () => {
+  const root = path.join(__dirname, "../");
+  const README = fs.readFileSync(`${root}/README.md`, "utf8");
+  existingRules.forEach(rule => {
+    expect(README.includes(rule)).toBe(true);
+    expect(fs.existsSync(`${root}/docs/rules/${rule}.md`)).toBe(true);
+  });
+});
