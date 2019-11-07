@@ -136,7 +136,8 @@ ruleTester.run("no-duplicate-string", rule, {
     {
       code: `
       'use strict';
-      'use whatever';
+      'use strict';
+      'use strict';
       `,
     },
   ],
