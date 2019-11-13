@@ -21,6 +21,7 @@ import { RuleTester } from "eslint";
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
 import rule = require("../../src/rules/no-duplicated-branches");
+const message = "This branch's code block is the same as the block for the branch on line 2.";
 
 ruleTester.run("no-duplicated-branches if", rule, {
   valid: [
@@ -105,7 +106,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
       }`,
       errors: [
         {
-          message: "This branch's code block is the same as the block for the branch on line 2.",
+          message,
           line: 5,
           endLine: 8,
           column: 14,
@@ -136,7 +137,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
                 message: "Original",
               },
             ],
-            message: "This branch's code block is the same as the block for the branch on line 2.",
+            message,
           }),
         },
       ],
@@ -162,7 +163,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
       } else if (a == 2) {
         doSomething();
       }`,
-      errors: [{ line: 4, message: "This branch's code block is the same as the block for the branch on line 2." }],
+      errors: [{ line: 4, message }],
     },
     {
       code: `
@@ -174,7 +175,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
         doSomething();
       }`,
       errors: [
-        { line: 4, message: "This branch's code block is the same as the block for the branch on line 2." },
+        { line: 4, message },
         { line: 6, message: "This branch's code block is the same as the block for the branch on line 4." },
       ],
     },

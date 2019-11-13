@@ -184,12 +184,14 @@ function message(
 ): RuleTester.TestCaseError {
   // prettier-ignore
   const expectedArguments = 
+    // eslint-disable-next-line no-nested-ternary
     expected === 0 ? "no arguments" : 
     expected === 1 ? "1 argument" : 
     `${expected} arguments`;
 
   // prettier-ignore
   const providedArguments = 
+    // eslint-disable-next-line no-nested-ternary
     provided === 0 ? "none was" : 
     provided === 1 ? "1 was" : 
     `${provided} were`;

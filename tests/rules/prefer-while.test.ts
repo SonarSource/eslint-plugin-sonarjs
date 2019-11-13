@@ -21,6 +21,7 @@ import { RuleTester } from "eslint";
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require("../../src/rules/prefer-while");
+const message = 'Replace this "for" loop with a "while" loop.';
 
 ruleTester.run("prefer-while", rule, {
   valid: [
@@ -36,26 +37,26 @@ ruleTester.run("prefer-while", rule, {
   invalid: [
     {
       code: "for(;condition;) {}",
-      errors: [{ message: 'Replace this "for" loop with a "while" loop.', line: 1, column: 1, endColumn: 4 }],
+      errors: [{ message, line: 1, column: 1, endColumn: 4 }],
       output: "while (condition) {}",
     },
     {
       code: "for (;condition; ) foo();",
-      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      errors: [{ message }],
       output: "while (condition) foo();",
     },
     {
       code: `
         for(;i < 10;)
           doSomething();`,
-      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      errors: [{ message }],
       output: `
         while (i < 10)
           doSomething();`,
     },
     {
       code: "for(;;) {}",
-      errors: [{ message: 'Replace this "for" loop with a "while" loop.' }],
+      errors: [{ message }],
       output: "for(;;) {}", // no fix
     },
   ],

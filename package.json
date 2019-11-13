@@ -60,7 +60,7 @@
     "collectCoverageFrom": ["src/**/*.ts"],
     "globals": {
       "ts-jest": {
-        "skipBabel": true
+        "babelConfig": false
       }
     },
     "moduleFileExtensions": ["ts", "js", "json"],
