@@ -49,11 +49,11 @@ function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.Ru
     switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
   if (nonEmptyCases.length > maxSwitchCases) {
-    const switchKeyword = context.getSourceCode().getFirstToken(switchStatement);
+    const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;
     context.report({
       message: MESSAGE,
-      loc: switchKeyword!.loc,
-      data: { numSwitchCases: nonEmptyCases.length + "", maxSwitchCases: maxSwitchCases + "" },
+      loc: switchKeyword.loc,
+      data: { numSwitchCases: nonEmptyCases.length.toString(), maxSwitchCases: maxSwitchCases.toString() },
     });
   }
 }

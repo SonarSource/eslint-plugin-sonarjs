@@ -49,20 +49,21 @@ const rule: Rule.RuleModule = {
 
     function visitIfStatement(ifStmt: estree.IfStatement) {
       const parent = getParent(context);
-      if (!isIfStatement(parent)) {
-        const { branches, endsWithElse } = collectIfBranches(ifStmt);
+      if (isIfStatement(parent)) {
+        return;
+      }
+      const { branches, endsWithElse } = collectIfBranches(ifStmt);
 
-        if (allEquivalentWithoutDefault(branches, endsWithElse)) {
-          branches.slice(1).forEach((branch, i) => reportIssue(branch, branches[i], "branch"));
-          return;
-        }
+      if (allEquivalentWithoutDefault(branches, endsWithElse)) {
+        branches.slice(1).forEach((branch, i) => reportIssue(branch, branches[i], "branch"));
+        return;
+      }
 
-        for (let i = 1; i < branches.length; i++) {
-          if (hasRequiredSize([branches[i]])) {
-            for (let j = 0; j < i; j++) {
-              if (compareIfBranches(branches[i], branches[j])) {
-                break;
-              }
+      for (let i = 1; i < branches.length; i++) {
+        if (hasRequiredSize([branches[i]])) {
+          for (let j = 0; j < i; j++) {
+            if (compareIfBranches(branches[i], branches[j])) {
+              break;
             }
           }
         }

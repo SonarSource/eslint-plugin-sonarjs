@@ -120,10 +120,8 @@ const rule: Rule.RuleModule = {
 
     function checkFunction(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
       const hasRest = functionNode.params.some(param => param.type === "RestElement");
-      if (!hasRest) {
-        if (callExpr.arguments.length > functionNode.params.length) {
-          callExpressionsToCheck.push({ callExpr, functionNode });
-        }
+      if (!hasRest && callExpr.arguments.length > functionNode.params.length) {
+        callExpressionsToCheck.push({ callExpr, functionNode });
       }
     }
 

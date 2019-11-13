@@ -62,7 +62,9 @@ const rule: Rule.RuleModule = {
     }
 
     function processFunctions() {
-      if (functions.length < 2) return;
+      if (functions.length < 2) {
+        return;
+      }
 
       for (let i = 1; i < functions.length; i++) {
         const duplicatingFunction = functions[i].function;

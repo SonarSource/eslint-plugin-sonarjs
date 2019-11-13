@@ -132,12 +132,13 @@ export function toEncodedMessage(
 }
 
 function toSecondaryLocation(locationHolder: AST.Token | estree.Node, message?: string): IssueLocation {
+  const loc = locationHolder.loc!;
   return {
     message,
-    column: locationHolder.loc!.start.column,
-    line: locationHolder.loc!.start.line,
-    endColumn: locationHolder.loc!.end.column,
-    endLine: locationHolder.loc!.end.line,
+    column: loc.start.column,
+    line: loc.start.line,
+    endColumn: loc.end.column,
+    endLine: loc.end.line,
   };
 }
 

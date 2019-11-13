@@ -64,7 +64,7 @@ const rule: Rule.RuleModule = {
             context.report({
               message: MESSAGE,
               node: literals[0],
-              data: { times: literals.length + "" },
+              data: { times: literals.length.toString() },
             });
           }
         });

@@ -53,7 +53,7 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context: Rule.RuleContext) {
-    const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+    const threshold: number = getThreshold();
     const isFileComplexity: boolean = context.options.includes("metric");
 
     /** Complexity of the file */
@@ -92,7 +92,7 @@ const rule: Rule.RuleModule = {
     }> = [];
 
     return {
-      ":function"(node: estree.Node) {
+      ":function": (node: estree.Node) => {
         onEnterFunction(node as estree.Function);
       },
       ":function:exit"(node: estree.Node) {
@@ -158,6 +158,10 @@ const rule: Rule.RuleModule = {
         visitConditionalExpression(node as estree.ConditionalExpression);
       },
     };
+
+    function getThreshold() {
+      return context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+    }
 
     function onEnterFunction(node: estree.Function) {
       if (enclosingFunctions.length === 0) {
