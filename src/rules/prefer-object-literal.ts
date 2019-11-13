@@ -53,8 +53,9 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
   let index = 0;
   while (index < statements.length - 1) {
     const objectDeclaration = getObjectDeclaration(statements[index]);
+    // eslint-disable-next-line sonarjs/no-collapsible-if
     if (objectDeclaration && isIdentifier(objectDeclaration.id)) {
-      if (isPropertyAssignement(statements[index + 1], objectDeclaration.id, context.getSourceCode())) {
+      if (isPropertyAssignment(statements[index + 1], objectDeclaration.id, context.getSourceCode())) {
         context.report({ message: MESSAGE, node: objectDeclaration });
       }
     }
@@ -73,7 +74,7 @@ function isEmptyObjectExpression(expression: Expression) {
   return isObjectExpression(expression) && expression.properties.length === 0;
 }
 
-function isPropertyAssignement(statement: Statement, objectIdentifier: Identifier, sourceCode: SourceCode) {
+function isPropertyAssignment(statement: Statement, objectIdentifier: Identifier, sourceCode: SourceCode) {
   if (isExpressionStatement(statement) && isAssignmentExpression(statement.expression)) {
     const { left, right } = statement.expression;
     if (isMemberExpression(left)) {

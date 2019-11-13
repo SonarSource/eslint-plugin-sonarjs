@@ -48,6 +48,7 @@ const rule: Rule.RuleModule = {
     const emptyFunctions: Set<estree.Node> = new Set();
 
     return {
+      // eslint-disable-next-line sonarjs/cognitive-complexity
       CallExpression(node: estree.Node) {
         const callExpr = node as estree.SimpleCallExpression;
         if (isIdentifier(callExpr.callee)) {
@@ -130,12 +131,14 @@ const rule: Rule.RuleModule = {
       const argsLength = callExpr.arguments.length;
       // prettier-ignore
       const expectedArguments = 
+        // eslint-disable-next-line no-nested-ternary
         paramLength === 0 ? "no arguments" : 
         paramLength === 1 ? "1 argument" : 
         `${paramLength} arguments`;
 
       // prettier-ignore
       const providedArguments = 
+        // eslint-disable-next-line no-nested-ternary
         argsLength === 0 ? "none was" : 
         argsLength === 1 ? "1 was" : 
         `${argsLength} were`;

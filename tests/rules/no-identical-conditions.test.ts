@@ -22,6 +22,8 @@ import { RuleTester } from "eslint";
 const ruleTester = new RuleTester();
 import rule = require("../../src/rules/no-identical-conditions");
 
+const message = (line: number) => `This branch duplicates the one on line ${line}`;
+
 ruleTester.run("no-identical-conditions", rule, {
   valid: [
     {
@@ -37,7 +39,7 @@ ruleTester.run("no-identical-conditions", rule, {
         if (a) {} 
         else if (a) {}
       `,
-      errors: [{ message: "This branch duplicates the one on line 2", line: 3, column: 18, endColumn: 19 }],
+      errors: [{ message: message(2), line: 3, column: 18, endColumn: 19 }],
     },
     {
       code: `
@@ -58,7 +60,7 @@ ruleTester.run("no-identical-conditions", rule, {
               message: "Original",
             },
           ],
-          message: "This branch duplicates the one on line 2",
+          message: message(2),
         }),
       ],
     },
@@ -68,7 +70,7 @@ ruleTester.run("no-identical-conditions", rule, {
         else if (a) {}
         else if (a) {}
       `,
-      errors: [{ message: "This branch duplicates the one on line 3", line: 4, column: 18, endColumn: 19 }],
+      errors: [{ message: message(3), line: 4, column: 18, endColumn: 19 }],
     },
     {
       code: `
@@ -76,7 +78,7 @@ ruleTester.run("no-identical-conditions", rule, {
         else if (b) {}
         else if (a) {}
       `,
-      errors: [{ message: "This branch duplicates the one on line 2", line: 4, column: 18, endColumn: 19 }],
+      errors: [{ message: message(2), line: 4, column: 18, endColumn: 19 }],
     },
   ],
 });
