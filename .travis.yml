@@ -1,6 +1,8 @@
 dist: trusty
 sudo: false
 language: node_js
+git:
+  depth: false
 node_js:
   - "10"
   - "8"
