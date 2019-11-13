@@ -39,10 +39,10 @@ function visitCatchClause(catchClause: CatchClause, context: Rule.RuleContext) {
     statements.length === 1 &&
     onlyRethrows(statements[0], catchClause.param, context.getSourceCode())
   ) {
-    const catchKeyword = context.getSourceCode().getFirstToken(catchClause);
+    const catchKeyword = context.getSourceCode().getFirstToken(catchClause)!;
     context.report({
       message: MESSAGE,
-      loc: catchKeyword!.loc,
+      loc: catchKeyword.loc,
     });
   }
 }
