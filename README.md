@@ -99,12 +99,12 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 
 * or enable only some rules manually:
 
-```json
+```javascript
 {
   "rules": {
     "sonarjs/cognitive-complexity": "error",
     "sonarjs/no-identical-expressions": "error"
-    // etc
+    // etc.
   }
 }
 ```
