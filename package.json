@@ -45,7 +45,7 @@
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-notice": "0.8.9",
     "eslint-plugin-sonarjs": "0.5.0",
-    "ts-jest": "24.1.0",
+    "ts-jest": "25.3.1",
     "ts-node": "5.0.1",
     "jest": "25.3.0",
     "lint-staged": "10.1.3",
