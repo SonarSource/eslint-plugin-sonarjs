@@ -87,12 +87,10 @@
   "lint-staged": {
     "*.{ts,tsx,js}": [
       "eslint",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.json": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }
