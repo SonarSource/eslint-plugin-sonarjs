@@ -38,6 +38,7 @@ const invertedOperators: { [operator: string]: string } = {
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "suggestion",
     fixable: "code",
   },
   create(context: Rule.RuleContext) {

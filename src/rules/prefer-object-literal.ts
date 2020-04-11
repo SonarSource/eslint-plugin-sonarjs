@@ -36,6 +36,9 @@ const MESSAGE =
   "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     return {
       BlockStatement: (node: Node) => checkObjectInitialization((node as BlockStatement).body, context),

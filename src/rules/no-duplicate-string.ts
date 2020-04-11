@@ -32,6 +32,7 @@ const MESSAGE = "Define a constant instead of duplicating this literal {{times}}
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "suggestion",
     schema: [{ type: "integer", minimum: 2 }],
   },
 
