@@ -37,6 +37,9 @@ const invertedOperators: { [operator: string]: string } = {
 };
 
 const rule: Rule.RuleModule = {
+  meta: {
+    fixable: "code",
+  },
   create(context: Rule.RuleContext) {
     return { UnaryExpression: (node: Node) => visitUnaryExpression(node as UnaryExpression, context) };
   },
