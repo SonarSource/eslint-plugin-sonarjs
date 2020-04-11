@@ -25,6 +25,7 @@ import * as estree from "estree";
 const rule: Rule.RuleModule = {
   meta: {
     fixable: "code",
+    type: "suggestion",
   },
   create(context: Rule.RuleContext) {
     return {

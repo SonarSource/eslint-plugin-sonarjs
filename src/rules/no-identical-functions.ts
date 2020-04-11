@@ -30,6 +30,7 @@ const message = (line: string) =>
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         enum: ["sonar-runtime"],

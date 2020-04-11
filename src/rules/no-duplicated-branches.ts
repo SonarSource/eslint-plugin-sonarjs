@@ -30,6 +30,7 @@ const MESSAGE = "This {{type}}'s code block is the same as the block for the {{t
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         // internal parameter

@@ -30,6 +30,7 @@ interface SiblingIfStatement {
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         // internal parameter

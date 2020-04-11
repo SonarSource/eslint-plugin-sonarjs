@@ -24,6 +24,9 @@ import * as estree from "estree";
 import { isReturnStatement, isBlockStatement, isBooleanLiteral, isIfStatement, getParent } from "../utils/nodes";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     return {
       IfStatement(node: estree.Node) {

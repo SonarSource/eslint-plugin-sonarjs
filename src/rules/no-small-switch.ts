@@ -25,6 +25,9 @@ import { Node, SwitchStatement } from "estree";
 const MESSAGE = '"switch" statements should have at least 3 "case" clauses';
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     return {
       SwitchStatement(node: Node) {

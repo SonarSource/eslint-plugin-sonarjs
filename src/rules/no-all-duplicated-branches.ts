@@ -30,6 +30,9 @@ const MESSAGE_CONDITIONAL_EXPRESSION =
   'This conditional operation returns the same value whether the condition is "true" or "false".';
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "problem",
+  },
   create(context: Rule.RuleContext) {
     return {
       IfStatement(node: estree.Node) {

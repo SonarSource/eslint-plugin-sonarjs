@@ -32,6 +32,7 @@ import { report, issueLocation, getMainFunctionTokenLocation, IssueLocation } fr
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         // internal parameter

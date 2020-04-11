@@ -27,6 +27,9 @@ import { collectionConstructor, writingMethods } from "../utils/collections";
 const message = "Either use this collection's contents or remove the collection.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "problem",
+  },
   create(context: Rule.RuleContext) {
     return {
       "Program:exit": () => {

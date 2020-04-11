@@ -37,6 +37,7 @@ const message = (index: string, line: string) =>
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         // internal parameter

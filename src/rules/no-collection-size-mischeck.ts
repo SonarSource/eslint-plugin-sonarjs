@@ -28,6 +28,9 @@ const CollectionLike = ["Array", "Map", "Set", "WeakMap", "WeakSet"];
 const CollectionSizeLike = ["length", "size"];
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "problem",
+  },
   create(context: Rule.RuleContext) {
     const services = context.parserServices;
     const isTypeCheckerAvailable = isRequiredParserServices(services);
