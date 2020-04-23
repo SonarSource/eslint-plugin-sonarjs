@@ -27,7 +27,7 @@ const ruleTester = new RuleTester({
 import rule = require("../../src/rules/no-unused-collection");
 
 function invalidTest(code: string) {
-  const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
+  const line = code.split("\n").findIndex((str) => str.includes("// Noncompliant")) + 1;
   return {
     code,
     errors: [

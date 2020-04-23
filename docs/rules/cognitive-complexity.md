@@ -4,7 +4,7 @@ Cognitive Complexity is a measure of how hard the control flow of a function is 
 
 ## See
 
-* [Cognitive Complexity](http://redirect.sonarsource.com/doc/cognitive-complexity.html)
+- [Cognitive Complexity](http://redirect.sonarsource.com/doc/cognitive-complexity.html)
 
 ## Configuration
 

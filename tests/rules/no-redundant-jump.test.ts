@@ -23,7 +23,7 @@ const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require("../../src/rules/no-redundant-jump");
 
 function invalid(code: string) {
-  const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
+  const line = code.split("\n").findIndex((str) => str.includes("// Noncompliant")) + 1;
   return {
     code,
     errors: [

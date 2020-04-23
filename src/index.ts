@@ -53,7 +53,7 @@ const configs: { recommended: Linter.Config & { plugins: string[] } } = {
   recommended: { plugins: ["sonarjs"], rules: {} },
 };
 
-sonarjsRules.forEach(rule => (sonarjsRuleModules[rule[0]] = require(`./rules/${rule[0]}`)));
-sonarjsRules.forEach(rule => (configs.recommended.rules![`sonarjs/${rule[0]}`] = rule[1]));
+sonarjsRules.forEach((rule) => (sonarjsRuleModules[rule[0]] = require(`./rules/${rule[0]}`)));
+sonarjsRules.forEach((rule) => (configs.recommended.rules![`sonarjs/${rule[0]}`] = rule[1]));
 
 export { sonarjsRuleModules as rules, configs };

@@ -289,7 +289,10 @@ ruleTester.run("prefer-immediate-return", rule, {
           }
         }
       `,
-      errors: [{ line: 5, column: 25, endColumn: 26 }, { line: 8, column: 25, endColumn: 26 }],
+      errors: [
+        { line: 5, column: 25, endColumn: 26 },
+        { line: 8, column: 25, endColumn: 26 },
+      ],
     },
     {
       code: `

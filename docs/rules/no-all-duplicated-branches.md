@@ -8,7 +8,8 @@ or there shouldn't be a `switch`/`if` chain at all. Note that this rule does not
 ## Noncompliant Code Example
 
 ```javascript
-if (b == 0) { // Noncompliant
+if (b == 0) {
+  // Noncompliant
   doOneMoreThing();
 } else {
   doOneMoreThing();
@@ -16,7 +17,9 @@ if (b == 0) { // Noncompliant
 
 let a = b === 0 ? getValue() : getValue(); // Noncompliant
 
-switch (i) { // Noncompliant
+switch (
+  i // Noncompliant
+) {
   case 1:
     doSomething();
     break;

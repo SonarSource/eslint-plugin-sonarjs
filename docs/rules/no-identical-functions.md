@@ -12,7 +12,8 @@ function calculateCode() {
   return code;
 }
 
-function getName() { // Noncompliant
+function getName() {
+  // Noncompliant
   doTheThing();
   doOtherThing();
   return code;
@@ -27,7 +28,7 @@ function calculateCode() {
   doOtherThing();
   return code;
 }
-  
+
 function getName() {
   return calculateCode();
 }

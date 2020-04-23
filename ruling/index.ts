@@ -41,7 +41,7 @@ function run() {
   }
 
   console.log("Found rules:");
-  rules.forEach(rule => {
+  rules.forEach((rule) => {
     console.log("  *", rule);
   });
   console.log("");
@@ -67,10 +67,10 @@ function run() {
   const report = cli.executeOnFiles([sourcesPath]);
 
   const results: Results = {};
-  rules.forEach(rule => (results[rule] = {}));
+  rules.forEach((rule) => (results[rule] = {}));
 
-  report.results.forEach(result => {
-    result.messages.forEach(message => {
+  report.results.forEach((result) => {
+    result.messages.forEach((message) => {
       if (message.ruleId) {
         addToResults(results, getFileNameForSnapshot(result.filePath), message.ruleId, message.line);
       } else {
@@ -92,8 +92,8 @@ function run() {
 function getRules(rule?: string) {
   const rules = fs
     .readdirSync(rulesPath)
-    .filter(file => file.endsWith(".js"))
-    .map(file => file.substring(0, file.indexOf(".js")));
+    .filter((file) => file.endsWith(".js"))
+    .map((file) => file.substring(0, file.indexOf(".js")));
 
   if (rule) {
     return rules.includes(rule) ? [rule] : [];
@@ -104,7 +104,7 @@ function getRules(rule?: string) {
 
 function getEslintRules(rules: string[]) {
   const eslintRules: { [rule: string]: "error" } = {};
-  rules.forEach(rule => {
+  rules.forEach((rule) => {
     eslintRules[rule] = "error";
   });
   return eslintRules;
@@ -133,12 +133,12 @@ interface Results {
 }
 
 function writeResults(results: Results) {
-  Object.keys(results).forEach(rule => {
+  Object.keys(results).forEach((rule) => {
     const content: string[] = [];
 
     Object.keys(results[rule])
       .sort()
-      .forEach(file => {
+      .forEach((file) => {
         const lines = results[rule][file];
         content.push(`${file}: ${lines.join()}`);
       });
@@ -152,12 +152,12 @@ function checkResults(actual: Results) {
   const expected: Results = readSnapshots(actualRules);
   let passed = true;
 
-  actualRules.forEach(rule => {
+  actualRules.forEach((rule) => {
     const expectedFiles = expected[rule];
     const actualFiles = actual[rule] || {};
     const allFiles = lodash.union(Object.keys(actualFiles), Object.keys(expectedFiles));
 
-    allFiles.forEach(file => {
+    allFiles.forEach((file) => {
       const expectedLines = expectedFiles[file] || [];
       const actualLines = actualFiles[file] || [];
 
@@ -195,17 +195,17 @@ function readSnapshots(rules: string[]): Results {
   const snapshotsDir = path.join(__dirname, "snapshots");
   const results: Results = {};
 
-  rules.forEach(rule => {
+  rules.forEach((rule) => {
     results[rule] = {};
     const content = readSnapshotFile(snapshotsDir, rule);
-    content.forEach(line => {
+    content.forEach((line) => {
       const colonIndex = line.indexOf(":");
       if (colonIndex !== -1) {
         const file = line.substring(0, colonIndex);
         const lines = line
           .substr(colonIndex + 1)
           .split(",")
-          .map(s => parseInt(s, 10));
+          .map((s) => parseInt(s, 10));
         results[rule][file] = lines;
       }
     });

@@ -1,6 +1,6 @@
 # prefer-immediate-return
 
-:wrench: *fixable*
+:wrench: _fixable_
 
 Declaring a variable only to immediately return or throw it is a bad practice.
 
