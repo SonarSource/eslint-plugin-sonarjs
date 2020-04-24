@@ -34,7 +34,7 @@
     "@types/eslint": "6.8.0",
     "@types/estree": "0.0.39",
     "@types/jest": "25.2.1",
-    "@types/lodash": "4.14.149",
+    "@types/lodash": "4.14.150",
     "@types/minimist": "1.2.0",
     "@types/node": "12.12.6",
     "@typescript-eslint/experimental-utils": "2.6.1",

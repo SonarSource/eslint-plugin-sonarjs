@@ -68,7 +68,9 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
 
 function getObjectDeclaration(statement: Statement) {
   if (isVariableDeclaration(statement)) {
-    return statement.declarations.find(declaration => !!declaration.init && isEmptyObjectExpression(declaration.init));
+    return statement.declarations.find(
+      (declaration) => !!declaration.init && isEmptyObjectExpression(declaration.init),
+    );
   }
   return undefined;
 }
