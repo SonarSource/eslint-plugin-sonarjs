@@ -46,19 +46,19 @@ const rule: Rule.RuleModule = {
         const declaredIdentifier = getOnlyDeclaredVariable(lastButOne);
 
         if (returnedIdentifier && declaredIdentifier) {
-          const sameVariable = getVariables(context).find(variable => {
+          const sameVariable = getVariables(context).find((variable) => {
             return (
-              variable.references.find(ref => ref.identifier === returnedIdentifier) !== undefined &&
-              variable.references.find(ref => ref.identifier === declaredIdentifier.id) !== undefined
+              variable.references.find((ref) => ref.identifier === returnedIdentifier) !== undefined &&
+              variable.references.find((ref) => ref.identifier === declaredIdentifier.id) !== undefined
             );
           });
 
           // there must be only one "read" - in `return` or `throw`
-          if (sameVariable && sameVariable.references.filter(ref => ref.isRead()).length === 1) {
+          if (sameVariable && sameVariable.references.filter((ref) => ref.isRead()).length === 1) {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,
-              fix: fixer => fix(fixer, last, lastButOne, declaredIdentifier.init),
+              fix: (fixer) => fix(fixer, last, lastButOne, declaredIdentifier.init),
             });
           }
         }

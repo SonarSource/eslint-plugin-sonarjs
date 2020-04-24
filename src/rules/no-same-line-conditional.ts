@@ -42,7 +42,7 @@ const rule: Rule.RuleModule = {
       const sourceCode = context.getSourceCode();
       const siblingIfStatements = getSiblingIfStatements(statements);
 
-      siblingIfStatements.forEach(siblingIfStatement => {
+      siblingIfStatements.forEach((siblingIfStatement) => {
         const precedingIf = siblingIfStatement.first;
         const followingIf = siblingIfStatement.following;
         if (

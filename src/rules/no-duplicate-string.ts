@@ -43,7 +43,7 @@ const rule: Rule.RuleModule = {
       Literal: (node: Node) => {
         const literal = node as SimpleLiteral;
         const parent = getParent(context);
-        if (typeof literal.value === "string" && (parent && parent.type !== "ExpressionStatement")) {
+        if (typeof literal.value === "string" && parent && parent.type !== "ExpressionStatement") {
           const stringContent = literal.value.trim();
 
           if (
@@ -59,7 +59,7 @@ const rule: Rule.RuleModule = {
       },
 
       "Program:exit"() {
-        literalsByValue.forEach(literals => {
+        literalsByValue.forEach((literals) => {
           if (literals.length >= threshold) {
             context.report({
               message: MESSAGE,

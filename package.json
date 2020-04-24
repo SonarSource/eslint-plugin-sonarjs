@@ -34,7 +34,7 @@
     "@types/eslint": "6.8.0",
     "@types/estree": "0.0.39",
     "@types/jest": "25.2.1",
-    "@types/lodash": "4.14.149",
+    "@types/lodash": "4.14.150",
     "@types/minimist": "1.2.0",
     "@types/node": "12.12.6",
     "@typescript-eslint/experimental-utils": "2.6.1",
@@ -45,14 +45,14 @@
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-notice": "0.8.10",
     "eslint-plugin-sonarjs": "0.5.0",
-    "ts-jest": "25.4.0",
-    "ts-node": "5.0.1",
     "jest": "25.4.0",
     "lint-staged": "10.1.7",
     "lodash": "4.17.15",
     "minimist": "1.2.5",
     "prettier": "2.0.5",
     "rimraf": "3.0.2",
+    "ts-jest": "25.4.0",
+    "ts-node": "5.0.1",
     "typescript": "3.8.3"
   },
   "prettier": {
@@ -92,5 +92,6 @@
     "*.json": [
       "prettier --write"
     ]
-  }
+  },
+  "dependencies": {}
 }

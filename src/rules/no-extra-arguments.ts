@@ -52,7 +52,7 @@ const rule: Rule.RuleModule = {
       CallExpression(node: estree.Node) {
         const callExpr = node as estree.SimpleCallExpression;
         if (isIdentifier(callExpr.callee)) {
-          const reference = context.getScope().references.find(ref => ref.identifier === callExpr.callee);
+          const reference = context.getScope().references.find((ref) => ref.identifier === callExpr.callee);
           const definition = reference && getSingleDefinition(reference);
           if (definition) {
             if (definition.type === "FunctionName") {
@@ -106,12 +106,12 @@ const rule: Rule.RuleModule = {
 
     function checkArguments(identifier: estree.Identifier) {
       if (identifier.name === "arguments") {
-        const reference = context.getScope().references.find(ref => ref.identifier === identifier);
+        const reference = context.getScope().references.find((ref) => ref.identifier === identifier);
         const definition = reference && getSingleDefinition(reference);
         // special `arguments` variable has no definition
         if (!definition) {
           const ancestors = context.getAncestors().reverse();
-          const fn = ancestors.find(node => isFunctionDeclaration(node) || isFunctionExpression(node));
+          const fn = ancestors.find((node) => isFunctionDeclaration(node) || isFunctionExpression(node));
           if (fn) {
             usingArguments.add(fn);
           }
@@ -120,7 +120,7 @@ const rule: Rule.RuleModule = {
     }
 
     function checkFunction(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
-      const hasRest = functionNode.params.some(param => param.type === "RestElement");
+      const hasRest = functionNode.params.some((param) => param.type === "RestElement");
       if (!hasRest && callExpr.arguments.length > functionNode.params.length) {
         callExpressionsToCheck.push({ callExpr, functionNode });
       }

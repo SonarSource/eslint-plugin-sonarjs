@@ -186,13 +186,13 @@ const rule: Rule.RuleModule = {
         // top level function
         if (topLevelHasStructuralComplexity) {
           let totalComplexity = topLevelOwnComplexity;
-          secondLevelFunctions.forEach(secondLevelFunction => {
+          secondLevelFunctions.forEach((secondLevelFunction) => {
             totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
           checkFunction(totalComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
         } else {
           checkFunction(topLevelOwnComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
-          secondLevelFunctions.forEach(secondLevelFunction => {
+          secondLevelFunctions.forEach((secondLevelFunction) => {
             checkFunction(
               secondLevelFunction.complexityIfThisSecondaryIsTopLevel,
               getMainFunctionTokenLocation(secondLevelFunction.node, secondLevelFunction.parent, context),
@@ -329,7 +329,7 @@ const rule: Rule.RuleModule = {
         return;
       }
       if (complexityAmount > threshold) {
-        const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
+        const secondaryLocations: IssueLocation[] = complexity.map((complexityPoint) => {
           const { complexity, location } = complexityPoint;
           const message = complexity === 1 ? "+1" : `+${complexity} (incl. ${complexity - 1} for nesting)`;
           return issueLocation(location, undefined, message);

@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
       SwitchStatement(node: Node) {
         const switchStatement = node as SwitchStatement;
         const { cases } = switchStatement;
-        const hasDefault = cases.some(x => !x.test);
+        const hasDefault = cases.some((x) => !x.test);
         if (cases.length < 2 || (cases.length === 2 && hasDefault)) {
           const firstToken = context.getSourceCode().getFirstToken(node);
           if (firstToken) {
