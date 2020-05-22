@@ -23,6 +23,9 @@ import { Rule } from "eslint";
 import * as estree from "estree";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    fixable: "code",
+  },
   create(context: Rule.RuleContext) {
     return {
       ForStatement(node: estree.Node) {
