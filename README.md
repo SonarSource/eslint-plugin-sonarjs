@@ -29,7 +29,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
-* Boolean checks should not be inverted ([`no-inverted-boolean-check`])
+* Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * Jump statements should not be redundant ([`no-redundant-jump`])
 * Conditionals should start on new lines ([`no-same-line-conditional`])
@@ -39,7 +39,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Object literal syntax should be used ([`prefer-object-literal`])
 * Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
-* A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*) 
+* A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*)
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`max-switch-cases`]: ./docs/rules/max-switch-cases.md
