@@ -49,7 +49,7 @@
     "rimraf": "2.6.2",
     "ts-jest": "24.1.0",
     "ts-node": "5.0.1",
-    "typescript": "3.6.4"
+    "typescript": "3.9.3"
   },
   "prettier": {
     "printWidth": 120,
