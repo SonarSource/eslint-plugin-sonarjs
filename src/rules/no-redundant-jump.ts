@@ -27,6 +27,9 @@ const message = "Remove this redundant jump.";
 const loops = "WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     function reportIfLastStatement(node: estree.ContinueStatement | estree.ReturnStatement) {
       const withArgument = node.type === "ContinueStatement" ? !!node.label : !!node.argument;

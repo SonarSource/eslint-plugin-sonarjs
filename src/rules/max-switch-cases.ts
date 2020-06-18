@@ -29,6 +29,7 @@ let maxSwitchCases = DEFAULT_MAX_SWITCH_CASES;
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "suggestion",
     schema: [
       {
         type: "integer",

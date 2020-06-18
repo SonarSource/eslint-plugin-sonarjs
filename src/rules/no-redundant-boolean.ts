@@ -26,6 +26,9 @@ import { getParent, isBooleanLiteral, isIfStatement, isConditionalExpression } f
 const MESSAGE = "Remove the unnecessary boolean literal.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     return {
       BinaryExpression(node: Node) {

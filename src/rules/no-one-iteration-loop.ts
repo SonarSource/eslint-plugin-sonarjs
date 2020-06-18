@@ -24,6 +24,9 @@ import { Node, WhileStatement, ForStatement } from "estree";
 import { isContinueStatement, getParent } from "../utils/nodes";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "problem",
+  },
   create(context: Rule.RuleContext) {
     const loopingNodes: Set<Node> = new Set();
     const loops: Set<Node> = new Set();

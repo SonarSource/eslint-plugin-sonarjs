@@ -52,6 +52,9 @@ function isReturnValueUsed(callExpr: Node, context: Rule.RuleContext) {
 }
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "problem",
+  },
   create(context: Rule.RuleContext) {
     const callExpressionsToCheck: Map<Identifier, Function> = new Map();
     const functionsWithReturnValue: Set<Function> = new Set();

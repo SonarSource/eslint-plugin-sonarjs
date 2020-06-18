@@ -44,6 +44,7 @@ type OptionalLocation = estree.SourceLocation | null | undefined;
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "suggestion",
     schema: [
       { type: "integer", minimum: 0 },
       {

@@ -27,6 +27,9 @@ import { areEquivalent } from "../utils/equivalence";
 const MESSAGE = "Add logic to this catch clause or eliminate it and rethrow the exception automatically.";
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: "suggestion",
+  },
   create(context: Rule.RuleContext) {
     return { CatchClause: (node: Node) => visitCatchClause(node as CatchClause, context) };
   },

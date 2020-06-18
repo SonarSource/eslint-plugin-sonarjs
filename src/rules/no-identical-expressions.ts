@@ -50,6 +50,7 @@ function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "problem",
     schema: [
       {
         // internal parameter

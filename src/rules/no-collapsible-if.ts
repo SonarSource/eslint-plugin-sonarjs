@@ -26,6 +26,7 @@ import { report, issueLocation } from "../utils/locations";
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: "suggestion",
     schema: [
       {
         // internal parameter
