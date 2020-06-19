@@ -4,7 +4,7 @@
   "description": "SonarJS rules for ESLint",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "repository": "git@github.com:SonarSource/eslint-plugin-sonarjs.git",
+  "repository": "https://github.com/SonarSource/eslint-plugin-sonarjs",
   "license": "LGPL-3.0",
   "keywords": [
     "sonarjs",
