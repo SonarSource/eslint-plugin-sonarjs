@@ -18,13 +18,12 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-unused-collection");
 
 const ruleTester = new RuleTester({
   parser: require.resolve("@typescript-eslint/parser"),
   parserOptions: { ecmaVersion: 2018, sourceType: "module" },
 });
-
-import rule = require("../../src/rules/no-unused-collection");
 
 function invalidTest(code: string) {
   const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
@@ -51,7 +50,7 @@ ruleTester.run("Primitive return types should be used.", rule, {
           let x = [];
           return x;
       }
-      
+
       function ok2() {
           let x = [1, 2];
           console.log(x[0]);
@@ -60,29 +59,29 @@ ruleTester.run("Primitive return types should be used.", rule, {
         let x = [1, 2], y: number;
         y = x[1];
       }
-      
+
       function ok4() {
           let x = [1, 2];
           x.forEach(element => console.log(element));
       }
-      
+
       function ok5() {
           let x = [1, 2];
           for (let i in x) {
               console.log(i);
           }
       }
-      
+
       function ok6() {
           let x = [1, 2];
           x = x.concat(3, 4);
       }
-      
+
       function ok7() {
           let x = [1, 2];
           x.concat(3, 4);
       }
-      
+
       function ok8() {
           let x = [1, 2];
           function foo() {return x;}
@@ -96,26 +95,26 @@ ruleTester.run("Primitive return types should be used.", rule, {
       function parameterUpdated(p) {
           p.push(1);
       }
-      
+
       function propertyUpdated() {
           let a = {x};
-          a.x.push(1); 
+          a.x.push(1);
           return a;
       }
-  
+
       export const EXPORTED_ARRAY = [];
-      
+
       function ok9() {
           let x = [1, 2];
           x = EXPORTED_ARRAY;
           x.push(1);
       }
-  
+
       function ok10() {
           let {x} = {x: EXPORTED_ARRAY};
           x.push(1);
       }
-  
+
       function ok11() {
           const foo = [ [1, 2],  [3, 4]];
           for (const bar of foo) {
@@ -123,7 +122,7 @@ ruleTester.run("Primitive return types should be used.", rule, {
           }
           return foo;
       }
-  
+
       function ok12() {
         const foo = [ [1, 2],  [3, 4]];
         let bar: number[];
@@ -145,7 +144,7 @@ ruleTester.run("Primitive return types should be used.", rule, {
         let array = new Uint16Array(2); // FN
         array[1] = 43;
       }
-  
+
       function ok(buffer) {
           let bufferView = new Uint16Array(buffer);
           bufferView[1] = 43;

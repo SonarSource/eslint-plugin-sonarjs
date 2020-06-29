@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-small-switch");
 
 const ruleTester = new RuleTester();
-import rule = require("../../src/rules/no-small-switch");
 
 ruleTester.run("no-small-switch", rule, {
   valid: [

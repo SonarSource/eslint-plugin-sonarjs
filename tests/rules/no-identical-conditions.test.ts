@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-identical-conditions");
 
 const ruleTester = new RuleTester();
-import rule = require("../../src/rules/no-identical-conditions");
 
 const message = (line: number) => `This branch duplicates the one on line ${line}`;
 
@@ -36,14 +36,14 @@ ruleTester.run("no-identical-conditions", rule, {
   invalid: [
     {
       code: `
-        if (a) {} 
+        if (a) {}
         else if (a) {}
       `,
       errors: [{ message: message(2), line: 3, column: 18, endColumn: 19 }],
     },
     {
       code: `
-        if (a) {} 
+        if (a) {}
         //  ^>
         else if (a) {}
         //       ^
@@ -66,7 +66,7 @@ ruleTester.run("no-identical-conditions", rule, {
     },
     {
       code: `
-        if (b) {} 
+        if (b) {}
         else if (a) {}
         else if (a) {}
       `,
@@ -74,7 +74,7 @@ ruleTester.run("no-identical-conditions", rule, {
     },
     {
       code: `
-        if (a) {} 
+        if (a) {}
         else if (b) {}
         else if (a) {}
       `,

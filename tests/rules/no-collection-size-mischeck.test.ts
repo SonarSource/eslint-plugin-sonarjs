@@ -19,9 +19,9 @@
  */
 import * as path from "path";
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-collection-size-mischeck");
 
 const ruleTesterJs = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-collection-size-mischeck");
 
 ruleTesterJs.run("Collection sizes and array length comparisons should make sense", rule, {
   valid: [

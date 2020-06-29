@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-inverted-boolean-check");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-inverted-boolean-check");
 
 ruleTester.run("no-inverted-boolean-check", rule, {
   valid: [
