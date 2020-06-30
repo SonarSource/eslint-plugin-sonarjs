@@ -186,6 +186,11 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 3, column: 19, endColumn: 21 }],
+      output: `
+        function let_returned() {
+          return 42;
+        }
+      `,
     },
     {
       code: `
@@ -195,6 +200,11 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 3, column: 21, endColumn: 23 }],
+      output: `
+        function const_returned() {
+          return 42;
+        }
+      `,
     },
     {
       code: `
@@ -205,6 +215,12 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 4, column: 19, endColumn: 21 }],
+      output: `
+        function code_before_declaration() {
+          foo();
+          return 42;
+        }
+      `,
     },
     {
       code: `
@@ -225,7 +241,7 @@ ruleTester.run("prefer-immediate-return", rule, {
             let x = foo();
             return x;
           }
-          
+
           try {
             let x = foo();
             return x;
@@ -244,6 +260,21 @@ ruleTester.run("prefer-immediate-return", rule, {
         { line: 12, column: 21, endColumn: 26 },
         { line: 15, column: 21, endColumn: 26 },
       ],
+      output: `
+        function different_blocks() {
+          if (foo) {
+            return foo();
+          }
+
+          try {
+            return foo();
+          } catch (e) {
+            return foo();
+          } finally {
+            return foo();
+          }
+        }
+      `,
     },
     {
       code: `
@@ -258,6 +289,16 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 4, column: 21, endColumn: 26 }],
+      output: `
+        function two_declarations(a) {
+          if (a) {
+            return foo();
+          } else {
+            let x = bar();
+            return x + 42;
+          }
+        }
+      `,
     },
     {
       code: `
@@ -275,6 +316,19 @@ ruleTester.run("prefer-immediate-return", rule, {
         }
       `,
       errors: [{ line: 3, column: 23, endLine: 11, endColumn: 12 }],
+      output: `
+        function homonymous_is_used() {
+          return {
+            doSomethingElse(p) {
+              var bar = 2;
+              return p + bar;
+            },
+            doSomething() {
+              return this.doSomethingElse(1);
+            },
+          };
+        }
+      `,
     },
     {
       code: `
@@ -289,7 +343,20 @@ ruleTester.run("prefer-immediate-return", rule, {
           }
         }
       `,
-      errors: [{ line: 5, column: 25, endColumn: 26 }, { line: 8, column: 25, endColumn: 26 }],
+      errors: [
+        { line: 5, column: 25, endColumn: 26 },
+        { line: 8, column: 25, endColumn: 26 },
+      ],
+      output: `
+        function inside_switch(x) {
+          switch (x) {
+            case 1:
+              return 3;
+            default:
+              return 2;
+          }
+        }
+      `,
     },
     {
       code: `
@@ -318,6 +385,13 @@ ruleTester.run("prefer-immediate-return", rule, {
           message: 'Immediately return this expression instead of assigning it to the temporary variable "x".',
         },
       ],
+      output: `
+      function foo() {
+        if (cond) {
+          return 42;
+      }
+      }
+      `,
     },
   ],
 });
