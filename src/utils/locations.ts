@@ -67,7 +67,7 @@ export function getMainFunctionTokenLocation(
       .getSourceCode()
       .getTokensBefore(fn.body)
       .reverse()
-      .find(token => token.value === "=>");
+      .find((token) => token.value === "=>");
 
     location = token && token.loc;
   }
@@ -146,7 +146,7 @@ function getTokenByValue(node: estree.Node, value: string, context: Rule.RuleCon
   return context
     .getSourceCode()
     .getTokens(node)
-    .find(token => token.value === value);
+    .find((token) => token.value === value);
 }
 
 export function getFirstTokenAfter(node: estree.Node, context: Rule.RuleContext): AST.Token | null {

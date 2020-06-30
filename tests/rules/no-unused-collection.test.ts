@@ -26,7 +26,7 @@ const ruleTester = new RuleTester({
 });
 
 function invalidTest(code: string) {
-  const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
+  const line = code.split("\n").findIndex((str) => str.includes("// Noncompliant")) + 1;
   return {
     code,
     errors: [
