@@ -19,15 +19,15 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4624
 
-import { Rule } from 'eslint';
-import { Node } from 'estree';
+import { Rule } from "eslint";
+import { Node } from "estree";
 
-const message = 'Refactor this code to not use nested template literals.';
+const message = "Refactor this code to not use nested template literals.";
 
 const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
-      'TemplateLiteral TemplateLiteral'(node: Node) {
+      "TemplateLiteral TemplateLiteral"(node: Node) {
         context.report({
           message,
           node,
