@@ -25,14 +25,17 @@ import rule = require("../../src/rules/no-nested-template-literals");
 ruleTester.run("Template literals should not be nested", rule, {
   valid: [
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let nestedMessage = `${count} ${color}`;",
     },
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${color ? nestedMessage : count} apples`;",
     },
   ],
   invalid: [
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${color ? `${x ? `indeed 0` : count} ${color}` : count} apples`;",
       errors: [
         {
@@ -52,25 +55,31 @@ ruleTester.run("Template literals should not be nested", rule, {
       ],
     },
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${color ? `${count} ${color}` : count} apples`;",
       errors: 1,
     },
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${color ? `${x ? `indeed ${0}` : count} ${color}` : count} apples`;",
       errors: 2,
     },
     {
       code:
         "function tag(strings, ...keys) {console.log(strings[2]);}\n" +
+        // eslint-disable-next-line no-template-curly-in-string
         "let message1 = tag`I have ${color ? `${count} ${color}` : count} apples`;\n" +
+        // eslint-disable-next-line no-template-curly-in-string
         "let message2 = tag`I have ${color ? tag`${count} ${color}` : count} apples`;",
       errors: 2,
     },
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${color ? `${count} ${color}` : `this is ${count}`} apples`;",
       errors: 2,
     },
     {
+      // eslint-disable-next-line no-template-curly-in-string
       code: "let message = `I have ${`${count} ${color}`} ${`this is ${count}`} apples`;",
       errors: 2,
     },
