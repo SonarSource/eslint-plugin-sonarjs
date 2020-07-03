@@ -30,6 +30,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
+* Template literals should not be nested ([`no-nested-template-literals`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * Jump statements should not be redundant ([`no-redundant-jump`])
 * Conditionals should start on new lines ([`no-same-line-conditional`])
@@ -54,6 +55,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
 [`no-inverted-boolean-check`]: ./docs/rules/no-inverted-boolean-check.md
+[`no-nested-templete-literals`]: ./docs/rules/no-nested-template-literals.md
 [`no-one-iteration-loop`]: ./docs/rules/no-one-iteration-loop.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-redundant-jump`]: ./docs/rules/no-redundant-jump.md
