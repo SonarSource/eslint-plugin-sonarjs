@@ -27,6 +27,7 @@ tests/
 .npmignore
 .travis.yml
 .eslintrc.js
+.editorconfig
 sonar-project.properties
 test-report.xml
 tsconfig.json
