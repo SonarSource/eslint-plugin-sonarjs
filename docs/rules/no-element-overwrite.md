@@ -6,7 +6,7 @@ It is highly suspicious when a value is saved for a key or index and then uncond
 
 ```javascript
 fruits[1] = "banana";
-fruits[1] = "apple";  // Noncompliant - value on index 1 is overwritten
+fruits[1] = "apple"; // Noncompliant - value on index 1 is overwritten
 
 myMap.set("key", 1);
 myMap.set("key", 2); // Noncompliant - value for key "key" is replaced

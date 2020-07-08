@@ -10,36 +10,36 @@ _[We also have a plugin for TSLint](https://github.com/SonarSource/SonarTS)_
 
 Rules in this category aim to find places in code which have a high chance of being bugs, i.e. don't work as intended.
 
-* All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
-* Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
-* Function calls should not pass extra arguments ([`no-extra-arguments`])
-* Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
-* Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
-* Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
-* The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
+- All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
+- Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
+- Function calls should not pass extra arguments ([`no-extra-arguments`])
+- Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
+- Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
+- Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
+- The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
 
 ### Code Smell Detection :pig:
 
 Code Smells, or maintainability issues, are raised for places of code which might be costly to change in the future. These rules also help to keep the high code quality and readability. And finally some rules report issues on different suspicious code patters.
 
-* Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
-* "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
-* Collapsible "if" statements should be merged ([`no-collapsible-if`])
-* Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`])
-* String literals should not be duplicated ([`no-duplicate-string`])
-* Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
-* Functions should not have identical implementations ([`no-identical-functions`])
-* Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
-* Boolean literals should not be redundant ([`no-redundant-boolean`])
-* Jump statements should not be redundant ([`no-redundant-jump`])
-* Conditionals should start on new lines ([`no-same-line-conditional`])
-* "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
-* Collection and array contents should be used ([`no-unused-collection`])
-* "catch" clauses should do more than rethrow ([`no-useless-catch`])
-* Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
-* Object literal syntax should be used ([`prefer-object-literal`])
-* Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
-* A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*)
+- Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
+- "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
+- Collapsible "if" statements should be merged ([`no-collapsible-if`])
+- Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`])
+- String literals should not be duplicated ([`no-duplicate-string`])
+- Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
+- Functions should not have identical implementations ([`no-identical-functions`])
+- Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: _fixable_)
+- Boolean literals should not be redundant ([`no-redundant-boolean`])
+- Jump statements should not be redundant ([`no-redundant-jump`])
+- Conditionals should start on new lines ([`no-same-line-conditional`])
+- "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
+- Collection and array contents should be used ([`no-unused-collection`])
+- "catch" clauses should do more than rethrow ([`no-useless-catch`])
+- Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: _fixable_)
+- Object literal syntax should be used ([`prefer-object-literal`])
+- Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
+- A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: _fixable_)
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
 [`max-switch-cases`]: ./docs/rules/max-switch-cases.md
@@ -73,15 +73,15 @@ Node.js (>=6.x).
 
 ## Usage
 
-* If you don't have ESLint yet configured for your project, follow [these instructions](https://github.com/eslint/eslint#installation-and-usage).
-* Install `eslint-plugin-sonarjs` using `npm` (or `yarn`) for you project or globally:
+- If you don't have ESLint yet configured for your project, follow [these instructions](https://github.com/eslint/eslint#installation-and-usage).
+- Install `eslint-plugin-sonarjs` using `npm` (or `yarn`) for you project or globally:
 
 ```sh
 npm install eslint-plugin-sonarjs --save-dev # install for your project
 npm install eslint-plugin-sonarjs -g         # or install globally
 ```
 
-* Add `eslint-plugin-sonarjs` to the `plugins` option of your `.eslintrc`:
+- Add `eslint-plugin-sonarjs` to the `plugins` option of your `.eslintrc`:
 
 ```json
 {
@@ -89,7 +89,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 }
 ```
 
-* Add `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
+- Add `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
 
 ```json
 {
@@ -97,7 +97,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 }
 ```
 
-* or enable only some rules manually:
+- or enable only some rules manually:
 
 ```javascript
 {

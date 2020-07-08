@@ -18,11 +18,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-useless-catch");
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 10 },
 });
-import rule = require("../../src/rules/no-useless-catch");
 
 ruleTester.run("no-useless-catch", rule, {
   valid: [

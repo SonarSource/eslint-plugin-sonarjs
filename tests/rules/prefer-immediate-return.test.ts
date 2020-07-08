@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/prefer-immediate-return");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/prefer-immediate-return");
 
 ruleTester.run("prefer-immediate-return", rule, {
   valid: [
@@ -225,7 +225,7 @@ ruleTester.run("prefer-immediate-return", rule, {
             let x = foo();
             return x;
           }
-          
+
           try {
             let x = foo();
             return x;
@@ -289,7 +289,10 @@ ruleTester.run("prefer-immediate-return", rule, {
           }
         }
       `,
-      errors: [{ line: 5, column: 25, endColumn: 26 }, { line: 8, column: 25, endColumn: 26 }],
+      errors: [
+        { line: 5, column: 25, endColumn: 26 },
+        { line: 8, column: 25, endColumn: 26 },
+      ],
     },
     {
       code: `

@@ -22,17 +22,17 @@ import * as path from "path";
 import { configs, rules } from "../src/index";
 
 const rulesPath = path.join(__dirname, "../src/rules");
-const existingRules = fs.readdirSync(rulesPath).map(file => file.substring(0, file.indexOf(".ts")));
+const existingRules = fs.readdirSync(rulesPath).map((file) => file.substring(0, file.indexOf(".ts")));
 
 it("should declare all rules in recommended config", () => {
-  existingRules.forEach(rule => {
+  existingRules.forEach((rule) => {
     expect(configs.recommended.rules).toHaveProperty(`sonarjs/${rule}`);
   });
   expect(Object.keys(configs.recommended.rules!)).toHaveLength(existingRules.length);
 });
 
 it("should declare all rules", () => {
-  existingRules.forEach(rule => {
+  existingRules.forEach((rule) => {
     expect(rules).toHaveProperty(rule);
   });
   expect(Object.keys(rules)).toHaveLength(existingRules.length);
@@ -41,7 +41,7 @@ it("should declare all rules", () => {
 it("should document all rules", () => {
   const root = path.join(__dirname, "../");
   const README = fs.readFileSync(`${root}/README.md`, "utf8");
-  existingRules.forEach(rule => {
+  existingRules.forEach((rule) => {
     expect(README.includes(rule)).toBe(true);
     expect(fs.existsSync(`${root}/docs/rules/${rule}.md`)).toBe(true);
   });

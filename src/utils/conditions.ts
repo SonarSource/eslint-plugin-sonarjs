@@ -53,7 +53,7 @@ export function collectSwitchBranches(node: estree.SwitchStatement) {
       const isLast = index === node.cases.length - 1;
       return isLast || clause.consequent.length > 0;
     })
-    .map(clause => takeWithoutBreak(clause.consequent));
+    .map((clause) => takeWithoutBreak(clause.consequent));
   return { branches, endsWithDefault };
 }
 

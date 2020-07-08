@@ -19,9 +19,9 @@
  */
 import { RuleTester } from "eslint";
 import { IssueLocation } from "../../src/utils/locations";
+import rule = require("../../src/rules/no-identical-functions");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-identical-functions");
 
 ruleTester.run("no-identical-functions", rule, {
   valid: [
@@ -135,13 +135,13 @@ ruleTester.run("no-identical-functions", rule, {
           return 42;
         }
       }
-      
+
       async function asyncFunction() { // Noncompliant
         console.log("Hello");
         console.log("World");
         return 42;
       }
-      
+
       let asyncExpression = async function () { // Noncompliant
         console.log("Hello");
         console.log("World");
@@ -217,7 +217,7 @@ ruleTester.run("no-identical-functions", rule, {
           console.log("World");
           return 42;
         },
-      
+
         bar() {
           console.log("Hello");
           console.log("World");
@@ -235,7 +235,7 @@ ruleTester.run("no-identical-functions", rule, {
           console.log("World");
           return 42;
         },
-      
+
         bar() {
       //^^^
           console.log("Hello");

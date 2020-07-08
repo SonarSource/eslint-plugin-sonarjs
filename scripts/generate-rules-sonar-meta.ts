@@ -26,7 +26,10 @@ const meta = [];
 const readmeContent = fs.readFileSync("README.md", "utf-8");
 
 const lines = readmeContent.split(/\n/);
-let state: "before-bug" | "bug" | "between" | "code-smell" = "before-bug";
+
+let beforeBug: "before-bug";
+let codeSmell: "code-smell";
+let state: beforeBug | "bug" | "between" | codeSmell = beforeBug;
 for (const line of lines) {
   if (state === "before-bug" && line.startsWith("*")) {
     state = "bug";
@@ -41,10 +44,10 @@ for (const line of lines) {
   }
 
   if (state === "between" && line.startsWith("*")) {
-    state = "code-smell";
+    state = codeSmell;
   }
 
-  if (state === "code-smell") {
+  if (state === codeSmell) {
     if (line.startsWith("*")) {
       addRule(line, "CODE_SMELL");
     } else {
@@ -54,10 +57,7 @@ for (const line of lines) {
 }
 
 function addRule(line: string, type: string) {
-  const name = line
-    .substr(2)
-    .split("([")[0]
-    .trim();
+  const name = line.substr(2).split("([")[0].trim();
   const key = "sonarjs/" + line.split("`")[1].trim();
 
   meta.push({

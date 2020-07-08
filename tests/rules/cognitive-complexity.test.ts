@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/cognitive-complexity");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018, sourceType: "module" } });
-import rule = require("../../src/rules/cognitive-complexity");
 
 ruleTester.run("cognitive-complexity", rule, {
   valid: [{ code: `function zero_complexity() {}`, options: [0] }],
@@ -204,7 +204,7 @@ ruleTester.run("cognitive-complexity", rule, {
           if (condition) {} else {} // +2 "if", +1 "else"
           try {}
           catch (someError) {} // +2 "catch"
-        } else { // +1 
+        } else { // +1
         }
 
         foo:

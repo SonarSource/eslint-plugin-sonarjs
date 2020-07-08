@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-element-overwrite");
 
 const ruleTester = new RuleTester();
-import rule = require("../../src/rules/no-element-overwrite");
 
 ruleTester.run("no-element-overwrite", rule, {
   valid: [
@@ -37,13 +37,13 @@ ruleTester.run("no-element-overwrite", rule, {
     {
       code: `
       fruits[1] = "banana";
-      console.log("Hello"); 
+      console.log("Hello");
       fruits[1] = "apple"; // FN`,
     },
     {
       code: `
       fruits[1] = "banana";
-      foo(fruits); 
+      foo(fruits);
       fruits[1] = "apple";`,
     },
     {

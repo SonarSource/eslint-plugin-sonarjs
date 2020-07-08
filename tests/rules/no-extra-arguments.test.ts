@@ -19,9 +19,9 @@
  */
 import { RuleTester } from "eslint";
 import { IssueLocation } from "../../src/utils/locations";
+import rule = require("../../src/rules/no-extra-arguments");
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-extra-arguments");
 
 ruleTester.run("no-extra-arguments", rule, {
   valid: [
@@ -68,10 +68,10 @@ ruleTester.run("no-extra-arguments", rule, {
     },
     {
       code: `
-        let x = () => {}; 
+        let x = () => {};
         if (cond) {
           x = (p1, p2) => 1;
-        } 
+        }
         x(1, 2);
       `,
     },
@@ -93,7 +93,7 @@ ruleTester.run("no-extra-arguments", rule, {
         function foo(p1, p2) {}
         //           ^^^^^^>
         foo(1, 2, 3);
-      //^^^^^^^^^^^^  
+      //^^^^^^^^^^^^
       `,
       errors: [
         encodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
@@ -183,17 +183,17 @@ function message(
   extra: Partial<RuleTester.TestCaseError> = {},
 ): RuleTester.TestCaseError {
   // prettier-ignore
-  const expectedArguments = 
+  const expectedArguments =
     // eslint-disable-next-line no-nested-ternary
-    expected === 0 ? "no arguments" : 
-    expected === 1 ? "1 argument" : 
+    expected === 0 ? "no arguments" :
+    expected === 1 ? "1 argument" :
     `${expected} arguments`;
 
   // prettier-ignore
-  const providedArguments = 
+  const providedArguments =
     // eslint-disable-next-line no-nested-ternary
-    provided === 0 ? "none was" : 
-    provided === 1 ? "1 was" : 
+    provided === 0 ? "none was" :
+    provided === 1 ? "1 was" :
     `${provided} were`;
 
   return {

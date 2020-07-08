@@ -1,6 +1,6 @@
 # no-inverted-boolean-check
 
-:wrench: *fixable*
+:wrench: _fixable_
 
 It is needlessly complex to invert the result of a boolean comparison. The opposite comparison should be made instead.
 

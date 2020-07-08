@@ -18,11 +18,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { RuleTester } from "eslint";
+import rule = require("../../src/rules/no-duplicate-string");
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015, sourceType: "module", ecmaFeatures: { jsx: true } },
 });
-import rule = require("../../src/rules/no-duplicate-string");
 
 ruleTester.run("no-duplicate-string", rule, {
   valid: [
@@ -41,7 +41,7 @@ ruleTester.run("no-duplicate-string", rule, {
     },
     {
       code: ` // too small when trimmed
-    // trimming allows to not raise issue for flowtype whitespaces 
+    // trimming allows to not raise issue for flowtype whitespaces
     // which are created as literals for some reason
     console.log("           a            ");
     console.log("           a            ");
