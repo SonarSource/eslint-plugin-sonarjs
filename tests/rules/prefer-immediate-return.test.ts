@@ -185,6 +185,11 @@ ruleTester.run("prefer-immediate-return", rule, {
           return x;
         }
       `,
+      output: `
+        function let_returned() {
+          return 42;
+        }
+      `,
       errors: [{ line: 3, column: 19, endColumn: 21 }],
     },
     {
@@ -192,6 +197,11 @@ ruleTester.run("prefer-immediate-return", rule, {
         function const_returned() {
           const x = 42;
           return x;
+        }
+      `,
+      output: `
+        function const_returned() {
+          return 42;
         }
       `,
       errors: [{ line: 3, column: 21, endColumn: 23 }],
@@ -202,6 +212,12 @@ ruleTester.run("prefer-immediate-return", rule, {
           foo();
           var x = 42;
           return x;
+        }
+      `,
+      output: `
+        function code_before_declaration() {
+          foo();
+          return 42;
         }
       `,
       errors: [{ line: 4, column: 19, endColumn: 21 }],
@@ -225,7 +241,7 @@ ruleTester.run("prefer-immediate-return", rule, {
             let x = foo();
             return x;
           }
-          
+
           try {
             let x = foo();
             return x;
@@ -235,6 +251,21 @@ ruleTester.run("prefer-immediate-return", rule, {
           } finally {
             let x = foo();
             return x;
+          }
+        }
+      `,
+      output: `
+        function different_blocks() {
+          if (foo) {
+            return foo();
+          }
+
+          try {
+            return foo();
+          } catch (e) {
+            return foo();
+          } finally {
+            return foo();
           }
         }
       `,
@@ -251,6 +282,16 @@ ruleTester.run("prefer-immediate-return", rule, {
           if (a) {
             let x = foo();
             return x;
+          } else {
+            let x = bar();
+            return x + 42;
+          }
+        }
+      `,
+      output: `
+        function two_declarations(a) {
+          if (a) {
+            return foo();
           } else {
             let x = bar();
             return x + 42;
@@ -274,6 +315,19 @@ ruleTester.run("prefer-immediate-return", rule, {
           return bar;
         }
       `,
+      output: `
+        function homonymous_is_used() {
+          return {
+            doSomethingElse(p) {
+              var bar = 2;
+              return p + bar;
+            },
+            doSomething() {
+              return this.doSomethingElse(1);
+            },
+          };
+        }
+      `,
       errors: [{ line: 3, column: 23, endLine: 11, endColumn: 12 }],
     },
     {
@@ -286,6 +340,16 @@ ruleTester.run("prefer-immediate-return", rule, {
             default:
               const z = 2;
               return z;
+          }
+        }
+      `,
+      output: `
+        function inside_switch(x) {
+          switch (x) {
+            case 1:
+              return 3;
+            default:
+              return 2;
           }
         }
       `,
@@ -306,12 +370,19 @@ ruleTester.run("prefer-immediate-return", rule, {
     {
       // hoisted variables
       code: `
-      function foo() {
-        if (cond) {
-          var x = 42;
-          return x;
-      }
-      }
+        function foo() {
+          if (cond) {
+            var x = 42;
+            return x;
+          }
+        }
+      `,
+      output: `
+        function foo() {
+          if (cond) {
+            return 42;
+          }
+        }
       `,
       errors: [
         {
