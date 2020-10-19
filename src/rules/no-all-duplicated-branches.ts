@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
       description: "All branches in a conditional structure should not have exactly the same implementation",
       category: "Bug Detection",
       recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-all-duplicated-branches.md"
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-all-duplicated-branches.md",
     },
   },
   create(context: Rule.RuleContext) {

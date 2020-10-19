@@ -26,7 +26,7 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
     docs: {
-      description: "A \"while\" loop should be used instead of a \"for\" loop",
+      description: 'A "while" loop should be used instead of a "for" loop',
       category: "Code Smell Detection",
       recommended: true,
       url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-while.md",

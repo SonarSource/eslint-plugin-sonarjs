@@ -31,10 +31,10 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
     docs: {
-      description: "\"switch\" statements should not have too many \"case\" clauses",
+      description: '"switch" statements should not have too many "case" clauses',
       category: "Code Smell Detection",
       recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/max-switch-cases.md"
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/max-switch-cases.md",
     },
     schema: [
       {
@@ -53,7 +53,7 @@ const rule: Rule.RuleModule = {
 
 function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.RuleContext) {
   const nonEmptyCases = switchStatement.cases.filter(
-    switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
+    (switchCase) => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
   if (nonEmptyCases.length > maxSwitchCases) {
     const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;

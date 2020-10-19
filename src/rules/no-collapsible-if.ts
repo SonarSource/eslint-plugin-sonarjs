@@ -28,10 +28,10 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
     docs: {
-      description: "Collapsible \"if\" statements should be merged",
+      description: 'Collapsible "if" statements should be merged',
       category: "Code Smell Detection",
       recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collapsible-if.md"
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collapsible-if.md",
     },
     schema: [
       {

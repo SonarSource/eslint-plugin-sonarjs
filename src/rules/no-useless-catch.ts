@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
     docs: {
-      description: "\"catch\" clauses should do more than rethrow",
+      description: '"catch" clauses should do more than rethrow',
       category: "Code Smell Detection",
       recommended: true,
       url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-useless-catch.md",

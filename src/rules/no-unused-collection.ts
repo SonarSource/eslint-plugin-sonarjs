@@ -42,7 +42,7 @@ const rule: Rule.RuleModule = {
         const unusedArrays: Scope.Variable[] = [];
         collectUnusedCollections(context.getScope(), unusedArrays);
 
-        unusedArrays.forEach(unusedArray => {
+        unusedArrays.forEach((unusedArray) => {
           context.report({
             message,
             node: unusedArray.identifiers[0],
@@ -55,12 +55,12 @@ const rule: Rule.RuleModule = {
 
 function collectUnusedCollections(scope: Scope.Scope, unusedArray: Scope.Variable[]) {
   if (scope.type !== "global") {
-    scope.variables.filter(isUnusedCollection).forEach(v => {
+    scope.variables.filter(isUnusedCollection).forEach((v) => {
       unusedArray.push(v);
     });
   }
 
-  scope.childScopes.forEach(childScope => {
+  scope.childScopes.forEach((childScope) => {
     collectUnusedCollections(childScope, unusedArray);
   });
 }
@@ -90,7 +90,7 @@ function isUnusedCollection(variable: Scope.Variable) {
 function isReferenceAssigningCollection(ref: Scope.Reference) {
   const declOrExprStmt = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
-    n => n.type === "VariableDeclarator" || n.type === "ExpressionStatement",
+    (n) => n.type === "VariableDeclarator" || n.type === "ExpressionStatement",
   ) as estree.Node;
   if (declOrExprStmt) {
     if (declOrExprStmt.type === "VariableDeclarator" && declOrExprStmt.init) {
@@ -121,7 +121,7 @@ function isCollectionType(node: estree.Node) {
 function isRead(ref: Scope.Reference) {
   const expressionStatement = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
-    n => n.type === "ExpressionStatement",
+    (n) => n.type === "ExpressionStatement",
   ) as estree.ExpressionStatement;
 
   if (expressionStatement) {
@@ -174,7 +174,7 @@ function isMemberExpressionReference(lhs: estree.Node, ref: Scope.Reference): bo
 }
 
 function isIdentifier(node: estree.Node, ...values: string[]): node is estree.Identifier {
-  return node.type === "Identifier" && values.some(value => value === node.name);
+  return node.type === "Identifier" && values.some((value) => value === node.name);
 }
 
 function isReferenceTo(ref: Scope.Reference, node: estree.Node) {

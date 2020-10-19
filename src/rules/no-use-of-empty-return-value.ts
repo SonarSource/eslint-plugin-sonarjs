@@ -58,7 +58,8 @@ const rule: Rule.RuleModule = {
       description: "The output of functions that don't return anything should not be used",
       category: "Bug Detection",
       recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-use-of-empty-return-value.md",
+      url:
+        "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-use-of-empty-return-value.md",
     },
   },
   create(context: Rule.RuleContext) {
@@ -72,7 +73,7 @@ const rule: Rule.RuleModule = {
           return;
         }
         const scope = context.getScope();
-        const reference = scope.references.find(ref => ref.identifier === callExpr.callee);
+        const reference = scope.references.find((ref) => ref.identifier === callExpr.callee);
         if (reference && reference.resolved) {
           const variable = reference.resolved;
           if (variable.defs.length === 1) {
@@ -94,7 +95,7 @@ const rule: Rule.RuleModule = {
         if (returnStmt.argument) {
           const ancestors = [...context.getAncestors()].reverse();
           const functionNode = ancestors.find(
-            node =>
+            (node) =>
               node.type === "FunctionExpression" ||
               node.type === "FunctionDeclaration" ||
               node.type === "ArrowFunctionExpression",

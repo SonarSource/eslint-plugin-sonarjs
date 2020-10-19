@@ -80,8 +80,8 @@ const rule: Rule.RuleModule = {
     function visitSwitchStatement(switchStmt: estree.SwitchStatement) {
       const { cases } = switchStmt;
       const { endsWithDefault } = collectSwitchBranches(switchStmt);
-      const nonEmptyCases = cases.filter(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)).length > 0);
-      const casesWithoutBreak = nonEmptyCases.map(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)));
+      const nonEmptyCases = cases.filter((c) => takeWithoutBreak(expandSingleBlockStatement(c.consequent)).length > 0);
+      const casesWithoutBreak = nonEmptyCases.map((c) => takeWithoutBreak(expandSingleBlockStatement(c.consequent)));
 
       if (allEquivalentWithoutDefault(casesWithoutBreak, endsWithDefault)) {
         nonEmptyCases.slice(1).forEach((caseStmt, i) => reportIssue(caseStmt, nonEmptyCases[i], "case"));
@@ -109,7 +109,7 @@ const rule: Rule.RuleModule = {
         const tokens = [
           ...context.getSourceCode().getTokens(nodes[0]),
           ...context.getSourceCode().getTokens(nodes[nodes.length - 1]),
-        ].filter(token => token.value !== "{" && token.value !== "}");
+        ].filter((token) => token.value !== "{" && token.value !== "}");
         return tokens.length > 0 && tokens[tokens.length - 1].loc.end.line > tokens[0].loc.start.line;
       }
       return false;

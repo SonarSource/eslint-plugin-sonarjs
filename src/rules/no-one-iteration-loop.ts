@@ -81,7 +81,7 @@ const rule: Rule.RuleModule = {
       },
 
       "Program:exit"() {
-        loops.forEach(loop => {
+        loops.forEach((loop) => {
           if (!loopingNodes.has(loop)) {
             context.report({
               message: "Refactor this loop to do more than one iteration.",
