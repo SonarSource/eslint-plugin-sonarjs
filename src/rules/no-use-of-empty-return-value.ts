@@ -53,7 +53,13 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'problem',
+    type: "problem",
+    docs: {
+      description: "The output of functions that don't return anything should not be used",
+      category: "Bug Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-use-of-empty-return-value.md",
+    },
   },
   create(context) {
     const callExpressionsToCheck: Map<Identifier, TSESTree.FunctionLike> = new Map();

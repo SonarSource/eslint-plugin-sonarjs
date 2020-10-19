@@ -46,7 +46,13 @@ type Options = [number, 'metric'];
 
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
-    type: 'suggestion',
+    type: "suggestion",
+    docs: {
+      description: "Cognitive Complexity of functions should not be too high",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md",
+    },
     schema: [
       { type: 'integer', minimum: 0 },
       {
@@ -208,16 +214,21 @@ const rule: Rule.RuleModule<string, Options> = {
         // top level function
         if (topLevelHasStructuralComplexity && !reactFunctionalComponent.isConfirmed()) {
           let totalComplexity = topLevelOwnComplexity;
-          secondLevelFunctions.forEach(secondLevelFunction => {
+          secondLevelFunctions.forEach((secondLevelFunction) => {
             totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
           checkFunction(totalComplexity, getMainFunctionTokenLocation(node, node.parent, context));
         } else {
+<<<<<<< HEAD
           checkFunction(
             topLevelOwnComplexity,
             getMainFunctionTokenLocation(node, node.parent, context),
           );
           secondLevelFunctions.forEach(secondLevelFunction => {
+=======
+          checkFunction(topLevelOwnComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
+          secondLevelFunctions.forEach((secondLevelFunction) => {
+>>>>>>> ad3e174... feat: add 'meta.docs'
             checkFunction(
               secondLevelFunction.complexityIfThisSecondaryIsTopLevel,
               getMainFunctionTokenLocation(
@@ -393,7 +404,7 @@ const rule: Rule.RuleModule<string, Options> = {
         return;
       }
       if (complexityAmount > threshold) {
-        const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
+        const secondaryLocations: IssueLocation[] = complexity.map((complexityPoint) => {
           const { complexity, location } = complexityPoint;
           const message =
             complexity === 1 ? '+1' : `+${complexity} (incl. ${complexity - 1} for nesting)`;

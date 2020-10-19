@@ -38,8 +38,14 @@ const invertedOperators: { [operator: string]: string } = {
 
 const rule: Rule.RuleModule = {
   meta: {
-    fixable: 'code',
-    type: 'suggestion',
+    type: "suggestion",
+    docs: {
+      description: "Boolean checks should not be inverted",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-inverted-boolean-check.md",
+    },
+    fixable: "code",
   },
   create(context) {
     return {

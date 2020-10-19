@@ -37,7 +37,13 @@ const MESSAGE =
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'suggestion',
+    type: "suggestion",
+    docs: {
+      description: "Object literal syntax should be used",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-object-literal.md",
+    },
   },
   create(context: Rule.RuleContext) {
     return {

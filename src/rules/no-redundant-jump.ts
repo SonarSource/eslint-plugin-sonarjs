@@ -27,7 +27,13 @@ const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, F
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'suggestion',
+    type: "suggestion",
+    docs: {
+      description: "Jump statements should not be redundant",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-redundant-jump.md",
+    },
   },
   create(context: Rule.RuleContext) {
     function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {

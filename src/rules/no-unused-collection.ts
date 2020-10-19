@@ -27,7 +27,13 @@ const message = "Either use this collection's contents or remove the collection.
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'problem',
+    type: "problem",
+    docs: {
+      description: "Collection and array contents should be used",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-unused-collection.md",
+    },
   },
   create(context: Rule.RuleContext) {
     return {

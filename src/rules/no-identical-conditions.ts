@@ -26,7 +26,13 @@ import { report, issueLocation } from '../utils/locations';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'problem',
+    type: "problem",
+    docs: {
+      description: "Related \"if/else if\" statements should not have the same condition",
+      category: "Bug Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-conditions.md",
+    },
     schema: [
       {
         // internal parameter

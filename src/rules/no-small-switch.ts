@@ -26,7 +26,13 @@ const MESSAGE = '"switch" statements should have at least 3 "case" clauses';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'suggestion',
+    type: "suggestion",
+    docs: {
+      description: "\"switch\" statements should have at least 3 \"case\" clauses",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-small-switch.md",
+    },
   },
   create(context: Rule.RuleContext) {
     return {

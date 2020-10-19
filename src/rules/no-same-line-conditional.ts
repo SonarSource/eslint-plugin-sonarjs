@@ -30,7 +30,13 @@ interface SiblingIfStatement {
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'problem',
+    type: "problem",
+    docs: {
+      description: "Conditionals should start on new lines",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-same-line-conditional.md",
+    },
     schema: [
       {
         // internal parameter

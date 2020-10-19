@@ -28,7 +28,13 @@ const CollectionSizeLike = ['length', 'size'];
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: 'problem',
+    type: "problem",
+    docs: {
+      description: "Collection sizes and array length comparisons should make sense",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collection-size-mischeck.md",
+    },
   },
   create(context: Rule.RuleContext) {
     const services = context.parserServices;
