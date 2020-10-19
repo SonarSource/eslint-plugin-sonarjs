@@ -164,13 +164,16 @@ const rule: Rule.RuleModule = {
         context,
         {
           message,
-          node: callExpr,
+          node: callExpr.callee,
         },
-        getSecondaryLocations(functionNode),
+        getSecondaryLocations(callExpr, functionNode),
       );
     }
 
-    function getSecondaryLocations(functionNode: TSESTree.FunctionLike) {
+    function getSecondaryLocations(
+      callExpr: TSESTree.CallExpression,
+      functionNode: TSESTree.FunctionLike,
+    ) {
       const paramLength = functionNode.params.length;
       const secondaryLocations: IssueLocation[] = [];
       if (paramLength > 0) {
@@ -188,6 +191,14 @@ const rule: Rule.RuleModule = {
           secondaryLocations.push(issueLocation(fnToken, fnToken, 'Formal parameters'));
         }
       }
+
+      // find actual extra arguments to highlight
+      callExpr.arguments.forEach((argument, index) => {
+        if (index >= paramLength && argument.loc) {
+          secondaryLocations.push(issueLocation(argument.loc, argument.loc, 'Excess parameter'));
+        }
+      });
+
       return secondaryLocations;
     }
   },
