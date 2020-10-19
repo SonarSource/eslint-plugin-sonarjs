@@ -68,10 +68,10 @@ ruleTester.run("no-extra-arguments", rule, {
     },
     {
       code: `
-        let x = () => {}; 
+        let x = () => {};
         if (cond) {
           x = (p1, p2) => 1;
-        } 
+        }
         x(1, 2);
       `,
     },
@@ -84,8 +84,8 @@ ruleTester.run("no-extra-arguments", rule, {
         foo(1, 2, 3, 4);
       `,
       errors: [
-        message(2, 3, { line: 3, column: 9, endColumn: 21 }),
-        message(2, 4, { line: 4, column: 9, endColumn: 24 }),
+        message(2, 3, { line: 3, column: 9, endColumn: 12 }),
+        message(2, 4, { line: 4, column: 9, endColumn: 12 }),
       ],
     },
     {
@@ -93,10 +93,13 @@ ruleTester.run("no-extra-arguments", rule, {
         function foo(p1, p2) {}
         //           ^^^^^^>
         foo(1, 2, 3);
-      //^^^^^^^^^^^^  
+      //^^^       ^
       `,
       errors: [
-        encodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
+        encodedMessage(2, 3, [
+          { line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" },
+          { line: 4, column: 18, endLine: 4, endColumn: 19, message: "Excess parameter" },
+        ]),
       ],
       options: ["sonar-runtime"],
     },
@@ -107,19 +110,22 @@ ruleTester.run("no-extra-arguments", rule, {
         }
         foo(1);
       `,
-      errors: [message(0, 1, { line: 5, column: 9, endColumn: 15 })],
+      errors: [message(0, 1, { line: 5, column: 9, endColumn: 12 })],
     },
     {
       code: `
         foo(1);
-      //^^^^^^
+      //    ^
         var foo = function() {
           //      ^^^^^^^^>
           console.log('hello');
         }
       `,
       errors: [
-        encodedMessage(0, 1, [{ line: 4, column: 18, endLine: 4, endColumn: 26, message: "Formal parameters" }]),
+        encodedMessage(0, 1, [
+          { line: 4, column: 18, endLine: 4, endColumn: 26, message: "Formal parameters" },
+          { line: 2, column: 12, endLine: 2, endColumn: 13, message: "Excess parameter" }
+        ]),
       ],
       options: ["sonar-runtime"],
     },
@@ -130,7 +136,7 @@ ruleTester.run("no-extra-arguments", rule, {
         }
         foo(1, 2);
       `,
-      errors: [message(1, 2, { line: 5, column: 9, endColumn: 18 })],
+      errors: [message(1, 2, { line: 5, column: 9, endColumn: 12 })],
     },
     {
       code: `
@@ -140,7 +146,7 @@ ruleTester.run("no-extra-arguments", rule, {
         }
         foo(1, 2);
       `,
-      errors: [message(0, 2, { line: 6, column: 9, endColumn: 18 })],
+      errors: [message(0, 2, { line: 6, column: 9, endColumn: 12 })],
     },
     {
       code: `
@@ -149,7 +155,7 @@ ruleTester.run("no-extra-arguments", rule, {
           doSomething2;
         })(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 9, endLine: 5, endColumn: 20 })],
+      errors: [message(2, 3, { line: 2, column: 10, endLine: 5, endColumn: 10 })],
     },
     {
       code: `
@@ -157,7 +163,7 @@ ruleTester.run("no-extra-arguments", rule, {
           return a + b;
         }(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 17, endLine: 4, endColumn: 19 })],
+      errors: [message(2, 3, { line: 2, column: 17, endLine: 4, endColumn: 10 })],
     },
     {
       code: `
@@ -165,14 +171,14 @@ ruleTester.run("no-extra-arguments", rule, {
           return a + b;
         })(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 9, endLine: 4, endColumn: 20 })],
+      errors: [message(2, 3, { line: 2, column: 10, endLine: 4, endColumn: 10 })],
     },
     {
       code: `
         let arrow_function = (a, b) => {};
         arrow_function(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 3, column: 9, endColumn: 32 })],
+      errors: [message(2, 3, { line: 3, column: 9, endColumn: 23 })],
     },
   ],
 });
@@ -183,17 +189,17 @@ function message(
   extra: Partial<RuleTester.TestCaseError> = {},
 ): RuleTester.TestCaseError {
   // prettier-ignore
-  const expectedArguments = 
+  const expectedArguments =
     // eslint-disable-next-line no-nested-ternary
-    expected === 0 ? "no arguments" : 
-    expected === 1 ? "1 argument" : 
+    expected === 0 ? "no arguments" :
+    expected === 1 ? "1 argument" :
     `${expected} arguments`;
 
   // prettier-ignore
-  const providedArguments = 
+  const providedArguments =
     // eslint-disable-next-line no-nested-ternary
-    provided === 0 ? "none was" : 
-    provided === 1 ? "1 was" : 
+    provided === 0 ? "none was" :
+    provided === 1 ? "1 was" :
     `${provided} were`;
 
   return {
