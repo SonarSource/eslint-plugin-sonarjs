@@ -73,7 +73,7 @@ const rule: Rule.RuleModule = {
           return;
         }
         const scope = context.getScope();
-        const reference = scope.references.find((ref) => ref.identifier === callExpr.callee);
+        const reference = scope.references.find(ref => ref.identifier === callExpr.callee);
         if (reference && reference.resolved) {
           const variable = reference.resolved;
           if (variable.defs.length === 1) {
@@ -95,7 +95,7 @@ const rule: Rule.RuleModule = {
         if (returnStmt.argument) {
           const ancestors = [...context.getAncestors()].reverse();
           const functionNode = ancestors.find(
-            (node) =>
+            node =>
               node.type === "FunctionExpression" ||
               node.type === "FunctionDeclaration" ||
               node.type === "ArrowFunctionExpression",

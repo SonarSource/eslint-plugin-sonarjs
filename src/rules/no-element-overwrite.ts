@@ -72,7 +72,7 @@ const rule: Rule.RuleModule = {
     function checkStatements(statements: Array<estree.Statement | estree.ModuleDeclaration>) {
       const usedKeys: Map<string, KeyWriteCollectionUsage> = new Map();
       let collection: estree.Node | undefined;
-      statements.forEach((statement) => {
+      statements.forEach(statement => {
         const keyWriteUsage = getKeyWriteUsage(statement);
         if (keyWriteUsage) {
           if (collection && !areEquivalent(keyWriteUsage.collectionNode, collection, context.getSourceCode())) {

@@ -66,7 +66,7 @@ const rule: Rule.RuleModule = {
       },
 
       "Program:exit"() {
-        literalsByValue.forEach((literals) => {
+        literalsByValue.forEach(literals => {
           if (literals.length >= threshold) {
             context.report({
               message: MESSAGE,

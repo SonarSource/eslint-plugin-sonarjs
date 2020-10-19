@@ -63,7 +63,7 @@ function visitUnaryExpression(unaryExpression: UnaryExpression, context: Rule.Ru
         message: MESSAGE,
         data: { invertedOperator },
         node: unaryExpression,
-        fix: (fixer) => fixer.replaceText(unaryExpression, `${left} ${invertedOperator} ${right}`),
+        fix: fixer => fixer.replaceText(unaryExpression, `${left} ${invertedOperator} ${right}`),
       });
     }
   }

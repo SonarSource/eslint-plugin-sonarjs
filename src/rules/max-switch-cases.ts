@@ -53,7 +53,7 @@ const rule: Rule.RuleModule = {
 
 function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.RuleContext) {
   const nonEmptyCases = switchStatement.cases.filter(
-    (switchCase) => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
+    switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
   if (nonEmptyCases.length > maxSwitchCases) {
     const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;
