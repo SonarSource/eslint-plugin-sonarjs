@@ -45,6 +45,12 @@ type OptionalLocation = estree.SourceLocation | null | undefined;
 const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
+    docs: {
+      description: "Cognitive Complexity of functions should not be too high",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md",
+    },
     schema: [
       { type: "integer", minimum: 0 },
       {
@@ -187,13 +193,13 @@ const rule: Rule.RuleModule = {
         // top level function
         if (topLevelHasStructuralComplexity) {
           let totalComplexity = topLevelOwnComplexity;
-          secondLevelFunctions.forEach(secondLevelFunction => {
+          secondLevelFunctions.forEach((secondLevelFunction) => {
             totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
           checkFunction(totalComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
         } else {
           checkFunction(topLevelOwnComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
-          secondLevelFunctions.forEach(secondLevelFunction => {
+          secondLevelFunctions.forEach((secondLevelFunction) => {
             checkFunction(
               secondLevelFunction.complexityIfThisSecondaryIsTopLevel,
               getMainFunctionTokenLocation(secondLevelFunction.node, secondLevelFunction.parent, context),
@@ -330,7 +336,7 @@ const rule: Rule.RuleModule = {
         return;
       }
       if (complexityAmount > threshold) {
-        const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
+        const secondaryLocations: IssueLocation[] = complexity.map((complexityPoint) => {
           const { complexity, location } = complexityPoint;
           const message = complexity === 1 ? "+1" : `+${complexity} (incl. ${complexity - 1} for nesting)`;
           return issueLocation(location, undefined, message);

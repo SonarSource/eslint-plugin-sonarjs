@@ -33,6 +33,12 @@ const MESSAGE = "Define a constant instead of duplicating this literal {{times}}
 const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
+    docs: {
+      description: "String literals should not be duplicated",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicate-string.md",
+    },
     schema: [{ type: "integer", minimum: 2 }],
   },
 

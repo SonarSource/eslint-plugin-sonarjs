@@ -29,6 +29,12 @@ const MESSAGE = "Add logic to this catch clause or eliminate it and rethrow the 
 const rule: Rule.RuleModule = {
   meta: {
     type: "suggestion",
+    docs: {
+      description: "\"catch\" clauses should do more than rethrow",
+      category: "Code Smell Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-useless-catch.md",
+    },
   },
   create(context: Rule.RuleContext) {
     return { CatchClause: (node: Node) => visitCatchClause(node as CatchClause, context) };

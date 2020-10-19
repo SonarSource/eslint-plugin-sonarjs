@@ -51,6 +51,12 @@ function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
+    docs: {
+      description: "Identical expressions should not be used on both sides of a binary operator",
+      category: "Bug Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-expressions.md",
+    },
     schema: [
       {
         // internal parameter

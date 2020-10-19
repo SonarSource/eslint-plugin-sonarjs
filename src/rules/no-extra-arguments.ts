@@ -33,6 +33,12 @@ import { report, issueLocation, getMainFunctionTokenLocation, IssueLocation } fr
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
+    docs: {
+      description: "Function calls should not pass extra arguments",
+      category: "Bug Detection",
+      recommended: true,
+      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-extra-arguments.md",
+    },
     schema: [
       {
         // internal parameter
@@ -131,17 +137,17 @@ const rule: Rule.RuleModule = {
       const paramLength = functionNode.params.length;
       const argsLength = callExpr.arguments.length;
       // prettier-ignore
-      const expectedArguments = 
+      const expectedArguments =
         // eslint-disable-next-line no-nested-ternary
-        paramLength === 0 ? "no arguments" : 
-        paramLength === 1 ? "1 argument" : 
+        paramLength === 0 ? "no arguments" :
+        paramLength === 1 ? "1 argument" :
         `${paramLength} arguments`;
 
       // prettier-ignore
-      const providedArguments = 
+      const providedArguments =
         // eslint-disable-next-line no-nested-ternary
-        argsLength === 0 ? "none was" : 
-        argsLength === 1 ? "1 was" : 
+        argsLength === 0 ? "none was" :
+        argsLength === 1 ? "1 was" :
         `${argsLength} were`;
 
       const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
