@@ -2,8 +2,6 @@
 
 SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
 
-_[We also have a plugin for TSLint](https://github.com/SonarSource/SonarTS)_
-
 ## Rules
 
 ### Bug Detection :bug:
