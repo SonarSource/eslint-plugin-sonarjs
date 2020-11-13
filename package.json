@@ -24,7 +24,7 @@
     "prepack": "yarn build"
   },
   "peerDependencies": {
-    "eslint": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+    "eslint": ">= 3"
   },
   "devDependencies": {
     "@types/eslint": "6.1.3",

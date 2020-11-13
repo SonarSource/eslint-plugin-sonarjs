@@ -69,7 +69,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 
 ## Prerequisites
 
-Node.js (>=6.x).
+Node.js (>=10.x).
 
 ## Usage
 
