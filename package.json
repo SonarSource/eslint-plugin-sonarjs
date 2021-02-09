@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-sonarjs",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "SonarJS rules for ESLint",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
