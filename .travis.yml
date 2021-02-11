@@ -5,7 +5,8 @@ git:
   depth: false
 node_js:
   - "10"
-  - "8"
+  - "12"
+  - "14"
 script:
   - yarn typecheck
   - yarn build
