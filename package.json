@@ -42,6 +42,7 @@
     "eslint-plugin-notice": "0.6.7",
     "eslint-plugin-sonarjs": "0.5.0",
     "jest": "26.6.3",
+    "jest-sonar-reporter": "2.0.0",
     "lint-staged": "7.3.0",
     "lodash": "4.17.19",
     "minimist": "1.2.3",
