@@ -1,0 +1,41 @@
+gcp_credentials: ENCRYPTED[!17c59813193e86cc337bce848b358412b90f50bc5fe1b8b39d363cdf14a41ebe76cfba0482e7f81d076994b9f6dbfb4c!]
+
+env:
+  # Use bash (instead of sh on linux or cmd.exe on windows)
+  CIRRUS_SHELL: bash
+
+only_sonarsource_qa: &ONLY_SONARSOURCE_QA
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
+
+container_definition: &CONTAINER_DEFINITION
+  builder_image_project: language-team
+  builder_image_name: docker-builder-lt-v1
+  cluster_name: cirrus-ci-lt-cluster
+  zone: us-central1-a
+  namespace: default
+  use_in_memory_disk: true
+
+plugin_qa_task:
+  <<: *ONLY_SONARSOURCE_QA
+  gke_container:
+    matrix:
+      - dockerfile: .cirrus/nodejs-10.Dockerfile
+      - dockerfile: .cirrus/nodejs-12.Dockerfile
+      - dockerfile: .cirrus/nodejs-14.Dockerfile
+      - dockerfile: .cirrus/nodejs-15.Dockerfile
+    <<: *CONTAINER_DEFINITION
+    cpu: 3
+    memory: 8G
+  env:
+    CIRRUS_CLONE_DEPTH: 10
+    SONARSOURCE_QA: true
+    SQ_VERSION: LATEST_RELEASE
+  script:
+    - source cirrus-env QA
+    - yarn typecheck
+    - yarn build
+    - ./scripts/test-ci.sh
+    - yarn prettier --list-different "{src,tests}/**/*.{js,ts}"
+    - yarn lint
+    - yarn ruling
+    - ./scripts/analyze.sh
