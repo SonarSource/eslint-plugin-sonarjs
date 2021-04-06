@@ -30,9 +30,9 @@ plugin_qa_task:
   env:
     CIRRUS_CLONE_DEPTH: 10
     SONARSOURCE_QA: true
-    SQ_VERSION: LATEST_RELEASE
   script:
     - init_git_submodules -r
+    - export VERSION=$(grep version package.json | head -1  | awk -F: '{ print $2 }' | sed 's/[",]//g')
     - source cirrus-env BUILD
     - echo $BUILD_NUMBER
     - yarn
