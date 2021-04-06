@@ -31,7 +31,7 @@ plugin_qa_task:
     SONARSOURCE_QA: true
     SQ_VERSION: LATEST_RELEASE
   script:
-    - npm install -g typescript
+    - sudo npm install -g typescript
     - yarn typecheck
     - yarn build
     - ./scripts/test-ci.sh
