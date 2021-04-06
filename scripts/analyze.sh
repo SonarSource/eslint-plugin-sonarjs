@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # analyze only on one axis of node versions
-if [ "${TRAVIS_NODE_VERSION}" == "v10*" ]; then
+if [ "${NODE_VERSION}" == "v10*" ]; then
   echo 'Analysis ignored (nodejs version is not 8)'
   exit 0
 fi
 
 set -euo pipefail
 
-sonar-scanner
+sonar-scanner \
+  -Dsonar.organization=sonarsource \
+  -Dsonar.host.url=https://sonarcloud.io
