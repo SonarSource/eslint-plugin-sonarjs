@@ -23,5 +23,7 @@ RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-
   && mv /opt/sonar-scanner-4.3.0.2102 /opt/sonar-scanner \
   && bash -c 'printf "export PATH=/opt/sonar-scanner/bin:${PATH}" >> /etc/profile' \
   && rm /tmp/sonar-scanner.zip
-  
+
 USER sonarsource
+
+ENV PATH "/opt/sonar-scanner/bin:${PATH}"
