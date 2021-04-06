@@ -21,7 +21,6 @@ RUN curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v
 RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.3.0.2102.zip" -o /tmp/sonar-scanner.zip \
   && unzip -d /opt /tmp/sonar-scanner.zip \
   && mv /opt/sonar-scanner-4.3.0.2102 /opt/sonar-scanner \
-  && bash -c 'printf "export PATH=/opt/sonar-scanner/bin:${PATH}" >> /etc/profile' \
   && rm /tmp/sonar-scanner.zip
 
 USER sonarsource
