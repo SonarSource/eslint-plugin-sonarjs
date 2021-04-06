@@ -1,6 +1,7 @@
 gcp_credentials: ENCRYPTED[!17c59813193e86cc337bce848b358412b90f50bc5fe1b8b39d363cdf14a41ebe76cfba0482e7f81d076994b9f6dbfb4c!]
 
 env:
+  GITHUB_TOKEN: ENCRYPTED[!f272985ea5b49b3cf9c414b98de6a8e9096be47bfcee52f33311ba3131a2af637c1b956f49585b7757dd84b7c030233a!]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
@@ -31,6 +32,9 @@ plugin_qa_task:
     SONARSOURCE_QA: true
     SQ_VERSION: LATEST_RELEASE
   script:
+    - init_git_submodules -r
+    - source cirrus-env BUILD
+    - echo $BUILD_NUMBER
     - yarn
     - yarn typecheck
     - yarn build
