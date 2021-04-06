@@ -32,9 +32,7 @@ plugin_qa_task:
     SONARSOURCE_QA: true
   script:
     - init_git_submodules -r
-    - export VERSION=$(grep version package.json | head -1  | awk -F: '{ print $2 }' | sed 's/[",]//g')
-    - source cirrus-env BUILD
-    - echo $BUILD_NUMBER
+    - source ./scripts/set-version.sh
     - yarn
     - yarn typecheck
     - yarn build
