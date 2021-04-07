@@ -45,5 +45,4 @@ plugin_qa_task:
     - yarn prettier --list-different "{src,tests}/**/*.{js,ts}"
     - yarn lint
     - yarn ruling
-    - ./scripts/analyze.sh
     - npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
