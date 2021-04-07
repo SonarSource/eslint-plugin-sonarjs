@@ -14,7 +14,7 @@ npm version --no-git-tag-version $VERSION-$BUILD_NUMBER
 
 sonar-scanner \
   -Dsonar.organization=sonarsource \
-  -Dsonar.host.url=https://sonarcloud.io
+  -Dsonar.host.url=https://sonarcloud.io \
   -DbuildNumber=$BUILD_NUMBER
 
 npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
