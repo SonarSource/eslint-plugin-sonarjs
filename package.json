@@ -6,7 +6,11 @@
   "types": "lib/index.d.ts",
   "repository": "git@github.com:SonarSource/eslint-plugin-sonarjs.git",
   "license": "LGPL-3.0",
-  "keywords": ["sonarjs", "eslint", "eslintplugin"],
+  "keywords": [
+    "sonarjs",
+    "eslint",
+    "eslintplugin"
+  ],
   "bugs": {
     "url": "https://github.com/SonarSource/eslint-plugin-sonarjs/issues"
   },
@@ -57,21 +61,39 @@
     "trailingComma": "all"
   },
   "jest": {
-    "roots": ["tests", "src"],
-    "collectCoverageFrom": ["src/**/*.ts"],
+    "roots": [
+      "tests",
+      "src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
     "globals": {
       "ts-jest": {
         "babelConfig": false
       }
     },
-    "moduleFileExtensions": ["ts", "js", "json"],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
-    "testMatch": ["<rootDir>/tests/**/*.test.ts"]
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.ts"
+    ]
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": ["eslint", "prettier --write", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.{ts,tsx,js}": [
+      "eslint",
+      "prettier --write",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

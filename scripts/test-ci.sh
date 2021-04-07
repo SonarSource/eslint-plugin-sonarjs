@@ -4,7 +4,8 @@ set -euo pipefail
 
 # run tests with coverage and reports only for nodejs 10
 # this is required for sonarcloud analysis
-if [ "${TRAVIS_NODE_VERSION}" = "10" ]; then
+# variable is set in dockerfile
+if [ "${SONARCLOUD_ANALYSIS:-}" == "true" ]; then
   echo 'Running tests with coverage and reporter'
   yarn test --coverage --testResultsProcessor jest-sonar-reporter
 else
