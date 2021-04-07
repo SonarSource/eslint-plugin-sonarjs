@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# analyze only on one axis of node versions
-if [ "${NODE_VERSION}" == "v10*" ]; then
-  echo 'Analysis ignored (nodejs version is not 8)'
+# analyze only on one axis of node versions, variable is set in dockerfile
+if [ -z "${SONARCLOUD_ANALYSIS}" ]; then
+  echo 'Analysis ignored'
   exit 0
 fi
 
