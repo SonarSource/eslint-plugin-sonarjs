@@ -37,7 +37,6 @@ plugin_qa_task:
     variable_name: NPM_DEPLOYER_AUTH
   script:
     - init_git_submodules -r
-    - source ./scripts/set-version.sh
     - yarn
     - yarn typecheck
     - yarn build
