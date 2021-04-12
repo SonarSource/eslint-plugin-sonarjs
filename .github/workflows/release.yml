@@ -1,0 +1,26 @@
+on: 
+  release:
+    types:
+      - published
+
+jobs:  
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      REPOX_URL: "https://repox.jfrog.io/artifactory"
+      NPM_REPOSITORY: "sonarsource-npm-public"
+      SCOPE: ""
+      PACKAGE: "eslint-plugin-sonarjs"
+    steps:            
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10      
+      - name: Download artifacts        
+        run: curl -o $PACKAGE-$RELEASE_TAG.tgz $REPOX_URL/$NPM_REPOSITORY/$SCOPE$PACKAGE/-/$SCOPE$PACKAGE-$RELEASE_TAG.tgz
+      - name: Publish npm package            
+        env:
+          NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
+        run: npm publish $PACKAGE-$RELEASE_TAG.tgz
+        
