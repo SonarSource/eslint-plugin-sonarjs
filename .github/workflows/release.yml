@@ -19,6 +19,7 @@ jobs:
           node-version: 10      
       - name: Download artifacts        
         run: curl -o $PACKAGE-$RELEASE_TAG.tgz $REPOX_URL/$NPM_REPOSITORY/$SCOPE$PACKAGE/-/$SCOPE$PACKAGE-$RELEASE_TAG.tgz
+      - run: mv .github/workflows/.npmrc .npmrc 
       - name: Publish npm package            
         env:
           NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
