@@ -33,3 +33,6 @@ test-report.xml
 tsconfig.json
 tsconfig-src.json
 yarn.lock
+
+.cirrus/
+.cirrus.yml
