@@ -1,8 +1,5 @@
 ## Releasing npm package
 
-* Install or upgrade `np` package globally (`npm install -g np`)
-* Login to npm with `npm adduser`
-* Create new branch, e.g. `1.2.0`, add upstream
-* Run this to publish package `np --any-branch`
-
-N.B. As the project must be compiled to JS before publishing, we added a `prepack` npm hook to take care of this.
+* [Create a Jira release ticket](https://jira.sonarsource.com/projects/REL)
+* [Publish a new GitHub release](https://github.com/SonarSource/eslint-plugin-sonarjs/releases/new)
+* [Bump the package version fot the next development iteration](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/package.json#L3)
