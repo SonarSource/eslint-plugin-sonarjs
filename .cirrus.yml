@@ -31,10 +31,7 @@ plugin_qa_task:
     memory: 8G
   env:
     CIRRUS_CLONE_DEPTH: 10
-    SONARSOURCE_QA: true
-  npmrc_file:
-    path: ${HOME}/.npmrc
-    variable_name: NPM_DEPLOYER_AUTH
+    SONARSOURCE_QA: true  
   script:
     - curl -urepox-qa-deployer:${ARTIFACTORY_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
     - init_git_submodules -r
