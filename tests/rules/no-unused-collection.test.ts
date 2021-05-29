@@ -160,6 +160,16 @@ ruleTester.run('Primitive return types should be used.', rule, {
           console.log(i);
         }`,
     },
+    {
+      code: `
+        export const array = [];
+
+        array.push(1);
+      `,
+    },
+    {
+      code: `export const collection = new Map()`,
+    },
   ],
   invalid: [
     {

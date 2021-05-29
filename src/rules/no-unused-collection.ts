@@ -61,7 +61,26 @@ function collectUnusedCollections(
   });
 }
 
+// Determines if a given variable is being exported from a module.
+function isExported(variable: TSESLint.Scope.Variable) {
+  const definition = variable.defs[0] as TSESLint.Scope.Definition;
+
+  if (definition) {
+    let {node} = definition;
+    if (node.type === "VariableDeclarator") {
+        node = node.parent;
+    } else if (definition.type === "Parameter") {
+        return false;
+    }
+    return node.parent.type.indexOf("Export") === 0;
+  }
+  return false;
+}
+
 function isUnusedCollection(variable: TSESLint.Scope.Variable) {
+  if(isExported(variable)){
+    return false;
+  }
   if (variable.references.length <= 1) {
     return false;
   }
