@@ -450,6 +450,34 @@ ruleTester.run("cognitive-complexity", rule, {
       options: [0],
       errors: [message(1)],
     },
+
+    // ignore React functional components
+    {
+      code: `
+      function Welcome() {
+        const handleSomething = () => {
+          if (x) {} // +1
+        }
+        if (x) {} // +1
+        return <h1>Hello, world</h1>;
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+      errors: [message(1, { line: 2 }), message(1, { line: 3 })],
+    },
+    {
+      code: `
+      const Welcome = () => {
+        const handleSomething = () => {
+          if (x) {} // +1
+        }
+        if (x) {} // +1
+        return <h1>Hello, world</h1>;
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+      errors: [message(1, { line: 2 }), message(1, { line: 3 })],
+    },
   ],
 });
 
