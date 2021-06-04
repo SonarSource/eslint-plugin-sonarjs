@@ -17,33 +17,33 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/prefer-while");
+import rule = require('../../src/rules/prefer-while');
 const message = 'Replace this "for" loop with a "while" loop.';
 
-ruleTester.run("prefer-while", rule, {
+ruleTester.run('prefer-while', rule, {
   valid: [
-    { code: "for(var i = 0; condition;) { }" },
-    { code: "for(var i = 0; condition; i++) { }" },
-    { code: "for(var i = 0;; i++) { }" },
-    { code: "for (i; condition; ) { }" },
-    { code: "for ( ; i < length; i++ ) { }" },
-    { code: "while (i < length) { }" },
-    { code: "for (a in b) { }" },
-    { code: "for (a of b) { }" },
+    { code: 'for(var i = 0; condition;) { }' },
+    { code: 'for(var i = 0; condition; i++) { }' },
+    { code: 'for(var i = 0;; i++) { }' },
+    { code: 'for (i; condition; ) { }' },
+    { code: 'for ( ; i < length; i++ ) { }' },
+    { code: 'while (i < length) { }' },
+    { code: 'for (a in b) { }' },
+    { code: 'for (a of b) { }' },
   ],
   invalid: [
     {
-      code: "for(;condition;) {}",
+      code: 'for(;condition;) {}',
       errors: [{ message, line: 1, column: 1, endColumn: 4 }],
-      output: "while (condition) {}",
+      output: 'while (condition) {}',
     },
     {
-      code: "for (;condition; ) foo();",
+      code: 'for (;condition; ) foo();',
       errors: [{ message }],
-      output: "while (condition) foo();",
+      output: 'while (condition) foo();',
     },
     {
       code: `
@@ -55,9 +55,9 @@ ruleTester.run("prefer-while", rule, {
           doSomething();`,
     },
     {
-      code: "for(;;) {}",
+      code: 'for(;;) {}',
       errors: [{ message }],
-      output: "for(;;) {}", // no fix
+      output: 'for(;;) {}', // no fix
     },
   ],
 });

@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
-import rule = require("../../src/rules/no-one-iteration-loop");
+import rule = require('../../src/rules/no-one-iteration-loop');
 
-ruleTester.run("no-one-iteration-loop", rule, {
+ruleTester.run('no-one-iteration-loop', rule, {
   valid: [
     valid(`
     while (cond) { 
@@ -285,7 +285,7 @@ function invalid(code: string) {
     code,
     errors: [
       {
-        message: "Refactor this loop to do more than one iteration.",
+        message: 'Refactor this loop to do more than one iteration.',
       },
     ],
   };

@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import * as path from "path";
-import { RuleTester } from "eslint";
+import * as path from 'path';
+import { RuleTester } from 'eslint';
 
 const ruleTesterJs = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-collection-size-mischeck");
+import rule = require('../../src/rules/no-collection-size-mischeck');
 
-ruleTesterJs.run("Collection sizes and array length comparisons should make sense", rule, {
+ruleTesterJs.run('Collection sizes and array length comparisons should make sense', rule, {
   valid: [
     {
       code: `
@@ -62,7 +62,7 @@ ruleTesterJs.run("Collection sizes and array length comparisons should make sens
 });
 
 const ruleTesterTs = new RuleTester({
-  parser: require.resolve("@typescript-eslint/parser"),
+  parser: require.resolve('@typescript-eslint/parser'),
   parserOptions: {
     ecmaVersion: 2018,
     project: path.resolve(`${__dirname}/../resources/tsconfig.json`),
@@ -71,7 +71,7 @@ const ruleTesterTs = new RuleTester({
 
 const filename = path.resolve(`${__dirname}/../resources/file.ts`);
 
-ruleTesterTs.run("Collection sizes and array length comparisons should make sense", rule, {
+ruleTesterTs.run('Collection sizes and array length comparisons should make sense', rule, {
   valid: [
     {
       code: `

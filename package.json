@@ -15,13 +15,15 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "rimraf lib && tsc -d -p tsconfig-src.json",
+    "build": "rimraf lib && yarn check-format && tsc -d -p tsconfig-src.json",
     "test": "jest",
     "ruling": "ts-node ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint --ext js,ts src tests ruling/index.ts",
     "precommit": "lint-staged && yarn typecheck",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "format": "prettier --write \"{src,tests}/**/!(*.lint).ts\"",
+    "check-format": "prettier --list-different \"{src,tests}/**/!(*.lint).ts\""
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0"
@@ -46,15 +48,18 @@
     "lint-staged": "7.3.0",
     "lodash": "4.17.21",
     "minimist": "1.2.3",
-    "prettier": "1.11.1",
+    "prettier": "2.3.0",
     "rimraf": "2.6.2",
     "ts-jest": "26.5.1",
     "ts-node": "9.1.1",
     "typescript": "4.1.4"
   },
   "prettier": {
-    "printWidth": 120,
-    "trailingComma": "all"
+    "printWidth": 100,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "endOfLine": "lf"
   },
   "jest": {
     "roots": ["tests", "src"],

@@ -19,13 +19,19 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1126
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { isReturnStatement, isBlockStatement, isBooleanLiteral, isIfStatement, getParent } from "../utils/nodes";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import {
+  isReturnStatement,
+  isBlockStatement,
+  isBooleanLiteral,
+  isIfStatement,
+  getParent,
+} from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     return {
@@ -39,7 +45,7 @@ const rule: Rule.RuleModule = {
           returnsBoolean(ifStmt.consequent)
         ) {
           context.report({
-            message: "Replace this if-then-else statement by a single return statement.",
+            message: 'Replace this if-then-else statement by a single return statement.',
             node: ifStmt,
           });
         }
@@ -55,7 +61,9 @@ const rule: Rule.RuleModule = {
 
     function isBlockReturningBooleanLiteral(statement: estree.Statement) {
       return (
-        isBlockStatement(statement) && statement.body.length === 1 && isSimpleReturnBooleanLiteral(statement.body[0])
+        isBlockStatement(statement) &&
+        statement.body.length === 1 &&
+        isSimpleReturnBooleanLiteral(statement.body[0])
       );
     }
 

@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-inverted-boolean-check");
+import rule = require('../../src/rules/no-inverted-boolean-check');
 
-ruleTester.run("no-inverted-boolean-check", rule, {
+ruleTester.run('no-inverted-boolean-check', rule, {
   valid: [
     {
       code: `if (!x) {}`,
@@ -46,7 +46,7 @@ ruleTester.run("no-inverted-boolean-check", rule, {
       code: `if (!(x == 1)) {}`,
       errors: [
         {
-          message: message("!="),
+          message: message('!='),
           line: 1,
           endLine: 1,
           column: 5,
@@ -58,60 +58,60 @@ ruleTester.run("no-inverted-boolean-check", rule, {
     // `!=` => `==`
     {
       code: `if (!(x != 1)) {}`,
-      errors: [message("==")],
+      errors: [message('==')],
       output: `if (x == 1) {}`,
     },
     // `===` => `!==`
     {
       code: `if (!(x === 1)) {}`,
-      errors: [message("!==")],
+      errors: [message('!==')],
       output: `if (x !== 1) {}`,
     },
     // `!==` => `===`
     {
       code: `if (!(x !== 1)) {}`,
-      errors: [message("===")],
+      errors: [message('===')],
       output: `if (x === 1) {}`,
     },
     // `>` => `<=`
     {
       code: `if (!(x > 1)) {}`,
-      errors: [message("<=")],
+      errors: [message('<=')],
       output: `if (x <= 1) {}`,
     },
     // `<` => `>=`
     {
       code: `if (!(x < 1)) {}`,
-      errors: [message(">=")],
+      errors: [message('>=')],
       output: `if (x >= 1) {}`,
     },
     // `>=` => `<`
     {
       code: `if (!(x >= 1)) {}`,
-      errors: [message("<")],
+      errors: [message('<')],
       output: `if (x < 1) {}`,
     },
     // `<=` => `>`
     {
       code: `if (!(x <= 1)) {}`,
-      errors: [message(">")],
+      errors: [message('>')],
       output: `if (x > 1) {}`,
     },
     // ternary operator
     {
       code: `!(x != 1) ? 1 : 2`,
-      errors: [message("==")],
+      errors: [message('==')],
       output: `x == 1 ? 1 : 2`,
     },
     // not conditional
     {
       code: `foo(!(x === 1))`,
-      errors: [message("!==")],
+      errors: [message('!==')],
       output: `foo(x !== 1)`,
     },
     {
       code: `let foo = !(x <= 4)`,
-      errors: [message(">")],
+      errors: [message('>')],
       output: `let foo = x > 4`,
     },
   ],

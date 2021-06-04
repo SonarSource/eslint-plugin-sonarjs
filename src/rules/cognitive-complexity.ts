@@ -19,9 +19,14 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3776
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { getParent, isArrowFunctionExpression, isIfStatement, isLogicalExpression } from "../utils/nodes";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import {
+  getParent,
+  isArrowFunctionExpression,
+  isIfStatement,
+  isLogicalExpression,
+} from '../utils/nodes';
 import {
   getMainFunctionTokenLocation,
   getFirstToken,
@@ -29,7 +34,7 @@ import {
   report,
   IssueLocation,
   issueLocation,
-} from "../utils/locations";
+} from '../utils/locations';
 
 const DEFAULT_THRESHOLD = 15;
 
@@ -44,18 +49,18 @@ type OptionalLocation = estree.SourceLocation | null | undefined;
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     schema: [
-      { type: "integer", minimum: 0 },
+      { type: 'integer', minimum: 0 },
       {
         // internal parameter
-        enum: ["sonar-runtime", "metric"],
+        enum: ['sonar-runtime', 'metric'],
       },
     ],
   },
   create(context: Rule.RuleContext) {
     const threshold: number = getThreshold();
-    const isFileComplexity: boolean = context.options.includes("metric");
+    const isFileComplexity: boolean = context.options.includes('metric');
 
     /** Complexity of the file */
     let fileComplexity = 0;
@@ -108,19 +113,19 @@ const rule: Rule.RuleModule = {
     }> = [];
 
     return {
-      ":function": (node: estree.Node) => {
+      ':function': (node: estree.Node) => {
         onEnterFunction(node as estree.Function);
       },
-      ":function:exit"(node: estree.Node) {
+      ':function:exit'(node: estree.Node) {
         onLeaveFunction(node as estree.Function);
       },
 
-      "*"(node: estree.Node) {
+      '*'(node: estree.Node) {
         if (nestingNodes.has(node)) {
           nesting++;
         }
       },
-      "*:exit"(node: estree.Node) {
+      '*:exit'(node: estree.Node) {
         if (nestingNodes.has(node)) {
           nesting--;
           nestingNodes.delete(node);
@@ -129,7 +134,7 @@ const rule: Rule.RuleModule = {
       Program() {
         fileComplexity = 0;
       },
-      "Program:exit"(node: estree.Node) {
+      'Program:exit'(node: estree.Node) {
         if (isFileComplexity) {
           // as issues are the only communication channel of a rule
           // we pass data as serialized json as an issue message
@@ -209,13 +214,23 @@ const rule: Rule.RuleModule = {
           secondLevelFunctions.forEach(secondLevelFunction => {
             totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
-          checkFunction(totalComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
+          checkFunction(
+            totalComplexity,
+            getMainFunctionTokenLocation(node, getParent(context), context),
+          );
         } else {
-          checkFunction(topLevelOwnComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
+          checkFunction(
+            topLevelOwnComplexity,
+            getMainFunctionTokenLocation(node, getParent(context), context),
+          );
           secondLevelFunctions.forEach(secondLevelFunction => {
             checkFunction(
               secondLevelFunction.complexityIfThisSecondaryIsTopLevel,
-              getMainFunctionTokenLocation(secondLevelFunction.node, secondLevelFunction.parent, context),
+              getMainFunctionTokenLocation(
+                secondLevelFunction.node,
+                secondLevelFunction.parent,
+                context,
+              ),
             );
           });
         }
@@ -269,7 +284,9 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function visitContinueOrBreakStatement(statement: estree.ContinueStatement | estree.BreakStatement) {
+    function visitContinueOrBreakStatement(
+      statement: estree.ContinueStatement | estree.BreakStatement,
+    ) {
       if (statement.label) {
         addComplexity(getFirstToken(statement, context).loc);
       }
@@ -289,7 +306,7 @@ const rule: Rule.RuleModule = {
 
     function visitReturnStatement({ argument }: estree.ReturnStatement) {
       // top level function
-      if (enclosingFunctions.length === 1 && argument && (argument.type as any) === "JSXElement") {
+      if (enclosingFunctions.length === 1 && argument && (argument.type as any) === 'JSXElement') {
         reactFunctionalComponent.returnsJsx = true;
       }
     }
@@ -305,7 +322,7 @@ const rule: Rule.RuleModule = {
       }
 
       const parent = getParent(context);
-      if (parent && parent.type === "VariableDeclarator" && parent.id.type === "Identifier") {
+      if (parent && parent.type === 'VariableDeclarator' && parent.id.type === 'Identifier') {
         return checkFirstLetter(parent.id.name);
       }
 
@@ -330,7 +347,11 @@ const rule: Rule.RuleModule = {
     function flattenLogicalExpression(node: estree.Node): estree.LogicalExpression[] {
       if (isLogicalExpression(node)) {
         consideredLogicalExpressions.add(node);
-        return [...flattenLogicalExpression(node.left), node, ...flattenLogicalExpression(node.right)];
+        return [
+          ...flattenLogicalExpression(node.left),
+          node,
+          ...flattenLogicalExpression(node.right),
+        ];
       }
       return [];
     }
@@ -376,7 +397,8 @@ const rule: Rule.RuleModule = {
       if (complexityAmount > threshold) {
         const secondaryLocations: IssueLocation[] = complexity.map(complexityPoint => {
           const { complexity, location } = complexityPoint;
-          const message = complexity === 1 ? "+1" : `+${complexity} (incl. ${complexity - 1} for nesting)`;
+          const message =
+            complexity === 1 ? '+1' : `+${complexity} (incl. ${complexity - 1} for nesting)`;
           return issueLocation(location, undefined, message);
         });
 

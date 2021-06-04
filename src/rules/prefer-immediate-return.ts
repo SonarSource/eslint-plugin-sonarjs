@@ -19,14 +19,19 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1488
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { isReturnStatement, isThrowStatement, isIdentifier, isVariableDeclaration } from "../utils/nodes";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import {
+  isReturnStatement,
+  isThrowStatement,
+  isIdentifier,
+  isVariableDeclaration,
+} from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
-    fixable: "code",
+    type: 'suggestion',
+    fixable: 'code',
   },
   create(context: Rule.RuleContext) {
     return {
@@ -49,8 +54,10 @@ const rule: Rule.RuleModule = {
         if (returnedIdentifier && declaredIdentifier) {
           const sameVariable = getVariables(context).find(variable => {
             return (
-              variable.references.find(ref => ref.identifier === returnedIdentifier) !== undefined &&
-              variable.references.find(ref => ref.identifier === declaredIdentifier.id) !== undefined
+              variable.references.find(ref => ref.identifier === returnedIdentifier) !==
+                undefined &&
+              variable.references.find(ref => ref.identifier === declaredIdentifier.id) !==
+                undefined
             );
           });
 
@@ -79,7 +86,7 @@ const rule: Rule.RuleModule = {
         const fixedRangeStart = lastButOne.range[0];
         const fixedRangeEnd = last.range[1];
         const semicolonToken = context.getSourceCode().getLastToken(last);
-        const semicolon = semicolonToken && semicolonToken.value === ";" ? ";" : "";
+        const semicolon = semicolonToken && semicolonToken.value === ';' ? ';' : '';
         return [
           fixer.removeRange([fixedRangeStart, fixedRangeEnd]),
           fixer.insertTextAfterRange(
@@ -93,7 +100,9 @@ const rule: Rule.RuleModule = {
     }
 
     function getOnlyReturnedVariable(node: estree.Statement) {
-      return (isReturnStatement(node) || isThrowStatement(node)) && node.argument && isIdentifier(node.argument)
+      return (isReturnStatement(node) || isThrowStatement(node)) &&
+        node.argument &&
+        isIdentifier(node.argument)
         ? node.argument
         : undefined;
     }
@@ -109,7 +118,7 @@ const rule: Rule.RuleModule = {
     }
 
     function formatMessage(node: estree.Node, variable: string) {
-      const action = isReturnStatement(node) ? "return" : "throw";
+      const action = isReturnStatement(node) ? 'return' : 'throw';
       return `Immediately ${action} this expression instead of assigning it to the temporary variable "${variable}".`;
     }
 

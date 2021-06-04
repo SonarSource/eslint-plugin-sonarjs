@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018, sourceType: "module" } });
-import rule = require("../../src/rules/cognitive-complexity");
+const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018, sourceType: 'module' } });
+import rule = require('../../src/rules/cognitive-complexity');
 
-ruleTester.run("cognitive-complexity", rule, {
+ruleTester.run('cognitive-complexity', rule, {
   valid: [{ code: `function zero_complexity() {}`, options: [0] }],
   invalid: [
     // if
@@ -218,21 +218,21 @@ ruleTester.run("cognitive-complexity", rule, {
 
         return foo(a && b) && c; // +1 "&&", +1 "&&"
       }`,
-      options: [0, "sonar-runtime"],
+      options: [0, 'sonar-runtime'],
       errors: [
         JSON.stringify({
           secondaryLocations: [
-            { line: 3, column: 8, endLine: 3, endColumn: 10, message: "+1" }, // if
-            { line: 7, column: 10, endLine: 7, endColumn: 14, message: "+1" }, // else
-            { line: 4, column: 10, endLine: 4, endColumn: 12, message: "+2 (incl. 1 for nesting)" }, // if
-            { line: 4, column: 28, endLine: 4, endColumn: 32, message: "+1" }, // else
-            { line: 6, column: 10, endLine: 6, endColumn: 15, message: "+2 (incl. 1 for nesting)" }, // catch
-            { line: 11, column: 8, endLine: 11, endColumn: 13, message: "+1" }, // while
-            { line: 12, column: 10, endLine: 12, endColumn: 15, message: "+1" }, // break
-            { line: 15, column: 10, endLine: 15, endColumn: 11, message: "+1" }, // ?
-            { line: 17, column: 8, endLine: 17, endColumn: 14, message: "+1" }, // switch
-            { line: 19, column: 27, endLine: 19, endColumn: 29, message: "+1" }, // &&
-            { line: 19, column: 21, endLine: 19, endColumn: 23, message: "+1" }, // &&
+            { line: 3, column: 8, endLine: 3, endColumn: 10, message: '+1' }, // if
+            { line: 7, column: 10, endLine: 7, endColumn: 14, message: '+1' }, // else
+            { line: 4, column: 10, endLine: 4, endColumn: 12, message: '+2 (incl. 1 for nesting)' }, // if
+            { line: 4, column: 28, endLine: 4, endColumn: 32, message: '+1' }, // else
+            { line: 6, column: 10, endLine: 6, endColumn: 15, message: '+2 (incl. 1 for nesting)' }, // catch
+            { line: 11, column: 8, endLine: 11, endColumn: 13, message: '+1' }, // while
+            { line: 12, column: 10, endLine: 12, endColumn: 15, message: '+1' }, // break
+            { line: 15, column: 10, endLine: 15, endColumn: 11, message: '+1' }, // ?
+            { line: 17, column: 8, endLine: 17, endColumn: 14, message: '+1' }, // switch
+            { line: 19, column: 27, endLine: 19, endColumn: 29, message: '+1' }, // &&
+            { line: 19, column: 21, endLine: 19, endColumn: 23, message: '+1' }, // &&
           ],
           ...message(13),
 
@@ -291,12 +291,12 @@ ruleTester.run("cognitive-complexity", rule, {
 
     // different function types
     {
-      code: "var arrowFunction = (a, b) => a && b;",
+      code: 'var arrowFunction = (a, b) => a && b;',
       options: [0],
       errors: [message(1, { line: 1, endLine: 1, column: 28, endColumn: 30 })],
     },
     {
-      code: "var functionExpression = function(a, b) { return a && b; }",
+      code: 'var functionExpression = function(a, b) { return a && b; }',
       options: [0],
       errors: [message(1, { line: 1, endLine: 1, column: 26, endColumn: 34 })],
     },
@@ -481,7 +481,7 @@ ruleTester.run("cognitive-complexity", rule, {
   ],
 });
 
-ruleTester.run("cognitive-complexity 15", rule, {
+ruleTester.run('cognitive-complexity 15', rule, {
   valid: [
     {
       code: `
@@ -514,12 +514,16 @@ ruleTester.run("cognitive-complexity 15", rule, {
           }
         }
       }`,
-      errors: [{ message: `Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed.` }],
+      errors: [
+        {
+          message: `Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed.`,
+        },
+      ],
     },
   ],
 });
 
-ruleTester.run("file-cognitive-complexity", rule, {
+ruleTester.run('file-cognitive-complexity', rule, {
   valid: [],
   invalid: [
     {
@@ -603,7 +607,7 @@ class TopLevel {
   }
 }
       `,
-      options: [0, "metric"],
+      options: [0, 'metric'],
       errors: [complexity(25)],
     },
   ],

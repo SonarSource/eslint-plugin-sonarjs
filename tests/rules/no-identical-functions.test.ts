@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
-import { IssueLocation } from "../../src/utils/locations";
+import { RuleTester } from 'eslint';
+import { IssueLocation } from '../../src/utils/locations';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-identical-functions");
+import rule = require('../../src/rules/no-identical-functions');
 
-ruleTester.run("no-identical-functions", rule, {
+ruleTester.run('no-identical-functions', rule, {
   valid: [
     {
       // different body
@@ -243,9 +243,11 @@ ruleTester.run("no-identical-functions", rule, {
           return 42;
         },
       };`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
-        encodedMessage(3, 10, [{ line: 3, column: 8, endLine: 3, endColumn: 11, message: "Original implementation" }]),
+        encodedMessage(3, 10, [
+          { line: 3, column: 8, endLine: 3, endColumn: 11, message: 'Original implementation' },
+        ]),
       ],
     },
     {
@@ -263,9 +265,11 @@ ruleTester.run("no-identical-functions", rule, {
           1,
         ];
       }`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
-        encodedMessage(2, 8, [{ line: 2, column: 15, endLine: 2, endColumn: 19, message: "Original implementation" }]),
+        encodedMessage(2, 8, [
+          { line: 2, column: 15, endLine: 2, endColumn: 19, message: 'Original implementation' },
+        ]),
       ],
     },
   ],

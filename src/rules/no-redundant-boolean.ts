@@ -19,21 +19,26 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1125
 
-import { Rule } from "eslint";
-import { BinaryExpression, Node, LogicalExpression, UnaryExpression, Expression } from "estree";
-import { getParent, isBooleanLiteral, isIfStatement, isConditionalExpression } from "../utils/nodes";
+import { Rule } from 'eslint';
+import { BinaryExpression, Node, LogicalExpression, UnaryExpression, Expression } from 'estree';
+import {
+  getParent,
+  isBooleanLiteral,
+  isIfStatement,
+  isConditionalExpression,
+} from '../utils/nodes';
 
-const MESSAGE = "Remove the unnecessary boolean literal.";
+const MESSAGE = 'Remove the unnecessary boolean literal.';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     return {
       BinaryExpression(node: Node) {
         const expression = node as BinaryExpression;
-        if (expression.operator === "==" || expression.operator === "!=") {
+        if (expression.operator === '==' || expression.operator === '!=') {
           checkBooleanLiteral(expression.left);
           checkBooleanLiteral(expression.right);
         }
@@ -43,14 +48,14 @@ const rule: Rule.RuleModule = {
         const expression = node as LogicalExpression;
         checkBooleanLiteral(expression.left);
 
-        if (expression.operator === "&&") {
+        if (expression.operator === '&&') {
           checkBooleanLiteral(expression.right);
         }
 
         // ignore `x || true` and `x || false` expressions outside of conditional expressions and `if` statements
         const parent = getParent(context);
         if (
-          expression.operator === "||" &&
+          expression.operator === '||' &&
           ((isConditionalExpression(parent) && parent.test === expression) || isIfStatement(parent))
         ) {
           checkBooleanLiteral(expression.right);
@@ -59,7 +64,7 @@ const rule: Rule.RuleModule = {
 
       UnaryExpression(node: Node) {
         const unaryExpression = node as UnaryExpression;
-        if (unaryExpression.operator === "!") {
+        if (unaryExpression.operator === '!') {
           checkBooleanLiteral(unaryExpression.argument);
         }
       },

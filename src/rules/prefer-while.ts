@@ -19,13 +19,13 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1264
 
-import { Rule } from "eslint";
-import * as estree from "estree";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
 
 const rule: Rule.RuleModule = {
   meta: {
-    fixable: "code",
-    type: "suggestion",
+    fixable: 'code',
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     return {

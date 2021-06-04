@@ -19,20 +19,21 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1479
 
-import { Rule } from "eslint";
-import { Node, SwitchStatement, SwitchCase } from "estree";
+import { Rule } from 'eslint';
+import { Node, SwitchStatement, SwitchCase } from 'estree';
 
-const MESSAGE = "Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.";
+const MESSAGE =
+  'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.';
 
 const DEFAULT_MAX_SWITCH_CASES = 30;
 let maxSwitchCases = DEFAULT_MAX_SWITCH_CASES;
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     schema: [
       {
-        type: "integer",
+        type: 'integer',
         minimum: 0,
       },
     ],
@@ -41,7 +42,9 @@ const rule: Rule.RuleModule = {
     if (context.options.length > 0) {
       maxSwitchCases = context.options[0];
     }
-    return { SwitchStatement: (node: Node) => visitSwitchStatement(node as SwitchStatement, context) };
+    return {
+      SwitchStatement: (node: Node) => visitSwitchStatement(node as SwitchStatement, context),
+    };
   },
 };
 
@@ -54,7 +57,10 @@ function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.Ru
     context.report({
       message: MESSAGE,
       loc: switchKeyword.loc,
-      data: { numSwitchCases: nonEmptyCases.length.toString(), maxSwitchCases: maxSwitchCases.toString() },
+      data: {
+        numSwitchCases: nonEmptyCases.length.toString(),
+        maxSwitchCases: maxSwitchCases.toString(),
+      },
     });
   }
 }

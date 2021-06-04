@@ -19,18 +19,18 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1066
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { isIfStatement, isBlockStatement } from "../utils/nodes";
-import { report, issueLocation } from "../utils/locations";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { isIfStatement, isBlockStatement } from '../utils/nodes';
+import { report, issueLocation } from '../utils/locations';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
