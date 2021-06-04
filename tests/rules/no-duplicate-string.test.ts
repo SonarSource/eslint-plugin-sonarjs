@@ -20,6 +20,7 @@
 import { RuleTester } from "eslint";
 
 const ruleTester = new RuleTester({
+  parser: require.resolve("@typescript-eslint/parser"),
   parserOptions: { ecmaVersion: 2015, sourceType: "module", ecmaFeatures: { jsx: true } },
 });
 import rule = require("../../src/rules/no-duplicate-string");
@@ -138,6 +139,14 @@ ruleTester.run("no-duplicate-string", rule, {
       'use strict';
       'use strict';
       'use strict';
+      `,
+    },
+    {
+      code: `
+      let x: 'Hello world';
+      function foo(arg: 'Hello world'): 'Hello world' {
+        return 'Hello world';
+      }
       `,
     },
   ],

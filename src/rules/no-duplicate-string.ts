@@ -50,7 +50,10 @@ const rule: Rule.RuleModule = {
       Literal: (node: Node) => {
         const literal = node as SimpleLiteral;
         const parent = getParent(context);
-        if (typeof literal.value === "string" && parent && parent.type !== "ExpressionStatement") {
+        if (
+          typeof literal.value === "string" &&
+          (parent && !["ExpressionStatement", "TSLiteralType"].includes(parent.type))
+        ) {
           const stringContent = literal.value.trim();
 
           if (
