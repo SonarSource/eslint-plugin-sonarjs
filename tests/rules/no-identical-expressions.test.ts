@@ -17,17 +17,19 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
-import rule = require("../../src/rules/no-identical-expressions");
+import rule = require('../../src/rules/no-identical-expressions');
 
-ruleTester.run("no-identical-expressions", rule, {
+ruleTester.run('no-identical-expressions', rule, {
   valid: [
     { code: `1 << 1;` },
     { code: `foo(), foo();` },
     { code: `if (Foo instanceof Foo) { }` },
-    { code: `name === "any" || name === "string" || name === "number" || name === "boolean" || name === "never"` },
+    {
+      code: `name === "any" || name === "string" || name === "number" || name === "boolean" || name === "never"`,
+    },
     { code: `a != a;` },
     { code: `a === a;` },
     { code: `a !== a;` },
@@ -36,10 +38,12 @@ ruleTester.run("no-identical-expressions", rule, {
     { code: `nodeText === '"use strict"' || nodeText === "'use strict'";` },
     { code: `name.charCodeAt(0) === CharacterCodes._ && name.charCodeAt(1) === CharacterCodes._;` },
     { code: `if (+a !== +b) { }` },
-    { code: "first(`const`) || first(`var`);" },
-    // eslint-disable-next-line no-template-curly-in-string
-    { code: "window[`${prefix}CancelAnimationFrame`] || window[`${prefix}CancelRequestAnimationFrame`];" },
-    { code: "" },
+    { code: 'first(`const`) || first(`var`);' },
+    {
+      // eslint-disable-next-line no-template-curly-in-string
+      code: 'window[`${prefix}CancelAnimationFra  me`] || window[`${prefix}CancelRequestAnimationFrame`];',
+    },
+    { code: '' },
     // eslint-disable-next-line no-useless-escape
     { code: `dirPath.match(/localhost:\d+/) || dirPath.match(/localhost:\d+\s/);` },
     { code: `a == b || a == c;` },
@@ -47,7 +51,7 @@ ruleTester.run("no-identical-expressions", rule, {
   ],
   invalid: [
     {
-      code: "a == b && a == b",
+      code: 'a == b && a == b',
       errors: [
         {
           message: 'Correct one of the identical sub-expressions on both sides of operator "&&"',
@@ -57,13 +61,13 @@ ruleTester.run("no-identical-expressions", rule, {
       ],
     },
     {
-      code: "a == b || a == b",
+      code: 'a == b || a == b',
       errors: 1,
     },
     {
       code: `a == b || a == b
       //     ^^^^^^>   ^^^^^^`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         {
           message: JSON.stringify({
@@ -73,7 +77,7 @@ ruleTester.run("no-identical-expressions", rule, {
                 column: 0,
                 endLine: 1,
                 endColumn: 6,
-                message: "",
+                message: '',
               },
             ],
             message: `Correct one of the identical sub-expressions on both sides of operator "||"`,
@@ -86,63 +90,63 @@ ruleTester.run("no-identical-expressions", rule, {
       ],
     },
     {
-      code: "a > a",
+      code: 'a > a',
       errors: 1,
     },
     {
-      code: "a >= a",
+      code: 'a >= a',
       errors: 1,
     },
     {
-      code: "a < a",
+      code: 'a < a',
       errors: 1,
     },
     {
-      code: "a <= a",
+      code: 'a <= a',
       errors: 1,
     },
     {
-      code: "5 / 5",
+      code: '5 / 5',
       errors: 1,
     },
     {
-      code: "5 - 5",
+      code: '5 - 5',
       errors: 1,
     },
     {
-      code: "a << a",
+      code: 'a << a',
       errors: 1,
     },
     {
-      code: "a << a",
+      code: 'a << a',
       errors: 1,
     },
     {
-      code: "a >> a",
+      code: 'a >> a',
       errors: 1,
     },
     {
-      code: "1 >> 1",
+      code: '1 >> 1',
       errors: 1,
     },
     {
-      code: "5 << 5",
+      code: '5 << 5',
       errors: 1,
     },
     {
-      code: "obj.foo() == obj.foo()",
+      code: 'obj.foo() == obj.foo()',
       errors: 1,
     },
     {
-      code: "foo(/*comment*/() => doSomething()) === foo(() => doSomething())",
+      code: 'foo(/*comment*/() => doSomething()) === foo(() => doSomething())',
       errors: 1,
     },
     {
-      code: "(a == b) == (a == b)",
+      code: '(a == b) == (a == b)',
       errors: 1,
     },
     {
-      code: "if (+a !== +a);",
+      code: 'if (+a !== +a);',
       errors: 1,
     },
   ],

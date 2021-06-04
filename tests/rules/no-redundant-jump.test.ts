@@ -17,18 +17,18 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-redundant-jump");
+import rule = require('../../src/rules/no-redundant-jump');
 
 function invalid(code: string) {
-  const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
+  const line = code.split('\n').findIndex(str => str.includes('// Noncompliant')) + 1;
   return {
     code,
     errors: [
       {
-        message: "Remove this redundant jump.",
+        message: 'Remove this redundant jump.',
         line,
         endLine: line,
       },
@@ -36,7 +36,7 @@ function invalid(code: string) {
   };
 }
 
-ruleTester.run("Jump statements should not be redundant", rule, {
+ruleTester.run('Jump statements should not be redundant', rule, {
   invalid: [
     invalid(
       `while (x == 1) {

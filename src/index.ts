@@ -17,40 +17,40 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Linter } from "eslint";
+import { Linter } from 'eslint';
 
 const sonarjsRules: [string, Linter.RuleLevel][] = [
-  ["cognitive-complexity", "error"],
-  ["max-switch-cases", "error"],
-  ["no-all-duplicated-branches", "error"],
-  ["no-collapsible-if", "error"],
-  ["no-collection-size-mischeck", "error"],
-  ["no-duplicate-string", "error"],
-  ["no-duplicated-branches", "error"],
-  ["no-element-overwrite", "error"],
-  ["no-extra-arguments", "error"],
-  ["no-identical-conditions", "error"],
-  ["no-identical-functions", "error"],
-  ["no-identical-expressions", "error"],
-  ["no-inverted-boolean-check", "error"],
-  ["no-one-iteration-loop", "error"],
-  ["no-redundant-boolean", "error"],
-  ["no-redundant-jump", "error"],
-  ["no-same-line-conditional", "error"],
-  ["no-small-switch", "error"],
-  ["no-unused-collection", "error"],
-  ["no-use-of-empty-return-value", "error"],
-  ["no-useless-catch", "error"],
-  ["prefer-immediate-return", "error"],
-  ["prefer-object-literal", "error"],
-  ["prefer-single-boolean-return", "error"],
-  ["prefer-while", "error"],
+  ['cognitive-complexity', 'error'],
+  ['max-switch-cases', 'error'],
+  ['no-all-duplicated-branches', 'error'],
+  ['no-collapsible-if', 'error'],
+  ['no-collection-size-mischeck', 'error'],
+  ['no-duplicate-string', 'error'],
+  ['no-duplicated-branches', 'error'],
+  ['no-element-overwrite', 'error'],
+  ['no-extra-arguments', 'error'],
+  ['no-identical-conditions', 'error'],
+  ['no-identical-functions', 'error'],
+  ['no-identical-expressions', 'error'],
+  ['no-inverted-boolean-check', 'error'],
+  ['no-one-iteration-loop', 'error'],
+  ['no-redundant-boolean', 'error'],
+  ['no-redundant-jump', 'error'],
+  ['no-same-line-conditional', 'error'],
+  ['no-small-switch', 'error'],
+  ['no-unused-collection', 'error'],
+  ['no-use-of-empty-return-value', 'error'],
+  ['no-useless-catch', 'error'],
+  ['prefer-immediate-return', 'error'],
+  ['prefer-object-literal', 'error'],
+  ['prefer-single-boolean-return', 'error'],
+  ['prefer-while', 'error'],
 ];
 
 const sonarjsRuleModules: any = {};
 
 const configs: { recommended: Linter.Config & { plugins: string[] } } = {
-  recommended: { plugins: ["sonarjs"], rules: {} },
+  recommended: { plugins: ['sonarjs'], rules: {} },
 };
 
 sonarjsRules.forEach(rule => (sonarjsRuleModules[rule[0]] = require(`./rules/${rule[0]}`)));

@@ -17,10 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ParserServices } from "@typescript-eslint/parser";
+import { ParserServices } from '@typescript-eslint/parser';
 
-export type RequiredParserServices = { [k in keyof ParserServices]: Exclude<ParserServices[k], undefined> };
+export type RequiredParserServices = {
+  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
+};
 
-export function isRequiredParserServices(services: ParserServices): services is RequiredParserServices {
+export function isRequiredParserServices(
+  services: ParserServices,
+): services is RequiredParserServices {
   return !!services && !!services.program && !!services.esTreeNodeToTSNodeMap;
 }

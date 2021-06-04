@@ -19,14 +19,14 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1301
 
-import { Rule } from "eslint";
-import { Node, SwitchStatement } from "estree";
+import { Rule } from 'eslint';
+import { Node, SwitchStatement } from 'estree';
 
 const MESSAGE = '"switch" statements should have at least 3 "case" clauses';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     return {

@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
-import rule = require("../../src/rules/no-collapsible-if");
+import rule = require('../../src/rules/no-collapsible-if');
 
-ruleTester.run("no-collapsible-if", rule, {
+ruleTester.run('no-collapsible-if', rule, {
   valid: [
     {
       code: `
@@ -66,7 +66,7 @@ ruleTester.run("no-collapsible-if", rule, {
         if (y) {}
       //^^ {{Nested "if" statement.}}
       }`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         {
           message: JSON.stringify({
@@ -79,7 +79,7 @@ ruleTester.run("no-collapsible-if", rule, {
                 message: `Nested "if" statement.`,
               },
             ],
-            message: "Merge this if statement with the nested one.",
+            message: 'Merge this if statement with the nested one.',
           }),
           line: 2,
           column: 7,
@@ -92,7 +92,7 @@ ruleTester.run("no-collapsible-if", rule, {
       code: `
       if (x)
         if(y) {}`,
-      errors: [{ message: "Merge this if statement with the nested one." }],
+      errors: [{ message: 'Merge this if statement with the nested one.' }],
     },
     {
       code: `

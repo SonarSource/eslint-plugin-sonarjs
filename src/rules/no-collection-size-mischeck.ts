@@ -19,17 +19,17 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3981
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { TSESTree } from "@typescript-eslint/experimental-utils";
-import { isRequiredParserServices, RequiredParserServices } from "../utils/parser-services";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
 
-const CollectionLike = ["Array", "Map", "Set", "WeakMap", "WeakSet"];
-const CollectionSizeLike = ["length", "size"];
+const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
+const CollectionSizeLike = ['length', 'size'];
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
   },
   create(context: Rule.RuleContext) {
     const services = context.parserServices;
@@ -37,13 +37,13 @@ const rule: Rule.RuleModule = {
     return {
       BinaryExpression: (node: estree.Node) => {
         const expr = node as estree.BinaryExpression;
-        if (["<", ">="].includes(expr.operator)) {
+        if (['<', '>='].includes(expr.operator)) {
           const lhs = expr.left;
           const rhs = expr.right;
-          if (isZeroLiteral(rhs) && lhs.type === "MemberExpression") {
+          if (isZeroLiteral(rhs) && lhs.type === 'MemberExpression') {
             const { object, property } = lhs;
             if (
-              property.type === "Identifier" &&
+              property.type === 'Identifier' &&
               CollectionSizeLike.includes(property.name) &&
               (!isTypeCheckerAvailable || isCollection(object, services))
             ) {
@@ -62,7 +62,7 @@ const rule: Rule.RuleModule = {
 };
 
 function isZeroLiteral(node: estree.Node) {
-  return node.type === "Literal" && node.value === 0;
+  return node.type === 'Literal' && node.value === 0;
 }
 
 function isCollection(node: estree.Node, services: RequiredParserServices) {

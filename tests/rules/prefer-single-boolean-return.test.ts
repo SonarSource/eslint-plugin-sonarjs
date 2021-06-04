@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/prefer-single-boolean-return");
+import rule = require('../../src/rules/prefer-single-boolean-return');
 
-ruleTester.run("prefer-single-boolean-return", rule, {
+ruleTester.run('prefer-single-boolean-return', rule, {
   valid: [
     {
       code: `
@@ -165,7 +165,7 @@ ruleTester.run("prefer-single-boolean-return", rule, {
       `,
       errors: [
         {
-          message: "Replace this if-then-else statement by a single return statement.",
+          message: 'Replace this if-then-else statement by a single return statement.',
           line: 3,
           column: 11,
           endLine: 7,

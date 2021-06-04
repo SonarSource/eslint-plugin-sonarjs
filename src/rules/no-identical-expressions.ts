@@ -19,16 +19,27 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1764
 
-import { Rule } from "eslint";
-import { Node, BinaryExpression, LogicalExpression } from "estree";
-import { isIdentifier, isLiteral } from "../utils/nodes";
-import { areEquivalent } from "../utils/equivalence";
-import { report, issueLocation, IssueLocation } from "../utils/locations";
+import { Rule } from 'eslint';
+import { Node, BinaryExpression, LogicalExpression } from 'estree';
+import { isIdentifier, isLiteral } from '../utils/nodes';
+import { areEquivalent } from '../utils/equivalence';
+import { report, issueLocation, IssueLocation } from '../utils/locations';
 
-const EQUALITY_OPERATOR_TOKEN_KINDS = new Set(["==", "===", "!=", "!=="]);
+const EQUALITY_OPERATOR_TOKEN_KINDS = new Set(['==', '===', '!=', '!==']);
 
 // consider only binary expressions with these operators
-const RELEVANT_OPERATOR_TOKEN_KINDS = new Set(["&&", "||", "/", "-", "<<", ">>", "<", "<=", ">", ">="]);
+const RELEVANT_OPERATOR_TOKEN_KINDS = new Set([
+  '&&',
+  '||',
+  '/',
+  '-',
+  '<<',
+  '>>',
+  '<',
+  '<=',
+  '>',
+  '>=',
+]);
 
 const message = (operator: string) =>
   `Correct one of the identical sub-expressions on both sides of operator "${operator}"`;
@@ -45,16 +56,16 @@ function hasIdentifierOperands(node: BinaryExpression | LogicalExpression) {
 }
 
 function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
-  return node.operator === "<<" && isLiteral(node.left) && node.left.value === 1;
+  return node.operator === '<<' && isLiteral(node.left) && node.left.value === 1;
 }
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -90,7 +101,7 @@ const rule: Rule.RuleModule = {
     }
 
     function isSonarRuntime() {
-      return context.options[context.options.length - 1] === "sonar-runtime";
+      return context.options[context.options.length - 1] === 'sonar-runtime';
     }
   },
 };

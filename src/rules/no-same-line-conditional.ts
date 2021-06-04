@@ -19,9 +19,9 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3972
 
-import { AST, Rule } from "eslint";
-import * as estree from "estree";
-import { toEncodedMessage } from "../utils/locations";
+import { AST, Rule } from 'eslint';
+import * as estree from 'estree';
+import { toEncodedMessage } from '../utils/locations';
 
 interface SiblingIfStatement {
   first: estree.IfStatement;
@@ -30,11 +30,11 @@ interface SiblingIfStatement {
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -75,7 +75,11 @@ const rule: Rule.RuleModule = {
 function getSiblingIfStatements(statements: estree.Node[]): SiblingIfStatement[] {
   return statements.reduce<SiblingIfStatement[]>((siblingsArray, statement, currentIndex) => {
     const previousStatement = statements[currentIndex - 1];
-    if (statement.type === "IfStatement" && !!previousStatement && previousStatement.type === "IfStatement") {
+    if (
+      statement.type === 'IfStatement' &&
+      !!previousStatement &&
+      previousStatement.type === 'IfStatement'
+    ) {
       return [{ first: previousStatement, following: statement }, ...siblingsArray];
     }
     return siblingsArray;

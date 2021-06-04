@@ -19,20 +19,20 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4030
 
-import { Rule, Scope } from "eslint";
-import * as estree from "estree";
-import { TSESTree } from "@typescript-eslint/experimental-utils";
-import { collectionConstructor, writingMethods } from "../utils/collections";
+import { Rule, Scope } from 'eslint';
+import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { collectionConstructor, writingMethods } from '../utils/collections';
 
 const message = "Either use this collection's contents or remove the collection.";
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
   },
   create(context: Rule.RuleContext) {
     return {
-      "Program:exit": () => {
+      'Program:exit': () => {
         const unusedArrays: Scope.Variable[] = [];
         collectUnusedCollections(context.getScope(), unusedArrays);
 
@@ -48,7 +48,7 @@ const rule: Rule.RuleModule = {
 };
 
 function collectUnusedCollections(scope: Scope.Scope, unusedArray: Scope.Variable[]) {
-  if (scope.type !== "global") {
+  if (scope.type !== 'global') {
     scope.variables.filter(isUnusedCollection).forEach(v => {
       unusedArray.push(v);
     });
@@ -103,17 +103,17 @@ function isUnusedCollection(variable: Scope.Variable) {
 function isReferenceAssigningCollection(ref: Scope.Reference) {
   const declOrExprStmt = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
-    n => n.type === "VariableDeclarator" || n.type === "ExpressionStatement",
+    n => n.type === 'VariableDeclarator' || n.type === 'ExpressionStatement',
   ) as estree.Node;
   if (declOrExprStmt) {
-    if (declOrExprStmt.type === "VariableDeclarator" && declOrExprStmt.init) {
+    if (declOrExprStmt.type === 'VariableDeclarator' && declOrExprStmt.init) {
       return isCollectionType(declOrExprStmt.init);
     }
 
-    if (declOrExprStmt.type === "ExpressionStatement") {
+    if (declOrExprStmt.type === 'ExpressionStatement') {
       const { expression } = declOrExprStmt;
       return (
-        expression.type === "AssignmentExpression" &&
+        expression.type === 'AssignmentExpression' &&
         isReferenceTo(ref, expression.left) &&
         isCollectionType(expression.right)
       );
@@ -123,9 +123,9 @@ function isReferenceAssigningCollection(ref: Scope.Reference) {
 }
 
 function isCollectionType(node: estree.Node) {
-  if (node && node.type === "ArrayExpression") {
+  if (node && node.type === 'ArrayExpression') {
     return true;
-  } else if (node && (node.type === "CallExpression" || node.type === "NewExpression")) {
+  } else if (node && (node.type === 'CallExpression' || node.type === 'NewExpression')) {
     return isIdentifier(node.callee, ...collectionConstructor);
   }
   return false;
@@ -134,11 +134,13 @@ function isCollectionType(node: estree.Node) {
 function isRead(ref: Scope.Reference) {
   const expressionStatement = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
-    n => n.type === "ExpressionStatement",
+    n => n.type === 'ExpressionStatement',
   ) as estree.ExpressionStatement;
 
   if (expressionStatement) {
-    return !(isElementWrite(expressionStatement, ref) || isWritingMethodCall(expressionStatement, ref));
+    return !(
+      isElementWrite(expressionStatement, ref) || isWritingMethodCall(expressionStatement, ref)
+    );
   }
 
   //All the write statement that we search are part of ExpressionStatement, if there is none, it's a read
@@ -150,7 +152,7 @@ function isRead(ref: Scope.Reference) {
  * myArray.push(1);
  */
 function isWritingMethodCall(statement: estree.ExpressionStatement, ref: Scope.Reference) {
-  if (statement.expression.type === "CallExpression") {
+  if (statement.expression.type === 'CallExpression') {
     const { callee } = statement.expression;
     if (isMemberExpression(callee)) {
       const { property } = callee;
@@ -161,7 +163,7 @@ function isWritingMethodCall(statement: estree.ExpressionStatement, ref: Scope.R
 }
 
 function isMemberExpression(node: estree.Node): node is estree.MemberExpression {
-  return node.type === "MemberExpression";
+  return node.type === 'MemberExpression';
 }
 
 /**
@@ -172,7 +174,7 @@ function isMemberExpression(node: estree.Node): node is estree.MemberExpression 
  *  myObj.prop1 += 3;
  */
 function isElementWrite(statement: estree.ExpressionStatement, ref: Scope.Reference) {
-  if (statement.expression.type === "AssignmentExpression") {
+  if (statement.expression.type === 'AssignmentExpression') {
     const assignmentExpression = statement.expression;
     const lhs = assignmentExpression.left;
     return isMemberExpressionReference(lhs, ref);
@@ -182,19 +184,23 @@ function isElementWrite(statement: estree.ExpressionStatement, ref: Scope.Refere
 
 function isMemberExpressionReference(lhs: estree.Node, ref: Scope.Reference): boolean {
   return (
-    lhs.type === "MemberExpression" && (isReferenceTo(ref, lhs.object) || isMemberExpressionReference(lhs.object, ref))
+    lhs.type === 'MemberExpression' &&
+    (isReferenceTo(ref, lhs.object) || isMemberExpressionReference(lhs.object, ref))
   );
 }
 
 function isIdentifier(node: estree.Node, ...values: string[]): node is estree.Identifier {
-  return node.type === "Identifier" && values.some(value => value === node.name);
+  return node.type === 'Identifier' && values.some(value => value === node.name);
 }
 
 function isReferenceTo(ref: Scope.Reference, node: estree.Node) {
-  return node.type === "Identifier" && node === ref.identifier;
+  return node.type === 'Identifier' && node === ref.identifier;
 }
 
-function findFirstMatchingAncestor(node: TSESTree.Node, predicate: (node: TSESTree.Node) => boolean) {
+function findFirstMatchingAncestor(
+  node: TSESTree.Node,
+  predicate: (node: TSESTree.Node) => boolean,
+) {
   return ancestorsChain(node, new Set()).find(predicate);
 }
 

@@ -17,20 +17,20 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester();
-import rule = require("../../src/rules/no-identical-conditions");
+import rule = require('../../src/rules/no-identical-conditions');
 
 const message = (line: number) => `This branch duplicates the one on line ${line}`;
 
-ruleTester.run("no-identical-conditions", rule, {
+ruleTester.run('no-identical-conditions', rule, {
   valid: [
     {
-      code: "if (a) {} else if (b) {}",
+      code: 'if (a) {} else if (b) {}',
     },
     {
-      code: "if (a) {} else {}",
+      code: 'if (a) {} else {}',
     },
   ],
   invalid: [
@@ -48,7 +48,7 @@ ruleTester.run("no-identical-conditions", rule, {
         else if (a) {}
         //       ^
       `,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         JSON.stringify({
           secondaryLocations: [
@@ -57,7 +57,7 @@ ruleTester.run("no-identical-conditions", rule, {
               column: 12,
               endLine: 2,
               endColumn: 13,
-              message: "Original",
+              message: 'Original',
             },
           ],
           message: message(2),

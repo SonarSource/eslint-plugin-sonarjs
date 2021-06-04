@@ -19,19 +19,19 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1862
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { isIfStatement } from "../utils/nodes";
-import { areEquivalent } from "../utils/equivalence";
-import { report, issueLocation } from "../utils/locations";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { isIfStatement } from '../utils/nodes';
+import { areEquivalent } from '../utils/equivalence';
+import { report, issueLocation } from '../utils/locations';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -52,7 +52,7 @@ const rule: Rule.RuleModule = {
                     message: `This branch duplicates the one on line ${line}`,
                     node: statement.test,
                   },
-                  [issueLocation(condition.loc, condition.loc, "Original")],
+                  [issueLocation(condition.loc, condition.loc, 'Original')],
                 );
               }
             }

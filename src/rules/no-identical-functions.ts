@@ -19,21 +19,21 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4144
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { areEquivalent } from "../utils/equivalence";
-import { getMainFunctionTokenLocation, report, issueLocation } from "../utils/locations";
-import { getParent } from "../utils/nodes";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { areEquivalent } from '../utils/equivalence';
+import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
+import { getParent } from '../utils/nodes';
 
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -51,7 +51,7 @@ const rule: Rule.RuleModule = {
         visitFunction(node as estree.ArrowFunctionExpression);
       },
 
-      "Program:exit"() {
+      'Program:exit'() {
         processFunctions();
       },
     };
@@ -74,13 +74,25 @@ const rule: Rule.RuleModule = {
           const originalFunction = functions[j].function;
 
           if (
-            areEquivalent(duplicatingFunction.body, originalFunction.body, context.getSourceCode()) &&
+            areEquivalent(
+              duplicatingFunction.body,
+              originalFunction.body,
+              context.getSourceCode(),
+            ) &&
             originalFunction.loc
           ) {
-            const loc = getMainFunctionTokenLocation(duplicatingFunction, functions[i].parent, context);
-            const originalFunctionLoc = getMainFunctionTokenLocation(originalFunction, functions[j].parent, context);
+            const loc = getMainFunctionTokenLocation(
+              duplicatingFunction,
+              functions[i].parent,
+              context,
+            );
+            const originalFunctionLoc = getMainFunctionTokenLocation(
+              originalFunction,
+              functions[j].parent,
+              context,
+            );
             const secondaryLocations = [
-              issueLocation(originalFunctionLoc, originalFunctionLoc, "Original implementation"),
+              issueLocation(originalFunctionLoc, originalFunctionLoc, 'Original implementation'),
             ];
             report(
               context,
@@ -99,11 +111,11 @@ const rule: Rule.RuleModule = {
     function isBigEnough(node: estree.Expression | estree.Statement) {
       const tokens = context.getSourceCode().getTokens(node);
 
-      if (tokens.length > 0 && tokens[0].value === "{") {
+      if (tokens.length > 0 && tokens[0].value === '{') {
         tokens.shift();
       }
 
-      if (tokens.length > 0 && tokens[tokens.length - 1].value === "}") {
+      if (tokens.length > 0 && tokens[tokens.length - 1].value === '}') {
         tokens.pop();
       }
 

@@ -19,34 +19,41 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1192
 
-import { Rule } from "eslint";
-import { Node, SimpleLiteral } from "estree";
-import { getParent } from "../utils/nodes";
+import { Rule } from 'eslint';
+import { Node, SimpleLiteral } from 'estree';
+import { getParent } from '../utils/nodes';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
 const MIN_LENGTH = 10;
 const NO_SEPARATOR_REGEXP = /^\w*$/;
-const EXCLUDED_CONTEXTS = ["ImportDeclaration", "JSXAttribute", "ExportAllDeclaration", "ExportNamedDeclaration"];
-const MESSAGE = "Define a constant instead of duplicating this literal {{times}} times.";
+const EXCLUDED_CONTEXTS = [
+  'ImportDeclaration',
+  'JSXAttribute',
+  'ExportAllDeclaration',
+  'ExportNamedDeclaration',
+];
+const MESSAGE = 'Define a constant instead of duplicating this literal {{times}} times.';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
-    schema: [{ type: "integer", minimum: 2 }],
+    type: 'suggestion',
+    schema: [{ type: 'integer', minimum: 2 }],
   },
 
   create(context: Rule.RuleContext) {
     const literalsByValue: Map<string, SimpleLiteral[]> = new Map();
-    const threshold: number = context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+    const threshold: number =
+      context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
 
     return {
       Literal: (node: Node) => {
         const literal = node as SimpleLiteral;
         const parent = getParent(context);
         if (
-          typeof literal.value === "string" &&
-          (parent && !["ExpressionStatement", "TSLiteralType"].includes(parent.type))
+          typeof literal.value === 'string' &&
+          parent &&
+          !['ExpressionStatement', 'TSLiteralType'].includes(parent.type)
         ) {
           const stringContent = literal.value.trim();
 
@@ -62,7 +69,7 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      "Program:exit"() {
+      'Program:exit'() {
         literalsByValue.forEach(literals => {
           if (literals.length >= threshold) {
             context.report({
@@ -82,16 +89,20 @@ function isExcludedByUsageContext(context: Rule.RuleContext, literal: SimpleLite
   const parentType = parent.type;
 
   return (
-    EXCLUDED_CONTEXTS.includes(parentType) || isRequireContext(parent, context) || isObjectPropertyKey(parent, literal)
+    EXCLUDED_CONTEXTS.includes(parentType) ||
+    isRequireContext(parent, context) ||
+    isObjectPropertyKey(parent, literal)
   );
 }
 
 function isRequireContext(parent: Node, context: Rule.RuleContext) {
-  return parent.type === "CallExpression" && context.getSourceCode().getText(parent.callee) === "require";
+  return (
+    parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
+  );
 }
 
 function isObjectPropertyKey(parent: Node, literal: SimpleLiteral) {
-  return parent.type === "Property" && parent.key === literal;
+  return parent.type === 'Property' && parent.key === literal;
 }
 
 export = rule;
