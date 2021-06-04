@@ -19,20 +19,20 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3626
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { getParent } from "../utils/nodes";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { getParent } from '../utils/nodes';
 
-const message = "Remove this redundant jump.";
-const loops = "WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement";
+const message = 'Remove this redundant jump.';
+const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     function reportIfLastStatement(node: estree.ContinueStatement | estree.ReturnStatement) {
-      const withArgument = node.type === "ContinueStatement" ? !!node.label : !!node.argument;
+      const withArgument = node.type === 'ContinueStatement' ? !!node.label : !!node.argument;
       if (!withArgument) {
         const block = getParent(context) as estree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
@@ -44,7 +44,9 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function reportIfLastStatementInsideIf(node: estree.ContinueStatement | estree.ReturnStatement) {
+    function reportIfLastStatementInsideIf(
+      node: estree.ContinueStatement | estree.ReturnStatement,
+    ) {
       const ancestors = context.getAncestors();
       const ifStatement = ancestors[ancestors.length - 2];
       const upperBlock = ancestors[ancestors.length - 3] as estree.BlockStatement;
@@ -64,11 +66,13 @@ const rule: Rule.RuleModule = {
         reportIfLastStatementInsideIf(node as estree.ContinueStatement);
       },
 
-      ":function > BlockStatement > ReturnStatement": (node: estree.Node) => {
+      ':function > BlockStatement > ReturnStatement': (node: estree.Node) => {
         reportIfLastStatement(node as estree.ReturnStatement);
       },
 
-      ":function > BlockStatement > IfStatement > BlockStatement > ReturnStatement": (node: estree.Node) => {
+      ':function > BlockStatement > IfStatement > BlockStatement > ReturnStatement': (
+        node: estree.Node,
+      ) => {
         reportIfLastStatementInsideIf(node as estree.ReturnStatement);
       },
     };

@@ -19,22 +19,23 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1871
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { getParent, isIfStatement, isBlockStatement } from "../utils/nodes";
-import { areEquivalent } from "../utils/equivalence";
-import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from "../utils/conditions";
-import { report, issueLocation } from "../utils/locations";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { getParent, isIfStatement, isBlockStatement } from '../utils/nodes';
+import { areEquivalent } from '../utils/equivalence';
+import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
+import { report, issueLocation } from '../utils/locations';
 
-const MESSAGE = "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
+const MESSAGE =
+  "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -56,7 +57,7 @@ const rule: Rule.RuleModule = {
       const { branches, endsWithElse } = collectIfBranches(ifStmt);
 
       if (allEquivalentWithoutDefault(branches, endsWithElse)) {
-        branches.slice(1).forEach((branch, i) => reportIssue(branch, branches[i], "branch"));
+        branches.slice(1).forEach((branch, i) => reportIssue(branch, branches[i], 'branch'));
         return;
       }
 
@@ -74,23 +75,39 @@ const rule: Rule.RuleModule = {
     function visitSwitchStatement(switchStmt: estree.SwitchStatement) {
       const { cases } = switchStmt;
       const { endsWithDefault } = collectSwitchBranches(switchStmt);
-      const nonEmptyCases = cases.filter(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)).length > 0);
-      const casesWithoutBreak = nonEmptyCases.map(c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)));
+      const nonEmptyCases = cases.filter(
+        c => takeWithoutBreak(expandSingleBlockStatement(c.consequent)).length > 0,
+      );
+      const casesWithoutBreak = nonEmptyCases.map(c =>
+        takeWithoutBreak(expandSingleBlockStatement(c.consequent)),
+      );
 
       if (allEquivalentWithoutDefault(casesWithoutBreak, endsWithDefault)) {
-        nonEmptyCases.slice(1).forEach((caseStmt, i) => reportIssue(caseStmt, nonEmptyCases[i], "case"));
+        nonEmptyCases
+          .slice(1)
+          .forEach((caseStmt, i) => reportIssue(caseStmt, nonEmptyCases[i], 'case'));
         return;
       }
 
       for (let i = 1; i < cases.length; i++) {
-        const firstClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[i].consequent));
+        const firstClauseWithoutBreak = takeWithoutBreak(
+          expandSingleBlockStatement(cases[i].consequent),
+        );
 
         if (hasRequiredSize(firstClauseWithoutBreak)) {
           for (let j = 0; j < i; j++) {
-            const secondClauseWithoutBreak = takeWithoutBreak(expandSingleBlockStatement(cases[j].consequent));
+            const secondClauseWithoutBreak = takeWithoutBreak(
+              expandSingleBlockStatement(cases[j].consequent),
+            );
 
-            if (areEquivalent(firstClauseWithoutBreak, secondClauseWithoutBreak, context.getSourceCode())) {
-              reportIssue(cases[i], cases[j], "case");
+            if (
+              areEquivalent(
+                firstClauseWithoutBreak,
+                secondClauseWithoutBreak,
+                context.getSourceCode(),
+              )
+            ) {
+              reportIssue(cases[i], cases[j], 'case');
               break;
             }
           }
@@ -103,8 +120,10 @@ const rule: Rule.RuleModule = {
         const tokens = [
           ...context.getSourceCode().getTokens(nodes[0]),
           ...context.getSourceCode().getTokens(nodes[nodes.length - 1]),
-        ].filter(token => token.value !== "{" && token.value !== "}");
-        return tokens.length > 0 && tokens[tokens.length - 1].loc.end.line > tokens[0].loc.start.line;
+        ].filter(token => token.value !== '{' && token.value !== '}');
+        return (
+          tokens.length > 0 && tokens[tokens.length - 1].loc.end.line > tokens[0].loc.start.line
+        );
       }
       return false;
     }
@@ -112,7 +131,7 @@ const rule: Rule.RuleModule = {
     function compareIfBranches(a: estree.Statement, b: estree.Statement) {
       const equivalent = areEquivalent(a, b, context.getSourceCode());
       if (equivalent && b.loc) {
-        reportIssue(a, b, "branch");
+        reportIssue(a, b, 'branch');
       }
       return equivalent;
     }
@@ -127,19 +146,26 @@ const rule: Rule.RuleModule = {
       return nodes;
     }
 
-    function allEquivalentWithoutDefault(branches: Array<estree.Node | estree.Node[]>, endsWithDefault: boolean) {
+    function allEquivalentWithoutDefault(
+      branches: Array<estree.Node | estree.Node[]>,
+      endsWithDefault: boolean,
+    ) {
       return (
         !endsWithDefault &&
         branches.length > 1 &&
-        branches.slice(1).every((branch, index) => areEquivalent(branch, branches[index], context.getSourceCode()))
+        branches
+          .slice(1)
+          .every((branch, index) => areEquivalent(branch, branches[index], context.getSourceCode()))
       );
     }
 
     function reportIssue(node: estree.Node, equivalentNode: estree.Node, type: string) {
       const equivalentNodeLoc = equivalentNode.loc as estree.SourceLocation;
-      report(context, { message: MESSAGE, data: { type, line: String(equivalentNode.loc!.start.line) }, node }, [
-        issueLocation(equivalentNodeLoc, equivalentNodeLoc, "Original"),
-      ]);
+      report(
+        context,
+        { message: MESSAGE, data: { type, line: String(equivalentNode.loc!.start.line) }, node },
+        [issueLocation(equivalentNodeLoc, equivalentNodeLoc, 'Original')],
+      );
     }
   },
 };

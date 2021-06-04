@@ -19,19 +19,20 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3923
 
-import { Rule } from "eslint";
-import * as estree from "estree";
-import { getParent, isIfStatement } from "../utils/nodes";
-import { areEquivalent } from "../utils/equivalence";
-import { collectIfBranches, collectSwitchBranches } from "../utils/conditions";
+import { Rule } from 'eslint';
+import * as estree from 'estree';
+import { getParent, isIfStatement } from '../utils/nodes';
+import { areEquivalent } from '../utils/equivalence';
+import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';
 
-const MESSAGE = "Remove this conditional structure or edit its code blocks so that they're not all the same.";
+const MESSAGE =
+  "Remove this conditional structure or edit its code blocks so that they're not all the same.";
 const MESSAGE_CONDITIONAL_EXPRESSION =
   'This conditional operation returns the same value whether the condition is "true" or "false".';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
   },
   create(context: Rule.RuleContext) {
     return {

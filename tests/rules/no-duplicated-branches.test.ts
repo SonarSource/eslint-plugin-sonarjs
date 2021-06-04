@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
-import rule = require("../../src/rules/no-duplicated-branches");
+import rule = require('../../src/rules/no-duplicated-branches');
 const message = "This branch's code block is the same as the block for the branch on line 2.";
 
-ruleTester.run("no-duplicated-branches if", rule, {
+ruleTester.run('no-duplicated-branches if', rule, {
   valid: [
     {
       code: `
@@ -123,7 +123,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
         first();
         second();
       }`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         {
           line: 5,
@@ -134,7 +134,7 @@ ruleTester.run("no-duplicated-branches if", rule, {
                 column: 13,
                 endLine: 5,
                 endColumn: 7,
-                message: "Original",
+                message: 'Original',
               },
             ],
             message,
@@ -176,13 +176,16 @@ ruleTester.run("no-duplicated-branches if", rule, {
       }`,
       errors: [
         { line: 4, message },
-        { line: 6, message: "This branch's code block is the same as the block for the branch on line 4." },
+        {
+          line: 6,
+          message: "This branch's code block is the same as the block for the branch on line 4.",
+        },
       ],
     },
   ],
 });
 
-ruleTester.run("no-duplicated-branches switch", rule, {
+ruleTester.run('no-duplicated-branches switch', rule, {
   valid: [
     {
       code: `
@@ -282,7 +285,7 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           second();
           break;
       }`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         {
           line: 7,
@@ -293,7 +296,7 @@ ruleTester.run("no-duplicated-branches switch", rule, {
                 column: 8,
                 endLine: 6,
                 endColumn: 16,
-                message: "Original",
+                message: 'Original',
               },
             ],
             message: `This case's code block is the same as the block for the case on line 3.`,
@@ -367,7 +370,12 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           doSomething();
           break;
       }`,
-      errors: [{ line: 6, message: "This case's code block is the same as the block for the case on line 3." }],
+      errors: [
+        {
+          line: 6,
+          message: "This case's code block is the same as the block for the case on line 3.",
+        },
+      ],
     },
     {
       code: `
@@ -386,7 +394,12 @@ ruleTester.run("no-duplicated-branches switch", rule, {
           second();
           break;
       }`,
-      errors: [{ line: 12, message: "This case's code block is the same as the block for the case on line 8." }],
+      errors: [
+        {
+          line: 12,
+          message: "This case's code block is the same as the block for the case on line 8.",
+        },
+      ],
     },
   ],
 });

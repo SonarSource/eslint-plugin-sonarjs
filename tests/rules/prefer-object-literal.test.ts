@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/prefer-object-literal");
+import rule = require('../../src/rules/prefer-object-literal');
 
-ruleTester.run("prefer-literal", rule, {
+ruleTester.run('prefer-literal', rule, {
   valid: [
     {
       code: `var x = {a: 2}`,
@@ -84,7 +84,7 @@ ruleTester.run("prefer-literal", rule, {
       errors: [
         {
           message:
-            "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.",
+            'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.',
           line: 1,
           endLine: 1,
           column: 5,
@@ -100,7 +100,7 @@ ruleTester.run("prefer-literal", rule, {
       errors: [
         {
           message:
-            "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.",
+            'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.',
           line: 2,
           endLine: 2,
           column: 13,

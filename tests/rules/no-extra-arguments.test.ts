@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
-import { IssueLocation } from "../../src/utils/locations";
+import { RuleTester } from 'eslint';
+import { IssueLocation } from '../../src/utils/locations';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
-import rule = require("../../src/rules/no-extra-arguments");
+import rule = require('../../src/rules/no-extra-arguments');
 
-ruleTester.run("no-extra-arguments", rule, {
+ruleTester.run('no-extra-arguments', rule, {
   valid: [
     {
       code: `
@@ -96,9 +96,11 @@ ruleTester.run("no-extra-arguments", rule, {
       //^^^^^^^^^^^^  
       `,
       errors: [
-        encodedMessage(2, 3, [{ line: 2, column: 21, endLine: 2, endColumn: 27, message: "Formal parameters" }]),
+        encodedMessage(2, 3, [
+          { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
+        ]),
       ],
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
     },
     {
       code: `
@@ -119,9 +121,11 @@ ruleTester.run("no-extra-arguments", rule, {
         }
       `,
       errors: [
-        encodedMessage(0, 1, [{ line: 4, column: 18, endLine: 4, endColumn: 26, message: "Formal parameters" }]),
+        encodedMessage(0, 1, [
+          { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
+        ]),
       ],
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
     },
     {
       code: `

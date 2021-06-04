@@ -19,18 +19,21 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1751
 
-import { Rule } from "eslint";
-import { Node, WhileStatement, ForStatement } from "estree";
-import { isContinueStatement, getParent } from "../utils/nodes";
+import { Rule } from 'eslint';
+import { Node, WhileStatement, ForStatement } from 'estree';
+import { isContinueStatement, getParent } from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
   },
   create(context: Rule.RuleContext) {
     const loopingNodes: Set<Node> = new Set();
     const loops: Set<Node> = new Set();
-    const loopsAndTheirSegments: Array<{ loop: WhileStatement | ForStatement; segments: Rule.CodePathSegment[] }> = [];
+    const loopsAndTheirSegments: Array<{
+      loop: WhileStatement | ForStatement;
+      segments: Rule.CodePathSegment[];
+    }> = [];
     const currentCodePaths: Rule.CodePath[] = [];
 
     return {
@@ -52,12 +55,12 @@ const rule: Rule.RuleModule = {
         currentCodePaths.pop();
       },
 
-      "WhileStatement > *"() {
+      'WhileStatement > *'() {
         const parent = getParent(context);
         visitLoopChild(parent as WhileStatement);
       },
 
-      "ForStatement > *"() {
+      'ForStatement > *'() {
         const parent = getParent(context);
         visitLoopChild(parent as ForStatement);
       },
@@ -74,11 +77,11 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      "Program:exit"() {
+      'Program:exit'() {
         loops.forEach(loop => {
           if (!loopingNodes.has(loop)) {
             context.report({
-              message: "Refactor this loop to do more than one iteration.",
+              message: 'Refactor this loop to do more than one iteration.',
               loc: context.getSourceCode().getFirstToken(loop)!.loc,
             });
           }

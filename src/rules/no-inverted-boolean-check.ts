@@ -19,35 +19,37 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1940
 
-import { Rule } from "eslint";
-import { Node, UnaryExpression } from "estree";
-import { isBinaryExpression } from "../utils/nodes";
+import { Rule } from 'eslint';
+import { Node, UnaryExpression } from 'estree';
+import { isBinaryExpression } from '../utils/nodes';
 
-const MESSAGE = "Use the opposite operator ({{invertedOperator}}) instead.";
+const MESSAGE = 'Use the opposite operator ({{invertedOperator}}) instead.';
 
 const invertedOperators: { [operator: string]: string } = {
-  "==": "!=",
-  "!=": "==",
-  "===": "!==",
-  "!==": "===",
-  ">": "<=",
-  "<": ">=",
-  ">=": "<",
-  "<=": ">",
+  '==': '!=',
+  '!=': '==',
+  '===': '!==',
+  '!==': '===',
+  '>': '<=',
+  '<': '>=',
+  '>=': '<',
+  '<=': '>',
 };
 
 const rule: Rule.RuleModule = {
   meta: {
-    fixable: "code",
-    type: "suggestion",
+    fixable: 'code',
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
-    return { UnaryExpression: (node: Node) => visitUnaryExpression(node as UnaryExpression, context) };
+    return {
+      UnaryExpression: (node: Node) => visitUnaryExpression(node as UnaryExpression, context),
+    };
   },
 };
 
 function visitUnaryExpression(unaryExpression: UnaryExpression, context: Rule.RuleContext) {
-  if (unaryExpression.operator === "!" && isBinaryExpression(unaryExpression.argument)) {
+  if (unaryExpression.operator === '!' && isBinaryExpression(unaryExpression.argument)) {
     const condition = unaryExpression.argument;
     const invertedOperator = invertedOperators[condition.operator];
     if (invertedOperator) {

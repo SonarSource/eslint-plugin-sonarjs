@@ -17,15 +17,15 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({
-  parser: require.resolve("@typescript-eslint/parser"),
-  parserOptions: { ecmaVersion: 2015, sourceType: "module", ecmaFeatures: { jsx: true } },
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: { ecmaVersion: 2015, sourceType: 'module', ecmaFeatures: { jsx: true } },
 });
-import rule = require("../../src/rules/no-duplicate-string");
+import rule = require('../../src/rules/no-duplicate-string');
 
-ruleTester.run("no-duplicate-string", rule, {
+ruleTester.run('no-duplicate-string', rule, {
   valid: [
     {
       code: `
@@ -158,7 +158,7 @@ ruleTester.run("no-duplicate-string", rule, {
     console.log('some message');`,
       errors: [
         {
-          message: "Define a constant instead of duplicating this literal 3 times.",
+          message: 'Define a constant instead of duplicating this literal 3 times.',
           column: 17,
           endColumn: 31,
         },
@@ -173,7 +173,7 @@ ruleTester.run("no-duplicate-string", rule, {
       `,
       errors: [
         {
-          message: "Define a constant instead of duplicating this literal 3 times.",
+          message: 'Define a constant instead of duplicating this literal 3 times.',
           line: 5,
         },
       ],

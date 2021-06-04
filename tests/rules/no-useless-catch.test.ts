@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 10 },
 });
-import rule = require("../../src/rules/no-useless-catch");
+import rule = require('../../src/rules/no-useless-catch');
 
-ruleTester.run("no-useless-catch", rule, {
+ruleTester.run('no-useless-catch', rule, {
   valid: [
     { code: `try {} catch (e) {}` },
     { code: `try {} catch { throw "Error"; }` },
@@ -58,7 +58,8 @@ ruleTester.run("no-useless-catch", rule, {
       code: `try {} catch (e) { throw e; }`,
       errors: [
         {
-          message: "Add logic to this catch clause or eliminate it and rethrow the exception automatically.",
+          message:
+            'Add logic to this catch clause or eliminate it and rethrow the exception automatically.',
           line: 1,
           endLine: 1,
           column: 8,

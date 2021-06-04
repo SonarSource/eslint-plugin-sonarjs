@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester();
-import rule = require("../../src/rules/no-element-overwrite");
+import rule = require('../../src/rules/no-element-overwrite');
 
-ruleTester.run("no-element-overwrite", rule, {
+ruleTester.run('no-element-overwrite', rule, {
   valid: [
     {
       code: `
@@ -111,10 +111,12 @@ ruleTester.run("no-element-overwrite", rule, {
     //^^^^^^^^^^^^^^^^^^^^>
       fruits[1] = "apple";
     //^^^^^^^^^^^^^^^^^^^`,
-      options: ["sonar-runtime"],
+      options: ['sonar-runtime'],
       errors: [
         JSON.stringify({
-          secondaryLocations: [{ line: 2, column: 6, endLine: 2, endColumn: 26, message: "Original value" }],
+          secondaryLocations: [
+            { line: 2, column: 6, endLine: 2, endColumn: 26, message: 'Original value' },
+          ],
           message: `Verify this is the index that was intended; "1" was already set on line 2.`,
         }),
       ],
@@ -124,19 +126,25 @@ ruleTester.run("no-element-overwrite", rule, {
       fruits[1] = "banana";
       fruits[2] = "orange";
       fruits[1] = "apple";`,
-      errors: [{ message: `Verify this is the index that was intended; "1" was already set on line 2.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+      ],
     },
     {
       code: `
       this.fruits[1] = "banana";
       this.fruits[1] = "apple";`,
-      errors: [{ message: `Verify this is the index that was intended; "1" was already set on line 2.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+      ],
     },
     {
       code: `
       this.fruits[1] = "banana";
       this.fruits[1] = foo(this.bar);`,
-      errors: [{ message: `Verify this is the index that was intended; "1" was already set on line 2.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+      ],
     },
     {
       code: `
@@ -145,7 +153,9 @@ ruleTester.run("no-element-overwrite", rule, {
         fruits[i] = "pear";
         fruits[i++] = "another";
       }`,
-      errors: [{ message: `Verify this is the index that was intended; "i" was already set on line 3.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "i" was already set on line 3.` },
+      ],
     },
     {
       code: `
@@ -153,7 +163,9 @@ ruleTester.run("no-element-overwrite", rule, {
         myMap.set("key", 2);
         myMap.clear();
         myMap.set("key", 1);`,
-      errors: [{ message: `Verify this is the index that was intended; "key" was already set on line 2.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "key" was already set on line 2.` },
+      ],
     },
     {
       code: `
@@ -163,7 +175,9 @@ ruleTester.run("no-element-overwrite", rule, {
         mySet.add(2);
         mySet.clear();
         mySet.add(2);`,
-      errors: [{ message: `Verify this is the index that was intended; "2" was already set on line 3.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "2" was already set on line 3.` },
+      ],
     },
     {
       code: `
@@ -189,7 +203,9 @@ ruleTester.run("no-element-overwrite", rule, {
       code: `
         fruits[''] = "banana";
         fruits[''] = "apple";`,
-      errors: [{ message: `Verify this is the index that was intended; "" was already set on line 2.` }],
+      errors: [
+        { message: `Verify this is the index that was intended; "" was already set on line 2.` },
+      ],
     },
   ],
 });

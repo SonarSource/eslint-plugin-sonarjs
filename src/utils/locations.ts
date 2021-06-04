@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Rule, AST } from "eslint";
-import * as estree from "estree";
+import { Rule, AST } from 'eslint';
+import * as estree from 'estree';
 
 export interface IssueLocation {
   column: number;
@@ -47,27 +47,27 @@ export function getMainFunctionTokenLocation(
 ) {
   let location: estree.SourceLocation | null | undefined;
 
-  if (fn.type === "FunctionDeclaration") {
+  if (fn.type === 'FunctionDeclaration') {
     // `fn.id` can be null when it is `export default function` (despite of the @types/estree definition)
     if (fn.id) {
       location = fn.id.loc;
     } else {
-      const token = getTokenByValue(fn, "function", context);
+      const token = getTokenByValue(fn, 'function', context);
       location = token && token.loc;
     }
-  } else if (fn.type === "FunctionExpression") {
-    if (parent && (parent.type === "MethodDefinition" || parent.type === "Property")) {
+  } else if (fn.type === 'FunctionExpression') {
+    if (parent && (parent.type === 'MethodDefinition' || parent.type === 'Property')) {
       location = parent.key.loc;
     } else {
-      const token = getTokenByValue(fn, "function", context);
+      const token = getTokenByValue(fn, 'function', context);
       location = token && token.loc;
     }
-  } else if (fn.type === "ArrowFunctionExpression") {
+  } else if (fn.type === 'ArrowFunctionExpression') {
     const token = context
       .getSourceCode()
       .getTokensBefore(fn.body)
       .reverse()
-      .find(token => token.value === "=>");
+      .find(token => token.value === '=>');
 
     location = token && token.loc;
   }
@@ -91,7 +91,7 @@ export function report(
   cost?: number,
 ) {
   const { message } = reportDescriptor;
-  if (context.options[context.options.length - 1] === "sonar-runtime") {
+  if (context.options[context.options.length - 1] === 'sonar-runtime') {
     const encodedMessage: EncodedMessage = { secondaryLocations, message, cost };
     reportDescriptor.message = JSON.stringify(encodedMessage);
   }
@@ -104,7 +104,7 @@ export function report(
 export function issueLocation(
   startLoc: estree.SourceLocation,
   endLoc: estree.SourceLocation = startLoc,
-  message = "",
+  message = '',
 ): IssueLocation {
   return {
     line: startLoc.start.line,
@@ -131,7 +131,10 @@ export function toEncodedMessage(
   return JSON.stringify(encodedMessage);
 }
 
-function toSecondaryLocation(locationHolder: AST.Token | estree.Node, message?: string): IssueLocation {
+function toSecondaryLocation(
+  locationHolder: AST.Token | estree.Node,
+  message?: string,
+): IssueLocation {
   const loc = locationHolder.loc!;
   return {
     message,

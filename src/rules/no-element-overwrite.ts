@@ -19,9 +19,9 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4143
 
-import { Rule, AST } from "eslint";
-import * as estree from "estree";
-import { areEquivalent } from "../utils/equivalence";
+import { Rule, AST } from 'eslint';
+import * as estree from 'estree';
+import { areEquivalent } from '../utils/equivalence';
 import {
   isExpressionStatement,
   isMemberExpression,
@@ -29,19 +29,19 @@ import {
   isLiteral,
   isIdentifier,
   isCallExpression,
-} from "../utils/nodes";
-import { report, issueLocation } from "../utils/locations";
+} from '../utils/nodes';
+import { report, issueLocation } from '../utils/locations';
 
 const message = (index: string, line: string) =>
   `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     schema: [
       {
         // internal parameter
-        enum: ["sonar-runtime"],
+        enum: ['sonar-runtime'],
       },
     ],
   },
@@ -69,18 +69,26 @@ const rule: Rule.RuleModule = {
       statements.forEach(statement => {
         const keyWriteUsage = getKeyWriteUsage(statement);
         if (keyWriteUsage) {
-          if (collection && !areEquivalent(keyWriteUsage.collectionNode, collection, context.getSourceCode())) {
+          if (
+            collection &&
+            !areEquivalent(keyWriteUsage.collectionNode, collection, context.getSourceCode())
+          ) {
             usedKeys.clear();
           }
           const sameKeyWriteUsage = usedKeys.get(keyWriteUsage.indexOrKey);
           if (sameKeyWriteUsage && sameKeyWriteUsage.node.loc) {
             const sameKeyWriteUsageLoc = sameKeyWriteUsage.node.loc;
-            const secondaryLocations = [issueLocation(sameKeyWriteUsageLoc, sameKeyWriteUsageLoc, "Original value")];
+            const secondaryLocations = [
+              issueLocation(sameKeyWriteUsageLoc, sameKeyWriteUsageLoc, 'Original value'),
+            ];
             report(
               context,
               {
                 node: keyWriteUsage.node,
-                message: message(keyWriteUsage.indexOrKey, String(sameKeyWriteUsage.node.loc.start.line)),
+                message: message(
+                  keyWriteUsage.indexOrKey,
+                  String(sameKeyWriteUsage.node.loc.start.line),
+                ),
               },
               secondaryLocations,
             );
@@ -121,8 +129,8 @@ const rule: Rule.RuleModule = {
         const propertyAccess = node.callee;
         if (isIdentifier(propertyAccess.property)) {
           const methodName = propertyAccess.property.name;
-          const addMethod = methodName === "add" && node.arguments.length === 1;
-          const setMethod = methodName === "set" && node.arguments.length === 2;
+          const addMethod = methodName === 'add' && node.arguments.length === 1;
+          const setMethod = methodName === 'set' && node.arguments.length === 2;
 
           if (addMethod || setMethod) {
             const key = extractIndex(node.arguments[0]);
@@ -142,7 +150,7 @@ const rule: Rule.RuleModule = {
     function extractIndex(node: estree.Node): string | undefined {
       if (isLiteral(node)) {
         const { value } = node;
-        return typeof value === "number" || typeof value === "string" ? String(value) : undefined;
+        return typeof value === 'number' || typeof value === 'string' ? String(value) : undefined;
       } else if (isIdentifier(node)) {
         return node.name;
       }
@@ -180,7 +188,7 @@ function eq(token1: AST.Token, token2: AST.Token) {
 }
 
 function isSimpleAssignment(node: estree.Node): node is estree.AssignmentExpression {
-  return isAssignmentExpression(node) && node.operator === "=";
+  return isAssignmentExpression(node) && node.operator === '=';
 }
 
 interface KeyWriteCollectionUsage {

@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-2428
 
-import { Rule, SourceCode } from "eslint";
-import { Node, Statement, Program, Identifier, BlockStatement, Expression } from "estree";
+import { Rule, SourceCode } from 'eslint';
+import { Node, Statement, Program, Identifier, BlockStatement, Expression } from 'estree';
 import {
   isModuleDeclaration,
   isVariableDeclaration,
@@ -29,19 +29,20 @@ import {
   isAssignmentExpression,
   isMemberExpression,
   isIdentifier,
-} from "../utils/nodes";
-import { areEquivalent } from "../utils/equivalence";
+} from '../utils/nodes';
+import { areEquivalent } from '../utils/equivalence';
 
 const MESSAGE =
-  "Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.";
+  'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
     return {
-      BlockStatement: (node: Node) => checkObjectInitialization((node as BlockStatement).body, context),
+      BlockStatement: (node: Node) =>
+        checkObjectInitialization((node as BlockStatement).body, context),
       Program: (node: Node) => {
         const statements = (node as Program).body.filter(
           (statement): statement is Statement => !isModuleDeclaration(statement),
@@ -58,7 +59,9 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
     const objectDeclaration = getObjectDeclaration(statements[index]);
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (objectDeclaration && isIdentifier(objectDeclaration.id)) {
-      if (isPropertyAssignment(statements[index + 1], objectDeclaration.id, context.getSourceCode())) {
+      if (
+        isPropertyAssignment(statements[index + 1], objectDeclaration.id, context.getSourceCode())
+      ) {
         context.report({ message: MESSAGE, node: objectDeclaration });
       }
     }
@@ -68,7 +71,9 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
 
 function getObjectDeclaration(statement: Statement) {
   if (isVariableDeclaration(statement)) {
-    return statement.declarations.find(declaration => !!declaration.init && isEmptyObjectExpression(declaration.init));
+    return statement.declarations.find(
+      declaration => !!declaration.init && isEmptyObjectExpression(declaration.init),
+    );
   }
   return undefined;
 }
@@ -77,7 +82,11 @@ function isEmptyObjectExpression(expression: Expression) {
   return isObjectExpression(expression) && expression.properties.length === 0;
 }
 
-function isPropertyAssignment(statement: Statement, objectIdentifier: Identifier, sourceCode: SourceCode) {
+function isPropertyAssignment(
+  statement: Statement,
+  objectIdentifier: Identifier,
+  sourceCode: SourceCode,
+) {
   if (isExpressionStatement(statement) && isAssignmentExpression(statement.expression)) {
     const { left, right } = statement.expression;
     if (isMemberExpression(left)) {

@@ -17,17 +17,17 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from "eslint";
+import { RuleTester } from 'eslint';
 
 const ruleTester = new RuleTester({
-  parser: require.resolve("@typescript-eslint/parser"),
-  parserOptions: { ecmaVersion: 2018, sourceType: "module" },
+  parser: require.resolve('@typescript-eslint/parser'),
+  parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
 });
 
-import rule = require("../../src/rules/no-unused-collection");
+import rule = require('../../src/rules/no-unused-collection');
 
 function invalidTest(code: string) {
-  const line = code.split("\n").findIndex(str => str.includes("// Noncompliant")) + 1;
+  const line = code.split('\n').findIndex(str => str.includes('// Noncompliant')) + 1;
   return {
     code,
     errors: [
@@ -40,7 +40,7 @@ function invalidTest(code: string) {
   };
 }
 
-ruleTester.run("Primitive return types should be used.", rule, {
+ruleTester.run('Primitive return types should be used.', rule, {
   valid: [
     {
       code: `
