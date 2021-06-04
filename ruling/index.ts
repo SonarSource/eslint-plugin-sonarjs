@@ -57,6 +57,7 @@ function run() {
     rules: getEslintRules(rules),
     useEslintrc: false,
     allowInlineConfig: false,
+    ignorePath: path.join(__dirname, ".eslintignore"),
   });
 
   const sourcesPath = path.join(__dirname, "javascript-test-sources/src");

@@ -413,7 +413,6 @@ src/react-router/website/modules/components/NativeExample.js: 12
 src/react-router/website/modules/components/WebExample.js: 13
 src/react/dangerfile.js: 99
 src/react/fixtures/attribute-behavior/src/App.js: 126,219,894
-src/react/fixtures/fiber-debugger/src/Fibers.js: 17
 src/react/packages/create-subscription/src/createSubscription.js: 16
 src/react/packages/events/ResponderEventPlugin.js: 315,476
 src/react/packages/events/ResponderTouchHistoryStore.js: 180

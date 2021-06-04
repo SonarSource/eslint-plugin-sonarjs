@@ -37,3 +37,4 @@ lib
 # editors
 .idea
 .vscode
+*.iml
