@@ -21,7 +21,6 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import { getParent } from '../utils/nodes';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -51,7 +50,7 @@ const rule: Rule.RuleModule<string, Options> = {
     return {
       Literal: (node: TSESTree.Node) => {
         const literal = node as TSESTree.Literal;
-        const parent = getParent(context);
+        const { parent } = literal;
         if (
           typeof literal.value === 'string' &&
           parent &&
@@ -87,7 +86,7 @@ const rule: Rule.RuleModule<string, Options> = {
 };
 
 function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.Literal) {
-  const parent = getParent(context)!;
+  const parent = literal.parent!;
   const parentType = parent.type;
 
   return (

@@ -21,15 +21,10 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Identifier, Rule } from '../utils/types';
-import {
-  isFunctionExpression,
-  isArrowFunctionExpression,
-  isBlockStatement,
-  getParent,
-} from '../utils/nodes';
+import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
 
-function isReturnValueUsed(callExpr: TSESTree.Node, context: Rule.RuleContext) {
-  const parent = getParent(context);
+function isReturnValueUsed(callExpr: TSESTree.Node) {
+  const { parent } = callExpr;
   if (!parent) {
     return false;
   }
@@ -67,7 +62,7 @@ const rule: Rule.RuleModule = {
     return {
       CallExpression(node: TSESTree.Node) {
         const callExpr = node as TSESTree.CallExpression;
-        if (!isReturnValueUsed(callExpr, context)) {
+        if (!isReturnValueUsed(callExpr)) {
           return;
         }
         const scope = context.getScope();

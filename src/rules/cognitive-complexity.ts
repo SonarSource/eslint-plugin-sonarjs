@@ -20,12 +20,7 @@
 // https://jira.sonarsource.com/browse/RSPEC-3776
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
-import {
-  getParent,
-  isArrowFunctionExpression,
-  isIfStatement,
-  isLogicalExpression,
-} from '../utils/nodes';
+import { isArrowFunctionExpression, isIfStatement, isLogicalExpression } from '../utils/nodes';
 import {
   getMainFunctionTokenLocation,
   getFirstToken,
@@ -216,14 +211,11 @@ const rule: Rule.RuleModule<string, Options> = {
           secondLevelFunctions.forEach(secondLevelFunction => {
             totalComplexity = totalComplexity.concat(secondLevelFunction.complexityIfNested);
           });
-          checkFunction(
-            totalComplexity,
-            getMainFunctionTokenLocation(node, getParent(context), context),
-          );
+          checkFunction(totalComplexity, getMainFunctionTokenLocation(node, node.parent, context));
         } else {
           checkFunction(
             topLevelOwnComplexity,
-            getMainFunctionTokenLocation(node, getParent(context), context),
+            getMainFunctionTokenLocation(node, node.parent, context),
           );
           secondLevelFunctions.forEach(secondLevelFunction => {
             checkFunction(
@@ -240,10 +232,10 @@ const rule: Rule.RuleModule<string, Options> = {
         // second level function
         secondLevelFunctions.push({
           node,
-          parent: getParent(context),
+          parent: node.parent,
           complexityIfNested,
           complexityIfThisSecondaryIsTopLevel: complexityIfNotNested,
-          loc: getMainFunctionTokenLocation(node, getParent(context), context),
+          loc: getMainFunctionTokenLocation(node, node.parent, context),
         });
       } else {
         // complexity of third+ level functions is computed in their parent functions
@@ -252,7 +244,7 @@ const rule: Rule.RuleModule<string, Options> = {
     }
 
     function visitIfStatement(ifStatement: TSESTree.IfStatement) {
-      const parent = getParent(context);
+      const { parent } = ifStatement;
       const { loc: ifLoc } = getFirstToken(ifStatement, context);
       // if the current `if` statement is `else if`, do not count it in structural complexity
       if (isIfStatement(parent) && parent.alternate === ifStatement) {
@@ -323,7 +315,7 @@ const rule: Rule.RuleModule<string, Options> = {
         return checkFirstLetter(node.id.name);
       }
 
-      const parent = getParent(context);
+      const { parent } = node;
       if (parent && parent.type === 'VariableDeclarator' && parent.id.type === 'Identifier') {
         return checkFirstLetter(parent.id.name);
       }

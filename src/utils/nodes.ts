@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
-import { Rule } from './types';
 
 const MODULE_DECLARATION_NODES = [
   AST_NODE_TYPES.ImportDeclaration,
@@ -26,11 +25,6 @@ const MODULE_DECLARATION_NODES = [
   AST_NODE_TYPES.ExportDefaultDeclaration,
   AST_NODE_TYPES.ExportAllDeclaration,
 ];
-
-export function getParent(context: Rule.RuleContext) {
-  const ancestors = context.getAncestors();
-  return ancestors.length > 0 ? ancestors[ancestors.length - 1] : undefined;
-}
 
 export function isArrowFunctionExpression(
   node: TSESTree.Node | undefined,

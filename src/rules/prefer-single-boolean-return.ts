@@ -25,7 +25,6 @@ import {
   isBlockStatement,
   isBooleanLiteral,
   isIfStatement,
-  getParent,
 } from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
@@ -38,7 +37,7 @@ const rule: Rule.RuleModule = {
         const ifStmt = node as TSESTree.IfStatement;
         if (
           // ignore `else if`
-          !isIfStatement(getParent(context)) &&
+          !isIfStatement(ifStmt.parent) &&
           // `ifStmt.alternate` can be `null`, replace it with `undefined` in this case
           returnsBoolean(ifStmt.alternate || undefined) &&
           returnsBoolean(ifStmt.consequent)

@@ -21,7 +21,6 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import { getParent } from '../utils/nodes';
 
 const message = 'Remove this redundant jump.';
 const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement';
@@ -34,7 +33,7 @@ const rule: Rule.RuleModule = {
     function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {
       const withArgument = node.type === 'ContinueStatement' ? !!node.label : !!node.argument;
       if (!withArgument) {
-        const block = getParent(context) as TSESTree.BlockStatement;
+        const block = node.parent as TSESTree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
           context.report({
             message,

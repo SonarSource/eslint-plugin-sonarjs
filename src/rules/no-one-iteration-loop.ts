@@ -21,7 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import { isContinueStatement, getParent } from '../utils/nodes';
+import { isContinueStatement } from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -55,14 +55,12 @@ const rule: Rule.RuleModule = {
         currentCodePaths.pop();
       },
 
-      'WhileStatement > *'() {
-        const parent = getParent(context);
-        visitLoopChild(parent as TSESTree.WhileStatement);
+      'WhileStatement > *'(node: TSESTree.Node) {
+        visitLoopChild(node.parent as TSESTree.WhileStatement);
       },
 
-      'ForStatement > *'() {
-        const parent = getParent(context);
-        visitLoopChild(parent as TSESTree.ForStatement);
+      'ForStatement > *'(node: TSESTree.Node) {
+        visitLoopChild(node.parent as TSESTree.ForStatement);
       },
 
       onCodePathSegmentLoop(_, toSegment: Rule.CodePathSegment, node: TSESTree.Node) {

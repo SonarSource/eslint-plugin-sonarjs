@@ -21,7 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import { getParent, isIfStatement, isBlockStatement } from '../utils/nodes';
+import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
 import { report, issueLocation } from '../utils/locations';
@@ -50,8 +50,7 @@ const rule: Rule.RuleModule = {
     };
 
     function visitIfStatement(ifStmt: TSESTree.IfStatement) {
-      const parent = getParent(context);
-      if (isIfStatement(parent)) {
+      if (isIfStatement(ifStmt.parent)) {
         return;
       }
       const { branches, endsWithElse } = collectIfBranches(ifStmt);

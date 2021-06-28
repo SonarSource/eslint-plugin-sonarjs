@@ -23,7 +23,6 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
-import { getParent } from '../utils/nodes';
 
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
@@ -63,7 +62,7 @@ const rule: Rule.RuleModule = {
 
     function visitFunction(node: Function) {
       if (isBigEnough(node.body)) {
-        functions.push({ function: node, parent: getParent(context) });
+        functions.push({ function: node, parent: node.parent });
       }
     }
 

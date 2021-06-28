@@ -21,7 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import { getParent, isIfStatement } from '../utils/nodes';
+import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';
 
@@ -40,8 +40,7 @@ const rule: Rule.RuleModule = {
         const ifStmt = node as TSESTree.IfStatement;
 
         // don't visit `else if` statements
-        const parent = getParent(context);
-        if (!isIfStatement(parent)) {
+        if (!isIfStatement(node.parent)) {
           const { branches, endsWithElse } = collectIfBranches(ifStmt);
           if (endsWithElse && allDuplicated(branches)) {
             context.report({ message: MESSAGE, node: ifStmt });

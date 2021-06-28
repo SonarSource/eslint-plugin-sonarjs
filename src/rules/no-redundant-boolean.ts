@@ -21,12 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
-import {
-  getParent,
-  isBooleanLiteral,
-  isIfStatement,
-  isConditionalExpression,
-} from '../utils/nodes';
+import { isBooleanLiteral, isIfStatement, isConditionalExpression } from '../utils/nodes';
 
 const MESSAGE = 'Remove the unnecessary boolean literal.';
 
@@ -53,7 +48,7 @@ const rule: Rule.RuleModule = {
         }
 
         // ignore `x || true` and `x || false` expressions outside of conditional expressions and `if` statements
-        const parent = getParent(context);
+        const { parent } = node;
         if (
           expression.operator === '||' &&
           ((isConditionalExpression(parent) && parent.test === expression) || isIfStatement(parent))
