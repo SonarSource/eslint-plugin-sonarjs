@@ -29,6 +29,7 @@ const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['no-duplicated-branches', 'error'],
   ['no-element-overwrite', 'error'],
   ['no-extra-arguments', 'error'],
+  ['no-gratuitous-expressions', 'error'],
   ['no-identical-conditions', 'error'],
   ['no-identical-functions', 'error'],
   ['no-identical-expressions', 'error'],

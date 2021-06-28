@@ -28,6 +28,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Functions should not have identical implementations ([`no-identical-functions`])
+* Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * Jump statements should not be redundant ([`no-redundant-jump`])
@@ -49,6 +50,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md
 [`no-extra-arguments`]: ./docs/rules/no-extra-arguments.md
+[`no-gratuitous-expressions`]: ./docs/rules/no-gratuitous-expressions.md
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
