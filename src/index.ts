@@ -41,6 +41,7 @@ const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['no-unused-collection', 'error'],
   ['no-use-of-empty-return-value', 'error'],
   ['no-useless-catch', 'error'],
+  ['non-existent-operator', 'error'],
   ['prefer-immediate-return', 'error'],
   ['prefer-object-literal', 'error'],
   ['prefer-single-boolean-return', 'error'],

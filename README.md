@@ -15,6 +15,7 @@ Rules in this category aim to find places in code which have a high chance of be
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
 * Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
 * The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
+* Non-existent operators '=+', '=-' and '=!' should not be used ([`non-existent-operator`])
 
 ### Code Smell Detection :pig:
 
@@ -60,6 +61,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-use-of-empty-return-value`]: ./docs/rules/no-use-of-empty-return-value.md
 [`no-unused-collection`]: ./docs/rules/no-unused-collection.md
 [`no-useless-catch`]: ./docs/rules/no-useless-catch.md
+[`non-existent-operator`]: ./docs/rules/non-existent-operator.md
 [`prefer-immediate-return`]: ./docs/rules/prefer-immediate-return.md
 [`prefer-object-literal`]: ./docs/rules/prefer-object-literal.md
 [`prefer-single-boolean-return`]: ./docs/rules/prefer-single-boolean-return.md
