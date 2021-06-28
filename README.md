@@ -8,6 +8,7 @@ SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
 
 Rules in this category aim to find places in code which have a high chance of being bugs, i.e. don't work as intended.
 
+* Generators should "yield" something ([`generator-without-yield`])
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
@@ -41,6 +42,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*)
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
+[`generator-without-yield`]: ./docs/rules/generator-without-yield.md
 [`max-switch-cases`]: ./docs/rules/max-switch-cases.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-collapsible-if`]: ./docs/rules/no-collapsible-if.md
