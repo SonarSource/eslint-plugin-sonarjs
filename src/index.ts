@@ -17,9 +17,9 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Linter } from 'eslint';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-const sonarjsRules: [string, Linter.RuleLevel][] = [
+const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['cognitive-complexity', 'error'],
   ['max-switch-cases', 'error'],
   ['no-all-duplicated-branches', 'error'],
@@ -47,9 +47,9 @@ const sonarjsRules: [string, Linter.RuleLevel][] = [
   ['prefer-while', 'error'],
 ];
 
-const sonarjsRuleModules: any = {};
+const sonarjsRuleModules: { [key: string]: any } = {};
 
-const configs: { recommended: Linter.Config & { plugins: string[] } } = {
+const configs: { recommended: TSESLint.Linter.Config & { plugins: string[] } } = {
   recommended: { plugins: ['sonarjs'], rules: {} },
 };
 

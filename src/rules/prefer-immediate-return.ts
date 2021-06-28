@@ -18,9 +18,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // https://jira.sonarsource.com/browse/RSPEC-1488
-
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import {
   isReturnStatement,
   isThrowStatement,
@@ -35,15 +34,15 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      BlockStatement(node: estree.Node) {
-        processStatements((node as estree.BlockStatement).body);
+      BlockStatement(node: TSESTree.Node) {
+        processStatements((node as TSESTree.BlockStatement).body);
       },
-      SwitchCase(node: estree.Node) {
-        processStatements((node as estree.SwitchCase).consequent);
+      SwitchCase(node: TSESTree.Node) {
+        processStatements((node as TSESTree.SwitchCase).consequent);
       },
     };
 
-    function processStatements(statements: estree.Statement[]) {
+    function processStatements(statements: TSESTree.Statement[]) {
       if (statements.length > 1) {
         const last = statements[statements.length - 1];
         const returnedIdentifier = getOnlyReturnedVariable(last);
@@ -74,10 +73,10 @@ const rule: Rule.RuleModule = {
     }
 
     function fix(
-      fixer: Rule.RuleFixer,
-      last: estree.Statement,
-      lastButOne: estree.Statement,
-      expression: estree.Expression,
+      fixer: TSESLint.RuleFixer,
+      last: TSESTree.Statement,
+      lastButOne: TSESTree.Statement,
+      expression: TSESTree.Expression,
     ): any {
       const throwOrReturnKeyword = context.getSourceCode().getFirstToken(last);
 
@@ -99,7 +98,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function getOnlyReturnedVariable(node: estree.Statement) {
+    function getOnlyReturnedVariable(node: TSESTree.Statement) {
       return (isReturnStatement(node) || isThrowStatement(node)) &&
         node.argument &&
         isIdentifier(node.argument)
@@ -107,7 +106,7 @@ const rule: Rule.RuleModule = {
         : undefined;
     }
 
-    function getOnlyDeclaredVariable(node: estree.Statement) {
+    function getOnlyDeclaredVariable(node: TSESTree.Statement) {
       if (isVariableDeclaration(node) && node.declarations.length === 1) {
         const { id, init } = node.declarations[0];
         if (isIdentifier(id) && init) {
@@ -117,7 +116,7 @@ const rule: Rule.RuleModule = {
       return undefined;
     }
 
-    function formatMessage(node: estree.Node, variable: string) {
+    function formatMessage(node: TSESTree.Node, variable: string) {
       const action = isReturnStatement(node) ? 'return' : 'throw';
       return `Immediately ${action} this expression instead of assigning it to the temporary variable "${variable}".`;
     }

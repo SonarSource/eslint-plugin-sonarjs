@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require('../../src/rules/prefer-immediate-return');
 
 ruleTester.run('prefer-immediate-return', rule, {
@@ -242,7 +241,7 @@ ruleTester.run('prefer-immediate-return', rule, {
             let x = foo();
             return x;
           }
-          
+
           try {
             let x = foo();
             return x;
@@ -266,7 +265,7 @@ ruleTester.run('prefer-immediate-return', rule, {
           if (foo) {
             return foo();
           }
-          
+
           try {
             return foo();
           } catch (e) {

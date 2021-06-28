@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import { Rule } from './types';
 
 const MODULE_DECLARATION_NODES = [
-  'ImportDeclaration',
-  'ExportNamedDeclaration',
-  'ExportDefaultDeclaration',
-  'ExportAllDeclaration',
+  AST_NODE_TYPES.ImportDeclaration,
+  AST_NODE_TYPES.ExportNamedDeclaration,
+  AST_NODE_TYPES.ExportDefaultDeclaration,
+  AST_NODE_TYPES.ExportAllDeclaration,
 ];
 
 export function getParent(context: Rule.RuleContext) {
@@ -33,105 +33,117 @@ export function getParent(context: Rule.RuleContext) {
 }
 
 export function isArrowFunctionExpression(
-  node: estree.Node | undefined,
-): node is estree.ArrowFunctionExpression {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ArrowFunctionExpression {
   return node !== undefined && node.type === 'ArrowFunctionExpression';
 }
 
 export function isAssignmentExpression(
-  node: estree.Node | undefined,
-): node is estree.AssignmentExpression {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.AssignmentExpression {
   return node !== undefined && node.type === 'AssignmentExpression';
 }
 
-export function isBinaryExpression(node: estree.Node | undefined): node is estree.BinaryExpression {
+export function isBinaryExpression(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.BinaryExpression {
   return node !== undefined && node.type === 'BinaryExpression';
 }
 
-export function isBlockStatement(node: estree.Node | undefined): node is estree.BlockStatement {
+export function isBlockStatement(node: TSESTree.Node | undefined): node is TSESTree.BlockStatement {
   return node !== undefined && node.type === 'BlockStatement';
 }
 
-export function isBooleanLiteral(node: estree.Node | undefined): node is estree.Literal {
+export function isBooleanLiteral(node: TSESTree.Node | undefined): node is TSESTree.Literal {
   return isLiteral(node) && typeof node.value === 'boolean';
 }
 
-export function isCallExpression(node: estree.Node | undefined): node is estree.CallExpression {
+export function isCallExpression(node: TSESTree.Node | undefined): node is TSESTree.CallExpression {
   return node !== undefined && node.type === 'CallExpression';
 }
 
 export function isConditionalExpression(
-  node: estree.Node | undefined,
-): node is estree.ConditionalExpression {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ConditionalExpression {
   return node !== undefined && node.type === 'ConditionalExpression';
 }
 
 export function isContinueStatement(
-  node: estree.Node | undefined,
-): node is estree.ContinueStatement {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ContinueStatement {
   return node !== undefined && node.type === 'ContinueStatement';
 }
 
 export function isExpressionStatement(
-  node: estree.Node | undefined,
-): node is estree.ExpressionStatement {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ExpressionStatement {
   return node !== undefined && node.type === 'ExpressionStatement';
 }
 
 export function isFunctionDeclaration(
-  node: estree.Node | undefined,
-): node is estree.FunctionDeclaration {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.FunctionDeclaration {
   return node !== undefined && node.type === 'FunctionDeclaration';
 }
 
 export function isFunctionExpression(
-  node: estree.Node | undefined,
-): node is estree.FunctionExpression {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.FunctionExpression {
   return node !== undefined && node.type === 'FunctionExpression';
 }
 
-export function isIdentifier(node: estree.Node | undefined): node is estree.Identifier {
+export function isIdentifier(node: TSESTree.Node | undefined): node is TSESTree.Identifier {
   return node !== undefined && node.type === 'Identifier';
 }
 
-export function isIfStatement(node: estree.Node | undefined): node is estree.IfStatement {
+export function isIfStatement(node: TSESTree.Node | undefined): node is TSESTree.IfStatement {
   return node !== undefined && node.type === 'IfStatement';
 }
 
-export function isLiteral(node: estree.Node | undefined): node is estree.Literal {
+export function isLiteral(node: TSESTree.Node | undefined): node is TSESTree.Literal {
   return node !== undefined && node.type === 'Literal';
 }
 
 export function isLogicalExpression(
-  node: estree.Node | undefined,
-): node is estree.LogicalExpression {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.LogicalExpression {
   return node !== undefined && node.type === 'LogicalExpression';
 }
 
-export function isMemberExpression(node: estree.Node | undefined): node is estree.MemberExpression {
+export function isMemberExpression(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.MemberExpression {
   return node !== undefined && node.type === 'MemberExpression';
 }
 
 export function isModuleDeclaration(
-  node: estree.Node | undefined,
-): node is estree.ModuleDeclaration {
+  node: TSESTree.Node | undefined,
+): node is
+  | TSESTree.ExportAllDeclaration
+  | TSESTree.ExportDefaultDeclaration
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ImportDeclaration {
   return node !== undefined && MODULE_DECLARATION_NODES.includes(node.type);
 }
 
-export function isObjectExpression(node: estree.Node | undefined): node is estree.ObjectExpression {
+export function isObjectExpression(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ObjectExpression {
   return node !== undefined && node.type === 'ObjectExpression';
 }
 
-export function isReturnStatement(node: estree.Node | undefined): node is estree.ReturnStatement {
+export function isReturnStatement(
+  node: TSESTree.Node | undefined,
+): node is TSESTree.ReturnStatement {
   return node !== undefined && node.type === 'ReturnStatement';
 }
 
-export function isThrowStatement(node: estree.Node | undefined): node is estree.ThrowStatement {
+export function isThrowStatement(node: TSESTree.Node | undefined): node is TSESTree.ThrowStatement {
   return node !== undefined && node.type === 'ThrowStatement';
 }
 
 export function isVariableDeclaration(
-  node: estree.Node | undefined,
-): node is estree.VariableDeclaration {
+  node: TSESTree.Node | undefined,
+): node is TSESTree.VariableDeclaration {
   return node !== undefined && node.type === 'VariableDeclaration';
 }

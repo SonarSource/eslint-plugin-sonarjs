@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester, TestCaseError } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2017 } });
 import rule = require('../../src/rules/no-use-of-empty-return-value');
 
 const FUNCTION_NO_RETURN = 'function noReturn() { }\n ';
@@ -76,7 +75,7 @@ ruleTester.run('no-use-of-empty-return-value', rule, {
 function invalidPrefixWithFunction(
   code: string,
   functionName: string = 'noReturn',
-): { code: string; errors: RuleTester.TestCaseError[] } {
+): { code: string; errors: TestCaseError[] } {
   return {
     code: 'function noReturn() { 1;} ' + code,
     errors: [
@@ -87,7 +86,7 @@ function invalidPrefixWithFunction(
   };
 }
 
-function invalid(code: string): { code: string; errors: RuleTester.TestCaseError[] } {
+function invalid(code: string): { code: string; errors: TestCaseError[] } {
   return {
     code,
     errors: [

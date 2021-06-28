@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isIfStatement } from './nodes';
 
 /** Returns a list of statements corresponding to a `if - else if - else` chain */
-export function collectIfBranches(node: estree.IfStatement) {
-  const branches: estree.Statement[] = [node.consequent];
+export function collectIfBranches(node: TSESTree.IfStatement) {
+  const branches: TSESTree.Statement[] = [node.consequent];
   let endsWithElse = false;
   let statement = node.alternate;
 
@@ -41,7 +41,7 @@ export function collectIfBranches(node: estree.IfStatement) {
 }
 
 /** Returns a list of `switch` clauses (both `case` and `default`) */
-export function collectSwitchBranches(node: estree.SwitchStatement) {
+export function collectSwitchBranches(node: TSESTree.SwitchStatement) {
   let endsWithDefault = false;
   const branches = node.cases
     .filter((clause, index) => {
@@ -58,7 +58,7 @@ export function collectSwitchBranches(node: estree.SwitchStatement) {
 }
 
 /** Excludes the break statement from the list */
-export function takeWithoutBreak(nodes: estree.Statement[]) {
+export function takeWithoutBreak(nodes: TSESTree.Statement[]) {
   return nodes.length > 0 && nodes[nodes.length - 1].type === 'BreakStatement'
     ? nodes.slice(0, -1)
     : nodes;

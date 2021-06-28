@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester();
 import rule = require('../../src/rules/no-identical-conditions');
 
 const message = (line: number) => `This branch duplicates the one on line ${line}`;
@@ -36,37 +35,39 @@ ruleTester.run('no-identical-conditions', rule, {
   invalid: [
     {
       code: `
-        if (a) {} 
+        if (a) {}
         else if (a) {}
       `,
       errors: [{ message: message(2), line: 3, column: 18, endColumn: 19 }],
     },
     {
       code: `
-        if (a) {} 
+        if (a) {}
         //  ^>
         else if (a) {}
         //       ^
       `,
       options: ['sonar-runtime'],
       errors: [
-        JSON.stringify({
-          secondaryLocations: [
-            {
-              line: 2,
-              column: 12,
-              endLine: 2,
-              endColumn: 13,
-              message: 'Original',
-            },
-          ],
-          message: message(2),
-        }),
+        {
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 2,
+                column: 12,
+                endLine: 2,
+                endColumn: 13,
+                message: 'Original',
+              },
+            ],
+            message: message(2),
+          }),
+        },
       ],
     },
     {
       code: `
-        if (b) {} 
+        if (b) {}
         else if (a) {}
         else if (a) {}
       `,
@@ -74,7 +75,7 @@ ruleTester.run('no-identical-conditions', rule, {
     },
     {
       code: `
-        if (a) {} 
+        if (a) {}
         else if (b) {}
         else if (a) {}
       `,

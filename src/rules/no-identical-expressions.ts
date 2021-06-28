@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1764
 
-import { Rule } from 'eslint';
-import { Node, BinaryExpression, LogicalExpression } from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { isIdentifier, isLiteral } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation, IssueLocation } from '../utils/locations';
@@ -44,18 +44,18 @@ const RELEVANT_OPERATOR_TOKEN_KINDS = new Set([
 const message = (operator: string) =>
   `Correct one of the identical sub-expressions on both sides of operator "${operator}"`;
 
-function hasRelevantOperator(node: BinaryExpression | LogicalExpression) {
+function hasRelevantOperator(node: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
   return (
     RELEVANT_OPERATOR_TOKEN_KINDS.has(node.operator) ||
     (EQUALITY_OPERATOR_TOKEN_KINDS.has(node.operator) && !hasIdentifierOperands(node))
   );
 }
 
-function hasIdentifierOperands(node: BinaryExpression | LogicalExpression) {
+function hasIdentifierOperands(node: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
   return isIdentifier(node.left) && isIdentifier(node.right);
 }
 
-function isOneOntoOneShifting(node: BinaryExpression | LogicalExpression) {
+function isOneOntoOneShifting(node: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
   return node.operator === '<<' && isLiteral(node.left) && node.left.value === 1;
 }
 
@@ -71,15 +71,15 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      LogicalExpression(node: Node) {
-        check(node as LogicalExpression);
+      LogicalExpression(node: TSESTree.Node) {
+        check(node as TSESTree.LogicalExpression);
       },
-      BinaryExpression(node: Node) {
-        check(node as BinaryExpression);
+      BinaryExpression(node: TSESTree.Node) {
+        check(node as TSESTree.BinaryExpression);
       },
     };
 
-    function check(expr: BinaryExpression | LogicalExpression) {
+    function check(expr: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
       if (
         hasRelevantOperator(expr) &&
         !isOneOntoOneShifting(expr) &&

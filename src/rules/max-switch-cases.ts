@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1479
 
-import { Rule } from 'eslint';
-import { Node, SwitchStatement, SwitchCase } from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 const MESSAGE =
   'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.';
@@ -28,7 +28,9 @@ const MESSAGE =
 const DEFAULT_MAX_SWITCH_CASES = 30;
 let maxSwitchCases = DEFAULT_MAX_SWITCH_CASES;
 
-const rule: Rule.RuleModule = {
+type Options = [number];
+
+const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
     schema: [
@@ -38,17 +40,21 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     if (context.options.length > 0) {
       maxSwitchCases = context.options[0];
     }
     return {
-      SwitchStatement: (node: Node) => visitSwitchStatement(node as SwitchStatement, context),
+      SwitchStatement: (node: TSESTree.Node) =>
+        visitSwitchStatement(node as TSESTree.SwitchStatement, context),
     };
   },
 };
 
-function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.RuleContext) {
+function visitSwitchStatement(
+  switchStatement: TSESTree.SwitchStatement,
+  context: Rule.RuleContext,
+) {
   const nonEmptyCases = switchStatement.cases.filter(
     switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
@@ -65,7 +71,7 @@ function visitSwitchStatement(switchStatement: SwitchStatement, context: Rule.Ru
   }
 }
 
-function isDefaultCase(switchCase: SwitchCase) {
+function isDefaultCase(switchCase: TSESTree.SwitchCase) {
   return switchCase.test === null;
 }
 

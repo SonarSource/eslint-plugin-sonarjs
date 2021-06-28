@@ -19,13 +19,13 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3972
 
-import { AST, Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { toEncodedMessage } from '../utils/locations';
+import { Rule } from '../utils/types';
 
 interface SiblingIfStatement {
-  first: estree.IfStatement;
-  following: estree.IfStatement;
+  first: TSESTree.IfStatement;
+  following: TSESTree.IfStatement;
 }
 
 const rule: Rule.RuleModule = {
@@ -39,7 +39,7 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context: Rule.RuleContext) {
-    function checkStatements(statements: estree.Node[]) {
+    function checkStatements(statements: TSESTree.Node[]) {
       const sourceCode = context.getSourceCode();
       const siblingIfStatements = getSiblingIfStatements(statements);
 
@@ -52,8 +52,8 @@ const rule: Rule.RuleModule = {
           precedingIf.loc.end.line === followingIf.loc.start.line &&
           precedingIf.loc.start.line !== followingIf.loc.end.line
         ) {
-          const precedingIfLastToken = sourceCode.getLastToken(precedingIf) as AST.Token;
-          const followingIfToken = sourceCode.getFirstToken(followingIf) as AST.Token;
+          const precedingIfLastToken = sourceCode.getLastToken(precedingIf) as TSESLint.AST.Token;
+          const followingIfToken = sourceCode.getFirstToken(followingIf) as TSESLint.AST.Token;
           context.report({
             message: toEncodedMessage(`Move this "if" to a new line or add the missing "else".`, [
               precedingIfLastToken,
@@ -65,14 +65,16 @@ const rule: Rule.RuleModule = {
     }
 
     return {
-      Program: (node: estree.Node) => checkStatements((node as estree.Program).body),
-      BlockStatement: (node: estree.Node) => checkStatements((node as estree.BlockStatement).body),
-      SwitchCase: (node: estree.Node) => checkStatements((node as estree.SwitchCase).consequent),
+      Program: (node: TSESTree.Node) => checkStatements((node as TSESTree.Program).body),
+      BlockStatement: (node: TSESTree.Node) =>
+        checkStatements((node as TSESTree.BlockStatement).body),
+      SwitchCase: (node: TSESTree.Node) =>
+        checkStatements((node as TSESTree.SwitchCase).consequent),
     };
   },
 };
 
-function getSiblingIfStatements(statements: estree.Node[]): SiblingIfStatement[] {
+function getSiblingIfStatements(statements: TSESTree.Node[]): SiblingIfStatement[] {
   return statements.reduce<SiblingIfStatement[]>((siblingsArray, statement, currentIndex) => {
     const previousStatement = statements[currentIndex - 1];
     if (

@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1066
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
 
@@ -36,8 +36,8 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      IfStatement(node: estree.Node) {
-        let { consequent } = node as estree.IfStatement;
+      IfStatement(node: TSESTree.Node) {
+        let { consequent } = node as TSESTree.IfStatement;
         if (isBlockStatement(consequent) && consequent.body.length === 1) {
           consequent = consequent.body[0];
         }
@@ -58,7 +58,7 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function isIfStatementWithoutElse(node: estree.Node): node is estree.IfStatement {
+    function isIfStatementWithoutElse(node: TSESTree.Node): node is TSESTree.IfStatement {
       return isIfStatement(node) && !node.alternate;
     }
   },

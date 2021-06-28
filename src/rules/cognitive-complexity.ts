@@ -19,8 +19,7 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3776
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   getParent,
   isArrowFunctionExpression,
@@ -35,19 +34,22 @@ import {
   IssueLocation,
   issueLocation,
 } from '../utils/locations';
+import { Rule } from '../utils/types';
 
 const DEFAULT_THRESHOLD = 15;
 
 type LoopStatement =
-  | estree.ForStatement
-  | estree.ForInStatement
-  | estree.ForOfStatement
-  | estree.DoWhileStatement
-  | estree.WhileStatement;
+  | TSESTree.ForStatement
+  | TSESTree.ForInStatement
+  | TSESTree.ForOfStatement
+  | TSESTree.DoWhileStatement
+  | TSESTree.WhileStatement;
 
-type OptionalLocation = estree.SourceLocation | null | undefined;
+type OptionalLocation = TSESTree.SourceLocation | null | undefined;
 
-const rule: Rule.RuleModule = {
+type Options = [number, 'metric'];
+
+const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
     schema: [
@@ -58,7 +60,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     const threshold: number = getThreshold();
     const isFileComplexity: boolean = context.options.includes('metric');
 
@@ -86,8 +88,8 @@ const rule: Rule.RuleModule = {
         return this.nameStartsWithCapital && this.returnsJsx;
       },
 
-      init(_node: estree.Function) {
-        this.nameStartsWithCapital = nameStartsWithCapital(_node);
+      init(node: TSESTree.FunctionLike) {
+        this.nameStartsWithCapital = nameStartsWithCapital(node);
         this.returnsJsx = false;
       },
     };
@@ -96,36 +98,36 @@ const rule: Rule.RuleModule = {
     let topLevelOwnComplexity: ComplexityPoint[] = [];
 
     /** Nodes that should increase nesting level  */
-    const nestingNodes: Set<estree.Node> = new Set();
+    const nestingNodes: Set<TSESTree.Node> = new Set();
 
     /** Set of already considered (with already computed complexity) logical expressions */
-    const consideredLogicalExpressions: Set<estree.Node> = new Set();
+    const consideredLogicalExpressions: Set<TSESTree.Node> = new Set();
 
     /** Stack of enclosing functions */
-    const enclosingFunctions: estree.Function[] = [];
+    const enclosingFunctions: TSESTree.FunctionLike[] = [];
 
     let secondLevelFunctions: Array<{
-      node: estree.Function;
-      parent: estree.Node | undefined;
+      node: TSESTree.FunctionLike;
+      parent: TSESTree.Node | undefined;
       complexityIfThisSecondaryIsTopLevel: ComplexityPoint[];
       complexityIfNested: ComplexityPoint[];
       loc: OptionalLocation;
     }> = [];
 
     return {
-      ':function': (node: estree.Node) => {
-        onEnterFunction(node as estree.Function);
+      ':function': (node: TSESTree.Node) => {
+        onEnterFunction(node as TSESTree.FunctionLike);
       },
-      ':function:exit'(node: estree.Node) {
-        onLeaveFunction(node as estree.Function);
+      ':function:exit'(node: TSESTree.Node) {
+        onLeaveFunction(node as TSESTree.FunctionLike);
       },
 
-      '*'(node: estree.Node) {
+      '*'(node: TSESTree.Node) {
         if (nestingNodes.has(node)) {
           nesting++;
         }
       },
-      '*:exit'(node: estree.Node) {
+      '*:exit'(node: TSESTree.Node) {
         if (nestingNodes.has(node)) {
           nesting--;
           nestingNodes.delete(node);
@@ -134,7 +136,7 @@ const rule: Rule.RuleModule = {
       Program() {
         fileComplexity = 0;
       },
-      'Program:exit'(node: estree.Node) {
+      'Program:exit'(node: TSESTree.Node) {
         if (isFileComplexity) {
           // as issues are the only communication channel of a rule
           // we pass data as serialized json as an issue message
@@ -142,44 +144,44 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      IfStatement(node: estree.Node) {
-        visitIfStatement(node as estree.IfStatement);
+      IfStatement(node: TSESTree.Node) {
+        visitIfStatement(node as TSESTree.IfStatement);
       },
-      ForStatement(node: estree.Node) {
-        visitLoop(node as estree.ForStatement);
+      ForStatement(node: TSESTree.Node) {
+        visitLoop(node as TSESTree.ForStatement);
       },
-      ForInStatement(node: estree.Node) {
-        visitLoop(node as estree.ForInStatement);
+      ForInStatement(node: TSESTree.Node) {
+        visitLoop(node as TSESTree.ForInStatement);
       },
-      ForOfStatement(node: estree.Node) {
-        visitLoop(node as estree.ForOfStatement);
+      ForOfStatement(node: TSESTree.Node) {
+        visitLoop(node as TSESTree.ForOfStatement);
       },
-      DoWhileStatement(node: estree.Node) {
-        visitLoop(node as estree.DoWhileStatement);
+      DoWhileStatement(node: TSESTree.Node) {
+        visitLoop(node as TSESTree.DoWhileStatement);
       },
-      WhileStatement(node: estree.Node) {
-        visitLoop(node as estree.WhileStatement);
+      WhileStatement(node: TSESTree.Node) {
+        visitLoop(node as TSESTree.WhileStatement);
       },
-      SwitchStatement(node: estree.Node) {
-        visitSwitchStatement(node as estree.SwitchStatement);
+      SwitchStatement(node: TSESTree.Node) {
+        visitSwitchStatement(node as TSESTree.SwitchStatement);
       },
-      ContinueStatement(node: estree.Node) {
-        visitContinueOrBreakStatement(node as estree.ContinueStatement);
+      ContinueStatement(node: TSESTree.Node) {
+        visitContinueOrBreakStatement(node as TSESTree.ContinueStatement);
       },
-      BreakStatement(node: estree.Node) {
-        visitContinueOrBreakStatement(node as estree.BreakStatement);
+      BreakStatement(node: TSESTree.Node) {
+        visitContinueOrBreakStatement(node as TSESTree.BreakStatement);
       },
-      CatchClause(node: estree.Node) {
-        visitCatchClause(node as estree.CatchClause);
+      CatchClause(node: TSESTree.Node) {
+        visitCatchClause(node as TSESTree.CatchClause);
       },
-      LogicalExpression(node: estree.Node) {
-        visitLogicalExpression(node as estree.LogicalExpression);
+      LogicalExpression(node: TSESTree.Node) {
+        visitLogicalExpression(node as TSESTree.LogicalExpression);
       },
-      ConditionalExpression(node: estree.Node) {
-        visitConditionalExpression(node as estree.ConditionalExpression);
+      ConditionalExpression(node: TSESTree.Node) {
+        visitConditionalExpression(node as TSESTree.ConditionalExpression);
       },
-      ReturnStatement(node: estree.Node) {
-        visitReturnStatement(node as estree.ReturnStatement);
+      ReturnStatement(node: TSESTree.Node) {
+        visitReturnStatement(node as TSESTree.ReturnStatement);
       },
     };
 
@@ -187,7 +189,7 @@ const rule: Rule.RuleModule = {
       return context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
     }
 
-    function onEnterFunction(node: estree.Function) {
+    function onEnterFunction(node: TSESTree.FunctionLike) {
       if (enclosingFunctions.length === 0) {
         // top level function
         topLevelHasStructuralComplexity = false;
@@ -205,7 +207,7 @@ const rule: Rule.RuleModule = {
       enclosingFunctions.push(node);
     }
 
-    function onLeaveFunction(node: estree.Function) {
+    function onLeaveFunction(node: TSESTree.FunctionLike) {
       enclosingFunctions.pop();
       if (enclosingFunctions.length === 0) {
         // top level function
@@ -249,7 +251,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function visitIfStatement(ifStatement: estree.IfStatement) {
+    function visitIfStatement(ifStatement: TSESTree.IfStatement) {
       const parent = getParent(context);
       const { loc: ifLoc } = getFirstToken(ifStatement, context);
       // if the current `if` statement is `else if`, do not count it in structural complexity
@@ -277,7 +279,7 @@ const rule: Rule.RuleModule = {
       nestingNodes.add(loop.body);
     }
 
-    function visitSwitchStatement(switchStatement: estree.SwitchStatement) {
+    function visitSwitchStatement(switchStatement: TSESTree.SwitchStatement) {
       addStructuralComplexity(getFirstToken(switchStatement, context).loc);
       for (const switchCase of switchStatement.cases) {
         nestingNodes.add(switchCase);
@@ -285,33 +287,33 @@ const rule: Rule.RuleModule = {
     }
 
     function visitContinueOrBreakStatement(
-      statement: estree.ContinueStatement | estree.BreakStatement,
+      statement: TSESTree.ContinueStatement | TSESTree.BreakStatement,
     ) {
       if (statement.label) {
         addComplexity(getFirstToken(statement, context).loc);
       }
     }
 
-    function visitCatchClause(catchClause: estree.CatchClause) {
+    function visitCatchClause(catchClause: TSESTree.CatchClause) {
       addStructuralComplexity(getFirstToken(catchClause, context).loc);
       nestingNodes.add(catchClause.body);
     }
 
-    function visitConditionalExpression(conditionalExpression: estree.ConditionalExpression) {
+    function visitConditionalExpression(conditionalExpression: TSESTree.ConditionalExpression) {
       const questionTokenLoc = getFirstTokenAfter(conditionalExpression.test, context)!.loc;
       addStructuralComplexity(questionTokenLoc);
       nestingNodes.add(conditionalExpression.consequent);
       nestingNodes.add(conditionalExpression.alternate);
     }
 
-    function visitReturnStatement({ argument }: estree.ReturnStatement) {
+    function visitReturnStatement({ argument }: TSESTree.ReturnStatement) {
       // top level function
       if (enclosingFunctions.length === 1 && argument && (argument.type as any) === 'JSXElement') {
         reactFunctionalComponent.returnsJsx = true;
       }
     }
 
-    function nameStartsWithCapital(node: estree.Function) {
+    function nameStartsWithCapital(node: TSESTree.FunctionLike) {
       const checkFirstLetter = (name: string) => {
         const firstLetter = name[0];
         return firstLetter === firstLetter.toUpperCase();
@@ -329,11 +331,11 @@ const rule: Rule.RuleModule = {
       return false;
     }
 
-    function visitLogicalExpression(logicalExpression: estree.LogicalExpression) {
+    function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
       if (!consideredLogicalExpressions.has(logicalExpression)) {
         const flattenedLogicalExpressions = flattenLogicalExpression(logicalExpression);
 
-        let previous: estree.LogicalExpression | undefined;
+        let previous: TSESTree.LogicalExpression | undefined;
         for (const current of flattenedLogicalExpressions) {
           if (!previous || previous.operator !== current.operator) {
             const operatorTokenLoc = getFirstTokenAfter(logicalExpression.left, context)!.loc;
@@ -344,7 +346,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function flattenLogicalExpression(node: estree.Node): estree.LogicalExpression[] {
+    function flattenLogicalExpression(node: TSESTree.Node): TSESTree.LogicalExpression[] {
       if (isLogicalExpression(node)) {
         consideredLogicalExpressions.add(node);
         return [
@@ -356,7 +358,7 @@ const rule: Rule.RuleModule = {
       return [];
     }
 
-    function addStructuralComplexity(location: estree.SourceLocation) {
+    function addStructuralComplexity(location: TSESTree.SourceLocation) {
       const added = nesting + 1;
       const complexityPoint = { complexity: added, location };
       if (enclosingFunctions.length === 0) {
@@ -373,7 +375,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function addComplexity(location: estree.SourceLocation) {
+    function addComplexity(location: TSESTree.SourceLocation) {
       const complexityPoint = { complexity: 1, location };
       if (enclosingFunctions.length === 0) {
         // top level scope
@@ -388,7 +390,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function checkFunction(complexity: ComplexityPoint[] = [], loc: estree.SourceLocation) {
+    function checkFunction(complexity: ComplexityPoint[] = [], loc: TSESTree.SourceLocation) {
       const complexityAmount = complexity.reduce((acc, cur) => acc + cur.complexity, 0);
       fileComplexity += complexityAmount;
       if (isFileComplexity) {
@@ -420,5 +422,5 @@ export = rule;
 
 type ComplexityPoint = {
   complexity: number;
-  location: estree.SourceLocation;
+  location: TSESTree.SourceLocation;
 };

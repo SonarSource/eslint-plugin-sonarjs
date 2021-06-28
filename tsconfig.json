@@ -10,6 +10,6 @@
     "noEmit": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["ruling/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
+  "include": ["ruling", "src", "tests", "typings"],
   "exclude": ["ruling/javascript-test-sources"]
 }

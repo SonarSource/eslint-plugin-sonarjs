@@ -49,6 +49,7 @@ function run() {
   const cli = new CLIEngine({
     parser: "babel-eslint",
     parserOptions: {
+      // @ts-ignore 'experimentalObjectRestSpread' is missing in type definition
       ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
       ecmaVersion: 2018,
       sourceType: "module",

@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3626
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { getParent } from '../utils/nodes';
 
 const message = 'Remove this redundant jump.';
@@ -31,10 +31,10 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
-    function reportIfLastStatement(node: estree.ContinueStatement | estree.ReturnStatement) {
+    function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {
       const withArgument = node.type === 'ContinueStatement' ? !!node.label : !!node.argument;
       if (!withArgument) {
-        const block = getParent(context) as estree.BlockStatement;
+        const block = getParent(context) as TSESTree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
           context.report({
             message,
@@ -45,35 +45,35 @@ const rule: Rule.RuleModule = {
     }
 
     function reportIfLastStatementInsideIf(
-      node: estree.ContinueStatement | estree.ReturnStatement,
+      node: TSESTree.ContinueStatement | TSESTree.ReturnStatement,
     ) {
       const ancestors = context.getAncestors();
       const ifStatement = ancestors[ancestors.length - 2];
-      const upperBlock = ancestors[ancestors.length - 3] as estree.BlockStatement;
+      const upperBlock = ancestors[ancestors.length - 3] as TSESTree.BlockStatement;
       if (upperBlock.body[upperBlock.body.length - 1] === ifStatement) {
         reportIfLastStatement(node);
       }
     }
 
     return {
-      [`:matches(${loops}) > BlockStatement > ContinueStatement`]: (node: estree.Node) => {
-        reportIfLastStatement(node as estree.ContinueStatement);
+      [`:matches(${loops}) > BlockStatement > ContinueStatement`]: (node: TSESTree.Node) => {
+        reportIfLastStatement(node as TSESTree.ContinueStatement);
       },
 
       [`:matches(${loops}) > BlockStatement > IfStatement > BlockStatement > ContinueStatement`]: (
-        node: estree.Node,
+        node: TSESTree.Node,
       ) => {
-        reportIfLastStatementInsideIf(node as estree.ContinueStatement);
+        reportIfLastStatementInsideIf(node as TSESTree.ContinueStatement);
       },
 
-      ':function > BlockStatement > ReturnStatement': (node: estree.Node) => {
-        reportIfLastStatement(node as estree.ReturnStatement);
+      ':function > BlockStatement > ReturnStatement': (node: TSESTree.Node) => {
+        reportIfLastStatement(node as TSESTree.ReturnStatement);
       },
 
       ':function > BlockStatement > IfStatement > BlockStatement > ReturnStatement': (
-        node: estree.Node,
+        node: TSESTree.Node,
       ) => {
-        reportIfLastStatementInsideIf(node as estree.ReturnStatement);
+        reportIfLastStatementInsideIf(node as TSESTree.ReturnStatement);
       },
     };
   },

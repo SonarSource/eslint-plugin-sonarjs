@@ -19,8 +19,7 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-2428
 
-import { Rule, SourceCode } from 'eslint';
-import { Node, Statement, Program, Identifier, BlockStatement, Expression } from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isModuleDeclaration,
   isVariableDeclaration,
@@ -31,6 +30,7 @@ import {
   isIdentifier,
 } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
+import { Rule } from '../utils/types';
 
 const MESSAGE =
   'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.';
@@ -41,11 +41,11 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      BlockStatement: (node: Node) =>
-        checkObjectInitialization((node as BlockStatement).body, context),
-      Program: (node: Node) => {
-        const statements = (node as Program).body.filter(
-          (statement): statement is Statement => !isModuleDeclaration(statement),
+      BlockStatement: (node: TSESTree.Node) =>
+        checkObjectInitialization((node as TSESTree.BlockStatement).body, context),
+      Program: (node: TSESTree.Node) => {
+        const statements = (node as TSESTree.Program).body.filter(
+          (statement): statement is TSESTree.Statement => !isModuleDeclaration(statement),
         );
         checkObjectInitialization(statements, context);
       },
@@ -53,7 +53,7 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function checkObjectInitialization(statements: Statement[], context: Rule.RuleContext) {
+function checkObjectInitialization(statements: TSESTree.Statement[], context: Rule.RuleContext) {
   let index = 0;
   while (index < statements.length - 1) {
     const objectDeclaration = getObjectDeclaration(statements[index]);
@@ -69,7 +69,7 @@ function checkObjectInitialization(statements: Statement[], context: Rule.RuleCo
   }
 }
 
-function getObjectDeclaration(statement: Statement) {
+function getObjectDeclaration(statement: TSESTree.Statement) {
   if (isVariableDeclaration(statement)) {
     return statement.declarations.find(
       declaration => !!declaration.init && isEmptyObjectExpression(declaration.init),
@@ -78,14 +78,14 @@ function getObjectDeclaration(statement: Statement) {
   return undefined;
 }
 
-function isEmptyObjectExpression(expression: Expression) {
+function isEmptyObjectExpression(expression: TSESTree.Expression) {
   return isObjectExpression(expression) && expression.properties.length === 0;
 }
 
 function isPropertyAssignment(
-  statement: Statement,
-  objectIdentifier: Identifier,
-  sourceCode: SourceCode,
+  statement: TSESTree.Statement,
+  objectIdentifier: TSESTree.Identifier,
+  sourceCode: TSESLint.SourceCode,
 ) {
   if (isExpressionStatement(statement) && isAssignmentExpression(statement.expression)) {
     const { left, right } = statement.expression;
@@ -100,7 +100,7 @@ function isPropertyAssignment(
   return false;
 }
 
-function isSingleLineExpression(expression: Expression, sourceCode: SourceCode) {
+function isSingleLineExpression(expression: TSESTree.Expression, sourceCode: TSESLint.SourceCode) {
   const first = sourceCode.getFirstToken(expression)!.loc;
   const last = sourceCode.getLastToken(expression)!.loc;
   return first.start.line === last.end.line;

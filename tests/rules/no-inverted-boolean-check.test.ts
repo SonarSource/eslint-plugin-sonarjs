@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester, TestCaseError } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require('../../src/rules/no-inverted-boolean-check');
 
 ruleTester.run('no-inverted-boolean-check', rule, {
@@ -46,7 +45,7 @@ ruleTester.run('no-inverted-boolean-check', rule, {
       code: `if (!(x == 1)) {}`,
       errors: [
         {
-          message: message('!='),
+          ...message('!='),
           line: 1,
           endLine: 1,
           column: 5,
@@ -117,6 +116,6 @@ ruleTester.run('no-inverted-boolean-check', rule, {
   ],
 });
 
-function message(oppositeOperator: string) {
-  return `Use the opposite operator (${oppositeOperator}) instead.`;
+function message(oppositeOperator: string): TestCaseError {
+  return { message: `Use the opposite operator (${oppositeOperator}) instead.` };
 }

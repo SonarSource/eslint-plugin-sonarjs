@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1125
 
-import { Rule } from 'eslint';
-import { BinaryExpression, Node, LogicalExpression, UnaryExpression, Expression } from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import {
   getParent,
   isBooleanLiteral,
@@ -36,16 +36,16 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      BinaryExpression(node: Node) {
-        const expression = node as BinaryExpression;
+      BinaryExpression(node: TSESTree.Node) {
+        const expression = node as TSESTree.BinaryExpression;
         if (expression.operator === '==' || expression.operator === '!=') {
           checkBooleanLiteral(expression.left);
           checkBooleanLiteral(expression.right);
         }
       },
 
-      LogicalExpression(node: Node) {
-        const expression = node as LogicalExpression;
+      LogicalExpression(node: TSESTree.Node) {
+        const expression = node as TSESTree.LogicalExpression;
         checkBooleanLiteral(expression.left);
 
         if (expression.operator === '&&') {
@@ -62,15 +62,15 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      UnaryExpression(node: Node) {
-        const unaryExpression = node as UnaryExpression;
+      UnaryExpression(node: TSESTree.Node) {
+        const unaryExpression = node as TSESTree.UnaryExpression;
         if (unaryExpression.operator === '!') {
           checkBooleanLiteral(unaryExpression.argument);
         }
       },
     };
 
-    function checkBooleanLiteral(expression: Expression) {
+    function checkBooleanLiteral(expression: TSESTree.Expression) {
       if (isBooleanLiteral(expression)) {
         context.report({ message: MESSAGE, node: expression });
       }

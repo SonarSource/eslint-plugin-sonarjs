@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
 import rule = require('../../src/rules/no-duplicated-branches');
 const message = "This branch's code block is the same as the block for the branch on line 2.";
 
@@ -27,12 +26,12 @@ ruleTester.run('no-duplicated-branches if', rule, {
   valid: [
     {
       code: `
-      if (a) { 
-        first('const'); 
-        first('foo'); 
-      } else { 
-        first('var'); 
-        first('foo'); 
+      if (a) {
+        first('const');
+        first('foo');
+      } else {
+        first('var');
+        first('foo');
       }`,
     },
     {

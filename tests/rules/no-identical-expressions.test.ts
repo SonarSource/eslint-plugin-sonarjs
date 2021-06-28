@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
 import rule = require('../../src/rules/no-identical-expressions');
 
 ruleTester.run('no-identical-expressions', rule, {

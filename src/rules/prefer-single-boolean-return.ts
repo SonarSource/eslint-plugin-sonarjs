@@ -18,9 +18,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // https://jira.sonarsource.com/browse/RSPEC-1126
-
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import {
   isReturnStatement,
   isBlockStatement,
@@ -35,8 +34,8 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      IfStatement(node: estree.Node) {
-        const ifStmt = node as estree.IfStatement;
+      IfStatement(node: TSESTree.Node) {
+        const ifStmt = node as TSESTree.IfStatement;
         if (
           // ignore `else if`
           !isIfStatement(getParent(context)) &&
@@ -52,14 +51,14 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function returnsBoolean(statement: estree.Statement | undefined) {
+    function returnsBoolean(statement: TSESTree.Statement | undefined) {
       return (
         statement !== undefined &&
         (isBlockReturningBooleanLiteral(statement) || isSimpleReturnBooleanLiteral(statement))
       );
     }
 
-    function isBlockReturningBooleanLiteral(statement: estree.Statement) {
+    function isBlockReturningBooleanLiteral(statement: TSESTree.Statement) {
       return (
         isBlockStatement(statement) &&
         statement.body.length === 1 &&
@@ -67,7 +66,7 @@ const rule: Rule.RuleModule = {
       );
     }
 
-    function isSimpleReturnBooleanLiteral(statement: estree.Statement) {
+    function isSimpleReturnBooleanLiteral(statement: TSESTree.Statement) {
       // `statement.argument` can be `null`, replace it with `undefined` in this case
       return isReturnStatement(statement) && isBooleanLiteral(statement.argument || undefined);
     }
