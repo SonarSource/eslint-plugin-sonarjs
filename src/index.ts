@@ -33,6 +33,7 @@ const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['no-identical-functions', 'error'],
   ['no-identical-expressions', 'error'],
   ['no-inverted-boolean-check', 'error'],
+  ['no-nested-template-literals', 'error'],
   ['no-one-iteration-loop', 'error'],
   ['no-redundant-boolean', 'error'],
   ['no-redundant-jump', 'error'],
