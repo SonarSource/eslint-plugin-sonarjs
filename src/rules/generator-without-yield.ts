@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,16 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3531
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { getMainFunctionTokenLocation } from '../utils/locations';
-import { getParent } from '../utils/nodes';
+import { Rule } from '../utils/types';
 
 const MESSAGE = 'Add a "yield" statement to this generator.';
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: 'problem',
+  },
   create(context: Rule.RuleContext) {
     const yieldStack: number[] = [];
 
@@ -34,13 +36,13 @@ const rule: Rule.RuleModule = {
       yieldStack.push(0);
     }
 
-    function exitFunction(node: estree.Node) {
-      const functionNode = node as estree.FunctionExpression | estree.FunctionDeclaration;
+    function exitFunction(node: TSESTree.Node) {
+      const functionNode = node as TSESTree.FunctionExpression | TSESTree.FunctionDeclaration;
       const countYield = yieldStack.pop();
       if (countYield === 0 && functionNode.body.body.length > 0) {
         context.report({
           message: MESSAGE,
-          loc: getMainFunctionTokenLocation(functionNode, getParent(context), context),
+          loc: getMainFunctionTokenLocation(functionNode, node.parent, context),
         });
       }
     }
