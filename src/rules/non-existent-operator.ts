@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,30 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-2757
 
-import { AST, Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
-  create(context: Rule.RuleContext) {
+  meta: {
+    type: 'problem',
+  },
+  create(context) {
     return {
-      AssignmentExpression(node: estree.Node) {
-        const assignmentExpression = node as estree.AssignmentExpression;
+      AssignmentExpression(node: TSESTree.Node) {
+        const assignmentExpression = node as TSESTree.AssignmentExpression;
         if (assignmentExpression.operator === '=') {
           checkOperator(context, assignmentExpression.right);
         }
       },
-      VariableDeclarator(node: estree.Node) {
-        const variableDeclarator = node as estree.VariableDeclarator;
+      VariableDeclarator(node: TSESTree.Node) {
+        const variableDeclarator = node as TSESTree.VariableDeclarator;
         checkOperator(context, variableDeclarator.init);
       },
     };
   },
 };
 
-function checkOperator(context: Rule.RuleContext, unaryNode?: estree.Expression | null) {
+function checkOperator(context: Rule.RuleContext, unaryNode?: TSESTree.Expression | null) {
   if (
     unaryNode &&
     unaryNode.type === 'UnaryExpression' &&
@@ -68,11 +71,11 @@ function checkOperator(context: Rule.RuleContext, unaryNode?: estree.Expression 
   }
 }
 
-function isUnaryOperatorOfInterest(operator: estree.UnaryOperator): boolean {
+function isUnaryOperatorOfInterest(operator: TSESTree.UnaryExpression['operator']): boolean {
   return operator === '-' || operator === '+' || operator === '!';
 }
 
-function areAdjacent(first: AST.Token, second: AST.Token): boolean {
+function areAdjacent(first: TSESLint.AST.Token, second: TSESLint.AST.Token): boolean {
   return (
     first.loc.end.column === second.loc.start.column && first.loc.end.line === second.loc.start.line
   );
