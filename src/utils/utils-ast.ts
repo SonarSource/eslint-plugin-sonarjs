@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -17,13 +17,16 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Scope } from 'eslint';
-import * as estree from 'estree';
 
-export function isIdentifier(node: estree.Node, ...values: string[]): node is estree.Identifier {
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+
+export function isIdentifier(
+  node: TSESTree.Node,
+  ...values: string[]
+): node is TSESTree.Identifier {
   return node.type === 'Identifier' && values.some(value => value === node.name);
 }
 
-export function isReferenceTo(ref: Scope.Reference, node: estree.Node) {
+export function isReferenceTo(ref: TSESLint.Scope.Reference, node: TSESTree.Node) {
   return node.type === 'Identifier' && node === ref.identifier;
 }
