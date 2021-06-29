@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,8 @@
  */
 
 /* eslint-disable no-template-curly-in-string */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/no-nested-template-literals';
-
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 
 ruleTester.run('Template literals should not be nested', rule, {
   valid: [

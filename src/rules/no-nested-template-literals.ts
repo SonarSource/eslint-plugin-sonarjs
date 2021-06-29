@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,15 +19,18 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4624
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 const message = 'Refactor this code to not use nested template literals.';
 
 const rule: Rule.RuleModule = {
+  meta: {
+    type: 'suggestion',
+  },
   create(context: Rule.RuleContext) {
     return {
-      'TemplateLiteral TemplateLiteral': (node: estree.Node) => {
+      'TemplateLiteral TemplateLiteral': (node: TSESTree.Node) => {
         context.report({
           message,
           node,
