@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,14 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-2589
 
-import { Rule, Scope } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { EncodedMessage } from '../utils/locations';
-import { getParent, isIdentifier, isIfStatement } from '../utils/nodes';
+import { isIdentifier, isIfStatement } from '../utils/nodes';
+import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
   meta: {
+    type: 'suggestion',
     schema: [
       {
         // internal parameter for rules having secondary locations
@@ -35,20 +36,20 @@ const rule: Rule.RuleModule = {
   },
 
   create(context: Rule.RuleContext) {
-    const truthyMap: Map<estree.Statement, Scope.Reference[]> = new Map();
-    const falsyMap: Map<estree.Statement, Scope.Reference[]> = new Map();
+    const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
+    const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
 
     return {
-      IfStatement: (node: estree.Node) => {
-        const { test } = node as estree.IfStatement;
+      IfStatement: (node: TSESTree.Node) => {
+        const { test } = node as TSESTree.IfStatement;
         if (test.type === 'Literal' && typeof test.value === 'boolean') {
           report(test, undefined, context, test.value);
         }
       },
 
-      ':statement': (node: estree.Node) => {
-        const parent = getParent(context);
-        if (parent && isIfStatement(parent)) {
+      ':statement': (node: TSESTree.Node) => {
+        const { parent } = node;
+        if (isIfStatement(parent)) {
           // we visit 'consequent' and 'alternate' and not if-statement directly in order to get scope for 'consequent'
           const currentScope = context.getScope();
 
@@ -62,16 +63,16 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      ':statement:exit': (node: estree.Node) => {
-        const stmt = node as estree.Statement;
+      ':statement:exit': (node: TSESTree.Node) => {
+        const stmt = node as TSESTree.Statement;
         truthyMap.delete(stmt);
         falsyMap.delete(stmt);
       },
 
-      Identifier: (node: estree.Node) => {
-        const id = node as estree.Identifier;
+      Identifier: (node: TSESTree.Node) => {
+        const id = node as TSESTree.Identifier;
         const symbol = getSymbol(id, context.getScope());
-        const parent = getParent(context);
+        const { parent } = node;
         if (!symbol || !parent) {
           return;
         }
@@ -85,7 +86,7 @@ const rule: Rule.RuleModule = {
         }
 
         const checkIfKnownAndReport = (
-          map: Map<estree.Statement, Scope.Reference[]>,
+          map: Map<TSESTree.Statement, TSESLint.Scope.Reference[]>,
           truthy: boolean,
         ) => {
           map.forEach(references => {
@@ -108,11 +109,11 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function collectKnownIdentifiers(expression: estree.Expression) {
-  const truthy: estree.Identifier[] = [];
-  const falsy: estree.Identifier[] = [];
+function collectKnownIdentifiers(expression: TSESTree.Expression) {
+  const truthy: TSESTree.Identifier[] = [];
+  const falsy: TSESTree.Identifier[] = [];
 
-  const checkExpr = (expr: estree.Expression) => {
+  const checkExpr = (expr: TSESTree.Expression) => {
     if (isIdentifier(expr)) {
       truthy.push(expr);
     } else if (isLogicalNegation(expr)) {
@@ -135,14 +136,14 @@ function collectKnownIdentifiers(expression: estree.Expression) {
   return { truthy, falsy };
 }
 
-function isLogicalAnd(expression: estree.Node): expression is estree.LogicalExpression {
+function isLogicalAnd(expression: TSESTree.Node): expression is TSESTree.LogicalExpression {
   return expression.type === 'LogicalExpression' && expression.operator === '&&';
 }
 
 function isLogicalOrLhs(
-  id: estree.Identifier,
-  expression: estree.Node,
-): expression is estree.LogicalExpression {
+  id: TSESTree.Identifier,
+  expression: TSESTree.Node,
+): expression is TSESTree.LogicalExpression {
   return (
     expression.type === 'LogicalExpression' &&
     expression.operator === '||' &&
@@ -150,7 +151,7 @@ function isLogicalOrLhs(
   );
 }
 
-function isLogicalNegation(expression: estree.Node): expression is estree.UnaryExpression {
+function isLogicalNegation(expression: TSESTree.Node): expression is TSESTree.UnaryExpression {
   return expression.type === 'UnaryExpression' && expression.operator === '!';
 }
 
@@ -158,7 +159,7 @@ function isDefined<T>(x: T | undefined | null): x is T {
   return x != null;
 }
 
-function getSymbol(id: estree.Identifier, scope: Scope.Scope) {
+function getSymbol(id: TSESTree.Identifier, scope: TSESLint.Scope.Scope) {
   const ref = scope.references.find(r => r.identifier === id);
   if (ref) {
     return ref.resolved;
@@ -166,7 +167,7 @@ function getSymbol(id: estree.Identifier, scope: Scope.Scope) {
   return null;
 }
 
-function getFunctionScope(scope: Scope.Scope): Scope.Scope | null {
+function getFunctionScope(scope: TSESLint.Scope.Scope): TSESLint.Scope.Scope | null {
   if (scope.type === 'function') {
     return scope;
   } else if (!scope.upper) {
@@ -175,13 +176,13 @@ function getFunctionScope(scope: Scope.Scope): Scope.Scope | null {
   return getFunctionScope(scope.upper);
 }
 
-function mightBeWritten(symbol: Scope.Variable, currentScope: Scope.Scope) {
+function mightBeWritten(symbol: TSESLint.Scope.Variable, currentScope: TSESLint.Scope.Scope) {
   return symbol.references
     .filter(ref => ref.isWrite())
     .find(ref => {
       const refScope = ref.from;
 
-      let cur: Scope.Scope | null = refScope;
+      let cur: TSESLint.Scope.Scope | null = refScope;
       while (cur) {
         if (cur === currentScope) {
           return true;
@@ -195,7 +196,7 @@ function mightBeWritten(symbol: Scope.Variable, currentScope: Scope.Scope) {
     });
 }
 
-function transformAndFilter(ids: estree.Identifier[], currentScope: Scope.Scope) {
+function transformAndFilter(ids: TSESTree.Identifier[], currentScope: TSESLint.Scope.Scope) {
   return ids
     .map(id => currentScope.upper!.references.find(r => r.identifier === id))
     .filter(isDefined)
@@ -204,8 +205,8 @@ function transformAndFilter(ids: estree.Identifier[], currentScope: Scope.Scope)
 }
 
 function report(
-  id: estree.Node,
-  ref: Scope.Reference | undefined,
+  id: TSESTree.Node,
+  ref: TSESLint.Scope.Reference | undefined,
   context: Rule.RuleContext,
   truthy: boolean,
 ) {
@@ -222,7 +223,7 @@ function report(
   });
 }
 
-function getSecondaryLocations(ref: Scope.Reference | undefined, truthy: string) {
+function getSecondaryLocations(ref: TSESLint.Scope.Reference | undefined, truthy: string) {
   if (ref) {
     const secLoc = ref.identifier.loc!;
     return [

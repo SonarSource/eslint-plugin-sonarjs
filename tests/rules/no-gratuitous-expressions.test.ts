@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018 SonarSource SA
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -17,14 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/no-gratuitous-expressions';
-
-const ruleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
-  parserOptions: { ecmaVersion: 2018, sourceType: 'module' },
-});
 
 ruleTester.run('no-gratuitous-expressions', rule, {
   valid: [
