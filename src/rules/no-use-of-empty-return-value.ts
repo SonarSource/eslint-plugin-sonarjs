@@ -19,24 +19,12 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3699
 
-import { Rule } from 'eslint';
-import {
-  Node,
-  CallExpression,
-  Function,
-  ReturnStatement,
-  Identifier,
-  ArrowFunctionExpression,
-} from 'estree';
-import {
-  isFunctionExpression,
-  isArrowFunctionExpression,
-  isBlockStatement,
-  getParent,
-} from '../utils/nodes';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Identifier, Rule } from '../utils/types';
+import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
 
-function isReturnValueUsed(callExpr: Node, context: Rule.RuleContext) {
-  const parent = getParent(context);
+function isReturnValueUsed(callExpr: TSESTree.Node) {
+  const { parent } = callExpr;
   if (!parent) {
     return false;
   }
@@ -67,14 +55,14 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
   },
-  create(context: Rule.RuleContext) {
-    const callExpressionsToCheck: Map<Identifier, Function> = new Map();
-    const functionsWithReturnValue: Set<Function> = new Set();
+  create(context) {
+    const callExpressionsToCheck: Map<Identifier, TSESTree.FunctionLike> = new Map();
+    const functionsWithReturnValue: Set<TSESTree.FunctionLike> = new Set();
 
     return {
-      CallExpression(node: Node) {
-        const callExpr = node as CallExpression;
-        if (!isReturnValueUsed(callExpr, context)) {
+      CallExpression(node: TSESTree.Node) {
+        const callExpr = node as TSESTree.CallExpression;
+        if (!isReturnValueUsed(callExpr)) {
           return;
         }
         const scope = context.getScope();
@@ -95,8 +83,8 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      ReturnStatement(node: Node) {
-        const returnStmt = node as ReturnStatement;
+      ReturnStatement(node: TSESTree.Node) {
+        const returnStmt = node as TSESTree.ReturnStatement;
         if (returnStmt.argument) {
           const ancestors = [...context.getAncestors()].reverse();
           const functionNode = ancestors.find(
@@ -106,19 +94,22 @@ const rule: Rule.RuleModule = {
               node.type === 'ArrowFunctionExpression',
           );
 
-          functionsWithReturnValue.add(functionNode as Function);
+          functionsWithReturnValue.add(functionNode as TSESTree.FunctionLike);
         }
       },
 
-      ArrowFunctionExpression(node: Node) {
-        const arrowFunc = node as ArrowFunctionExpression;
+      ArrowFunctionExpression(node: TSESTree.Node) {
+        const arrowFunc = node as TSESTree.ArrowFunctionExpression;
         if (arrowFunc.expression) {
           functionsWithReturnValue.add(arrowFunc);
         }
       },
 
-      ':function'(node: Node) {
-        const func = node as Function;
+      ':function'(node: TSESTree.Node) {
+        const func = node as
+          | TSESTree.FunctionExpression
+          | TSESTree.FunctionDeclaration
+          | TSESTree.ArrowFunctionExpression;
         if (
           func.async ||
           func.generator ||

@@ -19,9 +19,9 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1871
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
-import { getParent, isIfStatement, isBlockStatement } from '../utils/nodes';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
+import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
 import { report, issueLocation } from '../utils/locations';
@@ -39,19 +39,18 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
-      IfStatement(node: estree.Node) {
-        visitIfStatement(node as estree.IfStatement);
+      IfStatement(node: TSESTree.Node) {
+        visitIfStatement(node as TSESTree.IfStatement);
       },
-      SwitchStatement(node: estree.Node) {
-        visitSwitchStatement(node as estree.SwitchStatement);
+      SwitchStatement(node: TSESTree.Node) {
+        visitSwitchStatement(node as TSESTree.SwitchStatement);
       },
     };
 
-    function visitIfStatement(ifStmt: estree.IfStatement) {
-      const parent = getParent(context);
-      if (isIfStatement(parent)) {
+    function visitIfStatement(ifStmt: TSESTree.IfStatement) {
+      if (isIfStatement(ifStmt.parent)) {
         return;
       }
       const { branches, endsWithElse } = collectIfBranches(ifStmt);
@@ -72,7 +71,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function visitSwitchStatement(switchStmt: estree.SwitchStatement) {
+    function visitSwitchStatement(switchStmt: TSESTree.SwitchStatement) {
       const { cases } = switchStmt;
       const { endsWithDefault } = collectSwitchBranches(switchStmt);
       const nonEmptyCases = cases.filter(
@@ -115,7 +114,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function hasRequiredSize(nodes: estree.Statement[]) {
+    function hasRequiredSize(nodes: TSESTree.Statement[]) {
       if (nodes.length > 0) {
         const tokens = [
           ...context.getSourceCode().getTokens(nodes[0]),
@@ -128,7 +127,7 @@ const rule: Rule.RuleModule = {
       return false;
     }
 
-    function compareIfBranches(a: estree.Statement, b: estree.Statement) {
+    function compareIfBranches(a: TSESTree.Statement, b: TSESTree.Statement) {
       const equivalent = areEquivalent(a, b, context.getSourceCode());
       if (equivalent && b.loc) {
         reportIssue(a, b, 'branch');
@@ -136,7 +135,7 @@ const rule: Rule.RuleModule = {
       return equivalent;
     }
 
-    function expandSingleBlockStatement(nodes: estree.Statement[]) {
+    function expandSingleBlockStatement(nodes: TSESTree.Statement[]) {
       if (nodes.length === 1) {
         const node = nodes[0];
         if (isBlockStatement(node)) {
@@ -147,7 +146,7 @@ const rule: Rule.RuleModule = {
     }
 
     function allEquivalentWithoutDefault(
-      branches: Array<estree.Node | estree.Node[]>,
+      branches: Array<TSESTree.Node | TSESTree.Node[]>,
       endsWithDefault: boolean,
     ) {
       return (
@@ -159,8 +158,8 @@ const rule: Rule.RuleModule = {
       );
     }
 
-    function reportIssue(node: estree.Node, equivalentNode: estree.Node, type: string) {
-      const equivalentNodeLoc = equivalentNode.loc as estree.SourceLocation;
+    function reportIssue(node: TSESTree.Node, equivalentNode: TSESTree.Node, type: string) {
+      const equivalentNodeLoc = equivalentNode.loc as TSESTree.SourceLocation;
       report(
         context,
         { message: MESSAGE, data: { type, line: String(equivalentNode.loc!.start.line) }, node },

@@ -19,14 +19,18 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4144
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
-import { getParent } from '../utils/nodes';
 
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
+
+type Function =
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression
+  | TSESTree.ArrowFunctionExpression;
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -38,17 +42,17 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context: Rule.RuleContext) {
-    const functions: Array<{ function: estree.Function; parent: estree.Node | undefined }> = [];
+    const functions: Array<{ function: Function; parent: TSESTree.Node | undefined }> = [];
 
     return {
-      FunctionDeclaration(node: estree.Node) {
-        visitFunction(node as estree.FunctionDeclaration);
+      FunctionDeclaration(node: TSESTree.Node) {
+        visitFunction(node as TSESTree.FunctionDeclaration);
       },
-      FunctionExpression(node: estree.Node) {
-        visitFunction(node as estree.FunctionExpression);
+      FunctionExpression(node: TSESTree.Node) {
+        visitFunction(node as TSESTree.FunctionExpression);
       },
-      ArrowFunctionExpression(node: estree.Node) {
-        visitFunction(node as estree.ArrowFunctionExpression);
+      ArrowFunctionExpression(node: TSESTree.Node) {
+        visitFunction(node as TSESTree.ArrowFunctionExpression);
       },
 
       'Program:exit'() {
@@ -56,9 +60,9 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function visitFunction(node: estree.Function) {
+    function visitFunction(node: Function) {
       if (isBigEnough(node.body)) {
-        functions.push({ function: node, parent: getParent(context) });
+        functions.push({ function: node, parent: node.parent });
       }
     }
 
@@ -108,7 +112,7 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function isBigEnough(node: estree.Expression | estree.Statement) {
+    function isBigEnough(node: TSESTree.Node) {
       const tokens = context.getSourceCode().getTokens(node);
 
       if (tokens.length > 0 && tokens[0].value === '{') {

@@ -17,16 +17,15 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 } });
 import rule = require('../../src/rules/no-one-iteration-loop');
 
 ruleTester.run('no-one-iteration-loop', rule, {
   valid: [
     valid(`
-    while (cond) { 
-      1; 
+    while (cond) {
+      1;
     }`),
 
     valid(`
@@ -54,12 +53,12 @@ ruleTester.run('no-one-iteration-loop', rule, {
     }`),
 
     valid(`
-    while (42) 
+    while (42)
       continue
     `),
 
     valid(`
-    for (;42;) 
+    for (;42;)
       continue
     `),
 
@@ -146,7 +145,7 @@ ruleTester.run('no-one-iteration-loop', rule, {
         if (condition) {
           continue;
         }
-      
+
         return 42; // OK
       }
     }`),
@@ -159,7 +158,7 @@ ruleTester.run('no-one-iteration-loop', rule, {
         } catch (e) {
           continue;
         }
-    
+
         doSomethingElse();
       }
     }`),
@@ -171,14 +170,14 @@ ruleTester.run('no-one-iteration-loop', rule, {
         if (baz()) {
           return;
         }
-      } 
+      }
     }`),
   ],
 
   invalid: [
     invalid(`
-    while (cond) { 
-      break; 
+    while (cond) {
+      break;
     }`),
 
     invalid(`
@@ -212,7 +211,7 @@ ruleTester.run('no-one-iteration-loop', rule, {
       break;
     } while (foo())`),
 
-    invalid(`  
+    invalid(`
     for (i = 0; foo(); i++) {
       bar();
       break;

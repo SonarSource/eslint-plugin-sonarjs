@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1301
 
-import { Rule } from 'eslint';
-import { Node, SwitchStatement } from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 const MESSAGE = '"switch" statements should have at least 3 "case" clauses';
 
@@ -30,8 +30,8 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      SwitchStatement(node: Node) {
-        const switchStatement = node as SwitchStatement;
+      SwitchStatement(node: TSESTree.Node) {
+        const switchStatement = node as TSESTree.SwitchStatement;
         const { cases } = switchStatement;
         const hasDefault = cases.some(x => !x.test);
         if (cases.length < 2 || (cases.length === 2 && hasDefault)) {

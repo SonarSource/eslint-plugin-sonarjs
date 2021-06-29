@@ -17,10 +17,9 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester, ruleTesterScript, TestCaseError } from '../rule-tester';
 import { IssueLocation } from '../../src/utils/locations';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require('../../src/rules/no-extra-arguments');
 
 ruleTester.run('no-extra-arguments', rule, {
@@ -68,10 +67,10 @@ ruleTester.run('no-extra-arguments', rule, {
     },
     {
       code: `
-        let x = () => {}; 
+        let x = () => {};
         if (cond) {
           x = (p1, p2) => 1;
-        } 
+        }
         x(1, 2);
       `,
     },
@@ -93,12 +92,14 @@ ruleTester.run('no-extra-arguments', rule, {
         function foo(p1, p2) {}
         //           ^^^^^^>
         foo(1, 2, 3);
-      //^^^^^^^^^^^^  
+      //^^^^^^^^^^^^
       `,
       errors: [
-        encodedMessage(2, 3, [
-          { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
-        ]),
+        {
+          message: encodedMessage(2, 3, [
+            { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
+          ]),
+        },
       ],
       options: ['sonar-runtime'],
     },
@@ -121,31 +122,15 @@ ruleTester.run('no-extra-arguments', rule, {
         }
       `,
       errors: [
-        encodedMessage(0, 1, [
-          { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
-        ]),
+        {
+          message: encodedMessage(0, 1, [
+            { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
+          ]),
+        },
       ],
       options: ['sonar-runtime'],
     },
-    {
-      code: `
-        function foo(arguments) {
-          console.log(arguments);
-        }
-        foo(1, 2);
-      `,
-      errors: [message(1, 2, { line: 5, column: 9, endColumn: 18 })],
-    },
-    {
-      code: `
-        function foo() {
-          let arguments = [3, 4];
-          console.log(arguments);
-        }
-        foo(1, 2);
-      `,
-      errors: [message(0, 2, { line: 6, column: 9, endColumn: 18 })],
-    },
+
     {
       code: `
         (function(p1, p2){
@@ -181,23 +166,48 @@ ruleTester.run('no-extra-arguments', rule, {
   ],
 });
 
+ruleTesterScript.run('no-extra-arguments script', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: `
+        function foo(arguments) {
+          console.log(arguments);
+        }
+        foo(1, 2);
+      `,
+      errors: [message(1, 2, { line: 5, column: 9, endColumn: 18 })],
+    },
+    {
+      code: `
+        function foo() {
+          let arguments = [3, 4];
+          console.log(arguments);
+        }
+        foo(1, 2);
+      `,
+      errors: [message(0, 2, { line: 6, column: 9, endColumn: 18 })],
+    },
+  ],
+});
+
 function message(
   expected: number,
   provided: number,
-  extra: Partial<RuleTester.TestCaseError> = {},
-): RuleTester.TestCaseError {
+  extra: Partial<TestCaseError> = {},
+): TestCaseError {
   // prettier-ignore
-  const expectedArguments = 
+  const expectedArguments =
     // eslint-disable-next-line no-nested-ternary
-    expected === 0 ? "no arguments" : 
-    expected === 1 ? "1 argument" : 
+    expected === 0 ? "no arguments" :
+    expected === 1 ? "1 argument" :
     `${expected} arguments`;
 
   // prettier-ignore
-  const providedArguments = 
+  const providedArguments =
     // eslint-disable-next-line no-nested-ternary
-    provided === 0 ? "none was" : 
-    provided === 1 ? "1 was" : 
+    provided === 0 ? "none was" :
+    provided === 1 ? "1 was" :
     `${provided} were`;
 
   return {

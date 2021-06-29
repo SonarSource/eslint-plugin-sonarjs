@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1264
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -29,8 +29,8 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      ForStatement(node: estree.Node) {
-        const forLoop = node as estree.ForStatement;
+      ForStatement(node: TSESTree.Node) {
+        const forLoop = node as TSESTree.ForStatement;
         const forKeyword = context.getSourceCode().getFirstToken(node);
         if (!forLoop.init && !forLoop.update && forKeyword) {
           context.report({
@@ -42,13 +42,13 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function getFix(forLoop: estree.ForStatement): any {
+    function getFix(forLoop: TSESTree.ForStatement): any {
       const forLoopRange = forLoop.range;
       const closingParenthesisToken = context.getSourceCode().getTokenBefore(forLoop.body);
       const condition = forLoop.test;
 
       if (condition && forLoopRange && closingParenthesisToken) {
-        return (fixer: Rule.RuleFixer) => {
+        return (fixer: TSESLint.RuleFixer) => {
           const start = forLoopRange[0];
           const end = closingParenthesisToken.range[1];
           const conditionText = context.getSourceCode().getText(condition);

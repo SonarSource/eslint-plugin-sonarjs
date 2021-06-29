@@ -19,9 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1192
 
-import { Rule } from 'eslint';
-import { Node, SimpleLiteral } from 'estree';
-import { getParent } from '../utils/nodes';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -35,21 +34,23 @@ const EXCLUDED_CONTEXTS = [
 ];
 const MESSAGE = 'Define a constant instead of duplicating this literal {{times}} times.';
 
-const rule: Rule.RuleModule = {
+type Options = [number];
+
+const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
     schema: [{ type: 'integer', minimum: 2 }],
   },
 
-  create(context: Rule.RuleContext) {
-    const literalsByValue: Map<string, SimpleLiteral[]> = new Map();
+  create(context) {
+    const literalsByValue: Map<string, TSESTree.Literal[]> = new Map();
     const threshold: number =
       context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
 
     return {
-      Literal: (node: Node) => {
-        const literal = node as SimpleLiteral;
-        const parent = getParent(context);
+      Literal: (node: TSESTree.Node) => {
+        const literal = node as TSESTree.Literal;
+        const { parent } = literal;
         if (
           typeof literal.value === 'string' &&
           parent &&
@@ -84,8 +85,8 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function isExcludedByUsageContext(context: Rule.RuleContext, literal: SimpleLiteral) {
-  const parent = getParent(context)!;
+function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.Literal) {
+  const parent = literal.parent!;
   const parentType = parent.type;
 
   return (
@@ -95,13 +96,13 @@ function isExcludedByUsageContext(context: Rule.RuleContext, literal: SimpleLite
   );
 }
 
-function isRequireContext(parent: Node, context: Rule.RuleContext) {
+function isRequireContext(parent: TSESTree.Node, context: Rule.RuleContext) {
   return (
     parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
   );
 }
 
-function isObjectPropertyKey(parent: Node, literal: SimpleLiteral) {
+function isObjectPropertyKey(parent: TSESTree.Node, literal: TSESTree.Literal) {
   return parent.type === 'Property' && parent.key === literal;
 }
 

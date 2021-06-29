@@ -18,12 +18,14 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import * as path from 'path';
-import { RuleTester } from 'eslint';
+import { RuleTester } from '../rule-tester';
 
-const ruleTesterJs = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require('../../src/rules/no-collection-size-mischeck');
 
-ruleTesterJs.run('Collection sizes and array length comparisons should make sense', rule, {
+// creates RuleTester with default parser without providing types
+const ruleTester = new RuleTester();
+
+ruleTester.run('Collection sizes and array length comparisons should make sense', rule, {
   valid: [
     {
       code: `

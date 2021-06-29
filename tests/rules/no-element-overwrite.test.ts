@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester();
 import rule = require('../../src/rules/no-element-overwrite');
 
 ruleTester.run('no-element-overwrite', rule, {
@@ -37,13 +36,13 @@ ruleTester.run('no-element-overwrite', rule, {
     {
       code: `
       fruits[1] = "banana";
-      console.log("Hello"); 
+      console.log("Hello");
       fruits[1] = "apple"; // FN`,
     },
     {
       code: `
       fruits[1] = "banana";
-      foo(fruits); 
+      foo(fruits);
       fruits[1] = "apple";`,
     },
     {
@@ -113,12 +112,14 @@ ruleTester.run('no-element-overwrite', rule, {
     //^^^^^^^^^^^^^^^^^^^`,
       options: ['sonar-runtime'],
       errors: [
-        JSON.stringify({
-          secondaryLocations: [
-            { line: 2, column: 6, endLine: 2, endColumn: 26, message: 'Original value' },
-          ],
-          message: `Verify this is the index that was intended; "1" was already set on line 2.`,
-        }),
+        {
+          message: JSON.stringify({
+            secondaryLocations: [
+              { line: 2, column: 6, endLine: 2, endColumn: 26, message: 'Original value' },
+            ],
+            message: `Verify this is the index that was intended; "1" was already set on line 2.`,
+          }),
+        },
       ],
     },
     {

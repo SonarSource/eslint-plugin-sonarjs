@@ -18,9 +18,8 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // https://jira.sonarsource.com/browse/RSPEC-1862
-
-import { Rule } from 'eslint';
-import * as estree from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation } from '../utils/locations';
@@ -37,8 +36,8 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      IfStatement(node: estree.Node) {
-        const ifStmt = node as estree.IfStatement;
+      IfStatement(node: TSESTree.Node) {
+        const ifStmt = node as TSESTree.IfStatement;
         const condition = ifStmt.test;
         let statement = ifStmt.alternate;
         while (statement) {

@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018-2021 SonarSource SA
+ * Copyright (C) 2018 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -17,14 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ParserServices } from '@typescript-eslint/experimental-utils';
 
-export type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
-};
+declare module 'eslint' {
+  import { TSESLint } from "@typescript-eslint/experimental-utils";
 
-export function isRequiredParserServices(
-  services: ParserServices | undefined,
-): services is RequiredParserServices {
-  return !!services && !!services.program && !!services.esTreeNodeToTSNodeMap;
+  const RuleTester: unknown;
+  class CLIEngine extends TSESLint.CLIEngine {}
+
+  export { RuleTester, CLIEngine };
 }

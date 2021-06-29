@@ -19,10 +19,10 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1940
 
-import { Rule, SourceCode } from 'eslint';
-import { Node, CatchClause, Statement, Pattern } from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { isThrowStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
+import { Rule } from '../utils/types';
 
 const MESSAGE =
   'Add logic to this catch clause or eliminate it and rethrow the exception automatically.';
@@ -32,11 +32,13 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
   },
   create(context: Rule.RuleContext) {
-    return { CatchClause: (node: Node) => visitCatchClause(node as CatchClause, context) };
+    return {
+      CatchClause: (node: TSESTree.Node) => visitCatchClause(node as TSESTree.CatchClause, context),
+    };
   },
 };
 
-function visitCatchClause(catchClause: CatchClause, context: Rule.RuleContext) {
+function visitCatchClause(catchClause: TSESTree.CatchClause, context: Rule.RuleContext) {
   const statements = catchClause.body.body;
   if (
     catchClause.param &&
@@ -51,8 +53,17 @@ function visitCatchClause(catchClause: CatchClause, context: Rule.RuleContext) {
   }
 }
 
-function onlyRethrows(statement: Statement, catchParam: Pattern, sourceCode: SourceCode) {
-  return isThrowStatement(statement) && areEquivalent(catchParam, statement.argument, sourceCode);
+function onlyRethrows(
+  statement: TSESTree.Statement,
+  catchParam: TSESTree.CatchClause['param'],
+  sourceCode: TSESLint.SourceCode,
+) {
+  return (
+    isThrowStatement(statement) &&
+    catchParam !== null &&
+    statement.argument !== null &&
+    areEquivalent(catchParam, statement.argument, sourceCode)
+  );
 }
 
 export = rule;

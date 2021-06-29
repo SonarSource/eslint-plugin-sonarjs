@@ -19,31 +19,31 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1751
 
-import { Rule } from 'eslint';
-import { Node, WhileStatement, ForStatement } from 'estree';
-import { isContinueStatement, getParent } from '../utils/nodes';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
+import { isContinueStatement } from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
   },
-  create(context: Rule.RuleContext) {
-    const loopingNodes: Set<Node> = new Set();
-    const loops: Set<Node> = new Set();
+  create(context) {
+    const loopingNodes: Set<TSESTree.Node> = new Set();
+    const loops: Set<TSESTree.Node> = new Set();
     const loopsAndTheirSegments: Array<{
-      loop: WhileStatement | ForStatement;
+      loop: TSESTree.WhileStatement | TSESTree.ForStatement;
       segments: Rule.CodePathSegment[];
     }> = [];
     const currentCodePaths: Rule.CodePath[] = [];
 
     return {
-      ForStatement(node: Node) {
+      ForStatement(node: TSESTree.Node) {
         loops.add(node);
       },
-      WhileStatement(node: Node) {
+      WhileStatement(node: TSESTree.Node) {
         loops.add(node);
       },
-      DoWhileStatement(node: Node) {
+      DoWhileStatement(node: TSESTree.Node) {
         loops.add(node);
       },
 
@@ -55,17 +55,15 @@ const rule: Rule.RuleModule = {
         currentCodePaths.pop();
       },
 
-      'WhileStatement > *'() {
-        const parent = getParent(context);
-        visitLoopChild(parent as WhileStatement);
+      'WhileStatement > *'(node: TSESTree.Node) {
+        visitLoopChild(node.parent as TSESTree.WhileStatement);
       },
 
-      'ForStatement > *'() {
-        const parent = getParent(context);
-        visitLoopChild(parent as ForStatement);
+      'ForStatement > *'(node: TSESTree.Node) {
+        visitLoopChild(node.parent as TSESTree.ForStatement);
       },
 
-      onCodePathSegmentLoop(_, toSegment: Rule.CodePathSegment, node: Node) {
+      onCodePathSegmentLoop(_, toSegment: Rule.CodePathSegment, node: TSESTree.Node) {
         if (isContinueStatement(node)) {
           loopsAndTheirSegments.forEach(({ segments, loop }) => {
             if (segments.includes(toSegment)) {
@@ -95,7 +93,7 @@ const rule: Rule.RuleModule = {
     // that the "onCodePathSegmentLoop" event is triggerent with a loop node. To work this special case around,
     // we visit loop children and collect corresponding path segments as these segments are "toSegment"
     // in "onCodePathSegmentLoop" event.
-    function visitLoopChild(parent: WhileStatement | ForStatement) {
+    function visitLoopChild(parent: TSESTree.WhileStatement | TSESTree.ForStatement) {
       if (currentCodePaths.length > 0) {
         const currentCodePath = currentCodePaths[currentCodePaths.length - 1];
         loopsAndTheirSegments.push({ segments: currentCodePath.currentSegments, loop: parent });

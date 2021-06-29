@@ -19,9 +19,9 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3923
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
-import { getParent, isIfStatement } from '../utils/nodes';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
+import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';
 
@@ -36,12 +36,11 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     return {
-      IfStatement(node: estree.Node) {
-        const ifStmt = node as estree.IfStatement;
+      IfStatement(node: TSESTree.Node) {
+        const ifStmt = node as TSESTree.IfStatement;
 
         // don't visit `else if` statements
-        const parent = getParent(context);
-        if (!isIfStatement(parent)) {
+        if (!isIfStatement(node.parent)) {
           const { branches, endsWithElse } = collectIfBranches(ifStmt);
           if (endsWithElse && allDuplicated(branches)) {
             context.report({ message: MESSAGE, node: ifStmt });
@@ -49,16 +48,16 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      SwitchStatement(node: estree.Node) {
-        const switchStmt = node as estree.SwitchStatement;
+      SwitchStatement(node: TSESTree.Node) {
+        const switchStmt = node as TSESTree.SwitchStatement;
         const { branches, endsWithDefault } = collectSwitchBranches(switchStmt);
         if (endsWithDefault && allDuplicated(branches)) {
           context.report({ message: MESSAGE, node: switchStmt });
         }
       },
 
-      ConditionalExpression(node: estree.Node) {
-        const conditional = node as estree.ConditionalExpression;
+      ConditionalExpression(node: TSESTree.Node) {
+        const conditional = node as TSESTree.ConditionalExpression;
         const branches = [conditional.consequent, conditional.alternate];
         if (allDuplicated(branches)) {
           context.report({ message: MESSAGE_CONDITIONAL_EXPRESSION, node: conditional });
@@ -66,7 +65,7 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function allDuplicated(branches: Array<estree.Node | estree.Node[]>) {
+    function allDuplicated(branches: Array<TSESTree.Node | TSESTree.Node[]>) {
       return (
         branches.length > 1 &&
         branches.slice(1).every((branch, index) => {

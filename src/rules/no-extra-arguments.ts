@@ -19,8 +19,7 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-930
 
-import { Rule, Scope } from 'eslint';
-import * as estree from 'estree';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isArrowFunctionExpression,
   isFunctionDeclaration,
@@ -34,6 +33,7 @@ import {
   getMainFunctionTokenLocation,
   IssueLocation,
 } from '../utils/locations';
+import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -47,16 +47,16 @@ const rule: Rule.RuleModule = {
   },
   create(context: Rule.RuleContext) {
     const callExpressionsToCheck: Array<{
-      callExpr: estree.SimpleCallExpression;
-      functionNode: estree.Function;
+      callExpr: TSESTree.CallExpression;
+      functionNode: TSESTree.FunctionLike;
     }> = [];
-    const usingArguments: Set<estree.Node> = new Set();
-    const emptyFunctions: Set<estree.Node> = new Set();
+    const usingArguments: Set<TSESTree.Node> = new Set();
+    const emptyFunctions: Set<TSESTree.Node> = new Set();
 
     return {
       // eslint-disable-next-line sonarjs/cognitive-complexity
-      CallExpression(node: estree.Node) {
-        const callExpr = node as estree.SimpleCallExpression;
+      CallExpression(node: TSESTree.Node) {
+        const callExpr = node as TSESTree.CallExpression;
         if (isIdentifier(callExpr.callee)) {
           const reference = context
             .getScope()
@@ -81,19 +81,19 @@ const rule: Rule.RuleModule = {
         }
       },
 
-      ':function'(node: estree.Node) {
-        const fn = node as estree.Function;
+      ':function'(node: TSESTree.Node) {
+        const fn = node as TSESTree.FunctionExpression;
         if (isBlockStatement(fn.body) && fn.body.body.length === 0 && fn.params.length === 0) {
           emptyFunctions.add(node);
         }
       },
 
-      'FunctionDeclaration > BlockStatement Identifier'(node: estree.Node) {
-        checkArguments(node as estree.Identifier);
+      'FunctionDeclaration > BlockStatement Identifier'(node: TSESTree.Node) {
+        checkArguments(node as TSESTree.Identifier);
       },
 
-      'FunctionExpression > BlockStatement Identifier'(node: estree.Node) {
-        checkArguments(node as estree.Identifier);
+      'FunctionExpression > BlockStatement Identifier'(node: TSESTree.Node) {
+        checkArguments(node as TSESTree.Identifier);
       },
 
       'Program:exit'() {
@@ -105,7 +105,9 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function getSingleDefinition(reference: Scope.Reference): Scope.Definition | undefined {
+    function getSingleDefinition(
+      reference: TSESLint.Scope.Reference,
+    ): TSESLint.Scope.Definition | undefined {
       if (reference && reference.resolved) {
         const variable = reference.resolved;
         if (variable.defs.length === 1) {
@@ -115,7 +117,7 @@ const rule: Rule.RuleModule = {
       return undefined;
     }
 
-    function checkArguments(identifier: estree.Identifier) {
+    function checkArguments(identifier: TSESTree.Identifier) {
       if (identifier.name === 'arguments') {
         const reference = context.getScope().references.find(ref => ref.identifier === identifier);
         const definition = reference && getSingleDefinition(reference);
@@ -132,28 +134,28 @@ const rule: Rule.RuleModule = {
       }
     }
 
-    function checkFunction(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
+    function checkFunction(callExpr: TSESTree.CallExpression, functionNode: TSESTree.FunctionLike) {
       const hasRest = functionNode.params.some(param => param.type === 'RestElement');
       if (!hasRest && callExpr.arguments.length > functionNode.params.length) {
         callExpressionsToCheck.push({ callExpr, functionNode });
       }
     }
 
-    function reportIssue(callExpr: estree.SimpleCallExpression, functionNode: estree.Function) {
+    function reportIssue(callExpr: TSESTree.CallExpression, functionNode: TSESTree.FunctionLike) {
       const paramLength = functionNode.params.length;
       const argsLength = callExpr.arguments.length;
       // prettier-ignore
-      const expectedArguments = 
+      const expectedArguments =
         // eslint-disable-next-line no-nested-ternary
-        paramLength === 0 ? "no arguments" : 
-        paramLength === 1 ? "1 argument" : 
+        paramLength === 0 ? "no arguments" :
+        paramLength === 1 ? "1 argument" :
         `${paramLength} arguments`;
 
       // prettier-ignore
-      const providedArguments = 
+      const providedArguments =
         // eslint-disable-next-line no-nested-ternary
-        argsLength === 0 ? "none was" : 
-        argsLength === 1 ? "1 was" : 
+        argsLength === 0 ? "none was" :
+        argsLength === 1 ? "1 was" :
         `${argsLength} were`;
 
       const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
@@ -168,7 +170,7 @@ const rule: Rule.RuleModule = {
       );
     }
 
-    function getSecondaryLocations(functionNode: estree.Function) {
+    function getSecondaryLocations(functionNode: TSESTree.FunctionLike) {
       const paramLength = functionNode.params.length;
       const secondaryLocations: IssueLocation[] = [];
       if (paramLength > 0) {

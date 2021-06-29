@@ -19,8 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-1940
 
-import { Rule } from 'eslint';
-import { Node, UnaryExpression } from 'estree';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { isBinaryExpression } from '../utils/nodes';
 
 const MESSAGE = 'Use the opposite operator ({{invertedOperator}}) instead.';
@@ -41,16 +41,20 @@ const rule: Rule.RuleModule = {
     fixable: 'code',
     type: 'suggestion',
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
-      UnaryExpression: (node: Node) => visitUnaryExpression(node as UnaryExpression, context),
+      UnaryExpression: (node: TSESTree.Node) =>
+        visitUnaryExpression(node as TSESTree.UnaryExpression, context),
     };
   },
 };
 
-function visitUnaryExpression(unaryExpression: UnaryExpression, context: Rule.RuleContext) {
+function visitUnaryExpression(
+  unaryExpression: TSESTree.UnaryExpression,
+  context: Rule.RuleContext,
+) {
   if (unaryExpression.operator === '!' && isBinaryExpression(unaryExpression.argument)) {
-    const condition = unaryExpression.argument;
+    const condition: TSESTree.BinaryExpression = unaryExpression.argument;
     const invertedOperator = invertedOperators[condition.operator];
     if (invertedOperator) {
       const left = context.getSourceCode().getText(condition.left);

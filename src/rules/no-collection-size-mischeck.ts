@@ -19,9 +19,8 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-3981
 
-import { Rule } from 'eslint';
-import * as estree from 'estree';
 import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { Rule } from '../utils/types';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
@@ -35,8 +34,8 @@ const rule: Rule.RuleModule = {
     const services = context.parserServices;
     const isTypeCheckerAvailable = isRequiredParserServices(services);
     return {
-      BinaryExpression: (node: estree.Node) => {
-        const expr = node as estree.BinaryExpression;
+      BinaryExpression: (node: TSESTree.Node) => {
+        const expr = node as TSESTree.BinaryExpression;
         if (['<', '>='].includes(expr.operator)) {
           const lhs = expr.left;
           const rhs = expr.right;
@@ -45,7 +44,7 @@ const rule: Rule.RuleModule = {
             if (
               property.type === 'Identifier' &&
               CollectionSizeLike.includes(property.name) &&
-              (!isTypeCheckerAvailable || isCollection(object, services))
+              (!isTypeCheckerAvailable || (services && isCollection(object, services)))
             ) {
               context.report({
                 message: `Fix this expression; ${property.name} of "${context
@@ -61,13 +60,13 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function isZeroLiteral(node: estree.Node) {
+function isZeroLiteral(node: TSESTree.Node) {
   return node.type === 'Literal' && node.value === 0;
 }
 
-function isCollection(node: estree.Node, services: RequiredParserServices) {
+function isCollection(node: TSESTree.Node, services: RequiredParserServices) {
   const checker = services.program.getTypeChecker();
-  const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node as TSESTree.Node));
+  const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
   return !!tp.symbol && CollectionLike.includes(tp.symbol.name);
 }
 

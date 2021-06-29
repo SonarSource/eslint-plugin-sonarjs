@@ -19,10 +19,9 @@
  */
 // https://jira.sonarsource.com/browse/RSPEC-4030
 
-import { Rule, Scope } from 'eslint';
-import * as estree from 'estree';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { collectionConstructor, writingMethods } from '../utils/collections';
+import { Rule } from '../utils/types';
 
 const message = "Either use this collection's contents or remove the collection.";
 
@@ -33,7 +32,7 @@ const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
       'Program:exit': () => {
-        const unusedArrays: Scope.Variable[] = [];
+        const unusedArrays: TSESLint.Scope.Variable[] = [];
         collectUnusedCollections(context.getScope(), unusedArrays);
 
         unusedArrays.forEach(unusedArray => {
@@ -47,7 +46,10 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function collectUnusedCollections(scope: Scope.Scope, unusedArray: Scope.Variable[]) {
+function collectUnusedCollections(
+  scope: TSESLint.Scope.Scope,
+  unusedArray: TSESLint.Scope.Variable[],
+) {
   if (scope.type !== 'global') {
     scope.variables.filter(isUnusedCollection).forEach(v => {
       unusedArray.push(v);
@@ -59,7 +61,7 @@ function collectUnusedCollections(scope: Scope.Scope, unusedArray: Scope.Variabl
   });
 }
 
-function isUnusedCollection(variable: Scope.Variable) {
+function isUnusedCollection(variable: TSESLint.Scope.Variable) {
   if (variable.references.length <= 1) {
     return false;
   }
@@ -81,11 +83,11 @@ function isUnusedCollection(variable: Scope.Variable) {
   return assignCollection;
 }
 
-function isReferenceAssigningCollection(ref: Scope.Reference) {
+function isReferenceAssigningCollection(ref: TSESLint.Scope.Reference) {
   const declOrExprStmt = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
     n => n.type === 'VariableDeclarator' || n.type === 'ExpressionStatement',
-  ) as estree.Node;
+  ) as TSESTree.Node;
   if (declOrExprStmt) {
     if (declOrExprStmt.type === 'VariableDeclarator' && declOrExprStmt.init) {
       return isCollectionType(declOrExprStmt.init);
@@ -103,7 +105,7 @@ function isReferenceAssigningCollection(ref: Scope.Reference) {
   return false;
 }
 
-function isCollectionType(node: estree.Node) {
+function isCollectionType(node: TSESTree.Node) {
   if (node && node.type === 'ArrayExpression') {
     return true;
   } else if (node && (node.type === 'CallExpression' || node.type === 'NewExpression')) {
@@ -112,11 +114,11 @@ function isCollectionType(node: estree.Node) {
   return false;
 }
 
-function isRead(ref: Scope.Reference) {
+function isRead(ref: TSESLint.Scope.Reference) {
   const expressionStatement = findFirstMatchingAncestor(
     ref.identifier as TSESTree.Node,
     n => n.type === 'ExpressionStatement',
-  ) as estree.ExpressionStatement;
+  ) as TSESTree.ExpressionStatement;
 
   if (expressionStatement) {
     return !(
@@ -132,7 +134,10 @@ function isRead(ref: Scope.Reference) {
  * Detect expression statements like the following:
  * myArray.push(1);
  */
-function isWritingMethodCall(statement: estree.ExpressionStatement, ref: Scope.Reference) {
+function isWritingMethodCall(
+  statement: TSESTree.ExpressionStatement,
+  ref: TSESLint.Scope.Reference,
+) {
   if (statement.expression.type === 'CallExpression') {
     const { callee } = statement.expression;
     if (isMemberExpression(callee)) {
@@ -143,7 +148,7 @@ function isWritingMethodCall(statement: estree.ExpressionStatement, ref: Scope.R
   return false;
 }
 
-function isMemberExpression(node: estree.Node): node is estree.MemberExpression {
+function isMemberExpression(node: TSESTree.Node): node is TSESTree.MemberExpression {
   return node.type === 'MemberExpression';
 }
 
@@ -154,7 +159,7 @@ function isMemberExpression(node: estree.Node): node is estree.MemberExpression 
  *  myObj.prop1 = 3;
  *  myObj.prop1 += 3;
  */
-function isElementWrite(statement: estree.ExpressionStatement, ref: Scope.Reference) {
+function isElementWrite(statement: TSESTree.ExpressionStatement, ref: TSESLint.Scope.Reference) {
   if (statement.expression.type === 'AssignmentExpression') {
     const assignmentExpression = statement.expression;
     const lhs = assignmentExpression.left;
@@ -163,18 +168,18 @@ function isElementWrite(statement: estree.ExpressionStatement, ref: Scope.Refere
   return false;
 }
 
-function isMemberExpressionReference(lhs: estree.Node, ref: Scope.Reference): boolean {
+function isMemberExpressionReference(lhs: TSESTree.Node, ref: TSESLint.Scope.Reference): boolean {
   return (
     lhs.type === 'MemberExpression' &&
     (isReferenceTo(ref, lhs.object) || isMemberExpressionReference(lhs.object, ref))
   );
 }
 
-function isIdentifier(node: estree.Node, ...values: string[]): node is estree.Identifier {
+function isIdentifier(node: TSESTree.Node, ...values: string[]): node is TSESTree.Identifier {
   return node.type === 'Identifier' && values.some(value => value === node.name);
 }
 
-function isReferenceTo(ref: Scope.Reference, node: estree.Node) {
+function isReferenceTo(ref: TSESLint.Scope.Reference, node: TSESTree.Node) {
   return node.type === 'Identifier' && node === ref.identifier;
 }
 

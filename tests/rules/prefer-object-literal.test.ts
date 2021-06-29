@@ -17,9 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { RuleTester } from 'eslint';
+import { ruleTester } from '../rule-tester';
 
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2018 } });
 import rule = require('../../src/rules/prefer-object-literal');
 
 ruleTester.run('prefer-literal', rule, {
@@ -29,8 +28,8 @@ ruleTester.run('prefer-literal', rule, {
     },
     {
       code: `
-      function Foo(a) { 
-        this.a = a; 
+      function Foo(a) {
+        this.a = a;
       };
       var x = new Foo(2);`,
     },
@@ -52,7 +51,7 @@ ruleTester.run('prefer-literal', rule, {
     },
     {
       code: `
-      function foo() { 
+      function foo() {
         var x = {a: 2};
         doSomething();
       }`,

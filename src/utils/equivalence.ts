@@ -17,8 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { Node } from 'estree';
-import { SourceCode, AST } from 'eslint';
+import { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 
 /**
  * Equivalence is implemented by comparing node types and their tokens.
@@ -26,9 +25,9 @@ import { SourceCode, AST } from 'eslint';
  * but "estree" doesn't provide access to children when node type is unknown
  */
 export function areEquivalent(
-  first: Node | Node[],
-  second: Node | Node[],
-  sourceCode: SourceCode,
+  first: TSESTree.Node | TSESTree.Node[],
+  second: TSESTree.Node | TSESTree.Node[],
+  sourceCode: TSESLint.SourceCode,
 ): boolean {
   if (Array.isArray(first) && Array.isArray(second)) {
     return (
@@ -44,7 +43,7 @@ export function areEquivalent(
   return false;
 }
 
-function compareTokens(firstTokens: AST.Token[], secondTokens: AST.Token[]) {
+function compareTokens(firstTokens: TSESLint.AST.Token[], secondTokens: TSESLint.AST.Token[]) {
   return (
     firstTokens.length === secondTokens.length &&
     firstTokens.every((firstToken, index) => firstToken.value === secondTokens[index].value)
