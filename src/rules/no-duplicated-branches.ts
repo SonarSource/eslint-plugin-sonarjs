@@ -31,12 +31,13 @@ const MESSAGE =
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
-      description: "Two branches in a conditional structure should not have exactly the same implementation",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicated-branches.md",
+      description:
+        'Two branches in a conditional structure should not have exactly the same implementation',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicated-branches.md',
     },
     schema: [
       {

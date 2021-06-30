@@ -24,14 +24,14 @@ import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
-      description: "A \"while\" loop should be used instead of a \"for\" loop",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-while.md",
+      description: 'A "while" loop should be used instead of a "for" loop',
+      category: 'Stylistic Issues',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-while.md',
     },
-    fixable: "code",
+    fixable: 'code',
   },
   create(context: Rule.RuleContext) {
     return {

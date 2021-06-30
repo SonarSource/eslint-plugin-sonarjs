@@ -38,14 +38,14 @@ type Options = [number];
 
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
-      description: "String literals should not be duplicated",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicate-string.md",
+      description: 'String literals should not be duplicated',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicate-string.md',
     },
-    schema: [{ type: "integer", minimum: 2 }],
+    schema: [{ type: 'integer', minimum: 2 }],
   },
 
   create(context) {

@@ -37,12 +37,12 @@ const message = (index: string, line: string) =>
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
-      description: "Collection elements should not be replaced unconditionally",
-      category: "Bug Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-element-overwrite.md",
+      description: 'Collection elements should not be replaced unconditionally',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-element-overwrite.md',
     },
     schema: [
       {

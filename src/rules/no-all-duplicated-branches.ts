@@ -32,12 +32,13 @@ const MESSAGE_CONDITIONAL_EXPRESSION =
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
-      description: "All branches in a conditional structure should not have exactly the same implementation",
-      category: "Bug Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-all-duplicated-branches.md"
+      description:
+        'All branches in a conditional structure should not have exactly the same implementation',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-all-duplicated-branches.md',
     },
   },
   create(context: Rule.RuleContext) {

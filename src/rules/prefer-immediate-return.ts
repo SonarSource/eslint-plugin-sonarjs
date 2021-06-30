@@ -29,14 +29,14 @@ import {
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
-      description: "Local variables should not be declared and then immediately returned or thrown",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-immediate-return.md",
+      description: 'Local variables should not be declared and then immediately returned or thrown',
+      category: 'Stylistic Issues',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-immediate-return.md',
     },
-    fixable: "code",
+    fixable: 'code',
   },
   create(context: Rule.RuleContext) {
     return {

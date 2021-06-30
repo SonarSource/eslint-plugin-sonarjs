@@ -37,12 +37,12 @@ import { Rule } from '../utils/types';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
-      description: "Function calls should not pass extra arguments",
-      category: "Bug Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-extra-arguments.md",
+      description: 'Function calls should not pass extra arguments',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-extra-arguments.md',
     },
     schema: [
       {

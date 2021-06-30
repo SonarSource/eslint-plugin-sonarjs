@@ -27,12 +27,12 @@ const MESSAGE = 'Remove the unnecessary boolean literal.';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
-      description: "Boolean literals should not be redundant",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-redundant-boolean.md",
+      description: 'Boolean literals should not be redundant',
+      category: 'Stylistic Issues',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-redundant-boolean.md',
     },
   },
   create(context: Rule.RuleContext) {

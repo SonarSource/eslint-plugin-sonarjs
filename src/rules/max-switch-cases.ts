@@ -32,12 +32,12 @@ type Options = [number];
 
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
-    type: "suggestion",
+    type: 'suggestion',
     docs: {
-      description: "\"switch\" statements should not have too many \"case\" clauses",
-      category: "Code Smell Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/max-switch-cases.md"
+      description: '"switch" statements should not have too many "case" clauses',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/max-switch-cases.md',
     },
     schema: [
       {

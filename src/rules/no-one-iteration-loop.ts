@@ -25,12 +25,12 @@ import { isContinueStatement } from '../utils/nodes';
 
 const rule: Rule.RuleModule = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
-      description: "Loops with at most one iteration should be refactored",
-      category: "Bug Detection",
-      recommended: true,
-      url: "https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-one-iteration-loop.md",
+      description: 'Loops with at most one iteration should be refactored',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-one-iteration-loop.md',
     },
   },
   create(context) {
