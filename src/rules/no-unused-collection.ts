@@ -62,7 +62,7 @@ function collectUnusedCollections(
 }
 
 function isExported(variable: TSESLint.Scope.Variable) {
-  const definition = variable.defs[0] as TSESLint.Scope.Definition;
+  const definition = variable.defs[0];
 
   if (definition) {
     let {node} = definition;
