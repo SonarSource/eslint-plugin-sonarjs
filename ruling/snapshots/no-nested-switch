@@ -1,0 +1,11 @@
+src/react-native/Libraries/Renderer/ReactFabric-dev.js: 3913,9895,10737,10758
+src/react-native/Libraries/Renderer/ReactFabric-prod.js: 1452,3961
+src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 4292,10265,11107,11128
+src/react-native/Libraries/Renderer/ReactNativeRenderer-prod.js: 1668,4454
+src/react/packages/react-is/src/ReactIs.js: 32,40
+src/react/packages/react-reconciler/src/ReactFiber.js: 354
+src/react/packages/react-reconciler/src/ReactFiberCommitWork.js: 263
+src/react/packages/react-reconciler/src/ReactFiberHydrationContext.js: 140,161
+src/react/packages/react/src/ReactChildren.js: 124
+src/react/scripts/rollup/forks.js: 44,96
+src/react/scripts/rollup/packaging.js: 46
