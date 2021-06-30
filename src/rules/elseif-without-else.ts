@@ -28,7 +28,7 @@ const rule: Rule.RuleModule = {
       description: '"if ... else if" constructs should end with "else" clauses',
       category: 'Best Practices',
       recommended: false,
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/elseif-without-else',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/elseif-without-else.md',
     },
   },
   create(context: Rule.RuleContext) {
