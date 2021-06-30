@@ -65,13 +65,13 @@ function isExported(variable: TSESLint.Scope.Variable) {
   const definition = variable.defs[0];
 
   if (definition) {
-    let {node} = definition;
+    let node: TSESTree.Node | undefined = definition.node;
     if (node.type === "VariableDeclarator") {
         node = node.parent;
     } else if (definition.type === "Parameter") {
         return false;
     }
-    return node.parent.type.indexOf("Export") === 0;
+    return node?.parent?.type.indexOf("Export") === 0;
   }
   return false;
 }
