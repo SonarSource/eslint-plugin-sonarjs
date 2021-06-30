@@ -63,16 +63,7 @@ function collectUnusedCollections(
 
 function isExported(variable: TSESLint.Scope.Variable) {
   const definition = variable.defs[0];
-  if (definition) {
-    let { node }: { node: TSESTree.Node | undefined } = definition;
-    if (node.type === 'VariableDeclarator') {
-      node = node.parent;
-    } else if (definition.type === 'Parameter') {
-      return false;
-    }
-    return node?.parent?.type.indexOf('Export') === 0;
-  }
-  return false;
+  return definition && definition.node.parent?.parent?.type.startsWith('Export');
 }
 
 function isUnusedCollection(variable: TSESLint.Scope.Variable) {
