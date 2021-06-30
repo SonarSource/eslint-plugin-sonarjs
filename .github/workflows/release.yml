@@ -23,5 +23,6 @@ jobs:
       - name: Publish npm package            
         env:
           NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
-        run: npm publish $PACKAGE-$RELEASE_TAG.tgz
-        
+        run: |
+          npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
+          npm publish
