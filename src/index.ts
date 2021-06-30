@@ -21,6 +21,7 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['cognitive-complexity', 'error'],
+  ['generator-without-yield', 'error'],
   ['max-switch-cases', 'error'],
   ['no-all-duplicated-branches', 'error'],
   ['no-collapsible-if', 'error'],
@@ -28,12 +29,15 @@ const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
   ['no-duplicate-string', 'error'],
   ['no-duplicated-branches', 'error'],
   ['no-element-overwrite', 'error'],
+  ['no-empty-collection', 'error'],
   ['no-extra-arguments', 'error'],
   ['no-gratuitous-expressions', 'error'],
   ['no-identical-conditions', 'error'],
   ['no-identical-functions', 'error'],
   ['no-identical-expressions', 'error'],
   ['no-inverted-boolean-check', 'error'],
+  ['no-nested-switch', 'error'],
+  ['no-nested-template-literals', 'error'],
   ['no-one-iteration-loop', 'error'],
   ['no-redundant-boolean', 'error'],
   ['no-redundant-jump', 'error'],

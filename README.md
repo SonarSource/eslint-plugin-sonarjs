@@ -8,8 +8,10 @@ SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
 
 Rules in this category aim to find places in code which have a high chance of being bugs, i.e. don't work as intended.
 
+* Generators should "yield" something ([`generator-without-yield`])
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
+* Empty collections should not be accessed or iterated ([`no-empty-collection`])
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
 * Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
@@ -30,6 +32,8 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
+* "switch" statements should not be nested ([`no-nested-switch`])
+* Template literals should not be nested ([`no-nested-template-literals`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
 * Jump statements should not be redundant ([`no-redundant-jump`])
 * Conditionals should start on new lines ([`no-same-line-conditional`])
@@ -42,6 +46,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*)
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
+[`generator-without-yield`]: ./docs/rules/generator-without-yield.md
 [`max-switch-cases`]: ./docs/rules/max-switch-cases.md
 [`no-all-duplicated-branches`]: ./docs/rules/no-all-duplicated-branches.md
 [`no-collapsible-if`]: ./docs/rules/no-collapsible-if.md
@@ -49,12 +54,15 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-duplicate-string`]: ./docs/rules/no-duplicate-string.md
 [`no-duplicated-branches`]: ./docs/rules/no-duplicated-branches.md
 [`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md
+[`no-empty-collection`]: ./docs/rules/no-empty-collection.md
 [`no-extra-arguments`]: ./docs/rules/no-extra-arguments.md
 [`no-gratuitous-expressions`]: ./docs/rules/no-gratuitous-expressions.md
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
 [`no-inverted-boolean-check`]: ./docs/rules/no-inverted-boolean-check.md
+[`no-nested-switch`]: ./docs/rules/no-nested-switch.md
+[`no-nested-template-literals`]: ./docs/rules/no-nested-template-literals.md
 [`no-one-iteration-loop`]: ./docs/rules/no-one-iteration-loop.md
 [`no-redundant-boolean`]: ./docs/rules/no-redundant-boolean.md
 [`no-redundant-jump`]: ./docs/rules/no-redundant-jump.md
