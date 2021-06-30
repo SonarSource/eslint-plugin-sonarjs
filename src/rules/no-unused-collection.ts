@@ -64,7 +64,7 @@ function collectUnusedCollections(
 function isExported(variable: TSESLint.Scope.Variable) {
   const definition = variable.defs[0];
   if (definition) {
-    let node: TSESTree.Node | undefined = definition.node;
+    let { node }: { node: TSESTree.Node | undefined } = definition;
     if (node.type === 'VariableDeclarator') {
       node = node.parent;
     } else if (definition.type === 'Parameter') {
