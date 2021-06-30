@@ -41,7 +41,7 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      category: 'Stylistic Issues',
+      category: 'Best Practices',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-inverted-boolean-check.md',
     },

@@ -37,7 +37,7 @@ const rule: Rule.RuleModule = {
     type: 'problem',
     docs: {
       description: 'Functions should not have identical implementations',
-      category: 'Best Practices',
+      category: 'Possible Errors',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-functions.md',
     },

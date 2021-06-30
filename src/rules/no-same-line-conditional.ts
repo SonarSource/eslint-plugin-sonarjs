@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = {
     type: 'problem',
     docs: {
       description: 'Conditionals should start on new lines',
-      category: 'Stylistic Issues',
+      category: 'Possible Errors',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-same-line-conditional.md',
     },

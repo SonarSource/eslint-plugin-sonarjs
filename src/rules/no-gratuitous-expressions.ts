@@ -28,7 +28,7 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
     docs: {
       description: 'Boolean expressions should not be gratuitous',
-      category: 'Possible Errors',
+      category: 'Best Practices',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-gratuitous-expressions.md',
     },

@@ -40,7 +40,7 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
     docs: {
       description: 'Object literal syntax should be used',
-      category: 'Stylistic Issues',
+      category: 'Best Practices',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-object-literal.md',
     },

@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
     type: 'suggestion',
     docs: {
       description: 'Jump statements should not be redundant',
-      category: 'Stylistic Issues',
+      category: 'Best Practices',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-redundant-jump.md',
     },

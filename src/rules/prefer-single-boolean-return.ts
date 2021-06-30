@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = {
     docs: {
       description:
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
-      category: 'Stylistic Issues',
+      category: 'Best Practices',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-single-boolean-return.md',
     },
