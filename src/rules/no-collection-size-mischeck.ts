@@ -34,6 +34,7 @@ const rule: Rule.RuleModule = {
       category: 'Possible Errors',
       recommended: 'error',
       url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collection-size-mischeck.md',
+      requiresTypeChecking: true,
     },
   },
   create(context: Rule.RuleContext) {
