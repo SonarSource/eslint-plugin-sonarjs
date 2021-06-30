@@ -27,6 +27,12 @@ const message = 'Refactor the code to eliminate this nested "switch".';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: '"switch" statements should not be nested',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-nested-switch.md',
+    },
   },
   create(context: Rule.RuleContext) {
     return {

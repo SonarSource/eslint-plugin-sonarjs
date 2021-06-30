@@ -27,6 +27,12 @@ const MESSAGE = 'Add a "yield" statement to this generator.';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Generators should "yield" something',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/generator-without-yield.md',
+    },
   },
   create(context: Rule.RuleContext) {
     const yieldStack: number[] = [];

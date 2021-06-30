@@ -26,6 +26,12 @@ import { Rule } from '../utils/types';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Boolean expressions should not be gratuitous',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-gratuitous-expressions.md',
+    },
     schema: [
       {
         // internal parameter for rules having secondary locations

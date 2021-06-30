@@ -82,6 +82,12 @@ const strictlyReadingMethods = new Set([
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Empty collections should not be accessed or iterated',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-empty-collection.md',
+    },
   },
   create(context: Rule.RuleContext) {
     return {

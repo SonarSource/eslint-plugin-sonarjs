@@ -24,6 +24,12 @@ import { Rule } from '../utils/types';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: '"if ... else if" constructs should end with "else" clauses',
+      category: 'Best Practices',
+      recommended: false,
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/elseif-without-else',
+    },
   },
   create(context: Rule.RuleContext) {
     return {

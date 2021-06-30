@@ -25,6 +25,12 @@ import { Rule } from '../utils/types';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/non-existent-operator.md',
+    },
   },
   create(context) {
     return {

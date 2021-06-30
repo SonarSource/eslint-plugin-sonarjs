@@ -27,6 +27,12 @@ const message = 'Refactor this code to not use nested template literals.';
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Template literals should not be nested',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-nested-template-literals.md',
+    },
   },
   create(context: Rule.RuleContext) {
     return {
