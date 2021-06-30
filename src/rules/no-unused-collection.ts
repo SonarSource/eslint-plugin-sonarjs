@@ -61,7 +61,6 @@ function collectUnusedCollections(
   });
 }
 
-// Determines if a given variable is being exported from a module.
 function isExported(variable: TSESLint.Scope.Variable) {
   const definition = variable.defs[0] as TSESLint.Scope.Definition;
 
