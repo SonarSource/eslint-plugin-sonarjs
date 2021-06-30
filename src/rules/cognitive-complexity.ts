@@ -219,16 +219,11 @@ const rule: Rule.RuleModule<string, Options> = {
           });
           checkFunction(totalComplexity, getMainFunctionTokenLocation(node, node.parent, context));
         } else {
-<<<<<<< HEAD
           checkFunction(
             topLevelOwnComplexity,
             getMainFunctionTokenLocation(node, node.parent, context),
           );
           secondLevelFunctions.forEach(secondLevelFunction => {
-=======
-          checkFunction(topLevelOwnComplexity, getMainFunctionTokenLocation(node, getParent(context), context));
-          secondLevelFunctions.forEach((secondLevelFunction) => {
->>>>>>> ad3e174... feat: add 'meta.docs'
             checkFunction(
               secondLevelFunction.complexityIfThisSecondaryIsTopLevel,
               getMainFunctionTokenLocation(
