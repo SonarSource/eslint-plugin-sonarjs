@@ -29,6 +29,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`])
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
+* Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
 * Functions should not have identical implementations ([`no-identical-functions`])
 * Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
 * "switch" statements should not be nested ([`no-nested-switch`])
@@ -55,6 +56,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-element-overwrite`]: ./docs/rules/no-element-overwrite.md
 [`no-empty-collection`]: ./docs/rules/no-empty-collection.md
 [`no-extra-arguments`]: ./docs/rules/no-extra-arguments.md
+[`no-gratuitous-expressions`]: ./docs/rules/no-gratuitous-expressions.md
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
