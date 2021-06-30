@@ -300,7 +300,11 @@ const rule: Rule.RuleModule<string, Options> = {
 
     function visitReturnStatement({ argument }: TSESTree.ReturnStatement) {
       // top level function
-      if (enclosingFunctions.length === 1 && argument && (argument.type as any) === 'JSXElement') {
+      if (
+        enclosingFunctions.length === 1 &&
+        argument &&
+        ['JSXElement', 'JSXFragment'].includes(argument.type as any)
+      ) {
         reactFunctionalComponent.returnsJsx = true;
       }
     }
