@@ -394,5 +394,24 @@ ruleTester.run('prefer-immediate-return', rule, {
       }
       `,
     },
+    {
+      code: `
+        function var_returned() {
+          // comment1
+          var x /* commentInTheMiddle1 */ = 42; // commentOnTheLine1
+          // comment2
+          return /* commentInTheMiddle2 */ x;   // commentOnTheLine2
+          // comment3
+        }`,
+      errors: 1,
+      output: `
+        function var_returned() {
+          // comment1
+          // commentOnTheLine1
+          // comment2
+          return /* commentInTheMiddle2 */ 42;   // commentOnTheLine2
+          // comment3
+        }`,
+    },
   ],
 });
