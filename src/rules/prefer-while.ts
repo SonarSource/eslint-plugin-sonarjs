@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       ForStatement(node: TSESTree.Node) {
         const forLoop = node as TSESTree.ForStatement;
         const forKeyword = context.getSourceCode().getFirstToken(node);
-        if (!forLoop.init && !forLoop.update && forKeyword) {
+        if (!forLoop.init && !forLoop.update && forLoop.test && forKeyword) {
           context.report({
             message: `Replace this "for" loop with a "while" loop.`,
             loc: forKeyword.loc,
