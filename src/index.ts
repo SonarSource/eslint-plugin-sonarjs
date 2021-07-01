@@ -60,8 +60,8 @@ const configs: { recommended: TSESLint.Linter.Config & { plugins: string[] } } =
   recommended: { plugins: ['sonarjs'], rules: {} },
 };
 
-sonarjsRules.forEach(rule => (sonarjsRuleModules[rule] = require(`./rules/${rule}`)));
 sonarjsRules.forEach(rule => {
+  sonarjsRuleModules[rule] = require(`./rules/${rule}`);
   const {
     meta: {
       docs: { recommended },
