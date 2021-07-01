@@ -52,7 +52,7 @@ const rule: Rule.RuleModule<string, Options> = {
       description: 'Cognitive Complexity of functions should not be too high',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('cognitive-complexity.md'),
+      url: docsUrl('cognitive-complexity'),
     },
     schema: [
       { type: 'integer', minimum: 0 },
