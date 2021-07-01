@@ -179,11 +179,7 @@ const rule: Rule.RuleModule = {
       if (paramLength > 0) {
         const startLoc = functionNode.params[0].loc;
         const endLoc = functionNode.params[paramLength - 1].loc;
-        // defensive check as `loc` property may be undefined according to
-        // its type declaration
-        if (startLoc && endLoc) {
-          secondaryLocations.push(issueLocation(startLoc, endLoc, 'Formal parameters'));
-        }
+        secondaryLocations.push(issueLocation(startLoc, endLoc, 'Formal parameters'));
       } else {
         // as we're not providing parent node, `getMainFunctionTokenLocation` may return `undefined`
         const fnToken = getMainFunctionTokenLocation(functionNode, undefined, context);
@@ -193,7 +189,7 @@ const rule: Rule.RuleModule = {
       }
       // find actual extra arguments to highlight
       callExpr.arguments.forEach((argument, index) => {
-        if (index >= paramLength && argument.loc) {
+        if (index >= paramLength) {
           secondaryLocations.push(issueLocation(argument.loc, argument.loc, 'Extra argument'));
         }
       });
