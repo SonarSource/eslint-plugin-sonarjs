@@ -66,37 +66,29 @@ const rule: Rule.RuleModule = {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,
-              fix: fixer => fix(fixer, last, lastButOne, declaredIdentifier.init),
+              fix: fixer => fix(fixer, last, lastButOne, declaredIdentifier.init, returnedIdentifier),
             });
           }
         }
       }
     }
 
+    // eslint-disable-next-line max-params
     function fix(
       fixer: TSESLint.RuleFixer,
       last: TSESTree.Statement,
       lastButOne: TSESTree.Statement,
-      expression: TSESTree.Expression,
+      expressionToReturn: TSESTree.Expression,
+      returnedExpression: TSESTree.Expression
     ): any {
-      const throwOrReturnKeyword = context.getSourceCode().getFirstToken(last);
-
-      if (lastButOne.range && last.range && throwOrReturnKeyword) {
-        const expressionText = context.getSourceCode().getText(expression);
-        const fixedRangeStart = lastButOne.range[0];
-        const fixedRangeEnd = last.range[1];
-        const semicolonToken = context.getSourceCode().getLastToken(last);
-        const semicolon = semicolonToken && semicolonToken.value === ';' ? ';' : '';
-        return [
-          fixer.removeRange([fixedRangeStart, fixedRangeEnd]),
-          fixer.insertTextAfterRange(
-            [1, fixedRangeStart],
-            `${throwOrReturnKeyword.value} ${expressionText}${semicolon}`,
-          ),
-        ];
-      } else {
-        return null;
-      }
+      const expressionText = context.getSourceCode().getText(expressionToReturn);
+      const rangeToRemoveStart = lastButOne.range[0];
+      const commentsBetweenStatements = context.getSourceCode().getCommentsAfter(lastButOne);
+      const rangeToRemoveEnd = commentsBetweenStatements.length > 0 ? commentsBetweenStatements[0].range[0] : last.range[0];
+      return [
+        fixer.removeRange([rangeToRemoveStart, rangeToRemoveEnd]),
+        fixer.replaceText(returnedExpression, expressionText)
+      ];
     }
 
     function getOnlyReturnedVariable(node: TSESTree.Statement) {
