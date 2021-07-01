@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = 'Remove this redundant jump.';
 const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement';
@@ -32,7 +33,7 @@ const rule: Rule.RuleModule = {
       description: 'Jump statements should not be redundant',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-redundant-jump.md',
+      url: docsUrl('no-redundant-jump'),
     },
   },
   create(context: Rule.RuleContext) {

@@ -26,6 +26,7 @@ import {
   isIdentifier,
   isVariableDeclaration,
 } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -34,7 +35,7 @@ const rule: Rule.RuleModule = {
       description: 'Local variables should not be declared and then immediately returned or thrown',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-immediate-return.md',
+      url: docsUrl('prefer-immediate-return'),
     },
     fixable: 'code',
   },

@@ -30,6 +30,7 @@ import {
   issueLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const DEFAULT_THRESHOLD = 15;
 
@@ -51,7 +52,7 @@ const rule: Rule.RuleModule<string, Options> = {
       description: 'Cognitive Complexity of functions should not be too high',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/cognitive-complexity.md',
+      url: docsUrl('cognitive-complexity.md'),
     },
     schema: [
       { type: 'integer', minimum: 0 },

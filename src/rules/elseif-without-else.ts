@@ -20,6 +20,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -28,7 +29,7 @@ const rule: Rule.RuleModule = {
       description: '"if ... else if" constructs should end with "else" clauses',
       category: 'Best Practices',
       recommended: false,
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/elseif-without-else.md',
+      url: docsUrl('elseif-without-else'),
     },
   },
   create(context: Rule.RuleContext) {

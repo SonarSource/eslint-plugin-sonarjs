@@ -28,6 +28,7 @@ import {
   ancestorsChain,
 } from '../utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 // Methods that mutate the collection but can't add elements
 const nonAdditiveMutatorMethods = [
@@ -86,7 +87,7 @@ const rule: Rule.RuleModule = {
       description: 'Empty collections should not be accessed or iterated',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-empty-collection.md',
+      url: docsUrl('no-empty-collection'),
     },
   },
   create(context: Rule.RuleContext) {

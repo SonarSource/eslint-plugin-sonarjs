@@ -21,6 +21,7 @@
 
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -29,7 +30,7 @@ const rule: Rule.RuleModule = {
       description: 'A "while" loop should be used instead of a "for" loop',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-while.md',
+      url: docsUrl('prefer-while'),
     },
     fixable: 'code',
   },

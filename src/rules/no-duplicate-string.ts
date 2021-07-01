@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -43,7 +44,7 @@ const rule: Rule.RuleModule<string, Options> = {
       description: 'String literals should not be duplicated',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicate-string.md',
+      url: docsUrl('no-duplicate-string'),
     },
     schema: [{ type: 'integer', minimum: 2 }],
   },

@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = '"switch" statements should have at least 3 "case" clauses';
 
@@ -31,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: '"switch" statements should have at least 3 "case" clauses',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-small-switch.md',
+      url: docsUrl('no-small-switch'),
     },
   },
   create(context: Rule.RuleContext) {

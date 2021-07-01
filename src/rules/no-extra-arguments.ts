@@ -34,6 +34,7 @@ import {
   IssueLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -42,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Function calls should not pass extra arguments',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-extra-arguments.md',
+      url: docsUrl('no-extra-arguments'),
     },
     schema: [
       {

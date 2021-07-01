@@ -23,6 +23,7 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
@@ -39,7 +40,7 @@ const rule: Rule.RuleModule = {
       description: 'Functions should not have identical implementations',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-functions.md',
+      url: docsUrl('no-identical-functions'),
     },
     schema: [
       {

@@ -22,6 +22,7 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { toEncodedMessage } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 interface SiblingIfStatement {
   first: TSESTree.IfStatement;
@@ -35,7 +36,7 @@ const rule: Rule.RuleModule = {
       description: 'Conditionals should start on new lines',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-same-line-conditional.md',
+      url: docsUrl('no-same-line-conditional'),
     },
     schema: [
       {

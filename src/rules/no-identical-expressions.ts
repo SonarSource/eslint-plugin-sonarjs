@@ -24,6 +24,7 @@ import { Rule } from '../utils/types';
 import { isIdentifier, isLiteral } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation, IssueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const EQUALITY_OPERATOR_TOKEN_KINDS = new Set(['==', '===', '!=', '!==']);
 
@@ -66,7 +67,7 @@ const rule: Rule.RuleModule = {
       description: 'Identical expressions should not be used on both sides of a binary operator',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-identical-expressions.md',
+      url: docsUrl('no-identical-expressions'),
     },
     schema: [
       {

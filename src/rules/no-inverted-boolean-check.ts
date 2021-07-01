@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isBinaryExpression } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = 'Use the opposite operator ({{invertedOperator}}) instead.';
 
@@ -43,7 +44,7 @@ const rule: Rule.RuleModule = {
       description: 'Boolean checks should not be inverted',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-inverted-boolean-check.md',
+      url: docsUrl('no-inverted-boolean-check'),
     },
     fixable: 'code',
   },

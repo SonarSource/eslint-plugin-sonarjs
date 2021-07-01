@@ -24,6 +24,7 @@ import { Rule } from '../utils/types';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   "Remove this conditional structure or edit its code blocks so that they're not all the same.";
@@ -38,7 +39,7 @@ const rule: Rule.RuleModule = {
         'All branches in a conditional structure should not have exactly the same implementation',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-all-duplicated-branches.md',
+      url: docsUrl('no-all-duplicated-branches'),
     },
   },
   create(context: Rule.RuleContext) {

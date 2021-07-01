@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = 'Refactor the code to eliminate this nested "switch".';
 
@@ -31,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: '"switch" statements should not be nested',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-nested-switch.md',
+      url: docsUrl('no-nested-switch'),
     },
   },
   create(context: Rule.RuleContext) {

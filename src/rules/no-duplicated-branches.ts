@@ -25,6 +25,7 @@ import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
 import { report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
@@ -37,7 +38,7 @@ const rule: Rule.RuleModule = {
         'Two branches in a conditional structure should not have exactly the same implementation',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-duplicated-branches.md',
+      url: docsUrl('no-duplicated-branches'),
     },
     schema: [
       {

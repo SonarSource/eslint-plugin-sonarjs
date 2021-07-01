@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
 const CollectionSizeLike = ['length', 'size'];
@@ -33,7 +34,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection sizes and array length comparisons should make sense',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collection-size-mischeck.md',
+      url: docsUrl('no-collection-size-mischeck'),
     },
   },
   create(context: Rule.RuleContext) {

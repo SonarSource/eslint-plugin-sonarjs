@@ -22,6 +22,7 @@ import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { EncodedMessage } from '../utils/locations';
 import { isIdentifier, isIfStatement } from '../utils/nodes';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -30,7 +31,7 @@ const rule: Rule.RuleModule = {
       description: 'Boolean expressions should not be gratuitous',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-gratuitous-expressions.md',
+      url: docsUrl('no-gratuitous-expressions'),
     },
     schema: [
       {

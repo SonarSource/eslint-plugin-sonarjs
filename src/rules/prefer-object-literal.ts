@@ -31,6 +31,7 @@ import {
 } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.';
@@ -42,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Object literal syntax should be used',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-object-literal.md',
+      url: docsUrl('prefer-object-literal'),
     },
   },
   create(context: Rule.RuleContext) {

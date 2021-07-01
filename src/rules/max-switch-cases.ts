@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.';
@@ -37,7 +38,7 @@ const rule: Rule.RuleModule<string, Options> = {
       description: '"switch" statements should not have too many "case" clauses',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/max-switch-cases.md',
+      url: docsUrl('max-switch-cases'),
     },
     schema: [
       {

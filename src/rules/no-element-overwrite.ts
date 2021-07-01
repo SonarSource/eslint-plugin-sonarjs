@@ -31,6 +31,7 @@ import {
 } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = (index: string, line: string) =>
   `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
@@ -42,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection elements should not be replaced unconditionally',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-element-overwrite.md',
+      url: docsUrl('no-element-overwrite'),
     },
     schema: [
       {

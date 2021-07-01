@@ -23,6 +23,7 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -31,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Collapsible "if" statements should be merged',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-collapsible-if.md',
+      url: docsUrl('o-collapsible-if'),
     },
     schema: [
       {

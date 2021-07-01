@@ -26,6 +26,7 @@ import {
   isBooleanLiteral,
   isIfStatement,
 } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -35,7 +36,7 @@ const rule: Rule.RuleModule = {
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-single-boolean-return.md',
+      url: docsUrl('prefer-single-boolean-return'),
     },
   },
   create(context: Rule.RuleContext) {

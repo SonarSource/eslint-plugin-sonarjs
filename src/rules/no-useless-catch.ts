@@ -23,6 +23,7 @@ import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { isThrowStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   'Add logic to this catch clause or eliminate it and rethrow the exception automatically.';
@@ -34,7 +35,7 @@ const rule: Rule.RuleModule = {
       description: '"catch" clauses should do more than rethrow',
       category: 'Best Practices',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-useless-catch.md',
+      url: docsUrl('no-useless-catch'),
     },
   },
   create(context: Rule.RuleContext) {

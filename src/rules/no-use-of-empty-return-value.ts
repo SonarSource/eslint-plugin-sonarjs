@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Identifier, Rule } from '../utils/types';
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 function isReturnValueUsed(callExpr: TSESTree.Node) {
   const { parent } = callExpr;
@@ -58,7 +59,7 @@ const rule: Rule.RuleModule = {
       description: "The output of functions that don't return anything should not be used",
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-use-of-empty-return-value.md',
+      url: docsUrl('no-use-of-empty-return-value'),
     },
   },
   create(context) {

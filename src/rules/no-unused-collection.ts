@@ -22,6 +22,7 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { collectionConstructor, writingMethods } from '../utils/collections';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = "Either use this collection's contents or remove the collection.";
 
@@ -32,7 +33,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection and array contents should be used',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/no-unused-collection.md',
+      url: docsUrl('no-unused-collection'),
     },
   },
   create(context: Rule.RuleContext) {

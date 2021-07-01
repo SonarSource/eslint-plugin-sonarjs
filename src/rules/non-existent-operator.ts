@@ -21,6 +21,7 @@
 
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -29,7 +30,7 @@ const rule: Rule.RuleModule = {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/non-existent-operator.md',
+      url: docsUrl('non-existent-operator'),
     },
   },
   create(context) {

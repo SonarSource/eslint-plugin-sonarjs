@@ -21,6 +21,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { getMainFunctionTokenLocation } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = 'Add a "yield" statement to this generator.';
 
@@ -31,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Generators should "yield" something',
       category: 'Possible Errors',
       recommended: 'error',
-      url: 'https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/generator-without-yield.md',
+      url: docsUrl('generator-without-yield'),
     },
   },
   create(context: Rule.RuleContext) {
