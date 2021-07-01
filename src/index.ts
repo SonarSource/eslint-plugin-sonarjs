@@ -19,39 +19,39 @@
  */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-const sonarjsRules: [string, TSESLint.Linter.RuleLevel][] = [
-  ['cognitive-complexity', 'error'],
-  ['elseif-without-else', 'off'],
-  ['generator-without-yield', 'error'],
-  ['max-switch-cases', 'error'],
-  ['no-all-duplicated-branches', 'error'],
-  ['no-collapsible-if', 'error'],
-  ['no-collection-size-mischeck', 'error'],
-  ['no-duplicate-string', 'error'],
-  ['no-duplicated-branches', 'error'],
-  ['no-element-overwrite', 'error'],
-  ['no-empty-collection', 'error'],
-  ['no-extra-arguments', 'error'],
-  ['no-gratuitous-expressions', 'error'],
-  ['no-identical-conditions', 'error'],
-  ['no-identical-functions', 'error'],
-  ['no-identical-expressions', 'error'],
-  ['no-inverted-boolean-check', 'error'],
-  ['no-nested-switch', 'error'],
-  ['no-nested-template-literals', 'error'],
-  ['no-one-iteration-loop', 'error'],
-  ['no-redundant-boolean', 'error'],
-  ['no-redundant-jump', 'error'],
-  ['no-same-line-conditional', 'error'],
-  ['no-small-switch', 'error'],
-  ['no-unused-collection', 'error'],
-  ['no-use-of-empty-return-value', 'error'],
-  ['no-useless-catch', 'error'],
-  ['non-existent-operator', 'error'],
-  ['prefer-immediate-return', 'error'],
-  ['prefer-object-literal', 'error'],
-  ['prefer-single-boolean-return', 'error'],
-  ['prefer-while', 'error'],
+const sonarjsRules: string[] = [
+  'cognitive-complexity',
+  'elseif-without-else',
+  'generator-without-yield',
+  'max-switch-cases',
+  'no-all-duplicated-branches',
+  'no-collapsible-if',
+  'no-collection-size-mischeck',
+  'no-duplicate-string',
+  'no-duplicated-branches',
+  'no-element-overwrite',
+  'no-empty-collection',
+  'no-extra-arguments',
+  'no-gratuitous-expressions',
+  'no-identical-conditions',
+  'no-identical-functions',
+  'no-identical-expressions',
+  'no-inverted-boolean-check',
+  'no-nested-switch',
+  'no-nested-template-literals',
+  'no-one-iteration-loop',
+  'no-redundant-boolean',
+  'no-redundant-jump',
+  'no-same-line-conditional',
+  'no-small-switch',
+  'no-unused-collection',
+  'no-use-of-empty-return-value',
+  'no-useless-catch',
+  'non-existent-operator',
+  'prefer-immediate-return',
+  'prefer-object-literal',
+  'prefer-single-boolean-return',
+  'prefer-while',
 ];
 
 const sonarjsRuleModules: { [key: string]: any } = {};
@@ -60,7 +60,14 @@ const configs: { recommended: TSESLint.Linter.Config & { plugins: string[] } } =
   recommended: { plugins: ['sonarjs'], rules: {} },
 };
 
-sonarjsRules.forEach(rule => (sonarjsRuleModules[rule[0]] = require(`./rules/${rule[0]}`)));
-sonarjsRules.forEach(rule => (configs.recommended.rules![`sonarjs/${rule[0]}`] = rule[1]));
+sonarjsRules.forEach(rule => (sonarjsRuleModules[rule] = require(`./rules/${rule}`)));
+sonarjsRules.forEach(rule => {
+  const {
+    meta: {
+      docs: { recommended },
+    },
+  } = sonarjsRuleModules[rule];
+  configs.recommended.rules![`sonarjs/${rule}`] = recommended === false ? 'off' : recommended;
+});
 
 export { sonarjsRuleModules as rules, configs };
