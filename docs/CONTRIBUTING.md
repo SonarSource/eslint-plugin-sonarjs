@@ -26,13 +26,13 @@ npm run test
 To run unit tests in watch mode:
 
 ```
-npm run test --watch
+npm run test -- --watch
 ```
 
 And finally to run unit tests with coverage:
 
 ```
-npm run test --coverage
+npm run test -- --coverage
 ```
 
 ## <a name="ruling"></a>Ruling
@@ -49,9 +49,9 @@ To run the ruling test:
 
 ```sh
 npm run ruling
-npm run ruling --rule <rule-file-name> # to run ruling for a single rule
-npm run ruling --update # to update the snapshots
-npm run ruling --rule <rule-file-name> --update # it is possible to combine both options
+npm run ruling -- --rule <rule-file-name> # to run ruling for a single rule
+npm run ruling -- --update # to update the snapshots
+npm run ruling -- --rule <rule-file-name> --update # it is possible to combine both options
 ```
 
 ## Code Style
