@@ -191,14 +191,12 @@ const rule: Rule.RuleModule = {
           secondaryLocations.push(issueLocation(fnToken, fnToken, 'Formal parameters'));
         }
       }
-
       // find actual extra arguments to highlight
       callExpr.arguments.forEach((argument, index) => {
         if (index >= paramLength && argument.loc) {
-          secondaryLocations.push(issueLocation(argument.loc, argument.loc, 'Excess parameter'));
+          secondaryLocations.push(issueLocation(argument.loc, argument.loc, 'Extra argument'));
         }
       });
-
       return secondaryLocations;
     }
   },

@@ -98,7 +98,7 @@ ruleTester.run('no-extra-arguments', rule, {
         {
           message: encodedMessage(2, 3, [
             { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
-            { line: 4, column: 18, endLine: 4, endColumn: 19, message: 'Excess parameter' },
+            { line: 4, column: 18, endLine: 4, endColumn: 19, message: 'Extra argument' },
           ]),
         },
       ],
@@ -126,7 +126,7 @@ ruleTester.run('no-extra-arguments', rule, {
         {
           message: encodedMessage(0, 1, [
             { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
-            { line: 2, column: 12, endLine: 2, endColumn: 13, message: 'Excess parameter' },
+            { line: 2, column: 12, endLine: 2, endColumn: 13, message: 'Extra argument' },
           ]),
         },
       ],
