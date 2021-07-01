@@ -188,21 +188,6 @@ const rule: Rule.RuleModule = {
       return {};
     }
     const services = context.parserServices;
-
-    function isReplaceWithCallback(
-      methodName: string,
-      callArguments: Array<TSESTree.Expression | TSESTree.SpreadElement>,
-    ) {
-      if (methodName === 'replace' && callArguments.length > 1) {
-        const type = getTypeFromTreeNode(callArguments[1], services);
-        const typeNode = services.program
-          .getTypeChecker()
-          .typeToTypeNode(type, undefined, undefined);
-        return typeNode && ts.isFunctionTypeNode(typeNode);
-      }
-      return false;
-    }
-
     return {
       CallExpression: (node: TSESTree.Node) => {
         const call = node as TSESTree.CallExpression;
@@ -218,7 +203,7 @@ const rule: Rule.RuleModule = {
               );
             if (
               !hasSideEffect(methodName, objectType, services) &&
-              !isReplaceWithCallback(methodName, call.arguments)
+              !isReplaceWithCallback(methodName, call.arguments, services)
             ) {
               context.report({
                 message: message(methodName),
@@ -231,6 +216,19 @@ const rule: Rule.RuleModule = {
     };
   },
 };
+
+function isReplaceWithCallback(
+  methodName: string,
+  callArguments: Array<TSESTree.Expression | TSESTree.SpreadElement>,
+  services: RequiredParserServices,
+) {
+  if (methodName === 'replace' && callArguments.length > 1) {
+    const type = getTypeFromTreeNode(callArguments[1], services);
+    const typeNode = services.program.getTypeChecker().typeToTypeNode(type, undefined, undefined);
+    return typeNode && ts.isFunctionTypeNode(typeNode);
+  }
+  return false;
+}
 
 function message(methodName: string): string {
   if (methodName === 'map') {
