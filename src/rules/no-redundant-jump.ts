@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = {
       description: 'Jump statements should not be redundant',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-redundant-jump'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

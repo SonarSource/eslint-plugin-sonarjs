@@ -31,7 +31,7 @@ const rule: Rule.RuleModule = {
       description: 'Loops with at most one iteration should be refactored',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-one-iteration-loop'),
+      url: docsUrl(__filename),
     },
   },
   create(context) {

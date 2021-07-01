@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Template literals should not be nested',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-nested-template-literals'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

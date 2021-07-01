@@ -44,7 +44,7 @@ const rule: Rule.RuleModule = {
       description: 'Boolean checks should not be inverted',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-inverted-boolean-check'),
+      url: docsUrl(__filename),
     },
     fixable: 'code',
   },

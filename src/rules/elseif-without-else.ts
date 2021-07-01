@@ -29,7 +29,7 @@ const rule: Rule.RuleModule = {
       description: '"if ... else if" constructs should end with "else" clauses',
       category: 'Best Practices',
       recommended: false,
-      url: docsUrl('elseif-without-else'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

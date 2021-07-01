@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = {
       description: 'Boolean literals should not be redundant',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-redundant-boolean'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

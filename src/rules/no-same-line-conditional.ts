@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
       description: 'Conditionals should start on new lines',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-same-line-conditional'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

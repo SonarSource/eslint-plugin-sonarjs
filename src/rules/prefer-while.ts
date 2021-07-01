@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
       description: 'A "while" loop should be used instead of a "for" loop',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('prefer-while'),
+      url: docsUrl(__filename),
     },
     fixable: 'code',
   },

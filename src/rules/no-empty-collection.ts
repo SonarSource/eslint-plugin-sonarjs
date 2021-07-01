@@ -87,7 +87,7 @@ const rule: Rule.RuleModule = {
       description: 'Empty collections should not be accessed or iterated',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-empty-collection'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

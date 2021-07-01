@@ -18,6 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-export default function docsUrl(ruleName: string) {
-  return `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${ruleName}.md`;
+import * as path from 'path';
+
+export default function docsUrl(ruleFileName: string) {
+  const ruleMarkdownDoc = path.basename(ruleFileName).replace('.ts', '.md');
+  return `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${ruleMarkdownDoc}`;
 }

@@ -39,7 +39,7 @@ const rule: Rule.RuleModule = {
         'All branches in a conditional structure should not have exactly the same implementation',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-all-duplicated-branches'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

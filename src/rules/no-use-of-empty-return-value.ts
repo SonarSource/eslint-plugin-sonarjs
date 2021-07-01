@@ -59,7 +59,7 @@ const rule: Rule.RuleModule = {
       description: "The output of functions that don't return anything should not be used",
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-use-of-empty-return-value'),
+      url: docsUrl(__filename),
     },
   },
   create(context) {

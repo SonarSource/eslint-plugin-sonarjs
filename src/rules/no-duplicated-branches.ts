@@ -38,7 +38,7 @@ const rule: Rule.RuleModule = {
         'Two branches in a conditional structure should not have exactly the same implementation',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-duplicated-branches'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

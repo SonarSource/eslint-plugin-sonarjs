@@ -33,7 +33,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection and array contents should be used',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-unused-collection'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

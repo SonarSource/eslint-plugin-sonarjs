@@ -35,7 +35,7 @@ const rule: Rule.RuleModule = {
       description: 'Local variables should not be declared and then immediately returned or thrown',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('prefer-immediate-return'),
+      url: docsUrl(__filename),
     },
     fixable: 'code',
   },

@@ -30,7 +30,7 @@ const rule: Rule.RuleModule = {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('non-existent-operator'),
+      url: docsUrl(__filename),
     },
   },
   create(context) {

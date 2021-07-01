@@ -31,7 +31,7 @@ const rule: Rule.RuleModule = {
       description: 'Boolean expressions should not be gratuitous',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-gratuitous-expressions'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('prefer-single-boolean-return'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

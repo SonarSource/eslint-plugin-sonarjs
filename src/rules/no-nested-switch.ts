@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: '"switch" statements should not be nested',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-nested-switch'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

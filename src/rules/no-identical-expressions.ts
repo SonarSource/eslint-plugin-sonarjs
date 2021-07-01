@@ -67,7 +67,7 @@ const rule: Rule.RuleModule = {
       description: 'Identical expressions should not be used on both sides of a binary operator',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-identical-expressions'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

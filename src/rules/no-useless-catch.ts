@@ -35,7 +35,7 @@ const rule: Rule.RuleModule = {
       description: '"catch" clauses should do more than rethrow',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-useless-catch'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

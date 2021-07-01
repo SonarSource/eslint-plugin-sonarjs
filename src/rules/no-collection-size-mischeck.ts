@@ -34,7 +34,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection sizes and array length comparisons should make sense',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-collection-size-mischeck'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

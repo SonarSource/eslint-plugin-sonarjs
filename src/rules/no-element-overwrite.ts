@@ -43,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Collection elements should not be replaced unconditionally',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-element-overwrite'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

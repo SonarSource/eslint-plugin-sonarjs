@@ -43,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Object literal syntax should be used',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('prefer-object-literal'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

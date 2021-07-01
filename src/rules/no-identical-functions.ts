@@ -40,7 +40,7 @@ const rule: Rule.RuleModule = {
       description: 'Functions should not have identical implementations',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-identical-functions'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

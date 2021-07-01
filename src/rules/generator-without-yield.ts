@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Generators should "yield" something',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('generator-without-yield'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

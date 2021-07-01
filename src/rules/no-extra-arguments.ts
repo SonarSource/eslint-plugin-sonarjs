@@ -43,7 +43,7 @@ const rule: Rule.RuleModule = {
       description: 'Function calls should not pass extra arguments',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-extra-arguments'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: '"switch" statements should have at least 3 "case" clauses',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-small-switch'),
+      url: docsUrl(__filename),
     },
   },
   create(context: Rule.RuleContext) {

@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Related "if/else if" statements should not have the same condition',
       category: 'Possible Errors',
       recommended: 'error',
-      url: docsUrl('no-identical-conditions'),
+      url: docsUrl(__filename),
     },
     schema: [
       {

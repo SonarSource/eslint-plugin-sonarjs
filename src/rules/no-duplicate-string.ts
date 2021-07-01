@@ -44,7 +44,7 @@ const rule: Rule.RuleModule<string, Options> = {
       description: 'String literals should not be duplicated',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('no-duplicate-string'),
+      url: docsUrl(__filename),
     },
     schema: [{ type: 'integer', minimum: 2 }],
   },
