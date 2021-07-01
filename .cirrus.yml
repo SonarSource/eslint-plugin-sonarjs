@@ -35,11 +35,11 @@ plugin_qa_task:
   script:
     - curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
     - init_git_submodules -r
-    - yarn
-    - yarn typecheck
-    - yarn build
+    - npm install
+    - npm run typecheck
+    - npm run build
     - ./scripts/test-ci.sh
-    - yarn prettier --list-different "{src,tests}/**/*.{js,ts}"
-    - yarn lint
-    - yarn ruling
+    - npm run check-format
+    - npm run lint
+    - npm run ruling
     - ./scripts/analyze_and_publish.sh

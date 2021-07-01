@@ -19,15 +19,15 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "rimraf lib && yarn check-format && tsc -d -p tsconfig-src.json",
+    "build": "rimraf lib && npm check-format && tsc -d -p tsconfig-src.json",
     "test": "jest",
     "ruling": "ts-node --files ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint --ext js,ts src tests ruling/index.ts",
-    "precommit": "lint-staged && yarn typecheck",
-    "prepack": "yarn build",
-    "format": "prettier --write \"{src,tests}/**/!(*.lint).ts\"",
-    "check-format": "prettier --list-different \"{src,tests}/**/!(*.lint).ts\""
+    "precommit": "lint-staged && npm typecheck",
+    "prepack": "npm build",
+    "format": "prettier --write \"{src,tests}/**/*.ts\"",
+    "check-format": "prettier --list-different \"{src,tests}/**/*.ts\""
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0"

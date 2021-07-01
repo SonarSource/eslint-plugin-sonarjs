@@ -1,8 +1,3 @@
-yarn-debug.log*
-yarn-error.log*
-.yarn-integrity
-
-
 .npm
 .eslintcache/
 *.tgz
@@ -32,7 +27,5 @@ sonar-project.properties
 test-report.xml
 tsconfig.json
 tsconfig-src.json
-yarn.lock
-
 .cirrus/
 .cirrus.yml
