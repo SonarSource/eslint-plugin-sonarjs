@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
       description: 'Collapsible "if" statements should be merged',
       category: 'Best Practices',
       recommended: 'error',
-      url: docsUrl('o-collapsible-if'),
+      url: docsUrl('no-collapsible-if'),
     },
     schema: [
       {
