@@ -32,6 +32,7 @@ import {
   issueLocation,
   getMainFunctionTokenLocation,
   IssueLocation,
+  toSecondaryLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
@@ -171,23 +172,22 @@ const rule: Rule.RuleModule = {
         context,
         {
           message,
-          node: callExpr,
+          node: callExpr.callee,
         },
-        getSecondaryLocations(functionNode),
+        getSecondaryLocations(callExpr, functionNode),
       );
     }
 
-    function getSecondaryLocations(functionNode: TSESTree.FunctionLike) {
+    function getSecondaryLocations(
+      callExpr: TSESTree.CallExpression,
+      functionNode: TSESTree.FunctionLike,
+    ) {
       const paramLength = functionNode.params.length;
       const secondaryLocations: IssueLocation[] = [];
       if (paramLength > 0) {
         const startLoc = functionNode.params[0].loc;
         const endLoc = functionNode.params[paramLength - 1].loc;
-        // defensive check as `loc` property may be undefined according to
-        // its type declaration
-        if (startLoc && endLoc) {
-          secondaryLocations.push(issueLocation(startLoc, endLoc, 'Formal parameters'));
-        }
+        secondaryLocations.push(issueLocation(startLoc, endLoc, 'Formal parameters'));
       } else {
         // as we're not providing parent node, `getMainFunctionTokenLocation` may return `undefined`
         const fnToken = getMainFunctionTokenLocation(functionNode, undefined, context);
@@ -195,6 +195,12 @@ const rule: Rule.RuleModule = {
           secondaryLocations.push(issueLocation(fnToken, fnToken, 'Formal parameters'));
         }
       }
+      // find actual extra arguments to highlight
+      callExpr.arguments.forEach((argument, index) => {
+        if (index >= paramLength) {
+          secondaryLocations.push(toSecondaryLocation(argument, 'Extra argument'));
+        }
+      });
       return secondaryLocations;
     }
   },

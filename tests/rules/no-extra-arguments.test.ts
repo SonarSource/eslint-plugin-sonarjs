@@ -83,8 +83,8 @@ ruleTester.run('no-extra-arguments', rule, {
         foo(1, 2, 3, 4);
       `,
       errors: [
-        message(2, 3, { line: 3, column: 9, endColumn: 21 }),
-        message(2, 4, { line: 4, column: 9, endColumn: 24 }),
+        message(2, 3, { line: 3, column: 9, endColumn: 12 }),
+        message(2, 4, { line: 4, column: 9, endColumn: 12 }),
       ],
     },
     {
@@ -92,12 +92,13 @@ ruleTester.run('no-extra-arguments', rule, {
         function foo(p1, p2) {}
         //           ^^^^^^>
         foo(1, 2, 3);
-      //^^^^^^^^^^^^
+      //^^^      <^
       `,
       errors: [
         {
           message: encodedMessage(2, 3, [
             { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
+            { message: 'Extra argument', column: 18, line: 4, endColumn: 19, endLine: 4 },
           ]),
         },
       ],
@@ -110,12 +111,12 @@ ruleTester.run('no-extra-arguments', rule, {
         }
         foo(1);
       `,
-      errors: [message(0, 1, { line: 5, column: 9, endColumn: 15 })],
+      errors: [message(0, 1, { line: 5, column: 9, endColumn: 12 })],
     },
     {
       code: `
         foo(1);
-      //^^^^^^
+      //    ^
         var foo = function() {
           //      ^^^^^^^^>
           console.log('hello');
@@ -125,12 +126,12 @@ ruleTester.run('no-extra-arguments', rule, {
         {
           message: encodedMessage(0, 1, [
             { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
+            { message: 'Extra argument', column: 12, line: 2, endColumn: 13, endLine: 2 },
           ]),
         },
       ],
       options: ['sonar-runtime'],
     },
-
     {
       code: `
         (function(p1, p2){
@@ -138,7 +139,7 @@ ruleTester.run('no-extra-arguments', rule, {
           doSomething2;
         })(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 9, endLine: 5, endColumn: 20 })],
+      errors: [message(2, 3, { line: 2, column: 10, endLine: 5, endColumn: 10 })],
     },
     {
       code: `
@@ -146,7 +147,7 @@ ruleTester.run('no-extra-arguments', rule, {
           return a + b;
         }(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 17, endLine: 4, endColumn: 19 })],
+      errors: [message(2, 3, { line: 2, column: 17, endLine: 4, endColumn: 10 })],
     },
     {
       code: `
@@ -154,14 +155,14 @@ ruleTester.run('no-extra-arguments', rule, {
           return a + b;
         })(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 2, column: 9, endLine: 4, endColumn: 20 })],
+      errors: [message(2, 3, { line: 2, column: 10, endLine: 4, endColumn: 10 })],
     },
     {
       code: `
         let arrow_function = (a, b) => {};
         arrow_function(1, 2, 3);
       `,
-      errors: [message(2, 3, { line: 3, column: 9, endColumn: 32 })],
+      errors: [message(2, 3, { line: 3, column: 9, endColumn: 23 })],
     },
   ],
 });
@@ -176,7 +177,7 @@ ruleTesterScript.run('no-extra-arguments script', rule, {
         }
         foo(1, 2);
       `,
-      errors: [message(1, 2, { line: 5, column: 9, endColumn: 18 })],
+      errors: [message(1, 2, { line: 5, column: 9, endColumn: 12 })],
     },
     {
       code: `
@@ -186,7 +187,7 @@ ruleTesterScript.run('no-extra-arguments script', rule, {
         }
         foo(1, 2);
       `,
-      errors: [message(0, 2, { line: 6, column: 9, endColumn: 18 })],
+      errors: [message(0, 2, { line: 6, column: 9, endColumn: 12 })],
     },
   ],
 });
