@@ -17,42 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+import * as fs from 'fs';
+import * as path from 'path';
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 
-const sonarjsRules: string[] = [
-  'cognitive-complexity',
-  'elseif-without-else',
-  'generator-without-yield',
-  'max-switch-cases',
-  'no-all-duplicated-branches',
-  'no-collapsible-if',
-  'no-collection-size-mischeck',
-  'no-duplicate-string',
-  'no-duplicated-branches',
-  'no-element-overwrite',
-  'no-empty-collection',
-  'no-extra-arguments',
-  'no-gratuitous-expressions',
-  'no-identical-conditions',
-  'no-identical-functions',
-  'no-identical-expressions',
-  'no-inverted-boolean-check',
-  'no-nested-switch',
-  'no-nested-template-literals',
-  'no-one-iteration-loop',
-  'no-redundant-boolean',
-  'no-redundant-jump',
-  'no-same-line-conditional',
-  'no-small-switch',
-  'no-unused-collection',
-  'no-use-of-empty-return-value',
-  'no-useless-catch',
-  'non-existent-operator',
-  'prefer-immediate-return',
-  'prefer-object-literal',
-  'prefer-single-boolean-return',
-  'prefer-while',
-];
+const sonarjsRules: string[] = fs
+  .readdirSync(path.join(__dirname, 'rules'))
+  .map(filename => filename.substr(0, filename.lastIndexOf('.ts')));
 
 const sonarjsRuleModules: { [key: string]: any } = {};
 
