@@ -28,7 +28,7 @@ import docsUrl from '../utils/docs-url';
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
 
-type Function =
+type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.ArrowFunctionExpression;
@@ -49,7 +49,7 @@ const rule: Rule.RuleModule = {
     ],
   },
   create(context: Rule.RuleContext) {
-    const functions: Array<{ function: Function; parent: TSESTree.Node | undefined }> = [];
+    const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
 
     return {
       FunctionDeclaration(node: TSESTree.Node) {
@@ -67,17 +67,13 @@ const rule: Rule.RuleModule = {
       },
     };
 
-    function visitFunction(node: Function) {
+    function visitFunction(node: FunctionNode) {
       if (isBigEnough(node.body)) {
         functions.push({ function: node, parent: node.parent });
       }
     }
 
     function processFunctions() {
-      if (functions.length < 2) {
-        return;
-      }
-
       for (let i = 1; i < functions.length; i++) {
         const duplicatingFunction = functions[i].function;
 
