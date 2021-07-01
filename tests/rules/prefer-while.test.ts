@@ -32,6 +32,7 @@ ruleTester.run('prefer-while', rule, {
     { code: 'while (i < length) { }' },
     { code: 'for (a in b) { }' },
     { code: 'for (a of b) { }' },
+    { code: 'for(;;) {}' },
   ],
   invalid: [
     {
@@ -52,11 +53,6 @@ ruleTester.run('prefer-while', rule, {
       output: `
         while (i < 10)
           doSomething();`,
-    },
-    {
-      code: 'for(;;) {}',
-      errors: [{ message }],
-      output: 'for(;;) {}', // no fix
     },
   ],
 });
