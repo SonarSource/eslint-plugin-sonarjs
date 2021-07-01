@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.';
@@ -33,6 +34,12 @@ type Options = [number];
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: '"switch" statements should not have too many "case" clauses',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         type: 'integer',

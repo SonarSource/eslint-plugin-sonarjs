@@ -22,12 +22,19 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isBooleanLiteral, isIfStatement, isConditionalExpression } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = 'Remove the unnecessary boolean literal.';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Boolean literals should not be redundant',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     return {

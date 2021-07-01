@@ -25,6 +25,7 @@ import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
 import { report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE =
   "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
@@ -32,6 +33,13 @@ const MESSAGE =
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description:
+        'Two branches in a conditional structure should not have exactly the same implementation',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         // internal parameter

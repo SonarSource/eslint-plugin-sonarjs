@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Identifier, Rule } from '../utils/types';
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 function isReturnValueUsed(callExpr: TSESTree.Node) {
   const { parent } = callExpr;
@@ -54,6 +55,12 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: "The output of functions that don't return anything should not be used",
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context) {
     const callExpressionsToCheck: Map<Identifier, TSESTree.FunctionLike> = new Map();

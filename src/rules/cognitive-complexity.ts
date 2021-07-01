@@ -30,6 +30,7 @@ import {
   issueLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const DEFAULT_THRESHOLD = 15;
 
@@ -47,6 +48,12 @@ type Options = [number, 'metric'];
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Cognitive Complexity of functions should not be too high',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       { type: 'integer', minimum: 0 },
       {

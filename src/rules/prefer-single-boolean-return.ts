@@ -26,10 +26,18 @@ import {
   isBooleanLiteral,
   isIfStatement,
 } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description:
+        'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     return {

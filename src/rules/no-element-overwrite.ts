@@ -31,6 +31,7 @@ import {
 } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = (index: string, line: string) =>
   `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
@@ -38,6 +39,12 @@ const message = (index: string, line: string) =>
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Collection elements should not be replaced unconditionally',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         // internal parameter

@@ -22,10 +22,17 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isContinueStatement } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Loops with at most one iteration should be refactored',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context) {
     const loopingNodes: Set<TSESTree.Node> = new Set();

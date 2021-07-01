@@ -22,6 +22,7 @@
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { toEncodedMessage } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 interface SiblingIfStatement {
   first: TSESTree.IfStatement;
@@ -31,6 +32,12 @@ interface SiblingIfStatement {
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Conditionals should start on new lines',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         // internal parameter

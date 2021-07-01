@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -39,6 +40,12 @@ type Options = [number];
 const rule: Rule.RuleModule<string, Options> = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'String literals should not be duplicated',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [{ type: 'integer', minimum: 2 }],
   },
 

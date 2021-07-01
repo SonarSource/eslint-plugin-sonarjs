@@ -34,10 +34,17 @@ import {
   IssueLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Function calls should not pass extra arguments',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         // internal parameter

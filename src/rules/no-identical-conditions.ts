@@ -24,10 +24,17 @@ import { Rule } from '../utils/types';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Related "if/else if" statements should not have the same condition',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         // internal parameter

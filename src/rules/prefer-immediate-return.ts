@@ -27,10 +27,17 @@ import {
   isIdentifier,
   isVariableDeclaration,
 } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Local variables should not be declared and then immediately returned or thrown',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     fixable: 'code',
   },
   create(context: Rule.RuleContext) {

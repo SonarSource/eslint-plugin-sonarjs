@@ -21,6 +21,7 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const message = 'Remove this redundant jump.';
 const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement';
@@ -28,6 +29,12 @@ const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, F
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: 'Jump statements should not be redundant',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {

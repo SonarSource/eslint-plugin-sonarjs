@@ -22,12 +22,19 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { getMainFunctionTokenLocation } from '../utils/locations';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = 'Add a "yield" statement to this generator.';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Generators should "yield" something',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     const yieldStack: number[] = [];

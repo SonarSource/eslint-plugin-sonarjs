@@ -21,11 +21,18 @@
 
 import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
-    fixable: 'code',
     type: 'suggestion',
+    docs: {
+      description: 'A "while" loop should be used instead of a "for" loop',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
+    fixable: 'code',
   },
   create(context: Rule.RuleContext) {
     return {

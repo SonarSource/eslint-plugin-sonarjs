@@ -23,6 +23,7 @@ import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
+import docsUrl from '../utils/docs-url';
 
 const message = (line: string) =>
   `Update this function so that its implementation is not identical to the one on line ${line}.`;
@@ -35,6 +36,12 @@ type Function =
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Functions should not have identical implementations',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
     schema: [
       {
         enum: ['sonar-runtime'],

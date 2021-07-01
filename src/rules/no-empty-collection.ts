@@ -28,6 +28,7 @@ import {
   ancestorsChain,
 } from '../utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 // Methods that mutate the collection but can't add elements
 const nonAdditiveMutatorMethods = [
@@ -82,6 +83,12 @@ const strictlyReadingMethods = new Set([
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Empty collections should not be accessed or iterated',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     return {

@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isBinaryExpression } from '../utils/nodes';
+import docsUrl from '../utils/docs-url';
 
 const MESSAGE = 'Use the opposite operator ({{invertedOperator}}) instead.';
 
@@ -38,8 +39,14 @@ const invertedOperators: { [operator: string]: string } = {
 
 const rule: Rule.RuleModule = {
   meta: {
-    fixable: 'code',
     type: 'suggestion',
+    docs: {
+      description: 'Boolean checks should not be inverted',
+      category: 'Best Practices',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
+    fixable: 'code',
   },
   create(context) {
     return {

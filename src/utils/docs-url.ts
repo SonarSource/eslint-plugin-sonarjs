@@ -17,34 +17,10 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-// https://sonarsource.github.io/rspec/#/rspec/S4624
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
-import docsUrl from '../utils/docs-url';
+import * as path from 'path';
 
-const message = 'Refactor this code to not use nested template literals.';
-
-const rule: Rule.RuleModule = {
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Template literals should not be nested',
-      category: 'Best Practices',
-      recommended: 'error',
-      url: docsUrl(__filename),
-    },
-  },
-  create(context: Rule.RuleContext) {
-    return {
-      'TemplateLiteral TemplateLiteral': (node: TSESTree.Node) => {
-        context.report({
-          message,
-          node,
-        });
-      },
-    };
-  },
-};
-
-export = rule;
+export default function docsUrl(ruleFileName: string) {
+  const ruleMarkdownDoc = path.basename(ruleFileName).replace('.ts', '.md');
+  return `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${ruleMarkdownDoc}`;
+}

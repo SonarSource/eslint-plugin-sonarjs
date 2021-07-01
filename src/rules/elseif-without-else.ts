@@ -21,10 +21,17 @@
 
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
+import docsUrl from '../utils/docs-url';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
+    docs: {
+      description: '"if ... else if" constructs should end with "else" clauses',
+      category: 'Best Practices',
+      recommended: false,
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     return {

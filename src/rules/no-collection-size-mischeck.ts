@@ -22,6 +22,7 @@
 import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
 const CollectionSizeLike = ['length', 'size'];
@@ -29,6 +30,12 @@ const CollectionSizeLike = ['length', 'size'];
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Collection sizes and array length comparisons should make sense',
+      category: 'Possible Errors',
+      recommended: 'error',
+      url: docsUrl(__filename),
+    },
   },
   create(context: Rule.RuleContext) {
     const services = context.parserServices;
