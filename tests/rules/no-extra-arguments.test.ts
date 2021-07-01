@@ -92,7 +92,7 @@ ruleTester.run('no-extra-arguments', rule, {
         function foo(p1, p2) {}
         //           ^^^^^^>
         foo(1, 2, 3);
-      //^^^       ^
+      //^^^      <^
       `,
       errors: [
         {
