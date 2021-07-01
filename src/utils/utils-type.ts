@@ -18,7 +18,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-export * from './utils-ast';
-export * from './utils-collection';
-export * from './utils-parent';
-export * from './utils-type';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
+import { RequiredParserServices } from './parser-services';
+
+export function getTypeFromTreeNode(node: TSESTree.Node, services: RequiredParserServices) {
+  const checker = services.program.getTypeChecker();
+  return checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
+}

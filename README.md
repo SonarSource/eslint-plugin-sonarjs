@@ -15,6 +15,7 @@ Rules in this category aim to find places in code which have a high chance of be
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
 * Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
+* Return values from functions without side effects should not be ignored ([`no-ignored-return`])
 * Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
 * The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
 * Non-existent operators '=+', '=-' and '=!' should not be used ([`non-existent-operator`])
@@ -62,6 +63,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 [`no-identical-conditions`]: ./docs/rules/no-identical-conditions.md
 [`no-identical-expressions`]: ./docs/rules/no-identical-expressions.md
 [`no-identical-functions`]: ./docs/rules/no-identical-functions.md
+[`no-ignored-return`]: ./docs/rules/no-ignored-return.md
 [`no-inverted-boolean-check`]: ./docs/rules/no-inverted-boolean-check.md
 [`no-nested-switch`]: ./docs/rules/no-nested-switch.md
 [`no-nested-template-literals`]: ./docs/rules/no-nested-template-literals.md
