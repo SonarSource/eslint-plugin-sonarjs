@@ -19,13 +19,13 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "rimraf lib && npm check-format && tsc -d -p tsconfig-src.json",
+    "build": "rimraf lib && npm run check-format && tsc -d -p tsconfig-src.json",
     "test": "jest",
     "ruling": "ts-node --files ruling/index.ts",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "eslint --ext js,ts src tests ruling/index.ts",
-    "precommit": "lint-staged && npm typecheck",
-    "prepack": "npm build",
+    "precommit": "lint-staged && npm run typecheck",
+    "prepack": "npm run build",
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
     "check-format": "prettier --list-different \"{src,tests}/**/*.ts\""
   },
