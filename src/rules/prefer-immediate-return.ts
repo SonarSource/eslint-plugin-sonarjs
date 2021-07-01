@@ -66,7 +66,8 @@ const rule: Rule.RuleModule = {
             context.report({
               message: formatMessage(last, returnedIdentifier.name),
               node: declaredIdentifier.init,
-              fix: fixer => fix(fixer, last, lastButOne, declaredIdentifier.init, returnedIdentifier),
+              fix: fixer =>
+                fix(fixer, last, lastButOne, declaredIdentifier.init, returnedIdentifier),
             });
           }
         }
@@ -79,15 +80,18 @@ const rule: Rule.RuleModule = {
       last: TSESTree.Statement,
       lastButOne: TSESTree.Statement,
       expressionToReturn: TSESTree.Expression,
-      returnedExpression: TSESTree.Expression
+      returnedExpression: TSESTree.Expression,
     ): any {
       const expressionText = context.getSourceCode().getText(expressionToReturn);
       const rangeToRemoveStart = lastButOne.range[0];
       const commentsBetweenStatements = context.getSourceCode().getCommentsAfter(lastButOne);
-      const rangeToRemoveEnd = commentsBetweenStatements.length > 0 ? commentsBetweenStatements[0].range[0] : last.range[0];
+      const rangeToRemoveEnd =
+        commentsBetweenStatements.length > 0
+          ? commentsBetweenStatements[0].range[0]
+          : last.range[0];
       return [
         fixer.removeRange([rangeToRemoveStart, rangeToRemoveEnd]),
-        fixer.replaceText(returnedExpression, expressionText)
+        fixer.replaceText(returnedExpression, expressionText),
       ];
     }
 
