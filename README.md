@@ -121,6 +121,9 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 }
 ```
 
+## Available Configurations
+
+This plugin provides only `recommended` configuration. Almost all rules are activated in this profile with a few exceptions (check `disabled` tag in the rules list). `recommended` configuration activates rules with `error` severity. 
 ## Contributing
 
 You want to participate in the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
