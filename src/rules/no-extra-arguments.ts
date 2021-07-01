@@ -32,6 +32,7 @@ import {
   issueLocation,
   getMainFunctionTokenLocation,
   IssueLocation,
+  toSecondaryLocation,
 } from '../utils/locations';
 import { Rule } from '../utils/types';
 
@@ -190,7 +191,7 @@ const rule: Rule.RuleModule = {
       // find actual extra arguments to highlight
       callExpr.arguments.forEach((argument, index) => {
         if (index >= paramLength) {
-          secondaryLocations.push(issueLocation(argument.loc, argument.loc, 'Extra argument'));
+          secondaryLocations.push(toSecondaryLocation(argument, 'Extra argument'));
         }
       });
       return secondaryLocations;

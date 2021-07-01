@@ -128,11 +128,11 @@ export function toEncodedMessage(
   return JSON.stringify(encodedMessage);
 }
 
-function toSecondaryLocation(
+export function toSecondaryLocation(
   locationHolder: TSESLint.AST.Token | TSESTree.Node,
   message?: string,
 ): IssueLocation {
-  const loc = locationHolder.loc!;
+  const loc = locationHolder.loc;
   return {
     message,
     column: loc.start.column,
