@@ -134,26 +134,6 @@ ruleTester.run('no-extra-arguments', rule, {
     },
     {
       code: `
-        function foo(arguments) {
-          console.log(arguments);
-        }
-        foo(1, 2);
-      `,
-      errors: [message(1, 2, { line: 5, column: 9, endColumn: 12 })],
-    },
-    {
-      code: `
-        function foo() {
-          let arguments = [3, 4];
-          console.log(arguments);
-        }
-        foo(1, 2);
-      `,
-      errors: [message(0, 2, { line: 6, column: 9, endColumn: 12 })],
-    },
-
-    {
-      code: `
         (function(p1, p2){
           doSomething1;
           doSomething2;
