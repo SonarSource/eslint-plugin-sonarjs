@@ -23,6 +23,9 @@ jobs:
       - name: Publish npm package            
         env:
           NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
+          REPOX_QA_DEPLOYER_API_KEY: ${{ secrets.REPOX_QA_DEPLOYER_API_KEY }}
         run: |
-          npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
           npm publish
+          curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
+          npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
+          
