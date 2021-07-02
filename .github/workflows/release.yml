@@ -17,14 +17,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10      
-      - name: Download artifacts        
-        run: curl -o $PACKAGE-$RELEASE_TAG.tgz $REPOX_URL/$NPM_REPOSITORY/$SCOPE$PACKAGE/-/$SCOPE$PACKAGE-$RELEASE_TAG.tgz
       - run: mv .github/workflows/.npmrc .npmrc 
       - name: Publish npm package            
         env:
           NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
           REPOX_QA_DEPLOYER_API_KEY: ${{ secrets.REPOX_QA_DEPLOYER_API_KEY }}
         run: |
+          npm install
           npm publish
           curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
           npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
