@@ -20,19 +20,19 @@ Report bugs and suggest improvements. If something doesn't work well for you or 
 To run unit tests:
 
 ```
-yarn test
+npm run test
 ```
 
 To run unit tests in watch mode:
 
 ```
-yarn test --watch
+npm run test -- --watch
 ```
 
 And finally to run unit tests with coverage:
 
 ```
-yarn test --coverage
+npm run test -- --coverage
 ```
 
 ## <a name="ruling"></a>Ruling
@@ -48,10 +48,10 @@ git submodule update --init --recursive
 To run the ruling test:
 
 ```sh
-yarn ruling
-yarn ruling --rule <rule-file-name> # to run ruling for a single rule
-yarn ruling --update # to update the snapshots
-yarn ruling --rule <rule-file-name> --update # it is possible to combine both options
+npm run ruling
+npm run ruling -- --rule <rule-file-name> # to run ruling for a single rule
+npm run ruling -- --update # to update the snapshots
+npm run ruling -- --rule <rule-file-name> --update # it is possible to combine both options
 ```
 
 ## Code Style

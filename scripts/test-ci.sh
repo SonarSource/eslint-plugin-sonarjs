@@ -7,8 +7,8 @@ set -euo pipefail
 # variable is set in dockerfile
 if [ "${SONARCLOUD_ANALYSIS:-}" == "true" ]; then
   echo 'Running tests with coverage and reporter'
-  yarn test --coverage --testResultsProcessor jest-sonar-reporter
+  npm run test -- --coverage --testResultsProcessor jest-sonar-reporter
 else
   echo 'Running tests'
-  yarn test
+  npm run test
 fi
