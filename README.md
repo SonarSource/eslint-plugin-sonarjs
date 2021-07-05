@@ -15,7 +15,7 @@ Rules in this category aim to find places in code which have a high chance of be
 * Function calls should not pass extra arguments ([`no-extra-arguments`])
 * Related "if/else if" statements should not have the same condition ([`no-identical-conditions`])
 * Identical expressions should not be used on both sides of a binary operator ([`no-identical-expressions`])
-* Return values from functions without side effects should not be ignored ([`no-ignored-return`])
+* Return values from functions without side effects should not be ignored ([`no-ignored-return`]) (*uses-types*)
 * Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
 * The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
 * Non-existent operators '=+', '=-' and '=!' should not be used ([`non-existent-operator`])
@@ -28,7 +28,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * "if ... else if" constructs should end with "else" clauses ([`elseif-without-else`]) (*disabled*)
 * "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
 * Collapsible "if" statements should be merged ([`no-collapsible-if`])
-* Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`])
+* Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`]) (*uses-types*)
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
@@ -83,7 +83,9 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 
 ## Prerequisites
 
-Node.js (>=10.x).
+* Node.js (>=10.x).
+* ESLint 5.x, 6.x or 7.x (peer dependency for the plugin).
+* TypeScript (>=3.3.1) is marked as a peer dependency for the plugin and is required only if `@typescript-eslint/parser` is used as a parser for ESLint.
 
 ## Usage
 
@@ -122,6 +124,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
   }
 }
 ```
+* To enable all rules of this plugin use `@typescript-eslint/parser` as a parser for ESLint ([like we do](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/6e06d59a233e07b28fbbd6398e08b9b0c63b18f9/.eslintrc.js#L4)). Thanks to it, type information is available, which is beneficial or even essential for some rules.
 
 ## Available Configurations
 
