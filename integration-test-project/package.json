@@ -1,0 +1,9 @@
+{
+  "name": "integration-test-project",
+  "version": "1.0.0",
+  "description": "Test project to verify that eslint-plugin-sonarjs does not use any undeclared dependency",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "7.30.0"
+  }
+}

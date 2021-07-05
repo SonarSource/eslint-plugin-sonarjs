@@ -43,3 +43,4 @@ plugin_qa_task:
     - npm run lint
     - npm run ruling
     - ./scripts/analyze_and_publish.sh
+    - ./scripts/run_integration_test.sh
