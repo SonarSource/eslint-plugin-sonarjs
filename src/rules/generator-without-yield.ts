@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3531
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
+import { TSESTree } from '@typescript-eslint/experimental-utils';
 import { getMainFunctionTokenLocation } from '../utils/locations';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
