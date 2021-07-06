@@ -22,7 +22,6 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 const sonarjsRules: string[] = [
   'cognitive-complexity',
   'elseif-without-else',
-  'generator-without-yield',
   'max-switch-cases',
   'no-all-duplicated-branches',
   'no-collapsible-if',
