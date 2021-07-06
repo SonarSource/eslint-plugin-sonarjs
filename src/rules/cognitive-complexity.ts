@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3776
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isArrowFunctionExpression, isIfStatement, isLogicalExpression } from '../utils/nodes';
 import {
   getMainFunctionTokenLocation,

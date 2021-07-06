@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S4030
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { collectionConstructor, writingMethods } from '../utils/collections';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';

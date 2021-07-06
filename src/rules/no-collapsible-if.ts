@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1066
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';

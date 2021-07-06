@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3972
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { toEncodedMessage } from '../utils/locations';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';

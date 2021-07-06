@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1125
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { isBooleanLiteral, isIfStatement, isConditionalExpression } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';

@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1940
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { isThrowStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { Rule } from '../utils/types';

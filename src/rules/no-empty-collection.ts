@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S4158
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
   isIdentifier,
   findFirstMatchingAncestor,

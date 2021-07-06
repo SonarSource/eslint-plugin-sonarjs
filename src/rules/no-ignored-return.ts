@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S2201
 
-import * as ts from 'typescript';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
@@ -225,6 +224,9 @@ function isReplaceWithCallback(
   if (methodName === 'replace' && callArguments.length > 1) {
     const type = getTypeFromTreeNode(callArguments[1], services);
     const typeNode = services.program.getTypeChecker().typeToTypeNode(type, undefined, undefined);
+    // dynamically import 'typescript' as classic 'import' will fail if project not using 'typescript' parser
+    // we are sure it's available as 'RequiredParserServices' are available here
+    const ts = require('typescript');
     return typeNode && ts.isFunctionTypeNode(typeNode);
   }
   return false;
