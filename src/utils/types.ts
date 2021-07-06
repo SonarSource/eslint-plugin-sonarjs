@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 
 // utility to make field of the type optional https://stackoverflow.com/questions/43159887/make-a-single-property-optional-in-typescript
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;

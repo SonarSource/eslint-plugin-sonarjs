@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 
 const MODULE_DECLARATION_NODES = [
-  AST_NODE_TYPES.ImportDeclaration,
-  AST_NODE_TYPES.ExportNamedDeclaration,
-  AST_NODE_TYPES.ExportDefaultDeclaration,
-  AST_NODE_TYPES.ExportAllDeclaration,
+  'ImportDeclaration',
+  'ExportNamedDeclaration',
+  'ExportDefaultDeclaration',
+  'ExportAllDeclaration',
 ];
 
 export function isArrowFunctionExpression(

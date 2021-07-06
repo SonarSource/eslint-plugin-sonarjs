@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S4144
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';

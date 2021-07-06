@@ -85,7 +85,6 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 
 * Node.js (>=10.x).
 * ESLint 5.x, 6.x or 7.x (peer dependency for the plugin).
-* TypeScript (>=3.3.1) is marked as a peer dependency for the plugin and is required only if `@typescript-eslint/parser` is used as a parser for ESLint.
 
 ## Usage
 

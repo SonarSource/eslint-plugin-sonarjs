@@ -19,7 +19,7 @@
  */
 
 import { RuleTester as ESLintRuleTester } from 'eslint';
-import { TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESLint } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../src/utils/types';
 
 // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/experimental-utils/src/ts-eslint/RuleTester.ts

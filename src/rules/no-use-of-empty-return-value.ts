@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3699
 
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Identifier, Rule } from '../utils/types';
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';

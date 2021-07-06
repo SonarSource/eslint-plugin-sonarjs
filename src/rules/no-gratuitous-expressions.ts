@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S2589
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { EncodedMessage } from '../utils/locations';
 import { isIdentifier, isIfStatement } from '../utils/nodes';
 import { Rule } from '../utils/types';
