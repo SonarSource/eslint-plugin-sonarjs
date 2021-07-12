@@ -21,6 +21,6 @@
 import * as path from 'path';
 
 export default function docsUrl(ruleFileName: string) {
-  const ruleMarkdownDoc = path.basename(ruleFileName).replace('.ts', '.md');
+  const ruleMarkdownDoc = path.basename(ruleFileName).replace(/\.[jt]s$/, '.md');
   return `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${ruleMarkdownDoc}`;
 }
