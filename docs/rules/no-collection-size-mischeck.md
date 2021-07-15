@@ -5,19 +5,25 @@ The size of a collection and the length of an array are always greater than or e
 ## Noncompliant Code Example
 
 ```javascript
+const someSet = new Set();
 if (someSet.size >= 0) {...} // Noncompliant
 
+const someMap = new Map();
 if (someMap.size < 0) {...} // Noncompliant
 
+const someArray = new Array();
 const result = someArray.length >= 0;  // Noncompliant
 ```
 
 ## Compliant Solution
 
 ```javascript
+const someSet = new Set();
 if (someSet.size > 0) {...}
 
+const someMap = new Map();
 if (someMap.size == 0) {...}
 
+const someArray = new Array();
 const result = someArray.length > 0;
 ```
