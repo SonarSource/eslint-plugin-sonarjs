@@ -121,7 +121,7 @@ npm install eslint-plugin-sonarjs -g         # or install globally
   }
 }
 ```
-* To enable all rules of this plugin use `@typescript-eslint/parser` as a parser for ESLint ([like we do](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/6e06d59a233e07b28fbbd6398e08b9b0c63b18f9/.eslintrc.js#L4)). Thanks to it, type information is available, which is beneficial or even essential for some rules.
+* To enable all rules of this plugin, use `@typescript-eslint/parser` as a parser for ESLint ([like we do](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/6e06d59a233e07b28fbbd6398e08b9b0c63b18f9/.eslintrc.js#L4)) and set the [parserOptions.project](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsproject) option. Thanks to it, type information is available, which is beneficial or even essential for some rules.
 
 ## Available Configurations
 
