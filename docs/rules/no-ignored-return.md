@@ -16,6 +16,10 @@ To prevent generating any false-positives, this rule triggers an issues only on 
 let char = 'hello'.lastIndexOf('e');
 ```
 
+## Note
+
+The rule relies on type information and requires the use of `typescript-eslint/parser`.
+
 ## See
 
 <ul>
