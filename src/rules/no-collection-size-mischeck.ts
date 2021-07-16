@@ -51,7 +51,7 @@ const rule: Rule.RuleModule = {
             if (
               property.type === 'Identifier' &&
               CollectionSizeLike.includes(property.name) &&
-              (!isTypeCheckerAvailable || (services && isCollection(object, services)))
+              (!isTypeCheckerAvailable || isCollection(object, services!))
             ) {
               context.report({
                 message: `Fix this expression; ${property.name} of "${context
