@@ -205,7 +205,7 @@ function mightBeWritten(symbol: TSESLint.Scope.Variable, currentScope: TSESLint.
 
 function transformAndFilter(ids: TSESTree.Identifier[], currentScope: TSESLint.Scope.Scope) {
   return ids
-    .map(id => currentScope.upper!.references.find(r => r.identifier === id))
+    .map(id => currentScope.upper?.references.find(r => r.identifier === id))
     .filter(isDefined)
     .filter(ref => isDefined(ref.resolved))
     .filter(ref => !mightBeWritten(ref.resolved!, currentScope));
