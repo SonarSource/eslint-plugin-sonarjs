@@ -21,3 +21,7 @@ if (someMap.size == 0) {...}
 
 const result = someArray.length > 0;
 ```
+
+## Note
+
+The rule behaves differently depending on which parser is used. With the default parser, the rule performs syntactic analysis and considers only the property of the target object. With `typescript-eslint/parser`, and if correctly configured, the rule relies on type information and checks also that the target object is indeed a collection to avoid false-positives.

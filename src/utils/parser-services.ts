@@ -26,5 +26,5 @@ export type RequiredParserServices = {
 export function isRequiredParserServices(
   services: ParserServices | undefined,
 ): services is RequiredParserServices {
-  return !!services && !!services.program && !!services.esTreeNodeToTSNodeMap;
+  return services?.hasFullTypeInformation === true;
 }
