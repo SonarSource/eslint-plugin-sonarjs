@@ -113,7 +113,7 @@ const rule: Rule.RuleModule = {
     function getOnlyDeclaredVariable(node: TSESTree.Statement) {
       if (isVariableDeclaration(node) && node.declarations.length === 1) {
         const { id, init } = node.declarations[0];
-        if (isIdentifier(id) && init) {
+        if (isIdentifier(id) && init && !id.typeAnnotation) {
           return { id, init };
         }
       }
