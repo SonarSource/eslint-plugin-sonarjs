@@ -145,6 +145,14 @@ ruleTester.run('prefer-immediate-return', rule, {
     },
     {
       code: `
+        function variable_has_type_annotation() {
+          let foo: number = 1;
+          return foo;
+        }
+      `,
+    },
+    {
+      code: `
         function variable_is_used() {
           var bar = {
             doSomethingElse(p) {},
