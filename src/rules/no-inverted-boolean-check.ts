@@ -66,11 +66,14 @@ function visitUnaryExpression(
     if (invertedOperator) {
       const left = context.getSourceCode().getText(condition.left);
       const right = context.getSourceCode().getText(condition.right);
+      const [start, end] =
+        unaryExpression.parent?.type === 'UnaryExpression' ? ['(', ')'] : ['', ''];
       context.report({
         message: MESSAGE,
         data: { invertedOperator },
         node: unaryExpression,
-        fix: fixer => fixer.replaceText(unaryExpression, `${left} ${invertedOperator} ${right}`),
+        fix: fixer =>
+          fixer.replaceText(unaryExpression, `${start}${left} ${invertedOperator} ${right}${end}`),
       });
     }
   }
