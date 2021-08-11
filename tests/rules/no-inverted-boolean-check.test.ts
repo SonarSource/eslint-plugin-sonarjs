@@ -113,6 +113,11 @@ ruleTester.run('no-inverted-boolean-check', rule, {
       errors: [message('>')],
       output: `let foo = x > 4`,
     },
+    {
+      code: `let foo = !!(a < b)`,
+      errors: [message('>=')],
+      output: 'let foo = !(a >= b)',
+    },
   ],
 });
 
