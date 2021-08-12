@@ -226,6 +226,7 @@ function isReplaceWithCallback(
     const typeNode = services.program.getTypeChecker().typeToTypeNode(type, undefined, undefined);
     // dynamically import 'typescript' as classic 'import' will fail if project not using 'typescript' parser
     // we are sure it's available as 'RequiredParserServices' are available here
+    // eslint-disable-next-line import/no-extraneous-dependencies
     const ts = require('typescript');
     return typeNode && ts.isFunctionTypeNode(typeNode);
   }

@@ -99,6 +99,12 @@ module.exports = {
     'no-unused-vars': 'off',
 
     // import
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['tests/**/*', 'ruling/**/*'],
+      },
+    ],
     'import/extensions': 'error',
     'import/first': 'error',
     'import/newline-after-import': 'error',
