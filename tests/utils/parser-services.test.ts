@@ -18,7 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import * as path from 'path';
-import { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { isRequiredParserServices } from '../../src/utils/parser-services';
 import { Rule } from '../../src/utils/types';
 import { RuleTester } from '../rule-tester';
