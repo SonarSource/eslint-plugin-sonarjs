@@ -132,7 +132,7 @@ export function toSecondaryLocation(
   locationHolder: TSESLint.AST.Token | TSESTree.Node,
   message?: string,
 ): IssueLocation {
-  const loc = locationHolder.loc;
+  const { loc } = locationHolder;
   return {
     message,
     column: loc.start.column,
