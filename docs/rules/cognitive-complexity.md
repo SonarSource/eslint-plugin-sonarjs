@@ -12,7 +12,7 @@ The maximum authorized complexity can be provided. Default is 15.
 
 ```json
 {
-  "cognitive-complexity": "error",
-  "cognitive-complexity": ["error", 15]
+  "sonarjs/cognitive-complexity": "error",
+  "sonarjs/cognitive-complexity": ["error", 15]
 }
 ```
