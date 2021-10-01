@@ -20,7 +20,7 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2589
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { EncodedMessage } from '../utils/locations';
+import { report } from '../utils/locations';
 import { isIdentifier, isIfStatement } from '../utils/nodes';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
@@ -50,7 +50,7 @@ const rule: Rule.RuleModule = {
       IfStatement: (node: TSESTree.Node) => {
         const { test } = node as TSESTree.IfStatement;
         if (test.type === 'Literal' && typeof test.value === 'boolean') {
-          report(test, undefined, context, test.value);
+          reportIssue(test, undefined, context, test.value);
         }
       },
 
@@ -99,7 +99,7 @@ const rule: Rule.RuleModule = {
           map.forEach(references => {
             const ref = references.find(ref => ref.resolved === symbol);
             if (ref) {
-              report(id, ref, context, truthy);
+              reportIssue(id, ref, context, truthy);
             }
           });
         };
@@ -211,23 +211,21 @@ function transformAndFilter(ids: TSESTree.Identifier[], currentScope: TSESLint.S
     .filter(ref => !mightBeWritten(ref.resolved!, currentScope));
 }
 
-function report(
+function reportIssue(
   id: TSESTree.Node,
   ref: TSESLint.Scope.Reference | undefined,
   context: Rule.RuleContext,
   truthy: boolean,
 ) {
   const value = truthy ? 'truthy' : 'falsy';
-
-  const encodedMessage: EncodedMessage = {
-    message: `This always evaluates to ${value}. Consider refactoring this code.`,
-    secondaryLocations: getSecondaryLocations(ref, value),
-  };
-
-  context.report({
-    message: JSON.stringify(encodedMessage),
-    node: id,
-  });
+  report(
+    context,
+    {
+      message: `This always evaluates to ${value}. Consider refactoring this code.`,
+      loc: id.loc,
+    },
+    getSecondaryLocations(ref, value),
+  );
 }
 
 function getSecondaryLocations(ref: TSESLint.Scope.Reference | undefined, truthy: string) {
