@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-redundant-boolean');
 
 ruleTester.run('no-redundant-boolean', rule, {
@@ -37,23 +36,56 @@ ruleTester.run('no-redundant-boolean', rule, {
   invalid: [
     {
       code: 'if (x == true) {}',
-      errors: [{ message: 'Remove the unnecessary boolean literal.', column: 10, endColumn: 14 }],
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 10, endColumn: 14 }],
     },
-    { code: 'if (x == false) {}', errors: 1 },
-    { code: 'if (x || false) {}', errors: 1 },
-    { code: 'if (x && false) {}', errors: 1 },
+    {
+      code: 'if (x == false) {}',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 10, endColumn: 15 }],
+    },
+    {
+      code: 'if (x || false) {}',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 10, endColumn: 15 }],
+    },
+    {
+      code: 'if (x && false) {}',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 10, endColumn: 15 }],
+    },
 
-    { code: 'x || false ? 1 : 2', errors: 1 },
+    {
+      code: 'x || false ? 1 : 2',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 6, endColumn: 11 }],
+    },
 
-    { code: 'fn(!false)', errors: 1 },
+    {
+      code: 'fn(!false)',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 5, endColumn: 10 }],
+    },
 
-    { code: 'a == true == b;', errors: 1 },
-    { code: 'a == b == false;', errors: 1 },
-    { code: 'a == (true == b) == b;', errors: 1 },
+    {
+      code: 'a == true == b;',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 6, endColumn: 10 }],
+    },
+    {
+      code: 'a == b == false;',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 11, endColumn: 16 }],
+    },
+    {
+      code: 'a == (true == b) == b;',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 7, endColumn: 11 }],
+    },
 
-    { code: '!(true);', errors: 1 },
-    { code: 'a == (false);', errors: 1 },
+    {
+      code: '!(true);',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 3, endColumn: 7 }],
+    },
+    {
+      code: 'a == (false);',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 7, endColumn: 12 }],
+    },
 
-    { code: 'true && a;', errors: 1 },
+    {
+      code: 'true && a;',
+      errors: [{ messageId: 'removeUnnecessaryBoolean', column: 1, endColumn: 5 }],
+    },
   ],
 });

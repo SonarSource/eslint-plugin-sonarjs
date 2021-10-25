@@ -19,21 +19,23 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S126
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      addMissingElseClause: 'Add the missing "else" clause.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: '"if ... else if" constructs should end with "else" clauses',
-      category: 'Best Practices',
       recommended: false,
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       IfStatement: (node: TSESTree.Node) => {
         const ifstmt = node as TSESTree.IfStatement;
@@ -48,7 +50,7 @@ const rule: Rule.RuleModule = {
             token => token.type === 'Keyword' && token.value === 'if',
           );
           context.report({
-            message: `Add the missing "else" clause.`,
+            messageId: 'addMissingElseClause',
             loc: {
               start: elseKeyword!.loc.start,
               end: ifKeyword!.loc.end,

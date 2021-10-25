@@ -18,26 +18,28 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import * as path from 'path';
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import { RuleModule } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import { isRequiredParserServices } from '../../src/utils/parser-services';
-import { Rule } from '../../src/utils/types';
 import { RuleTester } from '../rule-tester';
 
-const MISSING_TYPE_INFORMATION = 'Missing type information';
-const AVAILABLE_TYPE_INFORMATION = 'Available type information';
-
-const rule: Rule.RuleModule = {
+const rule: RuleModule<string, string[]> = {
   meta: {
     type: 'problem',
+    messages: {
+      missingTypeInformation: 'Missing type information',
+      availableTypeInformation: 'Available type information',
+    },
+    schema: [],
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       Program: (node: TSESTree.Node) => {
         const services = context.parserServices;
         const hasTypeInformation = isRequiredParserServices(services);
-        const message = hasTypeInformation ? AVAILABLE_TYPE_INFORMATION : MISSING_TYPE_INFORMATION;
+        const message = hasTypeInformation ? 'availableTypeInformation' : 'missingTypeInformation';
         context.report({
-          message,
+          messageId: message,
           node,
         });
       },
@@ -45,7 +47,10 @@ const rule: Rule.RuleModule = {
   },
 };
 
-const typeAgnosticRuleTester = new RuleTester();
+const typeAgnosticRuleTester = new RuleTester({
+  // eslint-disable-next-line sonarjs/no-duplicate-string
+  parser: '@typescript-eslint/parser',
+});
 typeAgnosticRuleTester.run('Type information is missing with default configuration', rule, {
   valid: [],
   invalid: [
@@ -53,7 +58,7 @@ typeAgnosticRuleTester.run('Type information is missing with default configurati
       code: `console.log('Hello, world!');`,
       errors: [
         {
-          message: MISSING_TYPE_INFORMATION,
+          messageId: 'missingTypeInformation',
         },
       ],
     },
@@ -61,10 +66,10 @@ typeAgnosticRuleTester.run('Type information is missing with default configurati
 });
 
 const partiallyTypeAwareRuleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
+  parser: '@typescript-eslint/parser',
 });
 partiallyTypeAwareRuleTester.run(
-  'Type informaton is missing with typescript-eslint parser only',
+  'Type information is missing with typescript-eslint parser only',
   rule,
   {
     valid: [],
@@ -73,7 +78,7 @@ partiallyTypeAwareRuleTester.run(
         code: `console.log('Hello, world!');`,
         errors: [
           {
-            message: MISSING_TYPE_INFORMATION,
+            messageId: 'missingTypeInformation',
           },
         ],
       },
@@ -82,7 +87,7 @@ partiallyTypeAwareRuleTester.run(
 );
 
 const typeAwareRuleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
+  parser: '@typescript-eslint/parser',
   parserOptions: { project: path.resolve(`${__dirname}/../resources/tsconfig.json`) },
 });
 typeAwareRuleTester.run(
@@ -96,7 +101,7 @@ typeAwareRuleTester.run(
         filename: path.resolve(`${__dirname}/../resources/file.ts`),
         errors: [
           {
-            message: AVAILABLE_TYPE_INFORMATION,
+            messageId: 'availableTypeInformation',
           },
         ],
       },

@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/max-switch-cases');
 
 ruleTester.run('max-switch-cases', rule, {
@@ -70,7 +69,11 @@ ruleTester.run('max-switch-cases', rule, {
       options: [1],
       errors: [
         {
-          message: message(2, 1),
+          messageId: 'reduceNumberOfNonEmptySwitchCases',
+          data: {
+            numSwitchCases: 2,
+            maxSwitchCases: 1,
+          },
           line: 1,
           endLine: 1,
           column: 1,
@@ -80,7 +83,3 @@ ruleTester.run('max-switch-cases', rule, {
     },
   ],
 });
-
-function message(numSwitchCases: number, maxSwitchCases: number) {
-  return `Reduce the number of non-empty switch cases from ${numSwitchCases} to at most ${maxSwitchCases}.`;
-}

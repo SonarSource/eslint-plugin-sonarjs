@@ -19,7 +19,9 @@
  */
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
-import { Rule } from './types';
+
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+export type MutableReportDescriptor = Writeable<TSESLint.ReportDescriptor<string>>;
 
 export interface IssueLocation {
   column: number;
@@ -27,6 +29,7 @@ export interface IssueLocation {
   endColumn: number;
   endLine: number;
   message?: string;
+  data?: Record<string, unknown>;
 }
 
 export interface EncodedMessage {
@@ -41,10 +44,10 @@ export interface EncodedMessage {
  * - "function" keyword for a function expression
  * - "=>" for an arrow function
  */
-export function getMainFunctionTokenLocation(
+export function getMainFunctionTokenLocation<T = string>(
   fn: TSESTree.FunctionLike,
   parent: TSESTree.Node | undefined,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, T[]>,
 ) {
   let location: TSESTree.SourceLocation | null | undefined;
 
@@ -81,18 +84,61 @@ export function getMainFunctionTokenLocation(
  * Encode those extra information in the issue message when rule is executed
  * in Sonar* environment.
  */
-export function report(
-  context: Rule.RuleContext,
-  reportDescriptor: Rule.ReportDescriptor,
+export function report<T = string>(
+  context: TSESLint.RuleContext<string, T[]>,
+  reportDescriptor: MutableReportDescriptor,
   secondaryLocations: IssueLocation[] = [],
+  message: string,
   cost?: number,
 ) {
-  const { message } = reportDescriptor;
-  if (context.options[context.options.length - 1] === 'sonar-runtime') {
-    const encodedMessage: EncodedMessage = { secondaryLocations, message: message!, cost };
-    reportDescriptor.message = JSON.stringify(encodedMessage);
+  const lastOptionsElement = context.options[context.options.length - 1];
+
+  if (typeof lastOptionsElement !== 'string' || lastOptionsElement !== 'sonar-runtime') {
+    context.report(reportDescriptor);
+
+    return;
   }
+
+  const encodedMessage: EncodedMessage = {
+    secondaryLocations,
+    message: expandMessage(message, reportDescriptor.data),
+    cost,
+  };
+  reportDescriptor.messageId = 'sonarRuntime';
+
+  if (reportDescriptor.data === undefined) {
+    reportDescriptor.data = {};
+  }
+
+  (reportDescriptor.data as Record<string, unknown>).sonarRuntimeData =
+    JSON.stringify(encodedMessage);
+
   context.report(reportDescriptor);
+}
+
+export function expandMessage(
+  message: string,
+  reportDescriptorData: Record<string, unknown> | undefined,
+): string {
+  let expandedMessage = message;
+  if (reportDescriptorData !== undefined) {
+    for (const dataName of Object.keys(reportDescriptorData)) {
+      const dataValue = reportDescriptorData[dataName];
+      if (
+        typeof dataValue === 'string' ||
+        typeof dataValue === 'number' ||
+        typeof dataValue === 'boolean'
+      ) {
+        expandedMessage = replaceAll(expandedMessage, `{{${dataName}}}`, dataValue.toString());
+      }
+    }
+  }
+
+  return expandedMessage;
+}
+
+function replaceAll(target: string, search: string, replacement: string): string {
+  return target.split(search).join(replacement);
 }
 
 /**
@@ -102,30 +148,32 @@ export function issueLocation(
   startLoc: TSESTree.SourceLocation,
   endLoc: TSESTree.SourceLocation = startLoc,
   message = '',
+  data: Record<string, unknown> = {},
 ): IssueLocation {
-  return {
+  const issueLocation: IssueLocation = {
     line: startLoc.start.line,
     column: startLoc.start.column,
     endLine: endLoc.end.line,
     endColumn: endLoc.end.column,
     message,
   };
+
+  if (data !== undefined && Object.keys(data).length > 0) {
+    issueLocation.data = data;
+  }
+
+  return issueLocation;
 }
 
 export function toEncodedMessage(
-  message: string,
   secondaryLocationsHolder: Array<TSESLint.AST.Token | TSESTree.Node>,
   secondaryMessages?: string[],
-  cost?: number,
 ): string {
-  const encodedMessage: EncodedMessage = {
-    message,
-    cost,
-    secondaryLocations: secondaryLocationsHolder.map((locationHolder, index) =>
+  return JSON.stringify(
+    secondaryLocationsHolder.map((locationHolder, index) =>
       toSecondaryLocation(locationHolder, secondaryMessages ? secondaryMessages[index] : undefined),
     ),
-  };
-  return JSON.stringify(encodedMessage);
+  );
 }
 
 export function toSecondaryLocation(
@@ -142,20 +190,27 @@ export function toSecondaryLocation(
   };
 }
 
-function getTokenByValue(node: TSESTree.Node, value: string, context: Rule.RuleContext) {
+function getTokenByValue<T = string>(
+  node: TSESTree.Node,
+  value: string,
+  context: TSESLint.RuleContext<string, T[]>,
+) {
   return context
     .getSourceCode()
     .getTokens(node)
     .find(token => token.value === value);
 }
 
-export function getFirstTokenAfter(
+export function getFirstTokenAfter<T = string>(
   node: TSESTree.Node,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, T[]>,
 ): TSESLint.AST.Token | null {
   return context.getSourceCode().getTokenAfter(node);
 }
 
-export function getFirstToken(node: TSESTree.Node, context: Rule.RuleContext): TSESLint.AST.Token {
+export function getFirstToken<T = string>(
+  node: TSESTree.Node,
+  context: TSESLint.RuleContext<string, T[]>,
+): TSESLint.AST.Token {
   return context.getSourceCode().getTokens(node)[0];
 }

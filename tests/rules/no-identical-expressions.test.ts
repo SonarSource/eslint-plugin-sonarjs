@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-identical-expressions');
 
 ruleTester.run('no-identical-expressions', rule, {
@@ -53,7 +52,10 @@ ruleTester.run('no-identical-expressions', rule, {
       code: 'a == b && a == b',
       errors: [
         {
-          message: 'Correct one of the identical sub-expressions on both sides of operator "&&"',
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '&&',
+          },
           column: 1,
           endColumn: 17,
         },
@@ -61,7 +63,14 @@ ruleTester.run('no-identical-expressions', rule, {
     },
     {
       code: 'a == b || a == b',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '||',
+          },
+        },
+      ],
     },
     {
       code: `a == b || a == b
@@ -69,18 +78,23 @@ ruleTester.run('no-identical-expressions', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 1,
-                column: 0,
-                endLine: 1,
-                endColumn: 6,
-                message: '',
-              },
-            ],
-            message: `Correct one of the identical sub-expressions on both sides of operator "||"`,
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            operator: '||',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 1,
+                  column: 0,
+                  endLine: 1,
+                  endColumn: 6,
+                  message: '',
+                },
+              ],
+              message:
+                'Correct one of the identical sub-expressions on both sides of operator "||"',
+            }),
+          },
           line: 1,
           endLine: 1,
           column: 11,
@@ -90,63 +104,168 @@ ruleTester.run('no-identical-expressions', rule, {
     },
     {
       code: 'a > a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '>',
+          },
+        },
+      ],
     },
     {
       code: 'a >= a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '>=',
+          },
+        },
+      ],
     },
     {
       code: 'a < a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<',
+          },
+        },
+      ],
     },
     {
       code: 'a <= a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<=',
+          },
+        },
+      ],
     },
     {
       code: '5 / 5',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '/',
+          },
+        },
+      ],
     },
     {
       code: '5 - 5',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '-',
+          },
+        },
+      ],
     },
     {
       code: 'a << a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<<',
+          },
+        },
+      ],
     },
     {
       code: 'a << a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<<',
+          },
+        },
+      ],
     },
     {
       code: 'a >> a',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '>>',
+          },
+        },
+      ],
     },
     {
       code: '1 >> 1',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '>>',
+          },
+        },
+      ],
     },
     {
       code: '5 << 5',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<<',
+          },
+        },
+      ],
     },
     {
       code: 'obj.foo() == obj.foo()',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '==',
+          },
+        },
+      ],
     },
     {
       code: 'foo(/*comment*/() => doSomething()) === foo(() => doSomething())',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '===',
+          },
+        },
+      ],
     },
     {
       code: '(a == b) == (a == b)',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '==',
+          },
+        },
+      ],
     },
     {
       code: 'if (+a !== +a);',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '!==',
+          },
+        },
+      ],
     },
   ],
 });

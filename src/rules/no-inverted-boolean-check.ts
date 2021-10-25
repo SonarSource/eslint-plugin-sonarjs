@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1940
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isBinaryExpression } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
@@ -37,12 +36,15 @@ const invertedOperators: { [operator: string]: string } = {
   '<=': '>',
 };
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      useOppositeOperator: MESSAGE,
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -58,7 +60,7 @@ const rule: Rule.RuleModule = {
 
 function visitUnaryExpression(
   unaryExpression: TSESTree.UnaryExpression,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, string[]>,
 ) {
   if (unaryExpression.operator === '!' && isBinaryExpression(unaryExpression.argument)) {
     const condition: TSESTree.BinaryExpression = unaryExpression.argument;
@@ -69,7 +71,7 @@ function visitUnaryExpression(
       const [start, end] =
         unaryExpression.parent?.type === 'UnaryExpression' ? ['(', ')'] : ['', ''];
       context.report({
-        message: MESSAGE,
+        messageId: 'useOppositeOperator',
         data: { invertedOperator },
         node: unaryExpression,
         fix: fixer =>

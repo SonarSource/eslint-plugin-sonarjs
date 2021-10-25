@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/prefer-immediate-return');
 
 ruleTester.run('prefer-immediate-return', rule, {
@@ -174,8 +173,11 @@ ruleTester.run('prefer-immediate-return', rule, {
         }`,
       errors: [
         {
-          message:
-            'Immediately return this expression instead of assigning it to the temporary variable "x".',
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
           line: 3,
           column: 19,
           endColumn: 21,
@@ -193,7 +195,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           return x;
         }
       `,
-      errors: [{ line: 3, column: 19, endColumn: 21 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 3,
+          column: 19,
+          endColumn: 21,
+        },
+      ],
       output: `
         function let_returned() {
           return 42;
@@ -207,7 +220,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           return x;
         }
       `,
-      errors: [{ line: 3, column: 21, endColumn: 23 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 23,
+        },
+      ],
       output: `
         function const_returned() {
           return 42;
@@ -222,7 +246,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           return x;
         }
       `,
-      errors: [{ line: 4, column: 19, endColumn: 21 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 4,
+          column: 19,
+          endColumn: 21,
+        },
+      ],
       output: `
         function code_before_declaration() {
           foo();
@@ -236,7 +271,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           const x = new Error();
           throw x;
         }`,
-      errors: [{ line: 3, column: 21, endColumn: 32 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'throw',
+            variable: 'x',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 32,
+        },
+      ],
       output: `
         function thrown_nok() {
           throw new Error();
@@ -263,10 +309,46 @@ ruleTester.run('prefer-immediate-return', rule, {
         }
       `,
       errors: [
-        { line: 4, column: 21, endColumn: 26 },
-        { line: 9, column: 21, endColumn: 26 },
-        { line: 12, column: 21, endColumn: 26 },
-        { line: 15, column: 21, endColumn: 26 },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 4,
+          column: 21,
+          endColumn: 26,
+        },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 9,
+          column: 21,
+          endColumn: 26,
+        },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 12,
+          column: 21,
+          endColumn: 26,
+        },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 15,
+          column: 21,
+          endColumn: 26,
+        },
       ],
       output: `
         function different_blocks() {
@@ -296,7 +378,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           }
         }
       `,
-      errors: [{ line: 4, column: 21, endColumn: 26 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 4,
+          column: 21,
+          endColumn: 26,
+        },
+      ],
       output: `
         function two_declarations(a) {
           if (a) {
@@ -323,7 +416,19 @@ ruleTester.run('prefer-immediate-return', rule, {
           return bar;
         }
       `,
-      errors: [{ line: 3, column: 23, endLine: 11, endColumn: 12 }],
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'bar',
+          },
+          line: 3,
+          column: 23,
+          endLine: 11,
+          endColumn: 12,
+        },
+      ],
       output: `
         function homonymous_is_used() {
           return {
@@ -352,8 +457,26 @@ ruleTester.run('prefer-immediate-return', rule, {
         }
       `,
       errors: [
-        { line: 5, column: 25, endColumn: 26 },
-        { line: 8, column: 25, endColumn: 26 },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'y',
+          },
+          line: 5,
+          column: 25,
+          endColumn: 26,
+        },
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'z',
+          },
+          line: 8,
+          column: 25,
+          endColumn: 26,
+        },
       ],
       output: `
         function inside_switch(x) {
@@ -372,7 +495,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           var x = 42;
           return x
         }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 3,
+          column: 19,
+          endColumn: 21,
+        },
+      ],
       output: `
         function var_returned() {
           return 42
@@ -390,8 +524,11 @@ ruleTester.run('prefer-immediate-return', rule, {
       `,
       errors: [
         {
-          message:
-            'Immediately return this expression instead of assigning it to the temporary variable "x".',
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
         },
       ],
       output: `
@@ -411,7 +548,18 @@ ruleTester.run('prefer-immediate-return', rule, {
           return /* commentInTheMiddle2 */ x;   // commentOnTheLine2
           // comment3
         }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'doImmediateAction',
+          data: {
+            action: 'return',
+            variable: 'x',
+          },
+          line: 4,
+          column: 45,
+          endColumn: 47,
+        },
+      ],
       output: `
         function var_returned() {
           // comment1

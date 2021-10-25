@@ -30,18 +30,20 @@ import {
   isCallExpression,
 } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const message = (index: string, line: string) =>
-  `Verify this is the index that was intended; "${index}" was already set on line ${line}.`;
+const message =
+  'Verify this is the index that was intended; "{{index}}" was already set on line {{line}}.';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      verifyIntendedIndex: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description: 'Collection elements should not be replaced unconditionally',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -52,7 +54,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       SwitchCase(node: TSESTree.Node) {
         const switchCase = node as TSESTree.SwitchCase;
@@ -92,12 +94,14 @@ const rule: Rule.RuleModule = {
               context,
               {
                 node: keyWriteUsage.node,
-                message: message(
-                  keyWriteUsage.indexOrKey,
-                  String(sameKeyWriteUsage.node.loc.start.line),
-                ),
+                messageId: 'verifyIntendedIndex',
+                data: {
+                  index: keyWriteUsage.indexOrKey,
+                  line: sameKeyWriteUsage.node.loc.start.line,
+                },
               },
               secondaryLocations,
+              message,
             );
           }
           usedKeys.set(keyWriteUsage.indexOrKey, keyWriteUsage);

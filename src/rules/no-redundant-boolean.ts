@@ -19,24 +19,24 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1125
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isBooleanLiteral, isIfStatement, isConditionalExpression } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE = 'Remove the unnecessary boolean literal.';
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      removeUnnecessaryBoolean: 'Remove the unnecessary boolean literal.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Boolean literals should not be redundant',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       BinaryExpression(node: TSESTree.Node) {
         const expression = node as TSESTree.BinaryExpression;
@@ -74,7 +74,7 @@ const rule: Rule.RuleModule = {
 
     function checkBooleanLiteral(expression: TSESTree.Expression) {
       if (isBooleanLiteral(expression)) {
-        context.report({ message: MESSAGE, node: expression });
+        context.report({ messageId: 'removeUnnecessaryBoolean', node: expression });
       }
     }
   },

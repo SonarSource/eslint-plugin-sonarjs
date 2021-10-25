@@ -21,7 +21,6 @@
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { toEncodedMessage } from '../utils/locations';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
 interface SiblingIfStatement {
@@ -29,12 +28,15 @@ interface SiblingIfStatement {
   following: TSESTree.IfStatement;
 }
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      moveIfToNewLineOrAddMissingElse:
+        '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":{{secondaryLocations}}}',
+    },
     type: 'problem',
     docs: {
       description: 'Conditionals should start on new lines',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -45,7 +47,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     function checkStatements(statements: TSESTree.Node[]) {
       const sourceCode = context.getSourceCode();
       const siblingIfStatements = getSiblingIfStatements(statements);
@@ -62,9 +64,10 @@ const rule: Rule.RuleModule = {
           const precedingIfLastToken = sourceCode.getLastToken(precedingIf) as TSESLint.AST.Token;
           const followingIfToken = sourceCode.getFirstToken(followingIf) as TSESLint.AST.Token;
           context.report({
-            message: toEncodedMessage(`Move this "if" to a new line or add the missing "else".`, [
-              precedingIfLastToken,
-            ]),
+            messageId: 'moveIfToNewLineOrAddMissingElse',
+            data: {
+              secondaryLocations: toEncodedMessage([precedingIfLastToken]),
+            },
             loc: followingIfToken.loc,
           });
         }

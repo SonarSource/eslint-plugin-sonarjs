@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-same-line-conditional');
 
 ruleTester.run('Conditionals should start on new lines', rule, {
@@ -95,8 +94,10 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":6,"line":3,"endColumn":7,"endLine":3}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":6,"line":3,"endColumn":7,"endLine":3}]',
+          },
           line: 3,
           endLine: 3,
           column: 9,
@@ -122,16 +123,20 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":6,"endColumn":11,"endLine":6}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":10,"line":6,"endColumn":11,"endLine":6}]',
+          },
           line: 6,
           endLine: 6,
           column: 13,
           endColumn: 15,
         },
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":11,"endColumn":11,"endLine":11}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":10,"line":11,"endColumn":11,"endLine":11}]',
+          },
           line: 11,
           endLine: 11,
           column: 13,
@@ -147,8 +152,10 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":6,"line":4,"endColumn":7,"endLine":4}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":6,"line":4,"endColumn":7,"endLine":4}]',
+          },
         },
       ],
     },
@@ -162,8 +169,10 @@ ruleTester.run('Conditionals should start on new lines', rule, {
         }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":5,"endColumn":11,"endLine":5}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":10,"line":5,"endColumn":11,"endLine":5}]',
+          },
         },
       ],
     },
@@ -177,8 +186,10 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":8,"line":5,"endColumn":9,"endLine":5}]}',
+          messageId: 'moveIfToNewLineOrAddMissingElse',
+          data: {
+            secondaryLocations: '[{"column":8,"line":5,"endColumn":9,"endLine":5}]',
+          },
         },
       ],
     },

@@ -19,24 +19,23 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1479
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
-
-const MESSAGE =
-  'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.';
 
 const DEFAULT_MAX_SWITCH_CASES = 30;
 let maxSwitchCases = DEFAULT_MAX_SWITCH_CASES;
 
 type Options = [number];
 
-const rule: Rule.RuleModule<string, Options> = {
+const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
+    messages: {
+      reduceNumberOfNonEmptySwitchCases:
+        'Reduce the number of non-empty switch cases from {{numSwitchCases}} to at most {{maxSwitchCases}}.',
+    },
     type: 'suggestion',
     docs: {
       description: '"switch" statements should not have too many "case" clauses',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -60,7 +59,7 @@ const rule: Rule.RuleModule<string, Options> = {
 
 function visitSwitchStatement(
   switchStatement: TSESTree.SwitchStatement,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, Options>,
 ) {
   const nonEmptyCases = switchStatement.cases.filter(
     switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
@@ -68,7 +67,7 @@ function visitSwitchStatement(
   if (nonEmptyCases.length > maxSwitchCases) {
     const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;
     context.report({
-      message: MESSAGE,
+      messageId: 'reduceNumberOfNonEmptySwitchCases',
       loc: switchKeyword.loc,
       data: {
         numSwitchCases: nonEmptyCases.length.toString(),
