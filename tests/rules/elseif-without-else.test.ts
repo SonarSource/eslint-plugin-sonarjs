@@ -77,7 +77,7 @@ ruleTester.run(`"if ... else if" constructs should end with "else" clauses`, rul
       `,
       errors: [
         {
-          message: `Add the missing "else" clause.`,
+          messageId: 'addMissingElseClause',
           line: 6,
           endLine: 6,
           column: 9,
@@ -93,7 +93,15 @@ ruleTester.run(`"if ... else if" constructs should end with "else" clauses`, rul
         if (x == 1)
           x == -42;
       `,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'addMissingElseClause',
+          line: 4,
+          endLine: 5,
+          column: 7,
+          endColumn: 11,
+        },
+      ],
     },
   ],
 });

@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-small-switch');
 
 ruleTester.run('no-small-switch', rule, {
@@ -32,7 +31,7 @@ ruleTester.run('no-small-switch', rule, {
       code: 'switch (a) { case 1: doSomething(); break; default: doSomething(); }',
       errors: [
         {
-          message: '"switch" statements should have at least 3 "case" clauses',
+          messageId: 'switchStatementsShouldHave3CaseClauses',
           column: 1,
           endColumn: 7,
         },
@@ -40,11 +39,23 @@ ruleTester.run('no-small-switch', rule, {
     },
     {
       code: 'switch (a) { case 1: break; }',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'switchStatementsShouldHave3CaseClauses',
+          column: 1,
+          endColumn: 7,
+        },
+      ],
     },
     {
       code: 'switch (a) {}',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'switchStatementsShouldHave3CaseClauses',
+          column: 1,
+          endColumn: 7,
+        },
+      ],
     },
   ],
 });

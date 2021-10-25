@@ -19,25 +19,28 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3981
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
 const CollectionSizeLike = ['length', 'size'];
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      fixPropertyThatIsAlwaysEqualOrGreaterThanZero:
+        'Fix this expression; {{propertyName}} of "{{objectName}}" is always greater or equal to zero.',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Collection sizes and array length comparisons should make sense',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     const services = context.parserServices;
     const isTypeCheckerAvailable = isRequiredParserServices(services);
     return {
@@ -54,9 +57,11 @@ const rule: Rule.RuleModule = {
               (!isTypeCheckerAvailable || isCollection(object, services!))
             ) {
               context.report({
-                message: `Fix this expression; ${property.name} of "${context
-                  .getSourceCode()
-                  .getText(object)}" is always greater or equal to zero.`,
+                messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+                data: {
+                  propertyName: property.name,
+                  objectName: context.getSourceCode().getText(object),
+                },
                 node,
               });
             }

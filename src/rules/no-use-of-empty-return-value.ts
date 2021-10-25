@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3699
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Identifier, Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
@@ -52,18 +51,25 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
   );
 }
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      removeUseOfOutput:
+        'Remove this use of the output from "{{name}}"; "{{name}}" doesn\'t return anything.',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: "The output of functions that don't return anything should not be used",
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
   create(context) {
-    const callExpressionsToCheck: Map<Identifier, TSESTree.FunctionLike> = new Map();
+    const callExpressionsToCheck: Map<
+      TSESTree.Identifier | TSESTree.JSXIdentifier,
+      TSESTree.FunctionLike
+    > = new Map();
     const functionsWithReturnValue: Set<TSESTree.FunctionLike> = new Set();
 
     return {
@@ -130,7 +136,7 @@ const rule: Rule.RuleModule = {
         callExpressionsToCheck.forEach((functionDeclaration, callee) => {
           if (!functionsWithReturnValue.has(functionDeclaration)) {
             context.report({
-              message: `Remove this use of the output from "{{name}}"; "{{name}}" doesn't return anything.`,
+              messageId: 'removeUseOfOutput',
               node: callee,
               data: { name: callee.name },
             });

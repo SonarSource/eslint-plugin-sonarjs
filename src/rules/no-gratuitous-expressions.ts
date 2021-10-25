@@ -20,17 +20,21 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2589
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { EncodedMessage } from '../utils/locations';
+import { EncodedMessage, expandMessage } from '../utils/locations';
 import { isIdentifier, isIfStatement } from '../utils/nodes';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const message = 'This always evaluates to {{value}}. Consider refactoring this code.';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      refactorBooleanExpression: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'suggestion',
     docs: {
       description: 'Boolean expressions should not be gratuitous',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -41,8 +45,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
     const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
 
@@ -214,18 +217,25 @@ function transformAndFilter(ids: TSESTree.Identifier[], currentScope: TSESLint.S
 function report(
   id: TSESTree.Node,
   ref: TSESLint.Scope.Reference | undefined,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, string[]>,
   truthy: boolean,
 ) {
   const value = truthy ? 'truthy' : 'falsy';
+  const reportDescriptorData = {
+    value,
+  };
 
   const encodedMessage: EncodedMessage = {
-    message: `This always evaluates to ${value}. Consider refactoring this code.`,
+    message: expandMessage(message, reportDescriptorData),
     secondaryLocations: getSecondaryLocations(ref, value),
   };
 
   context.report({
-    message: JSON.stringify(encodedMessage),
+    messageId: 'sonarRuntime',
+    data: {
+      ...reportDescriptorData,
+      sonarRuntimeData: JSON.stringify(encodedMessage),
+    },
     node: id,
   });
 }

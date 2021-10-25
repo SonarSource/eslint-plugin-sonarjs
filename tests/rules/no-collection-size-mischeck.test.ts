@@ -19,11 +19,12 @@
  */
 import * as path from 'path';
 import { RuleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-collection-size-mischeck');
 
 // creates RuleTester with default parser without providing types
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+});
 
 ruleTester.run('Collection sizes and array length comparisons should make sense', rule, {
   valid: [
@@ -44,7 +45,11 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
       code: `if (collection.size < 0) {}`,
       errors: [
         {
-          message: `Fix this expression; size of "collection" is always greater or equal to zero.`,
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'size',
+            objectName: 'collection',
+          },
           line: 1,
           endLine: 1,
           column: 5,
@@ -54,17 +59,41 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
     },
     {
       code: `if (collection.length < 0) {}`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'collection',
+          },
+          line: 1,
+          endLine: 1,
+          column: 5,
+          endColumn: 26,
+        },
+      ],
     },
     {
       code: `if (collection.length >= 0) {}`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'collection',
+          },
+          line: 1,
+          endLine: 1,
+          column: 5,
+          endColumn: 27,
+        },
+      ],
     },
   ],
 });
 
 const ruleTesterTs = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2018,
     project: path.resolve(`${__dirname}/../resources/tsconfig.json`),
@@ -109,7 +138,11 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          message: `Fix this expression; length of "arr" is always greater or equal to zero.`,
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'arr',
+          },
           line: 3,
           endLine: 3,
           column: 11,
@@ -123,7 +156,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (arr.length >= 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'arr',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 26,
+        },
+      ],
     },
     {
       code: `
@@ -131,7 +176,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (arr.length >= 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'arr',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 26,
+        },
+      ],
     },
     {
       code: `
@@ -139,7 +196,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (set.length < 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'set',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 25,
+        },
+      ],
     },
     {
       code: `
@@ -147,7 +216,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (map.length < 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'map',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 25,
+        },
+      ],
     },
     {
       code: `
@@ -155,7 +236,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (set.length < 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'set',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 25,
+        },
+      ],
     },
     {
       code: `
@@ -163,7 +256,19 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       if (map.length < 0) {}
       `,
       filename,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          data: {
+            propertyName: 'length',
+            objectName: 'map',
+          },
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 25,
+        },
+      ],
     },
   ],
 });

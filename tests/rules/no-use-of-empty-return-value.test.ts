@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ruleTester, TestCaseError } from '../rule-tester';
-
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ruleTester } from '../rule-tester';
 import rule = require('../../src/rules/no-use-of-empty-return-value');
 
 const FUNCTION_NO_RETURN = 'function noReturn() { }\n ';
@@ -75,23 +75,29 @@ ruleTester.run('no-use-of-empty-return-value', rule, {
 function invalidPrefixWithFunction(
   code: string,
   functionName: string = 'noReturn',
-): { code: string; errors: TestCaseError[] } {
+): { code: string; errors: TSESLint.TestCaseError<string>[] } {
   return {
     code: 'function noReturn() { 1;} ' + code,
     errors: [
       {
-        message: `Remove this use of the output from "${functionName}"; "${functionName}" doesn't return anything.`,
+        messageId: 'removeUseOfOutput',
+        data: {
+          name: functionName,
+        },
       },
     ],
   };
 }
 
-function invalid(code: string): { code: string; errors: TestCaseError[] } {
+function invalid(code: string): { code: string; errors: TSESLint.TestCaseError<string>[] } {
   return {
     code,
     errors: [
       {
-        message: `Remove this use of the output from "noReturn"; "noReturn" doesn't return anything.`,
+        messageId: 'removeUseOfOutput',
+        data: {
+          name: 'noReturn',
+        },
       },
     ],
   };

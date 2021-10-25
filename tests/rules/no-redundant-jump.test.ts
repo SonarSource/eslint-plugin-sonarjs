@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-redundant-jump');
 
 function invalid(code: string) {
@@ -27,7 +26,7 @@ function invalid(code: string) {
     code,
     errors: [
       {
-        message: 'Remove this redundant jump.',
+        messageId: 'removeRedundantJump',
         line,
         endLine: line,
       },

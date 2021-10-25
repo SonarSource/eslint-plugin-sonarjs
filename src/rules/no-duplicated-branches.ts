@@ -19,24 +19,26 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1871
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, takeWithoutBreak, collectSwitchBranches } from '../utils/conditions';
 import { report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE =
+const message =
   "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      fixTheSameConditionalStructure: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description:
         'Two branches in a conditional structure should not have exactly the same implementation',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -170,8 +172,13 @@ const rule: Rule.RuleModule = {
       const equivalentNodeLoc = equivalentNode.loc as TSESTree.SourceLocation;
       report(
         context,
-        { message: MESSAGE, data: { type, line: String(equivalentNode.loc!.start.line) }, node },
+        {
+          messageId: 'fixTheSameConditionalStructure',
+          data: { type, line: String(equivalentNode.loc!.start.line) },
+          node,
+        },
         [issueLocation(equivalentNodeLoc, equivalentNodeLoc, 'Original')],
+        message,
       );
     }
   },

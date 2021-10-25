@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/prefer-single-boolean-return');
 
 ruleTester.run('prefer-single-boolean-return', rule, {
@@ -164,15 +163,27 @@ ruleTester.run('prefer-single-boolean-return', rule, {
       `,
       errors: [
         {
-          message: 'Replace this if-then-else statement by a single return statement.',
+          messageId: 'replaceIfThenElseByReturn',
           line: 3,
           column: 11,
           endLine: 7,
           endColumn: 12,
         },
-        { line: 9, column: 11, endLine: 13, endColumn: 12 },
-        { line: 15, column: 11, endLine: 16, endColumn: 29 },
-        { line: 18, column: 11, endLine: 22, endColumn: 12 },
+        { messageId: 'replaceIfThenElseByReturn', line: 9, column: 11, endLine: 13, endColumn: 12 },
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          line: 15,
+          column: 11,
+          endLine: 16,
+          endColumn: 29,
+        },
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          line: 18,
+          column: 11,
+          endLine: 22,
+          endColumn: 12,
+        },
       ],
     },
   ],

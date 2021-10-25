@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3776
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isArrowFunctionExpression, isIfStatement, isLogicalExpression } from '../utils/nodes';
 import {
   getMainFunctionTokenLocation,
@@ -29,7 +29,6 @@ import {
   IssueLocation,
   issueLocation,
 } from '../utils/locations';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
 const DEFAULT_THRESHOLD = 15;
@@ -43,14 +42,18 @@ type LoopStatement =
 
 type OptionalLocation = TSESTree.SourceLocation | null | undefined;
 
-type Options = [number, 'metric'];
+const message =
+  'Refactor this function to reduce its Cognitive Complexity from {{complexityAmount}} to the {{threshold}} allowed.';
 
-const rule: Rule.RuleModule<string, Options> = {
+const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]> = {
   meta: {
+    messages: {
+      refactorFunction: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'suggestion',
     docs: {
       description: 'Cognitive Complexity of functions should not be too high',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -63,7 +66,8 @@ const rule: Rule.RuleModule<string, Options> = {
     ],
   },
   create(context) {
-    const threshold: number = getThreshold();
+    const rawThreshold: number | 'metric' | 'sonar-runtime' = getThreshold();
+    const threshold: number = typeof rawThreshold === 'string' ? DEFAULT_THRESHOLD : rawThreshold;
     const isFileComplexity: boolean = context.options.includes('metric');
 
     /** Complexity of the file */
@@ -142,7 +146,11 @@ const rule: Rule.RuleModule<string, Options> = {
         if (isFileComplexity) {
           // as issues are the only communication channel of a rule
           // we pass data as serialized json as an issue message
-          context.report({ node, message: fileComplexity.toString() });
+          context.report({
+            node,
+            messageId: 'refactorFunction',
+            data: { complexityAmount: fileComplexity },
+          });
         }
       },
 
@@ -410,10 +418,15 @@ const rule: Rule.RuleModule<string, Options> = {
         report(
           context,
           {
-            message: `Refactor this function to reduce its Cognitive Complexity from ${complexityAmount} to the ${threshold} allowed.`,
+            messageId: 'refactorFunction',
+            data: {
+              complexityAmount,
+              threshold,
+            },
             loc,
           },
           secondaryLocations,
+          message,
           complexityAmount - threshold,
         );
       }

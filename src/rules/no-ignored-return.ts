@@ -19,9 +19,8 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S2201
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
 
@@ -172,17 +171,21 @@ const METHODS_WITHOUT_SIDE_EFFECTS: { [index: string]: Set<string> } = {
   ]),
 };
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      considerUsingForEachInsteadOfMap: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
+      returnValueMustBeUsed: 'The return value of "{{methodName}}" must be used.',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Return values from functions without side effects should not be ignored',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     if (!isRequiredParserServices(context.parserServices)) {
       return {};
     }
@@ -204,10 +207,7 @@ const rule: Rule.RuleModule = {
               !hasSideEffect(methodName, objectType, services) &&
               !isReplaceWithCallback(methodName, call.arguments, services)
             ) {
-              context.report({
-                message: message(methodName),
-                node,
-              });
+              context.report(reportDescriptor(methodName, node));
             }
           }
         }
@@ -233,11 +233,21 @@ function isReplaceWithCallback(
   return false;
 }
 
-function message(methodName: string): string {
+function reportDescriptor(
+  methodName: string,
+  node: TSESTree.Node,
+): TSESLint.ReportDescriptor<string> {
   if (methodName === 'map') {
-    return `Consider using "forEach" instead of "map" as its return value is not being used here.`;
+    return {
+      messageId: 'considerUsingForEachInsteadOfMap',
+      node,
+    };
   } else {
-    return `The return value of "${methodName}" must be used.`;
+    return {
+      messageId: 'returnValueMustBeUsed',
+      node,
+      data: { methodName },
+    };
   }
 }
 

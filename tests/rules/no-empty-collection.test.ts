@@ -73,11 +73,11 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               const otherArray = [1,2,3,4];
               overwrittenArray = otherArray;
               foo(overwrittenArray[1]); // OK
-        
+
               const arrayWrittenInsideArrow: number[] = [];
               foo((n: number) => arrayWrittenInsideArrow.push(n));
               foo(arrayWrittenInsideArrow[1]);  // OK
-        
+
               let arrayWrittenInsideArrow2: number[] = [];
               foo((n: number) => arrayWrittenInsideArrow2 = otherArray);
               foo(arrayWrittenInsideArrow2[1]); // OK
@@ -92,7 +92,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               // Type Alias Declaration
               type MyArrayTypeAlias = T[];
               // OK, symbol MyArrayTypeAlias is a TypeAliasDeclaration
-              function isMyArrayTypeAlias(value: MyArrayTypeAlias | number): value is MyArrayTypeAlias { 
+              function isMyArrayTypeAlias(value: MyArrayTypeAlias | number): value is MyArrayTypeAlias {
                 return !!(value as any).length;
               }`,
     },
@@ -114,7 +114,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               const reassignedArray: number[] = [];
               const aliasArray = reassignedArray;
               aliasArray.push(1);
-              
+
               foo(aliasArray[0]); // OK
               foo(reassignedArray[0]); // OK
             }`,
@@ -148,7 +148,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               const potentiallyNonEmptyArray1 : number [] = [];
               const potentiallyNonEmptyArray2: number[] = [];
               (flag ? potentiallyNonEmptyArray1 : potentiallyNonEmptyArray2).push(1);
-              
+
               foo(potentiallyNonEmptyArray1[0]); // OK
               foo(potentiallyNonEmptyArray2[0]); // OK
             }`,
@@ -169,7 +169,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
         let a = [];
         innerFunction();
         a.indexOf('x');
-      
+
         function innerFunction() {
           a[0] = 42;
         }
@@ -180,7 +180,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
         let a = [];
         innerFunction();
         a.indexOf('x');
-      
+
         function innerFunction() {
           a = unknownFunction();
         }
@@ -200,7 +200,7 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
     {
       code: `
       // Analogous to parametersAreIgnored
-      import {c} from nonemptyCollections;
+      import {c} from 'nonemptyCollections';
       c = [];
       console.log(c[0]); // FN introduced with issue-1974 to avoid FPs
       `,
@@ -220,7 +220,10 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               }`,
       errors: [
         {
-          message: 'Review this usage of "array" as it can only be empty here.',
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
           line: 3,
           endLine: 3,
           column: 29,
@@ -235,7 +238,10 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
             }`,
       errors: [
         {
-          message: 'Review this usage of "initialArray" as it can only be empty here.',
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'initialArray',
+          },
         },
       ],
     },
@@ -247,7 +253,32 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               console.log(array[2]);
               console.log(array[2]);
             }`,
-      errors: 4,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+      ],
     },
     {
       code: `const array : number[] = [];
@@ -262,37 +293,101 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               array[Symbol.iterator](); // Noncompliant
             }
             `,
-      errors: 4,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'array',
+          },
+        },
+      ],
     },
     {
       code: `function testCollectionContructors(){
               const arrayConstructor = new Array();
               arrayConstructor.forEach(item => console.log()); // Noncompliant
-            
+
               const arrayWithoutNew = Array();
               arrayWithoutNew.map(item => console.log()); // Noncompliant
-            
+
               const myMap = new Map();
               myMap.get(1); // Noncompliant
 
               const mySet = new Set();
               mySet.has(1); // Noncompliant
             }`,
-      errors: 4,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'arrayConstructor',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'arrayWithoutNew',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'myMap',
+          },
+        },
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'mySet',
+          },
+        },
+      ],
     },
     {
       code: `function compoundAssignmentEmptyArray() {
               const compoundAssignmentEmptyArray: number[] = [];
               compoundAssignmentEmptyArray[1] += 42; // Noncompliant
             }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'compoundAssignmentEmptyArray',
+          },
+        },
+      ],
     },
     {
       code: `function elementAccessWithoutAssignment() {
               const elementAccessWithoutAssignment: number[] = [];
               foo(elementAccessWithoutAssignment[1]); // Noncompliant
             }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'elementAccessWithoutAssignment',
+          },
+        },
+      ],
     },
     {
       code: `function okLatelyInitialized() {
@@ -300,12 +395,26 @@ ruleTester.run('Empty collections should not be accessed or iterated', rule, {
               arrayLatelyInitialized = [];
               arrayLatelyInitialized.forEach(item => console.log()); // Noncompliant
             }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'arrayLatelyInitialized',
+          },
+        },
+      ],
     },
     {
       code: `export let exportedArray: number[] = [];
             foo(exportedArray[1]); // Can be a FP, but it's a corner case`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'reviewUsageOfIdentifier',
+          data: {
+            identifierName: 'exportedArray',
+          },
+        },
+      ],
     },
   ],
 });

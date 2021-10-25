@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1192
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
 
 // Number of times a literal must be duplicated to trigger an issue
@@ -33,16 +32,18 @@ const EXCLUDED_CONTEXTS = [
   'ExportAllDeclaration',
   'ExportNamedDeclaration',
 ];
-const MESSAGE = 'Define a constant instead of duplicating this literal {{times}} times.';
 
 type Options = [number];
 
-const rule: Rule.RuleModule<string, Options> = {
+const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
+    messages: {
+      defineConstantInsteadOfDuplicatingLiteral:
+        'Define a constant instead of duplicating this literal {{times}} times.',
+    },
     type: 'suggestion',
     docs: {
       description: 'String literals should not be duplicated',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -81,7 +82,7 @@ const rule: Rule.RuleModule<string, Options> = {
         literalsByValue.forEach(literals => {
           if (literals.length >= threshold) {
             context.report({
-              message: MESSAGE,
+              messageId: 'defineConstantInsteadOfDuplicatingLiteral',
               node: literals[0],
               data: { times: literals.length.toString() },
             });
@@ -92,7 +93,10 @@ const rule: Rule.RuleModule<string, Options> = {
   },
 };
 
-function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.Literal) {
+function isExcludedByUsageContext(
+  context: TSESLint.RuleContext<string, Options>,
+  literal: TSESTree.Literal,
+) {
   const parent = literal.parent!;
   const parentType = parent.type;
 
@@ -103,7 +107,7 @@ function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.L
   );
 }
 
-function isRequireContext(parent: TSESTree.Node, context: Rule.RuleContext) {
+function isRequireContext(parent: TSESTree.Node, context: TSESLint.RuleContext<string, Options>) {
   return (
     parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
   );

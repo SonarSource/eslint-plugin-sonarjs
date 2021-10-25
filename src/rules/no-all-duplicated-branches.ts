@@ -19,30 +19,30 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3923
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE =
-  "Remove this conditional structure or edit its code blocks so that they're not all the same.";
-const MESSAGE_CONDITIONAL_EXPRESSION =
-  'This conditional operation returns the same value whether the condition is "true" or "false".';
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      removeOrEditConditionalStructure:
+        "Remove this conditional structure or edit its code blocks so that they're not all the same.",
+      returnsTheSameValue:
+        'This conditional operation returns the same value whether the condition is "true" or "false".',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description:
         'All branches in a conditional structure should not have exactly the same implementation',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       IfStatement(node: TSESTree.Node) {
         const ifStmt = node as TSESTree.IfStatement;
@@ -51,7 +51,7 @@ const rule: Rule.RuleModule = {
         if (!isIfStatement(node.parent)) {
           const { branches, endsWithElse } = collectIfBranches(ifStmt);
           if (endsWithElse && allDuplicated(branches)) {
-            context.report({ message: MESSAGE, node: ifStmt });
+            context.report({ messageId: 'removeOrEditConditionalStructure', node: ifStmt });
           }
         }
       },
@@ -60,7 +60,7 @@ const rule: Rule.RuleModule = {
         const switchStmt = node as TSESTree.SwitchStatement;
         const { branches, endsWithDefault } = collectSwitchBranches(switchStmt);
         if (endsWithDefault && allDuplicated(branches)) {
-          context.report({ message: MESSAGE, node: switchStmt });
+          context.report({ messageId: 'removeOrEditConditionalStructure', node: switchStmt });
         }
       },
 
@@ -68,7 +68,7 @@ const rule: Rule.RuleModule = {
         const conditional = node as TSESTree.ConditionalExpression;
         const branches = [conditional.consequent, conditional.alternate];
         if (allDuplicated(branches)) {
-          context.report({ message: MESSAGE_CONDITIONAL_EXPRESSION, node: conditional });
+          context.report({ messageId: 'returnsTheSameValue', node: conditional });
         }
       },
     };

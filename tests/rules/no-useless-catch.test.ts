@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-useless-catch');
 
 ruleTester.run('no-useless-catch', rule, {
@@ -55,8 +54,7 @@ ruleTester.run('no-useless-catch', rule, {
       code: `try {} catch (e) { throw e; }`,
       errors: [
         {
-          message:
-            'Add logic to this catch clause or eliminate it and rethrow the exception automatically.',
+          messageId: 'addLogicToCatchClauseOrEliminate',
           line: 1,
           endLine: 1,
           column: 8,
@@ -69,7 +67,15 @@ ruleTester.run('no-useless-catch', rule, {
         // some comment
         throw e;
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'addLogicToCatchClauseOrEliminate',
+          line: 1,
+          endLine: 1,
+          column: 8,
+          endColumn: 13,
+        },
+      ],
     },
     {
       code: `try {
@@ -79,7 +85,15 @@ ruleTester.run('no-useless-catch', rule, {
       } finally {
         // ...
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'addLogicToCatchClauseOrEliminate',
+          line: 3,
+          endLine: 3,
+          column: 9,
+          endColumn: 14,
+        },
+      ],
     },
   ],
 });

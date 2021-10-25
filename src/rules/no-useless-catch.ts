@@ -22,30 +22,33 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { isThrowStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE =
-  'Add logic to this catch clause or eliminate it and rethrow the exception automatically.';
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      addLogicToCatchClauseOrEliminate:
+        'Add logic to this catch clause or eliminate it and rethrow the exception automatically.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: '"catch" clauses should do more than rethrow',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       CatchClause: (node: TSESTree.Node) => visitCatchClause(node as TSESTree.CatchClause, context),
     };
   },
 };
 
-function visitCatchClause(catchClause: TSESTree.CatchClause, context: Rule.RuleContext) {
+function visitCatchClause(
+  catchClause: TSESTree.CatchClause,
+  context: TSESLint.RuleContext<string, string[]>,
+) {
   const statements = catchClause.body.body;
   if (
     catchClause.param &&
@@ -54,7 +57,7 @@ function visitCatchClause(catchClause: TSESTree.CatchClause, context: Rule.RuleC
   ) {
     const catchKeyword = context.getSourceCode().getFirstToken(catchClause)!;
     context.report({
-      message: MESSAGE,
+      messageId: 'addLogicToCatchClauseOrEliminate',
       loc: catchKeyword.loc,
     });
   }

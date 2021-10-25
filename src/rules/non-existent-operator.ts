@@ -20,15 +20,17 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2757
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      useExistingOperator: 'Was "{{operator}}=" meant instead?',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -49,7 +51,10 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function checkOperator(context: Rule.RuleContext, unaryNode?: TSESTree.Expression | null) {
+function checkOperator(
+  context: TSESLint.RuleContext<string, string[]>,
+  unaryNode?: TSESTree.Expression | null,
+) {
   if (
     unaryNode &&
     unaryNode.type === 'UnaryExpression' &&
@@ -71,7 +76,10 @@ function checkOperator(context: Rule.RuleContext, unaryNode?: TSESTree.Expressio
       !areAdjacent(unaryOperatorToken, expressionFirstToken)
     ) {
       context.report({
-        message: `Was "${unaryNode.operator}=" meant instead?`,
+        messageId: 'useExistingOperator',
+        data: {
+          operator: unaryNode.operator,
+        },
         loc: { start: assignmentOperatorToken.loc.start, end: unaryOperatorToken.loc.end },
       });
     }

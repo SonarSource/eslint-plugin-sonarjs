@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1764
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isIdentifier, isLiteral } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation, IssueLocation } from '../utils/locations';
@@ -42,9 +41,6 @@ const RELEVANT_OPERATOR_TOKEN_KINDS = new Set([
   '>=',
 ]);
 
-const message = (operator: string) =>
-  `Correct one of the identical sub-expressions on both sides of operator "${operator}"`;
-
 function hasRelevantOperator(node: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
   return (
     RELEVANT_OPERATOR_TOKEN_KINDS.has(node.operator) ||
@@ -60,12 +56,18 @@ function isOneOntoOneShifting(node: TSESTree.BinaryExpression | TSESTree.Logical
   return node.operator === '<<' && isLiteral(node.left) && node.left.value === 1;
 }
 
-const rule: Rule.RuleModule = {
+const message =
+  'Correct one of the identical sub-expressions on both sides of operator "{{operator}}"';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      correctIdenticalSubExpressions: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description: 'Identical expressions should not be used on both sides of a binary operator',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -76,7 +78,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       LogicalExpression(node: TSESTree.Node) {
         check(node as TSESTree.LogicalExpression);
@@ -99,10 +101,14 @@ const rule: Rule.RuleModule = {
         report(
           context,
           {
-            message: message(expr.operator),
+            messageId: 'correctIdenticalSubExpressions',
+            data: {
+              operator: expr.operator,
+            },
             node: isSonarRuntime() ? expr.right : expr,
           },
           secondaryLocations,
+          message,
         );
       }
     }
