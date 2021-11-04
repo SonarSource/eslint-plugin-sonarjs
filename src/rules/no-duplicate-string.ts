@@ -30,6 +30,7 @@ const MIN_LENGTH = 10;
 const NO_SEPARATOR_REGEXP = /^\w*$/;
 const EXCLUDED_CONTEXTS = [
   'ImportDeclaration',
+  'ImportExpression',
   'JSXAttribute',
   'ExportAllDeclaration',
   'ExportNamedDeclaration',
