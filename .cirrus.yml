@@ -37,12 +37,12 @@ plugin_qa_task:
     - jfrog config import $REPOX_CLI_CONFIG_QA_DEPLOYER
     - jfrog rt ping
     #- curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
-    #- init_git_submodules -r
-    #- npm ci
-    #- npm run typecheck
-    #- npm run build
-    #- ./scripts/test-ci.sh
-    #- npm run check-format
-    #- npm run lint
-    #- npm run ruling
-    #- ./scripts/analyze_and_publish.sh
+    - init_git_submodules -r
+    - jfrog rt npm-ci
+    - npm run typecheck
+    - npm run build
+    - ./scripts/test-ci.sh
+    - npm run check-format
+    - npm run lint
+    - npm run ruling
+    - ./scripts/analyze_and_publish.sh
