@@ -19,3 +19,4 @@ sonar-scanner \
 
 #npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
 jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
+jfrog rt build-publish eslint-plugin-sonarjs $BUILD_NUMBER
