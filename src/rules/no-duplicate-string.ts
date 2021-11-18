@@ -22,6 +22,7 @@
 import type { TSESTree } from '@typescript-eslint/experimental-utils';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
+import { issueLocation, report } from '../utils/locations';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
@@ -46,7 +47,10 @@ const rule: Rule.RuleModule<string, Options> = {
       recommended: 'error',
       url: docsUrl(__filename),
     },
-    schema: [{ type: 'integer', minimum: 2 }],
+    schema: [
+      { type: 'integer', minimum: 2 },
+      { enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */ },
+    ],
   },
 
   create(context) {
@@ -80,11 +84,15 @@ const rule: Rule.RuleModule<string, Options> = {
       'Program:exit'() {
         literalsByValue.forEach(literals => {
           if (literals.length >= threshold) {
-            context.report({
-              message: MESSAGE,
-              node: literals[0],
-              data: { times: literals.length.toString() },
-            });
+            const [primaryNode, ...secondaryNodes] = literals;
+            const secondaryIssues = secondaryNodes.map(node =>
+              issueLocation(node.loc, node.loc, 'Duplication'),
+            );
+            report(
+              context,
+              { message: MESSAGE, node: primaryNode, data: { times: literals.length.toString() } },
+              secondaryIssues,
+            );
           }
         });
       },

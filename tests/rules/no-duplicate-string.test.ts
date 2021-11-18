@@ -162,6 +162,32 @@ ruleTester.run('no-duplicate-string', rule, {
     },
     {
       code: `
+    console.log("some message");
+    console.log('some message');`,
+      errors: [
+        {
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 3,
+                column: 16,
+                endLine: 3,
+                endColumn: 30,
+                message: 'Duplication',
+              },
+            ],
+            message: 'Define a constant instead of duplicating this literal 2 times.',
+          }),
+          line: 2,
+          endLine: 2,
+          column: 17,
+          endColumn: 31,
+        },
+      ],
+      options: [2, 'sonar-runtime'],
+    },
+    {
+      code: `
     <Foo bar="some string"></Foo>;
     <Foo bar="some string"></Foo>;
     <Foo bar="some string"></Foo>;
