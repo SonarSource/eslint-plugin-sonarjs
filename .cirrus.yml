@@ -5,6 +5,7 @@ env:
   SONAR_TOKEN: ENCRYPTED[!4e5894b7b32f763db69e70fb56188d3f42539db36374b1f97c425f37a7ecd441c28a9da267c461b9cc8fb53124f14c22!]
   REPOX_QA_DEPLOYER_API_KEY: ENCRYPTED[!d484e19f33c9ce63b165f70e414a33b1ac6c215a126791aacbf8059626caf0fd8a78e999a20af5c1a4ba01c0b0247921!]
   REPOX_CLI_CONFIG_QA_DEPLOYER: ENCRYPTED[!5aec4f862abfef35be645c235bbe93c72642ddbf9734b27dabdfe4e3a2d800b32d6e3474e2a11546ddd18dc076391b01!]
+  REPOX_CLI_CONFIG_BUILD_PROMOTER: ENCRYPTED[!e4f8d6e32933306ee4d11f1e04bb9cc3c88fa45e53f1252342279da960fa5ae01c55e3f144a55ba8245ae3bab5b08c64!]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
@@ -35,8 +36,7 @@ plugin_qa_task:
     SONARSOURCE_QA: true  
   script:
     - jfrog config import $REPOX_CLI_CONFIG_QA_DEPLOYER
-    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public
-    #- curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - init_git_submodules -r
     - jfrog rt npm-ci
     - npm run typecheck

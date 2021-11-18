@@ -17,6 +17,7 @@ sonar-scanner \
   -Dsonar.host.url=https://sonarcloud.io \
   -DbuildNumber=$BUILD_NUMBER
 
-#npm publish --registry https://repox.jfrog.io/artifactory/api/npm/sonarsource-npm-public/
 jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
 jfrog rt build-publish eslint-plugin-sonarjs $BUILD_NUMBER
+jfrog config import $REPOX_CLI_CONFIG_BUILD_PROMOTER
+jfrog rt bpr --status it-passed eslint-plugin-sonarjs $BUILD_NUMBER sonarsource-npm-public
