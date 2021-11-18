@@ -35,7 +35,7 @@ plugin_qa_task:
     SONARSOURCE_QA: true  
   script:
     - jfrog config import $REPOX_CLI_CONFIG_QA_DEPLOYER
-    - jfrog rt ping
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public
     #- curl -urepox-qa-deployer:${REPOX_QA_DEPLOYER_API_KEY} https://repox.jfrog.io/artifactory/api/npm/auth > .npmrc
     - init_git_submodules -r
     - jfrog rt npm-ci
