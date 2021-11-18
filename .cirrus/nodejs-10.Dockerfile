@@ -15,6 +15,10 @@ RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-
   && mv /opt/sonar-scanner-4.3.0.2102 /opt/sonar-scanner \
   && rm /tmp/sonar-scanner.zip
 
+RUN curl -Lo /usr/bin/jfrog https://releases-docker.jfrog.io/artifactory/jfrog-cli/v2/2.5.1/jfrog-cli-linux-amd64/jfrog
+
+RUN chmod +x /usr/bin/jfrog
+
 USER sonarsource
 
 ENV PATH "/opt/sonar-scanner/bin:${PATH}"
