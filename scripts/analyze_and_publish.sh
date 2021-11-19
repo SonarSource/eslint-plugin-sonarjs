@@ -25,4 +25,4 @@ jfrog rt build-publish eslint-plugin-sonarjs $BUILD_NUMBER
 #configure jfrog cli to be able to promote build
 jfrog config import $REPOX_CLI_CONFIG_BUILD_PROMOTER
 #promote form QA to public builds
-jfrog rt bpr --status it-passed eslint-plugin-sonarjs $BUILD_NUMBER sonarsource-npm-public
+jfrog rt bpr --status it-passed eslint-plugin-sonarjs $BUILD_NUMBER sonarsource-npm-public-builds
