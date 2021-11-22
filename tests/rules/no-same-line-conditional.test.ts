@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+/* eslint-disable sonarjs/no-duplicate-string, import/newline-after-import */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-same-line-conditional');
 
 ruleTester.run('Conditionals should start on new lines', rule, {
@@ -95,8 +95,7 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":6,"line":3,"endColumn":7,"endLine":3}]}',
+          message: 'Move this "if" to a new line or add the missing "else".',
           line: 3,
           endLine: 3,
           column: 9,
@@ -120,18 +119,39 @@ ruleTester.run('Conditionals should start on new lines', rule, {
           }
           break;
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":6,"endColumn":11,"endLine":6}]}',
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 6,
+                column: 10,
+                endLine: 6,
+                endColumn: 11,
+                message: '',
+              },
+            ],
+            message: 'Move this "if" to a new line or add the missing "else".',
+          }),
           line: 6,
           endLine: 6,
           column: 13,
           endColumn: 15,
         },
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":11,"endColumn":11,"endLine":11}]}',
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 11,
+                column: 10,
+                endLine: 11,
+                endColumn: 11,
+                message: '',
+              },
+            ],
+            message: 'Move this "if" to a new line or add the missing "else".',
+          }),
           line: 11,
           endLine: 11,
           column: 13,
@@ -145,10 +165,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       } else if (cond2) {
       } if (cond3) {
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":6,"line":4,"endColumn":7,"endLine":4}]}',
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 4,
+                column: 6,
+                endLine: 4,
+                endColumn: 7,
+                message: '',
+              },
+            ],
+            message: 'Move this "if" to a new line or add the missing "else".',
+          }),
         },
       ],
     },
@@ -160,10 +191,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
           } if (cond4) {
           }
         }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":10,"line":5,"endColumn":11,"endLine":5}]}',
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 5,
+                column: 10,
+                endLine: 5,
+                endColumn: 11,
+                message: '',
+              },
+            ],
+            message: 'Move this "if" to a new line or add the missing "else".',
+          }),
         },
       ],
     },
@@ -175,10 +217,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
         } if (cond3) {
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message:
-            '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":[{"column":8,"line":5,"endColumn":9,"endLine":5}]}',
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                line: 5,
+                column: 8,
+                endLine: 5,
+                endColumn: 9,
+                message: '',
+              },
+            ],
+            message: 'Move this "if" to a new line or add the missing "else".',
+          }),
         },
       ],
     },

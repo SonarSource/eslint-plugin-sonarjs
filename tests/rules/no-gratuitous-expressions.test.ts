@@ -17,6 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+/* eslint-disable sonarjs/no-duplicate-string, import/newline-after-import*/
 import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/no-gratuitous-expressions';
 
@@ -76,11 +77,11 @@ ruleTester.run('no-gratuitous-expressions', rule, {
         if (false) {}`,
       errors: [
         {
-          message: `{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[]}`,
+          message: `This always evaluates to truthy. Consider refactoring this code.`,
           line: 2,
         },
         {
-          message: `{"message":"This always evaluates to falsy. Consider refactoring this code.","secondaryLocations":[]}`,
+          message: `This always evaluates to falsy. Consider refactoring this code.`,
           line: 3,
         },
       ],
@@ -93,16 +94,39 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           if (y && z) {} // "z" always true
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message: `{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":12,"endLine":3,"endColumn":13}]}`,
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                message: 'Evaluated here to be truthy',
+                line: 3,
+                column: 12,
+                endLine: 3,
+                endColumn: 13,
+              },
+            ],
+            message: 'This always evaluates to truthy. Consider refactoring this code.',
+          }),
           line: 4,
           column: 20,
           endLine: 4,
           endColumn: 21,
         },
         {
-          message: `{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":17,"endLine":3,"endColumn":18}]}`,
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                message: 'Evaluated here to be truthy',
+                line: 3,
+                column: 17,
+                endLine: 3,
+                endColumn: 18,
+              },
+            ],
+            message: 'This always evaluates to truthy. Consider refactoring this code.',
+          }),
           line: 5,
           column: 20,
           endLine: 5,
@@ -118,9 +142,21 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           }
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
-          message: `{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":12,"endLine":3,"endColumn":13}]}`,
+          message: JSON.stringify({
+            secondaryLocations: [
+              {
+                message: 'Evaluated here to be truthy',
+                line: 3,
+                column: 12,
+                endLine: 3,
+                endColumn: 13,
+              },
+            ],
+            message: 'This always evaluates to truthy. Consider refactoring this code.',
+          }),
           line: 4,
           column: 15,
           endLine: 4,
