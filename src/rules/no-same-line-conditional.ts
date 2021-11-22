@@ -20,9 +20,9 @@
 // https://sonarsource.github.io/rspec/#/rspec/S3972
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { toEncodedMessage } from '../utils/locations';
 import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
+import { issueLocation, report } from '../utils/locations';
 
 interface SiblingIfStatement {
   first: TSESTree.IfStatement;
@@ -61,12 +61,14 @@ const rule: Rule.RuleModule = {
         ) {
           const precedingIfLastToken = sourceCode.getLastToken(precedingIf) as TSESLint.AST.Token;
           const followingIfToken = sourceCode.getFirstToken(followingIf) as TSESLint.AST.Token;
-          context.report({
-            message: toEncodedMessage(`Move this "if" to a new line or add the missing "else".`, [
-              precedingIfLastToken,
-            ]),
-            loc: followingIfToken.loc,
-          });
+          report(
+            context,
+            {
+              message: `Move this "if" to a new line or add the missing "else".`,
+              loc: followingIfToken.loc,
+            },
+            [issueLocation(precedingIfLastToken.loc)],
+          );
         }
       });
     }
