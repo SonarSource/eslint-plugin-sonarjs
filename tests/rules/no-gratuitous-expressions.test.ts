@@ -17,13 +17,22 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+/* eslint-disable sonarjs/no-duplicate-string, import/newline-after-import*/
 import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/no-gratuitous-expressions';
 
-const falsySonarRuntimeData =
-  '{"message":"This always evaluates to falsy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be falsy","line":3,"column":12,"endLine":3,"endColumn":13}]}';
-const truthySonarRuntimeData =
-  '{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":12,"endLine":3,"endColumn":13}]}';
+const falsySonarRuntimeData = JSON.stringify({
+  secondaryLocations: [
+    { message: 'Evaluated here to be falsy', line: 3, column: 12, endLine: 3, endColumn: 13 },
+  ],
+  message: 'This always evaluates to falsy. Consider refactoring this code.',
+});
+const truthySonarRuntimeData = JSON.stringify({
+  secondaryLocations: [
+    { message: 'Evaluated here to be truthy', line: 3, column: 12, endLine: 3, endColumn: 13 },
+  ],
+  message: 'This always evaluates to truthy. Consider refactoring this code.',
+});
 
 ruleTester.run('no-gratuitous-expressions', rule, {
   valid: [
@@ -79,13 +88,16 @@ ruleTester.run('no-gratuitous-expressions', rule, {
       code: `
         if (true) {}
         if (false) {}`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
           data: {
             value: 'truthy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [],
+              message: 'This always evaluates to truthy. Consider refactoring this code.',
+            }),
           },
           line: 2,
         },
@@ -93,8 +105,10 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           messageId: 'sonarRuntime',
           data: {
             value: 'falsy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to falsy. Consider refactoring this code.","secondaryLocations":[]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [],
+              message: 'This always evaluates to falsy. Consider refactoring this code.',
+            }),
           },
           line: 3,
         },
@@ -108,6 +122,7 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           if (y && z) {} // "z" always true
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -124,8 +139,18 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           messageId: 'sonarRuntime',
           data: {
             value: 'truthy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":17,"endLine":3,"endColumn":18}]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  message: 'Evaluated here to be truthy',
+                  line: 3,
+                  column: 17,
+                  endLine: 3,
+                  endColumn: 18,
+                },
+              ],
+              message: 'This always evaluates to truthy. Consider refactoring this code.',
+            }),
           },
           line: 5,
           column: 20,
@@ -142,6 +167,7 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           }
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -166,13 +192,24 @@ ruleTester.run('no-gratuitous-expressions', rule, {
         }
         x = foo();
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
           data: {
             value: 'truthy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":4,"column":12,"endLine":4,"endColumn":13}]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  message: 'Evaluated here to be truthy',
+                  line: 4,
+                  column: 12,
+                  endLine: 4,
+                  endColumn: 13,
+                },
+              ],
+              message: 'This always evaluates to truthy. Consider refactoring this code.',
+            }),
           },
           line: 5,
           column: 15,
@@ -189,6 +226,7 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           }
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -210,13 +248,24 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           foo(!x) // Noncompliant
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
           data: {
             value: 'falsy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to falsy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be falsy","line":3,"column":13,"endLine":3,"endColumn":14}]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  message: 'Evaluated here to be falsy',
+                  line: 3,
+                  column: 13,
+                  endLine: 3,
+                  endColumn: 14,
+                },
+              ],
+              message: 'This always evaluates to falsy. Consider refactoring this code.',
+            }),
           },
           line: 4,
           column: 16,
@@ -234,6 +283,7 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           foo(!x) // Noncompliant
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -259,6 +309,7 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           bar() || x || bar(); // FN, not supported
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -291,13 +342,24 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           x && foo(); // Noncompliant
         }
       }`,
+      options: ['sonar-runtime'],
       errors: [
         {
           messageId: 'sonarRuntime',
           data: {
             value: 'truthy',
-            sonarRuntimeData:
-              '{"message":"This always evaluates to truthy. Consider refactoring this code.","secondaryLocations":[{"message":"Evaluated here to be truthy","line":3,"column":14,"endLine":3,"endColumn":15}]}',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  message: 'Evaluated here to be truthy',
+                  line: 3,
+                  column: 14,
+                  endLine: 3,
+                  endColumn: 15,
+                },
+              ],
+              message: 'This always evaluates to truthy. Consider refactoring this code.',
+            }),
           },
           line: 4,
           column: 11,

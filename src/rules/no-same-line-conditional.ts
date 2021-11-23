@@ -20,8 +20,10 @@
 // https://sonarsource.github.io/rspec/#/rspec/S3972
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { toEncodedMessage } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
+import { issueLocation, report } from '../utils/locations';
+
+const message = 'Move this "if" to a new line or add the missing "else".';
 
 interface SiblingIfStatement {
   first: TSESTree.IfStatement;
@@ -31,8 +33,8 @@ interface SiblingIfStatement {
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      moveIfToNewLineOrAddMissingElse:
-        '{"message":"Move this \\"if\\" to a new line or add the missing \\"else\\".","secondaryLocations":{{secondaryLocations}}}',
+      moveIfToNewLineOrAddMissingElse: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
     docs: {
@@ -63,13 +65,15 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         ) {
           const precedingIfLastToken = sourceCode.getLastToken(precedingIf) as TSESLint.AST.Token;
           const followingIfToken = sourceCode.getFirstToken(followingIf) as TSESLint.AST.Token;
-          context.report({
-            messageId: 'moveIfToNewLineOrAddMissingElse',
-            data: {
-              secondaryLocations: toEncodedMessage([precedingIfLastToken]),
+          report(
+            context,
+            {
+              messageId: 'moveIfToNewLineOrAddMissingElse',
+              loc: followingIfToken.loc,
             },
-            loc: followingIfToken.loc,
-          });
+            [issueLocation(precedingIfLastToken.loc)],
+            message,
+          );
         }
       });
     }

@@ -83,6 +83,13 @@ ruleTester.run('no-duplicate-string', rule, {
       `,
     },
     {
+      code: ` // ImportExpression
+    import("module-name-long");
+    import("module-name-long");
+    import("module-name-long");
+      `,
+    },
+    {
       code: `// ExportAllDeclaration
     export * from "module-name-long";
     export * from "module-name-long";

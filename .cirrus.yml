@@ -19,7 +19,7 @@ container_definition: &CONTAINER_DEFINITION
   namespace: default
   use_in_memory_disk: true
 
-plugin_qa_task:
+build_task:
   <<: *ONLY_SONARSOURCE_QA
   gke_container:
     matrix:
@@ -32,7 +32,7 @@ plugin_qa_task:
     memory: 8G
   env:
     CIRRUS_CLONE_DEPTH: 10
-    SONARSOURCE_QA: true  
+    SONARSOURCE_QA: true
   script:
     - jfrog config import $REPOX_CLI_CONFIG_QA_DEPLOYER
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
@@ -45,3 +45,24 @@ plugin_qa_task:
     - npm run lint
     - npm run ruling
     - ./scripts/analyze_and_publish.sh
+
+ws_scan_task:
+  depends_on:
+    - build
+  gke_container:
+    dockerfile: .cirrus/nodejs-12.Dockerfile
+    <<: *CONTAINER_DEFINITION
+    cpu: 2
+    memory: 2G
+  # run only on master and long-term branches
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
+  env:
+    WS_APIKEY: ENCRYPTED[!3929c6148b9dfc751a2d17c590b15d755f82cd9c108f2de5f24a5b32f2a0c26144e921fab7e2c959fc2824d6d6d1550d!]
+  maven_cache:
+    folder: ${CIRRUS_WORKING_DIR}/.m2/repository
+  whitesource_script:
+    - ./scripts/run_ws_scan.sh
+  allow_failures: "true"
+  always:
+    ws_artifacts:
+      path: "whitesource/**/*"
