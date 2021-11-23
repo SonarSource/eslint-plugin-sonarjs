@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/SonarSource/eslint-plugin-sonarjs",
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "build": "rimraf lib && npm run check-format && tsc -d -p tsconfig-src.json",
@@ -30,7 +30,7 @@
     "check-format": "prettier --list-different \"{src,tests}/**/*.ts\""
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.0.0"
   },
   "devDependencies": {
     "@types/eslint": "7.29.0",
