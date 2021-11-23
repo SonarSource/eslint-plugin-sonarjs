@@ -174,7 +174,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         context,
         {
           messageId: 'fixTheSameConditionalStructure',
-          data: { type, line: String(equivalentNode.loc!.start.line) },
+          data: { type, line: String(equivalentNode.loc.start.line) },
           node,
         },
         [issueLocation(equivalentNodeLoc, equivalentNodeLoc, 'Original')],

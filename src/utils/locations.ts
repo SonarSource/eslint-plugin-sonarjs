@@ -87,7 +87,7 @@ export function getMainFunctionTokenLocation<T = string>(
 export function report<T = string>(
   context: TSESLint.RuleContext<string, T[]>,
   reportDescriptor: MutableReportDescriptor,
-  secondaryLocations: IssueLocation[] = [],
+  secondaryLocations: IssueLocation[],
   message: string,
   cost?: number,
 ) {
