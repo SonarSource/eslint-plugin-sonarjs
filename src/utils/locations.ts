@@ -165,17 +165,6 @@ export function issueLocation(
   return issueLocation;
 }
 
-export function toEncodedMessage(
-  secondaryLocationsHolder: Array<TSESLint.AST.Token | TSESTree.Node>,
-  secondaryMessages?: string[],
-): string {
-  return JSON.stringify(
-    secondaryLocationsHolder.map((locationHolder, index) =>
-      toSecondaryLocation(locationHolder, secondaryMessages ? secondaryMessages[index] : undefined),
-    ),
-  );
-}
-
 export function toSecondaryLocation(
   locationHolder: TSESLint.AST.Token | TSESTree.Node,
   message?: string,
