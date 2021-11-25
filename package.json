@@ -30,7 +30,7 @@
     "check-format": "prettier --list-different \"{src,tests}/**/*.ts\""
   },
   "peerDependencies": {
-    "eslint": "^8.0.0"
+    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0|| ^8.0.0"
   },
   "devDependencies": {
     "@types/eslint": "7.29.0",

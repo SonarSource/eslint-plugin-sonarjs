@@ -82,7 +82,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 ## Prerequisites
 
 * Node.js (>=12.x).
-* ESLint 8.x.
+* ESLint 5.x, 6.x, 7.x or 8.x (peer dependency for the plugin).
 
 ## Usage
 
