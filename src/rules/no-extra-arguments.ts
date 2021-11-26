@@ -41,7 +41,7 @@ const message = 'This function expects {{expectedArguments}}, but {{providedArgu
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      verifyProvidedArgumentsToFunction: message,
+      tooManyArguments: message,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
@@ -57,7 +57,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     const callExpressionsToCheck: Array<{
       callExpr: TSESTree.CallExpression;
       functionNode: TSESTree.FunctionLike;
@@ -173,7 +173,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       report(
         context,
         {
-          messageId: 'verifyProvidedArgumentsToFunction',
+          messageId: 'tooManyArguments',
           data: {
             expectedArguments,
             providedArguments,

@@ -25,8 +25,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      switchStatementsShouldHave3CaseClauses:
-        '"switch" statements should have at least 3 "case" clauses',
+      smallSwitch: '"switch" statements should have at least 3 "case" clauses',
     },
     schema: [],
     type: 'suggestion',
@@ -36,7 +35,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       SwitchStatement(node: TSESTree.Node) {
         const switchStatement = node as TSESTree.SwitchStatement;
@@ -46,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           const firstToken = context.getSourceCode().getFirstToken(node);
           if (firstToken) {
             context.report({
-              messageId: 'switchStatementsShouldHave3CaseClauses',
+              messageId: 'smallSwitch',
               loc: firstToken.loc,
             });
           }

@@ -25,8 +25,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      refactorCodeToNotUseNestedTemplateLiterals:
-        'Refactor this code to not use nested template literals.',
+      nestedTemplateLiterals: 'Refactor this code to not use nested template literals.',
     },
     schema: [],
     type: 'suggestion',
@@ -36,11 +35,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       'TemplateLiteral TemplateLiteral': (node: TSESTree.Node) => {
         context.report({
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           node,
         });
       },

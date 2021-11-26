@@ -46,7 +46,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       BlockStatement: (node: TSESTree.Node) =>
         checkObjectInitialization((node as TSESTree.BlockStatement).body, context),

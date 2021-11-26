@@ -95,7 +95,7 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          messageId: 'moveIfToNewLineOrAddMissingElse',
+          messageId: 'sameLineCondition',
           line: 3,
           endLine: 3,
           column: 9,

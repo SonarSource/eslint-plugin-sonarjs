@@ -78,7 +78,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       LogicalExpression(node: TSESTree.Node) {
         check(node as TSESTree.LogicalExpression);

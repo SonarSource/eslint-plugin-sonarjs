@@ -26,8 +26,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      useCollectionsContentsOrRemoveCollection:
-        "Either use this collection's contents or remove the collection.",
+      unusedCollection: "Either use this collection's contents or remove the collection.",
     },
     schema: [],
     type: 'problem',
@@ -37,7 +36,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       'Program:exit': () => {
         const unusedArrays: TSESLint.Scope.Variable[] = [];
@@ -45,7 +44,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
         unusedArrays.forEach(unusedArray => {
           context.report({
-            messageId: 'useCollectionsContentsOrRemoveCollection',
+            messageId: 'unusedCollection',
             node: unusedArray.identifiers[0],
           });
         });

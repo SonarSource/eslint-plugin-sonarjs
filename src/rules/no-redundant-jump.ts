@@ -37,7 +37,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {
       const withArgument = node.type === 'ContinueStatement' ? !!node.label : !!node.argument;
       if (!withArgument) {

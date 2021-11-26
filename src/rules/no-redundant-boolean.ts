@@ -36,7 +36,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       BinaryExpression(node: TSESTree.Node) {
         const expression = node as TSESTree.BinaryExpression;

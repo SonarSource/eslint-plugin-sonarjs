@@ -54,7 +54,7 @@ ruleTester.run('no-useless-catch', rule, {
       code: `try {} catch (e) { throw e; }`,
       errors: [
         {
-          messageId: 'addLogicToCatchClauseOrEliminate',
+          messageId: 'uselessCatch',
           line: 1,
           endLine: 1,
           column: 8,
@@ -69,7 +69,7 @@ ruleTester.run('no-useless-catch', rule, {
       }`,
       errors: [
         {
-          messageId: 'addLogicToCatchClauseOrEliminate',
+          messageId: 'uselessCatch',
           line: 1,
           endLine: 1,
           column: 8,
@@ -87,7 +87,7 @@ ruleTester.run('no-useless-catch', rule, {
       }`,
       errors: [
         {
-          messageId: 'addLogicToCatchClauseOrEliminate',
+          messageId: 'uselessCatch',
           line: 3,
           endLine: 3,
           column: 9,

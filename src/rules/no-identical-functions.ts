@@ -35,7 +35,7 @@ const message =
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      updateIdenticalFunctionImplementation: message,
+      identicalFunctions: message,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
@@ -106,7 +106,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
             report(
               context,
               {
-                messageId: 'updateIdenticalFunctionImplementation',
+                messageId: 'identicalFunctions',
                 data: {
                   line: originalFunction.loc.start.line,
                 },

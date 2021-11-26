@@ -151,7 +151,7 @@ ruleTester.run('no-identical-functions', rule, {
         message(2, 8),
         message(2, 14),
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -160,7 +160,7 @@ ruleTester.run('no-identical-functions', rule, {
           endColumn: 20,
         }, // constructor
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -169,7 +169,7 @@ ruleTester.run('no-identical-functions', rule, {
           endColumn: 15,
         }, // method
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -178,7 +178,7 @@ ruleTester.run('no-identical-functions', rule, {
           endColumn: 19,
         }, // setter
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -187,7 +187,7 @@ ruleTester.run('no-identical-functions', rule, {
           endColumn: 19,
         }, // getter
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -196,7 +196,7 @@ ruleTester.run('no-identical-functions', rule, {
           endColumn: 35,
         }, // async declaration
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 2,
           },
@@ -273,7 +273,7 @@ ruleTester.run('no-identical-functions', rule, {
       };`,
       errors: [
         {
-          messageId: 'updateIdenticalFunctionImplementation',
+          messageId: 'identicalFunctions',
           data: {
             line: 3,
           },
@@ -334,7 +334,7 @@ ruleTester.run('no-identical-functions', rule, {
 
 function message(originalLine: number, duplicationLine: number): TSESLint.TestCaseError<string> {
   return {
-    messageId: 'updateIdenticalFunctionImplementation',
+    messageId: 'identicalFunctions',
     data: {
       line: originalLine,
     },

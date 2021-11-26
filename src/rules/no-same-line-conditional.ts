@@ -33,7 +33,7 @@ interface SiblingIfStatement {
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      moveIfToNewLineOrAddMissingElse: message,
+      sameLineCondition: message,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
@@ -49,7 +49,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     function checkStatements(statements: TSESTree.Node[]) {
       const sourceCode = context.getSourceCode();
       const siblingIfStatements = getSiblingIfStatements(statements);
@@ -68,7 +68,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           report(
             context,
             {
-              messageId: 'moveIfToNewLineOrAddMissingElse',
+              messageId: 'sameLineCondition',
               loc: followingIfToken.loc,
             },
             [issueLocation(precedingIfLastToken.loc)],

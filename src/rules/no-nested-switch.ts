@@ -25,7 +25,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      refactorCodeToEliminateNestedSwitch: 'Refactor the code to eliminate this nested "switch".',
+      removeNestedSwitch: 'Refactor the code to eliminate this nested "switch".',
     },
     schema: [],
     type: 'suggestion',
@@ -35,14 +35,14 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       'SwitchStatement SwitchStatement': (node: TSESTree.Node) => {
         const switchToken = context
           .getSourceCode()
           .getFirstToken(node, token => token.value === 'switch');
         context.report({
-          messageId: 'refactorCodeToEliminateNestedSwitch',
+          messageId: 'removeNestedSwitch',
           loc: switchToken!.loc,
         });
       },

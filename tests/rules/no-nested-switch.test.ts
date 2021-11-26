@@ -20,7 +20,7 @@
 import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/no-nested-switch';
 
-const MESSAGE = 'refactorCodeToEliminateNestedSwitch';
+const messageId = 'removeNestedSwitch';
 
 ruleTester.run('switch statements should not be nested', rule, {
   valid: [
@@ -45,7 +45,7 @@ ruleTester.run('switch statements should not be nested', rule, {
     }`,
       errors: [
         {
-          messageId: MESSAGE,
+          messageId,
           line: 4,
           endLine: 4,
           column: 11,
@@ -71,14 +71,14 @@ ruleTester.run('switch statements should not be nested', rule, {
           }`,
       errors: [
         {
-          messageId: MESSAGE,
+          messageId,
           line: 4,
           endLine: 4,
           column: 15,
           endColumn: 21,
         },
         {
-          messageId: MESSAGE,
+          messageId,
           line: 8,
           endLine: 8,
           column: 15,
@@ -103,14 +103,14 @@ ruleTester.run('switch statements should not be nested', rule, {
           }`,
       errors: [
         {
-          messageId: MESSAGE,
+          messageId,
           line: 4,
           endLine: 4,
           column: 15,
           endColumn: 21,
         },
         {
-          messageId: MESSAGE,
+          messageId,
           line: 7,
           endLine: 7,
           column: 19,
@@ -130,7 +130,7 @@ ruleTester.run('switch statements should not be nested', rule, {
         }`,
       errors: [
         {
-          messageId: MESSAGE,
+          messageId,
           line: 5,
           endLine: 5,
           column: 15,
@@ -147,7 +147,7 @@ ruleTester.run('switch statements should not be nested', rule, {
           }`,
       errors: [
         {
-          messageId: MESSAGE,
+          messageId,
           line: 4,
           endLine: 4,
           column: 17,

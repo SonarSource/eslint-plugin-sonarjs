@@ -132,7 +132,7 @@ ruleTester.run('Return values from functions without side effects should not be 
       }`,
       errors: [
         {
-          messageId: `considerUsingForEachInsteadOfMap`,
+          messageId: `useForEach`,
         },
       ],
     },

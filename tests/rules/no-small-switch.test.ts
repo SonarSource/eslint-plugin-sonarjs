@@ -31,7 +31,7 @@ ruleTester.run('no-small-switch', rule, {
       code: 'switch (a) { case 1: doSomething(); break; default: doSomething(); }',
       errors: [
         {
-          messageId: 'switchStatementsShouldHave3CaseClauses',
+          messageId: 'smallSwitch',
           column: 1,
           endColumn: 7,
         },
@@ -41,7 +41,7 @@ ruleTester.run('no-small-switch', rule, {
       code: 'switch (a) { case 1: break; }',
       errors: [
         {
-          messageId: 'switchStatementsShouldHave3CaseClauses',
+          messageId: 'smallSwitch',
           column: 1,
           endColumn: 7,
         },
@@ -51,7 +51,7 @@ ruleTester.run('no-small-switch', rule, {
       code: 'switch (a) {}',
       errors: [
         {
-          messageId: 'switchStatementsShouldHave3CaseClauses',
+          messageId: 'smallSwitch',
           column: 1,
           endColumn: 7,
         },

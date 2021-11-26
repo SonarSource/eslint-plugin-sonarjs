@@ -36,14 +36,14 @@ ruleTester.run('Template literals should not be nested', rule, {
       code: 'let message = `I have ${color ? `${x ? `indeed 0` : count} ${color}` : count} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 33,
           endColumn: 69,
         },
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 40,
@@ -55,7 +55,7 @@ ruleTester.run('Template literals should not be nested', rule, {
       code: 'let message = `I have ${color ? `${count} ${color}` : count} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 33,
@@ -67,14 +67,14 @@ ruleTester.run('Template literals should not be nested', rule, {
       code: 'let message = `I have ${color ? `${x ? `indeed ${0}` : count} ${color}` : count} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 33,
           endColumn: 72,
         },
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 40,
@@ -89,14 +89,14 @@ ruleTester.run('Template literals should not be nested', rule, {
         'let message2 = tag`I have ${color ? tag`${count} ${color}` : count} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 2,
           endLine: 2,
           column: 37,
           endColumn: 56,
         },
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 3,
           endLine: 3,
           column: 40,
@@ -108,14 +108,14 @@ ruleTester.run('Template literals should not be nested', rule, {
       code: 'let message = `I have ${color ? `${count} ${color}` : `this is ${count}`} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 33,
           endColumn: 52,
         },
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 55,
@@ -127,14 +127,14 @@ ruleTester.run('Template literals should not be nested', rule, {
       code: 'let message = `I have ${`${count} ${color}`} ${`this is ${count}`} apples`;',
       errors: [
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 25,
           endColumn: 44,
         },
         {
-          messageId: 'refactorCodeToNotUseNestedTemplateLiterals',
+          messageId: 'nestedTemplateLiterals',
           line: 1,
           endLine: 1,
           column: 48,

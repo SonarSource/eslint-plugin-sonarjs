@@ -174,7 +174,7 @@ const METHODS_WITHOUT_SIDE_EFFECTS: { [index: string]: Set<string> } = {
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      considerUsingForEachInsteadOfMap: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
+      useForEach: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
       returnValueMustBeUsed: 'The return value of "{{methodName}}" must be used.',
     },
     schema: [],
@@ -239,7 +239,7 @@ function reportDescriptor(
 ): TSESLint.ReportDescriptor<string> {
   if (methodName === 'map') {
     return {
-      messageId: 'considerUsingForEachInsteadOfMap',
+      messageId: 'useForEach',
       node,
     };
   } else {

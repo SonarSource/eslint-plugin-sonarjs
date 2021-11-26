@@ -26,7 +26,7 @@ function invalidTest(code: string) {
     code,
     errors: [
       {
-        messageId: 'useCollectionsContentsOrRemoveCollection',
+        messageId: 'unusedCollection',
         line,
         endLine: line,
       },
@@ -184,7 +184,7 @@ ruleTester.run('Primitive return types should be used.', rule, {
           }`,
       errors: [
         {
-          messageId: 'useCollectionsContentsOrRemoveCollection',
+          messageId: 'unusedCollection',
           line: 3,
           column: 13,
           endLine: 3,

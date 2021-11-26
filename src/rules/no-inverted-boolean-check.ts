@@ -23,8 +23,6 @@ import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isBinaryExpression } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE = 'Use the opposite operator ({{invertedOperator}}) instead.';
-
 const invertedOperators: { [operator: string]: string } = {
   '==': '!=',
   '!=': '==',
@@ -39,7 +37,7 @@ const invertedOperators: { [operator: string]: string } = {
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      useOppositeOperator: MESSAGE,
+      useOppositeOperator: 'Use the opposite operator ({{invertedOperator}}) instead.',
     },
     schema: [],
     type: 'suggestion',

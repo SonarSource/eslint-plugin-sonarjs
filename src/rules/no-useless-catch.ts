@@ -27,7 +27,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      addLogicToCatchClauseOrEliminate:
+      uselessCatch:
         'Add logic to this catch clause or eliminate it and rethrow the exception automatically.',
     },
     schema: [],
@@ -38,7 +38,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       CatchClause: (node: TSESTree.Node) => visitCatchClause(node as TSESTree.CatchClause, context),
     };
@@ -57,7 +57,7 @@ function visitCatchClause(
   ) {
     const catchKeyword = context.getSourceCode().getFirstToken(catchClause)!;
     context.report({
-      messageId: 'addLogicToCatchClauseOrEliminate',
+      messageId: 'uselessCatch',
       loc: catchKeyword.loc,
     });
   }
