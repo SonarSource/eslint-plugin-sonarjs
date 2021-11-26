@@ -37,11 +37,12 @@ const EXCLUDED_CONTEXTS = [
 const message = 'Define a constant instead of duplicating this literal {{times}} times.';
 
 type Options = (number | 'sonar-runtime')[];
+type Context = TSESLint.RuleContext<string, Options>;
 
 const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
     messages: {
-      defineConstantInsteadOfDuplicatingLiteral: message,
+      defineConstant: message,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'suggestion',
@@ -94,7 +95,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
             report(
               context,
               {
-                messageId: 'defineConstantInsteadOfDuplicatingLiteral',
+                messageId: 'defineConstant',
                 node: primaryNode,
                 data: { times: literals.length.toString() },
               },
@@ -108,10 +109,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
   },
 };
 
-function isExcludedByUsageContext(
-  context: TSESLint.RuleContext<string, Options>,
-  literal: TSESTree.Literal,
-) {
+function isExcludedByUsageContext(context: Context, literal: TSESTree.Literal) {
   const parent = literal.parent!;
   const parentType = parent.type;
 
@@ -122,7 +120,7 @@ function isExcludedByUsageContext(
   );
 }
 
-function isRequireContext(parent: TSESTree.Node, context: TSESLint.RuleContext<string, Options>) {
+function isRequireContext(parent: TSESTree.Node, context: Context) {
   return (
     parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
   );

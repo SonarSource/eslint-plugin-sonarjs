@@ -29,7 +29,7 @@ const CollectionSizeLike = ['length', 'size'];
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      fixPropertyThatIsAlwaysEqualOrGreaterThanZero:
+      fixCollectionSizeCheck:
         'Fix this expression; {{propertyName}} of "{{objectName}}" is always greater or equal to zero.',
     },
     schema: [],
@@ -40,7 +40,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     const services = context.parserServices;
     const isTypeCheckerAvailable = isRequiredParserServices(services);
     return {
@@ -57,7 +57,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
               (!isTypeCheckerAvailable || isCollection(object, services!))
             ) {
               context.report({
-                messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+                messageId: 'fixCollectionSizeCheck',
                 data: {
                   propertyName: property.name,
                   objectName: context.getSourceCode().getText(object),

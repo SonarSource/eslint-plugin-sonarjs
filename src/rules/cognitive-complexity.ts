@@ -50,6 +50,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     messages: {
       refactorFunction: message,
       sonarRuntime: '{{sonarRuntimeData}}',
+      fileComplexity: '{{sonarRuntimeData}}',
     },
     type: 'suggestion',
     docs: {
@@ -66,9 +67,9 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     ],
   },
   create(context) {
-    const rawThreshold: number | 'metric' | 'sonar-runtime' = getThreshold();
-    const threshold: number = typeof rawThreshold === 'string' ? DEFAULT_THRESHOLD : rawThreshold;
-    const isFileComplexity: boolean = context.options.includes('metric');
+    const threshold =
+      typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_THRESHOLD;
+    const isFileComplexity = context.options.includes('metric');
 
     /** Complexity of the file */
     let fileComplexity = 0;
@@ -144,11 +145,10 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
       },
       'Program:exit'(node: TSESTree.Node) {
         if (isFileComplexity) {
-          // as issues are the only communication channel of a rule
-          // we pass data as serialized json as an issue message
+          // value from the message will be saved in SonarQube as file complexity metric
           context.report({
             node,
-            messageId: 'refactorFunction',
+            messageId: 'fileComplexity',
             data: { complexityAmount: fileComplexity },
           });
         }
@@ -194,10 +194,6 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
         visitReturnStatement(node as TSESTree.ReturnStatement);
       },
     };
-
-    function getThreshold() {
-      return context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
-    }
 
     function onEnterFunction(node: TSESTree.FunctionLike) {
       if (enclosingFunctions.length === 0) {

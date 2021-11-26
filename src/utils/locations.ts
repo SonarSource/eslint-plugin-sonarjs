@@ -91,11 +91,8 @@ export function report<T = string>(
   message: string,
   cost?: number,
 ) {
-  const lastOptionsElement = context.options[context.options.length - 1];
-
-  if (typeof lastOptionsElement !== 'string' || lastOptionsElement !== 'sonar-runtime') {
+  if ((context.options[context.options.length - 1] as unknown) !== 'sonar-runtime') {
     context.report(reportDescriptor);
-
     return;
   }
 
@@ -116,21 +113,11 @@ export function report<T = string>(
   context.report(reportDescriptor);
 }
 
-export function expandMessage(
-  message: string,
-  reportDescriptorData: Record<string, unknown> | undefined,
-): string {
+function expandMessage(message: string, reportDescriptorData: Record<string, unknown> | undefined) {
   let expandedMessage = message;
   if (reportDescriptorData !== undefined) {
-    for (const dataName of Object.keys(reportDescriptorData)) {
-      const dataValue = reportDescriptorData[dataName];
-      if (
-        typeof dataValue === 'string' ||
-        typeof dataValue === 'number' ||
-        typeof dataValue === 'boolean'
-      ) {
-        expandedMessage = replaceAll(expandedMessage, `{{${dataName}}}`, dataValue.toString());
-      }
+    for (const [key, value] of Object.entries(reportDescriptorData)) {
+      expandedMessage = replaceAll(expandedMessage, `{{${key}}}`, (value as object).toString());
     }
   }
 

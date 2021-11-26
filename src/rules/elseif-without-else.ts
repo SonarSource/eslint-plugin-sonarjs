@@ -35,7 +35,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       IfStatement: (node: TSESTree.Node) => {
         const ifstmt = node as TSESTree.IfStatement;

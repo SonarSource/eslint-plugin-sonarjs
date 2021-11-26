@@ -45,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       IfStatement(node: TSESTree.Node) {
         let { consequent } = node as TSESTree.IfStatement;

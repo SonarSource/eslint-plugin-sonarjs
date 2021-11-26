@@ -93,7 +93,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     return {
       'Program:exit': () => {
         reportEmptyCollectionsUsage(context.getScope(), context);

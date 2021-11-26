@@ -32,7 +32,7 @@ const message =
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      fixTheSameConditionalStructure: message,
+      sameConditionalBlock: message,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
@@ -173,7 +173,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       report(
         context,
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: { type, line: String(equivalentNode.loc.start.line) },
           node,
         },
