@@ -25,9 +25,7 @@ import * as minimist from "minimist";
 
 const rulesPath = path.join(__dirname, "../lib/rules");
 
-run().catch((error) => {
-  throw error;
-});
+run();
 
 async function run() {
   const argv = minimist(process.argv.slice(2), {
