@@ -45,7 +45,7 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
       code: `if (collection.size < 0) {}`,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'size',
             objectName: 'collection',
@@ -61,7 +61,7 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
       code: `if (collection.length < 0) {}`,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'collection',
@@ -77,7 +77,7 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
       code: `if (collection.length >= 0) {}`,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'collection',
@@ -138,7 +138,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'arr',
@@ -158,7 +158,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'arr',
@@ -178,7 +178,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'arr',
@@ -198,7 +198,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'set',
@@ -218,7 +218,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'map',
@@ -238,7 +238,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'set',
@@ -258,7 +258,7 @@ ruleTesterTs.run('Collection sizes and array length comparisons should make sens
       filename,
       errors: [
         {
-          messageId: 'fixPropertyThatIsAlwaysEqualOrGreaterThanZero',
+          messageId: 'fixCollectionSizeCheck',
           data: {
             propertyName: 'length',
             objectName: 'map',

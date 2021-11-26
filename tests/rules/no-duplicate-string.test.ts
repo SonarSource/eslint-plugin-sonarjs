@@ -160,7 +160,7 @@ ruleTester.run('no-duplicate-string', rule, {
     console.log('some message');`,
       errors: [
         {
-          messageId: 'defineConstantInsteadOfDuplicatingLiteral',
+          messageId: 'defineConstant',
           data: {
             times: 3,
           },
@@ -207,7 +207,7 @@ ruleTester.run('no-duplicate-string', rule, {
       `,
       errors: [
         {
-          messageId: 'defineConstantInsteadOfDuplicatingLiteral',
+          messageId: 'defineConstant',
           data: {
             times: 3,
           },
@@ -221,7 +221,7 @@ ruleTester.run('no-duplicate-string', rule, {
     console.log('some message');`,
       errors: [
         {
-          messageId: 'defineConstantInsteadOfDuplicatingLiteral',
+          messageId: 'defineConstant',
           data: {
             times: 2,
           },
@@ -243,7 +243,7 @@ ruleTester.run('no-duplicate-string', rule, {
     };`,
       errors: [
         {
-          messageId: 'defineConstantInsteadOfDuplicatingLiteral',
+          messageId: 'defineConstant',
           data: {
             times: 3,
           },

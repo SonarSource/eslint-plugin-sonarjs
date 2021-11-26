@@ -650,7 +650,7 @@ class TopLevel {
 }
       `,
       options: [0, 'metric'],
-      errors: [complexity(25)],
+      errors: [{ messageId: 'fileComplexity', data: { complexityAmount: complexity.toString() } }],
     },
   ],
 });

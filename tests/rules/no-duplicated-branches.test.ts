@@ -103,7 +103,7 @@ ruleTester.run('no-duplicated-branches if', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'branch',
             line: 2,
@@ -179,7 +179,7 @@ ruleTester.run('no-duplicated-branches if', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'branch',
             line: 2,
@@ -197,7 +197,7 @@ ruleTester.run('no-duplicated-branches if', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'branch',
             line: 2,
@@ -217,7 +217,7 @@ ruleTester.run('no-duplicated-branches if', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'branch',
             line: 2,
@@ -225,7 +225,7 @@ ruleTester.run('no-duplicated-branches if', rule, {
           line: 4,
         },
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'branch',
             line: 4,
@@ -304,7 +304,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'case',
             line: '4',
@@ -326,7 +326,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           data: {
             type: 'case',
             line: 3,
@@ -392,7 +392,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 11,
           data: {
             type: 'case',
@@ -416,7 +416,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 8,
           data: {
             type: 'case',
@@ -448,7 +448,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 7,
           data: {
             type: 'case',
@@ -456,7 +456,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
           },
         },
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 11,
           data: {
             type: 'case',
@@ -464,7 +464,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
           },
         },
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 15,
           data: {
             type: 'case',
@@ -485,7 +485,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 6,
           data: {
             type: 'case',
@@ -513,7 +513,7 @@ ruleTester.run('no-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          messageId: 'fixTheSameConditionalStructure',
+          messageId: 'sameConditionalBlock',
           line: 12,
           data: {
             type: 'case',
