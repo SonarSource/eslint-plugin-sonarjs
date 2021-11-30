@@ -190,19 +190,3 @@ export function getFirstToken<T = string>(
 ): TSESLint.AST.Token {
   return context.getSourceCode().getTokens(node)[0];
 }
-
-export function toEncodedMessage(
-  message: string,
-  secondaryLocationsHolder: Array<TSESLint.AST.Token | TSESTree.Node>,
-  secondaryMessages?: string[],
-  cost?: number,
-): string {
-  const encodedMessage: EncodedMessage = {
-    message,
-    cost,
-    secondaryLocations: secondaryLocationsHolder.map((locationHolder, index) =>
-      toSecondaryLocation(locationHolder, secondaryMessages ? secondaryMessages[index] : undefined),
-    ),
-  };
-  return JSON.stringify(encodedMessage);
-}
