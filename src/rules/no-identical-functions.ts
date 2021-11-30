@@ -19,26 +19,28 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S4144
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
-
-const message = (line: string) =>
-  `Update this function so that its implementation is not identical to the one on line ${line}.`;
 
 type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
   | TSESTree.ArrowFunctionExpression;
 
-const rule: Rule.RuleModule = {
+const message =
+  'Update this function so that its implementation is not identical to the one on line {{line}}.';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      identicalFunctions: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description: 'Functions should not have identical implementations',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -48,7 +50,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context: TSESLint.RuleContext<string, string[]>) {
     const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
 
     return {
@@ -104,10 +106,14 @@ const rule: Rule.RuleModule = {
             report(
               context,
               {
-                message: message(String(originalFunction.loc.start.line)),
+                messageId: 'identicalFunctions',
+                data: {
+                  line: originalFunction.loc.start.line,
+                },
                 loc,
               },
               secondaryLocations,
+              message,
             );
             break;
           }

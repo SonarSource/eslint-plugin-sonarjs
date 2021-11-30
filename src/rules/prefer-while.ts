@@ -20,28 +20,30 @@
 // https://sonarsource.github.io/rspec/#/rspec/S1264
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      replaceForWithWhileLoop: 'Replace this "for" loop with a "while" loop.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'A "while" loop should be used instead of a "for" loop',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
     fixable: 'code',
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       ForStatement(node: TSESTree.Node) {
         const forLoop = node as TSESTree.ForStatement;
         const forKeyword = context.getSourceCode().getFirstToken(node);
         if (!forLoop.init && !forLoop.update && forLoop.test && forKeyword) {
           context.report({
-            message: `Replace this "for" loop with a "while" loop.`,
+            messageId: `replaceForWithWhileLoop`,
             loc: forKeyword.loc,
             fix: getFix(forLoop),
           });

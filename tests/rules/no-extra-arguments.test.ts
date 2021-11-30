@@ -17,9 +17,9 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ruleTester, ruleTesterScript, TestCaseError } from '../rule-tester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ruleTester, ruleTesterScript } from '../rule-tester';
 import { IssueLocation } from '../../src/utils/locations';
-
 import rule = require('../../src/rules/no-extra-arguments');
 
 ruleTester.run('no-extra-arguments', rule, {
@@ -96,10 +96,15 @@ ruleTester.run('no-extra-arguments', rule, {
       `,
       errors: [
         {
-          message: encodedMessage(2, 3, [
-            { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
-            { message: 'Extra argument', column: 18, line: 4, endColumn: 19, endLine: 4 },
-          ]),
+          messageId: 'sonarRuntime',
+          data: {
+            expectedArguments: '2 arguments',
+            providedArguments: '3 were',
+            sonarRuntimeData: encodedMessage(2, 3, [
+              { line: 2, column: 21, endLine: 2, endColumn: 27, message: 'Formal parameters' },
+              { message: 'Extra argument', column: 18, line: 4, endColumn: 19, endLine: 4 },
+            ]),
+          },
         },
       ],
       options: ['sonar-runtime'],
@@ -124,10 +129,15 @@ ruleTester.run('no-extra-arguments', rule, {
       `,
       errors: [
         {
-          message: encodedMessage(0, 1, [
-            { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
-            { message: 'Extra argument', column: 12, line: 2, endColumn: 13, endLine: 2 },
-          ]),
+          messageId: 'sonarRuntime',
+          data: {
+            expectedArguments: 'no arguments',
+            providedArguments: '1 was',
+            sonarRuntimeData: encodedMessage(0, 1, [
+              { line: 4, column: 18, endLine: 4, endColumn: 26, message: 'Formal parameters' },
+              { message: 'Extra argument', column: 12, line: 2, endColumn: 13, endLine: 2 },
+            ]),
+          },
         },
       ],
       options: ['sonar-runtime'],
@@ -195,8 +205,8 @@ ruleTesterScript.run('no-extra-arguments script', rule, {
 function message(
   expected: number,
   provided: number,
-  extra: Partial<TestCaseError> = {},
-): TestCaseError {
+  extra: Partial<TSESLint.TestCaseError<string>> = {},
+): TSESLint.TestCaseError<string> {
   // prettier-ignore
   const expectedArguments =
     // eslint-disable-next-line no-nested-ternary
@@ -212,11 +222,20 @@ function message(
     `${provided} were`;
 
   return {
-    message: `This function expects ${expectedArguments}, but ${providedArguments} provided.`,
+    messageId: 'tooManyArguments',
+    data: {
+      expectedArguments,
+      providedArguments,
+    },
     ...extra,
   };
 }
 
 function encodedMessage(expected: number, provided: number, secondaryLocations: IssueLocation[]) {
-  return JSON.stringify({ secondaryLocations, message: message(expected, provided).message });
+  const testCaseError = message(expected, provided);
+
+  return JSON.stringify({
+    secondaryLocations,
+    message: `This function expects ${testCaseError.data?.expectedArguments}, but ${testCaseError.data?.providedArguments} provided.`,
+  });
 }

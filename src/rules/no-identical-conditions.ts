@@ -19,19 +19,23 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1862
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const message = 'This branch duplicates the one on line {{line}}';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      duplicatedBranch: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description: 'Related "if/else if" statements should not have the same condition',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -42,7 +46,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       IfStatement(node: TSESTree.Node) {
         const ifStmt = node as TSESTree.IfStatement;
@@ -56,10 +60,14 @@ const rule: Rule.RuleModule = {
                 report(
                   context,
                   {
-                    message: `This branch duplicates the one on line ${line}`,
+                    messageId: 'duplicatedBranch',
+                    data: {
+                      line,
+                    },
                     node: statement.test,
                   },
                   [issueLocation(condition.loc, condition.loc, 'Original')],
+                  message,
                 );
               }
             }

@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-one-iteration-loop');
 
 ruleTester.run('no-one-iteration-loop', rule, {
@@ -284,7 +283,7 @@ function invalid(code: string) {
     code,
     errors: [
       {
-        message: 'Refactor this loop to do more than one iteration.',
+        messageId: 'refactorLoop',
       },
     ],
   };

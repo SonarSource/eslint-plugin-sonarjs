@@ -95,7 +95,7 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       }`,
       errors: [
         {
-          message: 'Move this "if" to a new line or add the missing "else".',
+          messageId: 'sameLineCondition',
           line: 3,
           endLine: 3,
           column: 9,
@@ -122,36 +122,42 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 6,
-                column: 10,
-                endLine: 6,
-                endColumn: 11,
-                message: '',
-              },
-            ],
-            message: 'Move this "if" to a new line or add the missing "else".',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 6,
+                  column: 10,
+                  endLine: 6,
+                  endColumn: 11,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
           line: 6,
           endLine: 6,
           column: 13,
           endColumn: 15,
         },
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 11,
-                column: 10,
-                endLine: 11,
-                endColumn: 11,
-                message: '',
-              },
-            ],
-            message: 'Move this "if" to a new line or add the missing "else".',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 11,
+                  column: 10,
+                  endLine: 11,
+                  endColumn: 11,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
           line: 11,
           endLine: 11,
           column: 13,
@@ -168,18 +174,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 4,
-                column: 6,
-                endLine: 4,
-                endColumn: 7,
-                message: '',
-              },
-            ],
-            message: 'Move this "if" to a new line or add the missing "else".',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 4,
+                  column: 6,
+                  endLine: 4,
+                  endColumn: 7,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
         },
       ],
     },
@@ -194,18 +203,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 5,
-                column: 10,
-                endLine: 5,
-                endColumn: 11,
-                message: '',
-              },
-            ],
-            message: 'Move this "if" to a new line or add the missing "else".',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 5,
+                  column: 10,
+                  endLine: 5,
+                  endColumn: 11,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
         },
       ],
     },
@@ -220,18 +232,21 @@ ruleTester.run('Conditionals should start on new lines', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 5,
-                column: 8,
-                endLine: 5,
-                endColumn: 9,
-                message: '',
-              },
-            ],
-            message: 'Move this "if" to a new line or add the missing "else".',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 5,
+                  column: 8,
+                  endLine: 5,
+                  endColumn: 9,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
         },
       ],
     },

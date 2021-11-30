@@ -19,31 +19,32 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3626
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
 
-const message = 'Remove this redundant jump.';
 const loops = 'WhileStatement, ForStatement, DoWhileStatement, ForInStatement, ForOfStatement';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      removeRedundantJump: 'Remove this redundant jump.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Jump statements should not be redundant',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     function reportIfLastStatement(node: TSESTree.ContinueStatement | TSESTree.ReturnStatement) {
       const withArgument = node.type === 'ContinueStatement' ? !!node.label : !!node.argument;
       if (!withArgument) {
         const block = node.parent as TSESTree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
           context.report({
-            message,
+            messageId: 'removeRedundantJump',
             node,
           });
         }

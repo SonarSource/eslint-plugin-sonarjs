@@ -20,7 +20,6 @@
 // https://sonarsource.github.io/rspec/#/rspec/S1488
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
 import {
   isReturnStatement,
   isThrowStatement,
@@ -29,18 +28,22 @@ import {
 } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      doImmediateAction:
+        'Immediately {{action}} this expression instead of assigning it to the temporary variable "{{variable}}".',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Local variables should not be declared and then immediately returned or thrown',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
     fixable: 'code',
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       BlockStatement(node: TSESTree.Node) {
         processStatements((node as TSESTree.BlockStatement).body);
@@ -71,7 +74,11 @@ const rule: Rule.RuleModule = {
           // there must be only one "read" - in `return` or `throw`
           if (sameVariable && sameVariable.references.filter(ref => ref.isRead()).length === 1) {
             context.report({
-              message: formatMessage(last, returnedIdentifier.name),
+              messageId: 'doImmediateAction',
+              data: {
+                action: isReturnStatement(last) ? 'return' : 'throw',
+                variable: returnedIdentifier.name,
+              },
               node: declaredIdentifier.init,
               fix: fixer =>
                 fix(fixer, last, lastButOne, declaredIdentifier.init, returnedIdentifier),
@@ -120,12 +127,7 @@ const rule: Rule.RuleModule = {
       return undefined;
     }
 
-    function formatMessage(node: TSESTree.Node, variable: string) {
-      const action = isReturnStatement(node) ? 'return' : 'throw';
-      return `Immediately ${action} this expression instead of assigning it to the temporary variable "${variable}".`;
-    }
-
-    function getVariables(context: Rule.RuleContext) {
+    function getVariables(context: TSESLint.RuleContext<string, string[]>) {
       const { variableScope, variables: currentScopeVariables } = context.getScope();
       if (variableScope === context.getScope()) {
         return currentScopeVariables;

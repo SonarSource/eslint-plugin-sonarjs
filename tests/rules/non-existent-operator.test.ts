@@ -45,7 +45,10 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
       code: `x =+ y;`,
       errors: [
         {
-          message: `Was "+=" meant instead?`,
+          messageId: `useExistingOperator`,
+          data: {
+            operator: '+',
+          },
           line: 1,
           endLine: 1,
           column: 3,
@@ -58,7 +61,10 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
       x =- y;`,
       errors: [
         {
-          message: `Was "-=" meant instead?`,
+          messageId: `useExistingOperator`,
+          data: {
+            operator: '-',
+          },
           line: 2,
           endLine: 2,
           column: 9,
@@ -70,7 +76,10 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
       code: `x =! y;`,
       errors: [
         {
-          message: `Was "!=" meant instead?`,
+          messageId: `useExistingOperator`,
+          data: {
+            operator: '!',
+          },
           line: 1,
           endLine: 1,
           column: 3,
@@ -82,7 +91,10 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
       code: `const x =! y;`,
       errors: [
         {
-          message: `Was "!=" meant instead?`,
+          messageId: `useExistingOperator`,
+          data: {
+            operator: '!',
+          },
           line: 1,
           endLine: 1,
           column: 9,
@@ -94,7 +106,10 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
       code: `let x =! y;`,
       errors: [
         {
-          message: `Was "!=" meant instead?`,
+          messageId: `useExistingOperator`,
+          data: {
+            operator: '!',
+          },
           line: 1,
           endLine: 1,
           column: 7,

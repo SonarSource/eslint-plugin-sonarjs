@@ -22,15 +22,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { report } from '../utils/locations';
 import { isIdentifier, isIfStatement } from '../utils/nodes';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const message = 'This always evaluates to {{value}}. Consider refactoring this code.';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      refactorBooleanExpression: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'suggestion',
     docs: {
       description: 'Boolean expressions should not be gratuitous',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -41,8 +45,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-
-  create(context: Rule.RuleContext) {
+  create(context) {
     const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
     const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
 
@@ -214,17 +217,21 @@ function transformAndFilter(ids: TSESTree.Identifier[], currentScope: TSESLint.S
 function reportIssue(
   id: TSESTree.Node,
   ref: TSESLint.Scope.Reference | undefined,
-  context: Rule.RuleContext,
+  context: TSESLint.RuleContext<string, string[]>,
   truthy: boolean,
 ) {
   const value = truthy ? 'truthy' : 'falsy';
   report(
     context,
     {
-      message: `This always evaluates to ${value}. Consider refactoring this code.`,
-      loc: id.loc,
+      messageId: 'refactorBooleanExpression',
+      data: {
+        value,
+      },
+      node: id,
     },
     getSecondaryLocations(ref, value),
+    message,
   );
 }
 

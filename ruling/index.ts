@@ -19,7 +19,7 @@
  */
 import * as fs from "fs";
 import * as path from "path";
-import { CLIEngine } from "eslint";
+import { ESLint } from "eslint";
 import * as lodash from "lodash";
 import * as minimist from "minimist";
 
@@ -27,7 +27,7 @@ const rulesPath = path.join(__dirname, "../lib/rules");
 
 run();
 
-function run() {
+async function run() {
   const argv = minimist(process.argv.slice(2), {
     string: ["rule"],
     boolean: ["update"],
@@ -46,37 +46,39 @@ function run() {
   });
   console.log("");
 
-  const cli = new CLIEngine({
-    parser: "babel-eslint",
-    parserOptions: {
-      // @ts-ignore 'experimentalObjectRestSpread' is missing in type definition
-      ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
-      ecmaVersion: 2018,
-      sourceType: "module",
-    },
-    rulePaths: [rulesPath],
-    rules: getEslintRules(rules),
-    useEslintrc: false,
-    allowInlineConfig: false,
-    ignorePath: path.join(__dirname, ".eslintignore"),
-  });
-
   const sourcesPath = path.join(__dirname, "javascript-test-sources/src");
   if (!fs.existsSync(sourcesPath)) {
     console.error("No sources found!");
     process.exit(1);
   }
-  const report = cli.executeOnFiles([sourcesPath]);
+
+  const eslint = new ESLint({
+    overrideConfig: {
+      parser: "babel-eslint",
+      parserOptions: {
+        ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
+        ecmaVersion: 2018,
+        sourceType: "module",
+      },
+      rules: getEslintRules(rules)
+    },
+    rulePaths: [rulesPath],
+    useEslintrc: false,
+    allowInlineConfig: false,
+    ignorePath: path.join(__dirname, ".eslintignore"),
+  });
+
+  const reportResults = await eslint.lintFiles([sourcesPath]);
 
   const results: Results = {};
   rules.forEach(rule => (results[rule] = {}));
 
-  report.results.forEach(result => {
+  reportResults.forEach(result => {
     result.messages.forEach(message => {
       if (message.ruleId) {
         addToResults(results, getFileNameForSnapshot(result.filePath), message.ruleId, message.line);
       } else {
-        throw new Error(`Unexpected error: ${message.message}`);
+        throw new Error(`Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`);
       }
     });
   });

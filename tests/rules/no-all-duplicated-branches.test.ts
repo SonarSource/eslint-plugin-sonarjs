@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-all-duplicated-branches');
 
 ruleTester.run('no-all-duplicated-branches if', rule, {
@@ -53,8 +52,7 @@ ruleTester.run('no-all-duplicated-branches if', rule, {
       code: 'if (a) { first(); } else { first(); }',
       errors: [
         {
-          message:
-            "Remove this conditional structure or edit its code blocks so that they're not all the same.",
+          messageId: 'removeOrEditConditionalStructure',
           line: 1,
           column: 1,
           endColumn: 38,
@@ -63,15 +61,36 @@ ruleTester.run('no-all-duplicated-branches if', rule, {
     },
     {
       code: 'if (a) { first(); } else if (b) { first(); } else { first(); }',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 1,
+          column: 1,
+          endColumn: 63,
+        },
+      ],
     },
     {
       code: 'if (a) { first(); second(); } else { first(); second(); }',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 1,
+          column: 1,
+          endColumn: 58,
+        },
+      ],
     },
     {
       code: 'if (a) { first(); second(); } else if (b) { first(); second(); } else { first(); second(); }',
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 1,
+          column: 1,
+          endColumn: 93,
+        },
+      ],
     },
   ],
 });
@@ -136,8 +155,7 @@ ruleTester.run('no-all-duplicated-branches switch', rule, {
       }`,
       errors: [
         {
-          message:
-            "Remove this conditional structure or edit its code blocks so that they're not all the same.",
+          messageId: 'removeOrEditConditionalStructure',
           line: 2,
           endLine: 10,
           column: 7,
@@ -160,7 +178,15 @@ ruleTester.run('no-all-duplicated-branches switch', rule, {
           first();
           second();
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 2,
+          endLine: 14,
+          column: 7,
+          endColumn: 8,
+        },
+      ],
     },
     {
       code: `
@@ -174,7 +200,15 @@ ruleTester.run('no-all-duplicated-branches switch', rule, {
         default:
           first();
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 2,
+          endLine: 11,
+          column: 7,
+          endColumn: 8,
+        },
+      ],
     },
     {
       code: `
@@ -192,7 +226,15 @@ ruleTester.run('no-all-duplicated-branches switch', rule, {
           first();
           second();
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'removeOrEditConditionalStructure',
+          line: 2,
+          endLine: 15,
+          column: 7,
+          endColumn: 8,
+        },
+      ],
     },
   ],
 });
@@ -204,8 +246,7 @@ ruleTester.run('no-all-duplicated-branches conditional', rule, {
       code: 'a ? first : first;',
       errors: [
         {
-          message:
-            'This conditional operation returns the same value whether the condition is "true" or "false".',
+          messageId: 'returnsTheSameValue',
           line: 1,
           column: 1,
           endColumn: 18,

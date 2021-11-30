@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-element-overwrite');
 
 ruleTester.run('no-element-overwrite', rule, {
@@ -97,7 +96,11 @@ ruleTester.run('no-element-overwrite', rule, {
       fruits[1] = "apple";`,
       errors: [
         {
-          message: `Verify this is the index that was intended; "1" was already set on line 2.`,
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 1,
+            line: 2,
+          },
           line: 3,
           column: 7,
           endColumn: 26,
@@ -113,12 +116,17 @@ ruleTester.run('no-element-overwrite', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              { line: 2, column: 6, endLine: 2, endColumn: 26, message: 'Original value' },
-            ],
-            message: `Verify this is the index that was intended; "1" was already set on line 2.`,
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            index: 1,
+            line: 2,
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                { line: 2, column: 6, endLine: 2, endColumn: 26, message: 'Original value' },
+              ],
+              message: `Verify this is the index that was intended; "1" was already set on line 2.`,
+            }),
+          },
         },
       ],
     },
@@ -128,7 +136,13 @@ ruleTester.run('no-element-overwrite', rule, {
       fruits[2] = "orange";
       fruits[1] = "apple";`,
       errors: [
-        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 1,
+            line: 2,
+          },
+        },
       ],
     },
     {
@@ -136,7 +150,13 @@ ruleTester.run('no-element-overwrite', rule, {
       this.fruits[1] = "banana";
       this.fruits[1] = "apple";`,
       errors: [
-        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 1,
+            line: 2,
+          },
+        },
       ],
     },
     {
@@ -144,7 +164,13 @@ ruleTester.run('no-element-overwrite', rule, {
       this.fruits[1] = "banana";
       this.fruits[1] = foo(this.bar);`,
       errors: [
-        { message: `Verify this is the index that was intended; "1" was already set on line 2.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 1,
+            line: 2,
+          },
+        },
       ],
     },
     {
@@ -155,7 +181,13 @@ ruleTester.run('no-element-overwrite', rule, {
         fruits[i++] = "another";
       }`,
       errors: [
-        { message: `Verify this is the index that was intended; "i" was already set on line 3.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 'i',
+            line: 3,
+          },
+        },
       ],
     },
     {
@@ -165,7 +197,13 @@ ruleTester.run('no-element-overwrite', rule, {
         myMap.clear();
         myMap.set("key", 1);`,
       errors: [
-        { message: `Verify this is the index that was intended; "key" was already set on line 2.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 'key',
+            line: 2,
+          },
+        },
       ],
     },
     {
@@ -177,7 +215,13 @@ ruleTester.run('no-element-overwrite', rule, {
         mySet.clear();
         mySet.add(2);`,
       errors: [
-        { message: `Verify this is the index that was intended; "2" was already set on line 3.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 2,
+            line: 3,
+          },
+        },
       ],
     },
     {
@@ -196,8 +240,20 @@ ruleTester.run('no-element-overwrite', rule, {
         }
       }`,
       errors: [
-        { message: `Verify this is the index that was intended; "1" was already set on line 6.` },
-        { message: `Verify this is the index that was intended; "2" was already set on line 10.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 1,
+            line: 6,
+          },
+        },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: 2,
+            line: 10,
+          },
+        },
       ],
     },
     {
@@ -205,7 +261,13 @@ ruleTester.run('no-element-overwrite', rule, {
         fruits[''] = "banana";
         fruits[''] = "apple";`,
       errors: [
-        { message: `Verify this is the index that was intended; "" was already set on line 2.` },
+        {
+          messageId: 'verifyIntendedIndex',
+          data: {
+            index: '',
+            line: 2,
+          },
+        },
       ],
     },
   ],

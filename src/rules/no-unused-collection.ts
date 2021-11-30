@@ -21,22 +21,22 @@
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import { collectionConstructor, writingMethods } from '../utils/collections';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const message = "Either use this collection's contents or remove the collection.";
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      unusedCollection: "Either use this collection's contents or remove the collection.",
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Collection and array contents should be used',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       'Program:exit': () => {
         const unusedArrays: TSESLint.Scope.Variable[] = [];
@@ -44,7 +44,7 @@ const rule: Rule.RuleModule = {
 
         unusedArrays.forEach(unusedArray => {
           context.report({
-            message,
+            messageId: 'unusedCollection',
             node: unusedArray.identifiers[0],
           });
         });

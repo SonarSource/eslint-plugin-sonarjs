@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-collapsible-if');
 
 ruleTester.run('no-collapsible-if', rule, {
@@ -68,18 +67,21 @@ ruleTester.run('no-collapsible-if', rule, {
       options: ['sonar-runtime'],
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 4,
-                column: 8,
-                endLine: 4,
-                endColumn: 10,
-                message: `Nested "if" statement.`,
-              },
-            ],
-            message: 'Merge this if statement with the nested one.',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 4,
+                  column: 8,
+                  endLine: 4,
+                  endColumn: 10,
+                  message: 'Nested "if" statement.',
+                },
+              ],
+              message: 'Merge this if statement with the nested one.',
+            }),
+          },
           line: 2,
           column: 7,
           endLine: 2,
@@ -91,7 +93,7 @@ ruleTester.run('no-collapsible-if', rule, {
       code: `
       if (x)
         if(y) {}`,
-      errors: [{ message: 'Merge this if statement with the nested one.' }],
+      errors: [{ messageId: 'mergeNestedIfStatement' }],
     },
     {
       code: `
@@ -101,7 +103,7 @@ ruleTester.run('no-collapsible-if', rule, {
           }
         }
       }`,
-      errors: 2,
+      errors: [{ messageId: 'mergeNestedIfStatement' }, { messageId: 'mergeNestedIfStatement' }],
     },
   ],
 });

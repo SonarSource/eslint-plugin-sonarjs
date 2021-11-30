@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/prefer-object-literal');
 
 ruleTester.run('prefer-literal', rule, {
@@ -59,7 +58,7 @@ ruleTester.run('prefer-literal', rule, {
     {
       code: `var x = {}; x["a"] = 2;`,
     },
-    // No issue on multiline expressions, may be done for readibility
+    // No issue on multiline expressions, may be done for readability
     {
       code: `
       var x = {};
@@ -82,8 +81,7 @@ ruleTester.run('prefer-literal', rule, {
       code: `var x = {}; x.a = 2;`,
       errors: [
         {
-          message:
-            'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.',
+          messageId: 'declarePropertiesInsideObject',
           line: 1,
           endLine: 1,
           column: 5,
@@ -98,8 +96,7 @@ ruleTester.run('prefer-literal', rule, {
         x.a = 2;`,
       errors: [
         {
-          message:
-            'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.',
+          messageId: 'declarePropertiesInsideObject',
           line: 2,
           endLine: 2,
           column: 13,
@@ -109,30 +106,78 @@ ruleTester.run('prefer-literal', rule, {
     },
     {
       code: `var x = {}; x.a = 2; x.b = 3`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 1,
+          endLine: 1,
+          column: 5,
+          endColumn: 11,
+        },
+      ],
     },
     {
       code: `let x = {}; x.a = 2;`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 1,
+          endLine: 1,
+          column: 5,
+          endColumn: 11,
+        },
+      ],
     },
     {
       code: `const x = {}; x.a = 2;`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 1,
+          endLine: 1,
+          column: 7,
+          endColumn: 13,
+        },
+      ],
     },
     {
       code: `{ var x = {}; x.a = 2; }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 1,
+          endLine: 1,
+          column: 7,
+          endColumn: 13,
+        },
+      ],
     },
     {
       code: `if (a) { var x = {}; x.a = 2; }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 1,
+          endLine: 1,
+          column: 14,
+          endColumn: 20,
+        },
+      ],
     },
     {
       code: `function foo() {
         var x = {};
         x.a = 2;
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'declarePropertiesInsideObject',
+          line: 2,
+          endLine: 2,
+          column: 13,
+          endColumn: 19,
+        },
+      ],
     },
   ],
 });

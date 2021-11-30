@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-duplicate-string');
 
 ruleTester.run('no-duplicate-string', rule, {
@@ -161,7 +160,10 @@ ruleTester.run('no-duplicate-string', rule, {
     console.log('some message');`,
       errors: [
         {
-          message: 'Define a constant instead of duplicating this literal 3 times.',
+          messageId: 'defineConstant',
+          data: {
+            times: 3,
+          },
           column: 17,
           endColumn: 31,
         },
@@ -173,18 +175,21 @@ ruleTester.run('no-duplicate-string', rule, {
     console.log('some message');`,
       errors: [
         {
-          message: JSON.stringify({
-            secondaryLocations: [
-              {
-                line: 3,
-                column: 16,
-                endLine: 3,
-                endColumn: 30,
-                message: 'Duplication',
-              },
-            ],
-            message: 'Define a constant instead of duplicating this literal 2 times.',
-          }),
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 3,
+                  column: 16,
+                  endLine: 3,
+                  endColumn: 30,
+                  message: 'Duplication',
+                },
+              ],
+              message: 'Define a constant instead of duplicating this literal 2 times.',
+            }),
+          },
           line: 2,
           endLine: 2,
           column: 17,
@@ -202,7 +207,10 @@ ruleTester.run('no-duplicate-string', rule, {
       `,
       errors: [
         {
-          message: 'Define a constant instead of duplicating this literal 3 times.',
+          messageId: 'defineConstant',
+          data: {
+            times: 3,
+          },
           line: 5,
         },
       ],
@@ -211,7 +219,15 @@ ruleTester.run('no-duplicate-string', rule, {
       code: `
     console.log("some message");
     console.log('some message');`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'defineConstant',
+          data: {
+            times: 2,
+          },
+          line: 2,
+        },
+      ],
       options: [2],
     },
     {
@@ -225,7 +241,15 @@ ruleTester.run('no-duplicate-string', rule, {
     const obj3 = {
       key: "some message"
     };`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'defineConstant',
+          data: {
+            times: 3,
+          },
+          line: 3,
+        },
+      ],
     },
   ],
 });

@@ -19,21 +19,26 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1751
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import { Rule } from 'eslint';
 import { isContinueStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
+import CodePath = Rule.CodePath;
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      refactorLoop: 'Refactor this loop to do more than one iteration.',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Loops with at most one iteration should be refactored',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
+  // @ts-ignore The typings of @typescript-eslint/experimental-utils does not contain the 'onX' methods.
   create(context) {
     const loopingNodes: Set<TSESTree.Node> = new Set();
     const loops: Set<TSESTree.Node> = new Set();
@@ -53,24 +58,19 @@ const rule: Rule.RuleModule = {
       DoWhileStatement(node: TSESTree.Node) {
         loops.add(node);
       },
-
-      onCodePathStart(codePath: Rule.CodePath) {
+      onCodePathStart(codePath: CodePath) {
         currentCodePaths.push(codePath);
       },
-
       onCodePathEnd() {
         currentCodePaths.pop();
       },
-
       'WhileStatement > *'(node: TSESTree.Node) {
         visitLoopChild(node.parent as TSESTree.WhileStatement);
       },
-
       'ForStatement > *'(node: TSESTree.Node) {
         visitLoopChild(node.parent as TSESTree.ForStatement);
       },
-
-      onCodePathSegmentLoop(_, toSegment: Rule.CodePathSegment, node: TSESTree.Node) {
+      onCodePathSegmentLoop(_: unknown, toSegment: Rule.CodePathSegment, node: TSESTree.Node) {
         if (isContinueStatement(node)) {
           loopsAndTheirSegments.forEach(({ segments, loop }) => {
             if (segments.includes(toSegment)) {
@@ -81,12 +81,11 @@ const rule: Rule.RuleModule = {
           loopingNodes.add(node);
         }
       },
-
       'Program:exit'() {
         loops.forEach(loop => {
           if (!loopingNodes.has(loop)) {
             context.report({
-              message: 'Refactor this loop to do more than one iteration.',
+              messageId: 'refactorLoop',
               loc: context.getSourceCode().getFirstToken(loop)!.loc,
             });
           }
@@ -97,7 +96,7 @@ const rule: Rule.RuleModule = {
     // Required to correctly process "continue" looping.
     // When a loop has a "continue" statement, this "continue" statement triggers a "onCodePathSegmentLoop" event,
     // and the corresponding event node is that "continue" statement. Current implementation is based on the fact
-    // that the "onCodePathSegmentLoop" event is triggerent with a loop node. To work this special case around,
+    // that the "onCodePathSegmentLoop" event is triggered with a loop node. To work this special case around,
     // we visit loop children and collect corresponding path segments as these segments are "toSegment"
     // in "onCodePathSegmentLoop" event.
     function visitLoopChild(parent: TSESTree.WhileStatement | TSESTree.ForStatement) {

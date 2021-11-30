@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/no-unused-collection');
 
 function invalidTest(code: string) {
@@ -27,7 +26,7 @@ function invalidTest(code: string) {
     code,
     errors: [
       {
-        message: "Either use this collection's contents or remove the collection.",
+        messageId: 'unusedCollection',
         line,
         endLine: line,
       },
@@ -185,7 +184,7 @@ ruleTester.run('Primitive return types should be used.', rule, {
           }`,
       errors: [
         {
-          message: "Either use this collection's contents or remove the collection.",
+          messageId: 'unusedCollection',
           line: 3,
           column: 13,
           endLine: 3,

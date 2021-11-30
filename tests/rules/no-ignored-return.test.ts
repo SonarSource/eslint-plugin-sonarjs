@@ -23,7 +23,7 @@ import { RuleTester } from '../rule-tester';
 
 const filename = path.resolve(`${__dirname}/../resources/file.ts`);
 const ruleTester = new RuleTester({
-  parser: require.resolve('@typescript-eslint/parser'),
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2018,
     project: path.resolve(`${__dirname}/../resources/tsconfig.json`),
@@ -114,24 +114,8 @@ ruleTester.run('Return values from functions without side effects should not be 
       }`,
       errors: [
         {
-          message: `The return value of "abs" must be used.`,
-          line: 4,
-          endLine: 4,
-          column: 9,
-          endColumn: 20,
-        },
-      ],
-    },
-    {
-      filename,
-      code: `
-      function methodsOnMath() {
-        let x = -42;
-        Math.abs(x);
-      }`,
-      errors: [
-        {
-          message: `The return value of "abs" must be used.`,
+          messageId: `returnValueMustBeUsed`,
+          data: { methodName: 'abs' },
           line: 4,
           endLine: 4,
           column: 9,
@@ -148,7 +132,7 @@ ruleTester.run('Return values from functions without side effects should not be 
       }`,
       errors: [
         {
-          message: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
+          messageId: `useForEach`,
         },
       ],
     },
@@ -162,7 +146,24 @@ ruleTester.run('Return values from functions without side effects should not be 
 
         arr1.join(",");
       }`,
-      errors: 2,
+      errors: [
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'slice' },
+          line: 5,
+          column: 9,
+          endLine: 5,
+          endColumn: 24,
+        },
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'join' },
+          line: 7,
+          column: 9,
+          endLine: 7,
+          endColumn: 23,
+        },
+      ],
     },
     {
       filename,
@@ -174,7 +175,40 @@ ruleTester.run('Return values from functions without side effects should not be 
         "abc".concat("bcd").charCodeAt(2);
         "abc".replace(/ab/, "d");
       }`,
-      errors: 4,
+      errors: [
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'concat' },
+          line: 4,
+          column: 9,
+          endLine: 4,
+          endColumn: 24,
+        },
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'concat' },
+          line: 5,
+          column: 9,
+          endLine: 5,
+          endColumn: 28,
+        },
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'charCodeAt' },
+          line: 6,
+          column: 9,
+          endLine: 6,
+          endColumn: 42,
+        },
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'replace' },
+          line: 7,
+          column: 9,
+          endLine: 7,
+          endColumn: 33,
+        },
+      ],
     },
     {
       filename,
@@ -183,7 +217,16 @@ ruleTester.run('Return values from functions without side effects should not be 
         var num = 43 * 53;
         num.toExponential();
       }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'toExponential' },
+          line: 4,
+          column: 9,
+          endLine: 4,
+          endColumn: 28,
+        },
+      ],
     },
     {
       filename,
@@ -192,16 +235,16 @@ ruleTester.run('Return values from functions without side effects should not be 
         var regexp = /abc/;
         regexp.test("my string");
       }`,
-      errors: 1,
-    },
-    {
-      filename,
-      code: `
-      function methodsOnRegexp() {
-        var regexp = /abc/;
-        regexp.test("my string");
-      }`,
-      errors: 1,
+      errors: [
+        {
+          messageId: 'returnValueMustBeUsed',
+          data: { methodName: 'test' },
+          line: 4,
+          column: 9,
+          endLine: 4,
+          endColumn: 33,
+        },
+      ],
     },
   ],
 });

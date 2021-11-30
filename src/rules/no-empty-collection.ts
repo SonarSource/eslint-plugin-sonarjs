@@ -27,7 +27,6 @@ import {
   collectionConstructor,
   ancestorsChain,
 } from '../utils';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
 // Methods that mutate the collection but can't add elements
@@ -80,17 +79,21 @@ const strictlyReadingMethods = new Set([
   ...iterationMethods,
 ]);
 
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      reviewUsageOfIdentifier:
+        'Review this usage of "{{identifierName}}" as it can only be empty here.',
+    },
+    schema: [],
     type: 'problem',
     docs: {
       description: 'Empty collections should not be accessed or iterated',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       'Program:exit': () => {
         reportEmptyCollectionsUsage(context.getScope(), context);
@@ -99,7 +102,10 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function reportEmptyCollectionsUsage(scope: TSESLint.Scope.Scope, context: Rule.RuleContext) {
+function reportEmptyCollectionsUsage(
+  scope: TSESLint.Scope.Scope,
+  context: TSESLint.RuleContext<string, string[]>,
+) {
   if (scope.type !== 'global') {
     scope.variables.forEach(v => {
       reportEmptyCollectionUsage(v, context);
@@ -111,7 +117,10 @@ function reportEmptyCollectionsUsage(scope: TSESLint.Scope.Scope, context: Rule.
   });
 }
 
-function reportEmptyCollectionUsage(variable: TSESLint.Scope.Variable, context: Rule.RuleContext) {
+function reportEmptyCollectionUsage(
+  variable: TSESLint.Scope.Variable,
+  context: TSESLint.RuleContext<string, string[]>,
+) {
   if (variable.references.length <= 1) {
     return;
   }
@@ -145,7 +154,10 @@ function reportEmptyCollectionUsage(variable: TSESLint.Scope.Variable, context: 
   if (hasAssignmentOfEmptyCollection) {
     readingUsages.forEach(ref => {
       context.report({
-        message: `Review this usage of "${ref.identifier.name}" as it can only be empty here.`,
+        messageId: 'reviewUsageOfIdentifier',
+        data: {
+          identifierName: ref.identifier.name,
+        },
         node: ref.identifier,
       });
     });

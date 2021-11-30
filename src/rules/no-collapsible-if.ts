@@ -19,18 +19,22 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1066
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import { isIfStatement, isBlockStatement } from '../utils/nodes';
 import { report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const message = 'Merge this if statement with the nested one.';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      mergeNestedIfStatement: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'suggestion',
     docs: {
       description: 'Collapsible "if" statements should be merged',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -41,7 +45,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       IfStatement(node: TSESTree.Node) {
         let { consequent } = node as TSESTree.IfStatement;
@@ -55,10 +59,11 @@ const rule: Rule.RuleModule = {
             report(
               context,
               {
-                message: `Merge this if statement with the nested one.`,
+                messageId: 'mergeNestedIfStatement',
                 loc: enclosingIfKeyword.loc,
               },
-              [issueLocation(ifKeyword.loc, ifKeyword.loc, `Nested "if" statement.`)],
+              [issueLocation(ifKeyword.loc, ifKeyword.loc, 'Nested "if" statement.')],
+              message,
             );
           }
         }

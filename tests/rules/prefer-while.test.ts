@@ -18,9 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-
 import rule = require('../../src/rules/prefer-while');
-const message = 'Replace this "for" loop with a "while" loop.';
+
+const message = 'replaceForWithWhileLoop';
 
 ruleTester.run('prefer-while', rule, {
   valid: [
@@ -37,19 +37,19 @@ ruleTester.run('prefer-while', rule, {
   invalid: [
     {
       code: 'for(;condition;) {}',
-      errors: [{ message, line: 1, column: 1, endColumn: 4 }],
+      errors: [{ messageId: message, line: 1, column: 1, endColumn: 4 }],
       output: 'while (condition) {}',
     },
     {
       code: 'for (;condition; ) foo();',
-      errors: [{ message }],
+      errors: [{ messageId: message }],
       output: 'while (condition) foo();',
     },
     {
       code: `
         for(;i < 10;)
           doSomething();`,
-      errors: [{ message }],
+      errors: [{ messageId: message }],
       output: `
         while (i < 10)
           doSomething();`,

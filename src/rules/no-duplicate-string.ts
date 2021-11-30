@@ -19,8 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1192
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
 import { issueLocation, report } from '../utils/locations';
 
@@ -35,16 +34,20 @@ const EXCLUDED_CONTEXTS = [
   'ExportAllDeclaration',
   'ExportNamedDeclaration',
 ];
-const MESSAGE = 'Define a constant instead of duplicating this literal {{times}} times.';
+const message = 'Define a constant instead of duplicating this literal {{times}} times.';
 
-type Options = [number];
+type Options = (number | 'sonar-runtime')[];
+type Context = TSESLint.RuleContext<string, Options>;
 
-const rule: Rule.RuleModule<string, Options> = {
+const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
+    messages: {
+      defineConstant: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'suggestion',
     docs: {
       description: 'String literals should not be duplicated',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -57,7 +60,7 @@ const rule: Rule.RuleModule<string, Options> = {
   create(context) {
     const literalsByValue: Map<string, TSESTree.Literal[]> = new Map();
     const threshold: number =
-      context.options[0] !== undefined ? context.options[0] : DEFAULT_THRESHOLD;
+      typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_THRESHOLD;
 
     return {
       Literal: (node: TSESTree.Node) => {
@@ -91,8 +94,13 @@ const rule: Rule.RuleModule<string, Options> = {
             );
             report(
               context,
-              { message: MESSAGE, node: primaryNode, data: { times: literals.length.toString() } },
+              {
+                messageId: 'defineConstant',
+                node: primaryNode,
+                data: { times: literals.length.toString() },
+              },
               secondaryIssues,
+              message,
             );
           }
         });
@@ -101,7 +109,7 @@ const rule: Rule.RuleModule<string, Options> = {
   },
 };
 
-function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.Literal) {
+function isExcludedByUsageContext(context: Context, literal: TSESTree.Literal) {
   const parent = literal.parent!;
   const parentType = parent.type;
 
@@ -112,7 +120,7 @@ function isExcludedByUsageContext(context: Rule.RuleContext, literal: TSESTree.L
   );
 }
 
-function isRequireContext(parent: TSESTree.Node, context: Rule.RuleContext) {
+function isRequireContext(parent: TSESTree.Node, context: Context) {
   return (
     parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
   );

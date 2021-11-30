@@ -34,15 +34,19 @@ import {
   IssueLocation,
   toSecondaryLocation,
 } from '../utils/locations';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const rule: Rule.RuleModule = {
+const message = 'This function expects {{expectedArguments}}, but {{providedArguments}} provided.';
+
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      tooManyArguments: message,
+      sonarRuntime: '{{sonarRuntimeData}}',
+    },
     type: 'problem',
     docs: {
       description: 'Function calls should not pass extra arguments',
-      category: 'Possible Errors',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -53,7 +57,7 @@ const rule: Rule.RuleModule = {
       },
     ],
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     const callExpressionsToCheck: Array<{
       callExpr: TSESTree.CallExpression;
       functionNode: TSESTree.FunctionLike;
@@ -166,15 +170,18 @@ const rule: Rule.RuleModule = {
         argsLength === 1 ? "1 was" :
         `${argsLength} were`;
 
-      const message = `This function expects ${expectedArguments}, but ${providedArguments} provided.`;
-
       report(
         context,
         {
-          message,
+          messageId: 'tooManyArguments',
+          data: {
+            expectedArguments,
+            providedArguments,
+          },
           node: callExpr.callee,
         },
         getSecondaryLocations(callExpr, functionNode),
+        message,
       );
     }
 

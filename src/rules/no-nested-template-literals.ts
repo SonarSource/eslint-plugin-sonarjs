@@ -19,27 +19,27 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S4624
 
-import type { TSESTree } from '@typescript-eslint/experimental-utils';
-import { Rule } from '../utils/types';
+import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
 
-const message = 'Refactor this code to not use nested template literals.';
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      nestedTemplateLiterals: 'Refactor this code to not use nested template literals.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Template literals should not be nested',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       'TemplateLiteral TemplateLiteral': (node: TSESTree.Node) => {
         context.report({
-          message,
+          messageId: 'nestedTemplateLiterals',
           node,
         });
       },

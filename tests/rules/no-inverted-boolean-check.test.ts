@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ruleTester, TestCaseError } from '../rule-tester';
-
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ruleTester } from '../rule-tester';
 import rule = require('../../src/rules/no-inverted-boolean-check');
 
 ruleTester.run('no-inverted-boolean-check', rule, {
@@ -121,6 +121,6 @@ ruleTester.run('no-inverted-boolean-check', rule, {
   ],
 });
 
-function message(oppositeOperator: string): TestCaseError {
-  return { message: `Use the opposite operator (${oppositeOperator}) instead.` };
+function message(invertedOperator: string): TSESLint.TestCaseError<string> {
+  return { messageId: 'useOppositeOperator', data: { invertedOperator } };
 }

@@ -17,9 +17,9 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ruleTester, TestCaseError } from '../rule-tester';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
+import { ruleTester } from '../rule-tester';
 import { IssueLocation } from '../../src/utils/locations';
-
 import rule = require('../../src/rules/no-identical-functions');
 
 ruleTester.run('no-identical-functions', rule, {
@@ -150,12 +150,60 @@ ruleTester.run('no-identical-functions', rule, {
         // prettier-ignore
         message(2, 8),
         message(2, 14),
-        { line: 21, column: 9, endColumn: 20 }, // constructor
-        { line: 27, column: 9, endColumn: 15 }, // method
-        { line: 33, column: 13, endColumn: 19 }, // setter
-        { line: 39, column: 13, endColumn: 19 }, // getter
-        { line: 46, column: 22, endColumn: 35 }, // async declaration
-        { line: 52, column: 35, endColumn: 43 }, // async expression
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 21,
+          column: 9,
+          endColumn: 20,
+        }, // constructor
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 27,
+          column: 9,
+          endColumn: 15,
+        }, // method
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 33,
+          column: 13,
+          endColumn: 19,
+        }, // setter
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 39,
+          column: 13,
+          endColumn: 19,
+        }, // getter
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 46,
+          column: 22,
+          endColumn: 35,
+        }, // async declaration
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 2,
+          },
+          line: 52,
+          column: 35,
+          endColumn: 43,
+        }, // async expression
       ],
     },
     {
@@ -223,7 +271,17 @@ ruleTester.run('no-identical-functions', rule, {
           return 42;
         },
       };`,
-      errors: [{ line: 9, column: 9, endColumn: 12 }],
+      errors: [
+        {
+          messageId: 'identicalFunctions',
+          data: {
+            line: 3,
+          },
+          line: 9,
+          column: 9,
+          endColumn: 12,
+        },
+      ],
     },
     {
       code: `
@@ -274,9 +332,12 @@ ruleTester.run('no-identical-functions', rule, {
   ],
 });
 
-function message(originalLine: number, duplicationLine: number): TestCaseError {
+function message(originalLine: number, duplicationLine: number): TSESLint.TestCaseError<string> {
   return {
-    message: `Update this function so that its implementation is not identical to the one on line ${originalLine}.`,
+    messageId: 'identicalFunctions',
+    data: {
+      line: originalLine,
+    },
     line: duplicationLine,
     endLine: duplicationLine,
   };
@@ -286,12 +347,16 @@ function encodedMessage(
   originalLine: number,
   duplicationLine: number,
   secondaries: IssueLocation[],
-): TestCaseError {
+): TSESLint.TestCaseError<string> {
   return {
-    message: JSON.stringify({
-      secondaryLocations: secondaries,
-      message: `Update this function so that its implementation is not identical to the one on line ${originalLine}.`,
-    }),
+    messageId: 'sonarRuntime',
+    data: {
+      line: originalLine,
+      sonarRuntimeData: JSON.stringify({
+        secondaryLocations: secondaries,
+        message: `Update this function so that its implementation is not identical to the one on line ${originalLine}.`,
+      }),
+    },
     line: duplicationLine,
     endLine: duplicationLine,
   };

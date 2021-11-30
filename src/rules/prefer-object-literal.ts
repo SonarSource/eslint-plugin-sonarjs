@@ -30,23 +30,23 @@ import {
   isIdentifier,
 } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
-import { Rule } from '../utils/types';
 import docsUrl from '../utils/docs-url';
 
-const MESSAGE =
-  'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.';
-
-const rule: Rule.RuleModule = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    messages: {
+      declarePropertiesInsideObject:
+        'Declare one or more properties of this object inside of the object literal syntax instead of using separate statements.',
+    },
+    schema: [],
     type: 'suggestion',
     docs: {
       description: 'Object literal syntax should be used',
-      category: 'Best Practices',
       recommended: 'error',
       url: docsUrl(__filename),
     },
   },
-  create(context: Rule.RuleContext) {
+  create(context) {
     return {
       BlockStatement: (node: TSESTree.Node) =>
         checkObjectInitialization((node as TSESTree.BlockStatement).body, context),
@@ -60,7 +60,10 @@ const rule: Rule.RuleModule = {
   },
 };
 
-function checkObjectInitialization(statements: TSESTree.Statement[], context: Rule.RuleContext) {
+function checkObjectInitialization(
+  statements: TSESTree.Statement[],
+  context: TSESLint.RuleContext<string, string[]>,
+) {
   let index = 0;
   while (index < statements.length - 1) {
     const objectDeclaration = getObjectDeclaration(statements[index]);
@@ -69,7 +72,7 @@ function checkObjectInitialization(statements: TSESTree.Statement[], context: Ru
       if (
         isPropertyAssignment(statements[index + 1], objectDeclaration.id, context.getSourceCode())
       ) {
-        context.report({ message: MESSAGE, node: objectDeclaration });
+        context.report({ messageId: 'declarePropertiesInsideObject', node: objectDeclaration });
       }
     }
     index++;
