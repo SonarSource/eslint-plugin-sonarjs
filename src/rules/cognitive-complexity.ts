@@ -50,7 +50,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     messages: {
       refactorFunction: message,
       sonarRuntime: '{{sonarRuntimeData}}',
-      fileComplexity: '{{sonarRuntimeData}}',
+      fileComplexity: '{{complexityAmount}}',
     },
     type: 'suggestion',
     docs: {

@@ -650,19 +650,15 @@ class TopLevel {
 }
       `,
       options: [0, 'metric'],
-      errors: [{ messageId: 'fileComplexity', data: { complexityAmount: complexity.toString() } }],
+      errors: [{ messageId: 'fileComplexity', data: { complexityAmount: 25 } }],
     },
   ],
 });
 
-function message(complexity: number, other: Partial<TSESLint.TestCaseError<string>> = {}) {
+function message(complexityAmount: number, other: Partial<TSESLint.TestCaseError<string>> = {}) {
   return {
     messageId: 'refactorFunction',
-    data: { complexityAmount: complexity, threshold: 0 },
+    data: { complexityAmount, threshold: 0 },
     ...other,
   };
-}
-
-function complexity(complexity: number) {
-  return { messageId: 'refactorFunction', data: { complexityAmount: complexity.toString() } };
 }
