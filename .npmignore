@@ -29,3 +29,5 @@ tsconfig.json
 tsconfig-src.json
 .cirrus/
 .cirrus.yml
+.jfrog/
+wss-unified-agent.config
