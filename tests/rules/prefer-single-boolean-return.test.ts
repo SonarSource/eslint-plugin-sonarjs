@@ -186,5 +186,40 @@ ruleTester.run('prefer-single-boolean-return', rule, {
         },
       ],
     },
+    {
+      code: `
+        function fn() {
+          if (foo) {
+            if (something) {
+              return true
+            }
+            return false
+          }
+
+          if (bar) {
+            if (something) {
+              return false
+            }
+            return true
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          line: 4,
+          column: 13,
+          endLine: 6,
+          endColumn: 14,
+        },
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          line: 11,
+          column: 13,
+          endLine: 13,
+          endColumn: 14,
+        },
+      ],
+    },
   ],
 });
