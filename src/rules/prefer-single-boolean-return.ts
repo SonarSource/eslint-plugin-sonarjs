@@ -44,22 +44,32 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     return {
-      IfStatement(node: TSESTree.Node) {
-        const ifStmt = node as TSESTree.IfStatement;
+      IfStatement(node: TSESTree.IfStatement) {
         if (
           // ignore `else if`
-          !isIfStatement(ifStmt.parent) &&
-          // `ifStmt.alternate` can be `null`, replace it with `undefined` in this case
-          returnsBoolean(ifStmt.alternate || undefined) &&
-          returnsBoolean(ifStmt.consequent)
+          !isIfStatement(node.parent) &&
+          (node.alternate ? returnsBoolean(node.alternate) : hasNextNodeReturnStatement(node)) &&
+          returnsBoolean(node.consequent)
         ) {
           context.report({
             messageId: 'replaceIfThenElseByReturn',
-            node: ifStmt,
+            node,
           });
         }
       },
     };
+
+    function hasNextNodeReturnStatement(node: TSESTree.Node) {
+      const sourceCode = context.getSourceCode();
+      const nextToken = sourceCode.getTokenAfter(node);
+      if (nextToken) {
+        const nextNode = sourceCode.getNodeByRangeIndex(nextToken.range[0]);
+        if (nextNode) {
+          return isSimpleReturnBooleanLiteral(nextNode);
+        }
+      }
+      return false;
+    }
 
     function returnsBoolean(statement: TSESTree.Statement | undefined) {
       return (
@@ -76,7 +86,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       );
     }
 
-    function isSimpleReturnBooleanLiteral(statement: TSESTree.Statement) {
+    function isSimpleReturnBooleanLiteral(statement: TSESTree.Node) {
       // `statement.argument` can be `null`, replace it with `undefined` in this case
       return isReturnStatement(statement) && isBooleanLiteral(statement.argument || undefined);
     }

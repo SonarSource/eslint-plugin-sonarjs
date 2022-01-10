@@ -11,5 +11,5 @@ if (strings.includes("foo")) {}  // Noncompliant
 
 for (str of strings) {}  // Noncompliant
 
-strings.forEach(str =&gt; doSomething(str)); // Noncompliant
+strings.forEach(str => doSomething(str)); // Noncompliant
 ```
