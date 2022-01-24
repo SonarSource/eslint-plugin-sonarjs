@@ -27,12 +27,19 @@ function calculateCode() {
   doOtherThing();
   return code;
 }
-  
+
 function getName() {
   return calculateCode();
 }
 ```
 
-## Exceptions
+## Configuration
 
-Functions with fewer than 3 lines are ignored.
+Number of lines must be duplicated to trigger an issue. Default is 3. Lines inside curly braces are taken into consideration.
+
+```json
+{
+  "no-identical-functions": "error",
+  "no-identical-functions": ["error", 5]
+}
+```
