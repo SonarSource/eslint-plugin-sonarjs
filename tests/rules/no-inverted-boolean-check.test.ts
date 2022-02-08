@@ -45,82 +45,79 @@ ruleTester.run('no-inverted-boolean-check', rule, {
       code: `if (!(x == 1)) {}`,
       errors: [
         {
-          ...message('!='),
+          ...error('!=', `if (x != 1) {}`),
           line: 1,
           endLine: 1,
           column: 5,
           endColumn: 14,
         },
       ],
-      output: `if (x != 1) {}`,
     },
     // `!=` => `==`
     {
       code: `if (!(x != 1)) {}`,
-      errors: [message('==')],
-      output: `if (x == 1) {}`,
+      errors: [error('==', `if (x == 1) {}`)],
     },
     // `===` => `!==`
     {
       code: `if (!(x === 1)) {}`,
-      errors: [message('!==')],
-      output: `if (x !== 1) {}`,
+      errors: [error('!==', `if (x !== 1) {}`)],
     },
     // `!==` => `===`
     {
       code: `if (!(x !== 1)) {}`,
-      errors: [message('===')],
-      output: `if (x === 1) {}`,
+      errors: [error('===', `if (x === 1) {}`)],
     },
     // `>` => `<=`
     {
       code: `if (!(x > 1)) {}`,
-      errors: [message('<=')],
-      output: `if (x <= 1) {}`,
+      errors: [error('<=', `if (x <= 1) {}`)],
     },
     // `<` => `>=`
     {
       code: `if (!(x < 1)) {}`,
-      errors: [message('>=')],
-      output: `if (x >= 1) {}`,
+      errors: [error('>=', `if (x >= 1) {}`)],
     },
     // `>=` => `<`
     {
       code: `if (!(x >= 1)) {}`,
-      errors: [message('<')],
-      output: `if (x < 1) {}`,
+      errors: [error('<', `if (x < 1) {}`)],
     },
     // `<=` => `>`
     {
       code: `if (!(x <= 1)) {}`,
-      errors: [message('>')],
-      output: `if (x > 1) {}`,
+      errors: [error('>', `if (x > 1) {}`)],
     },
     // ternary operator
     {
       code: `!(x != 1) ? 1 : 2`,
-      errors: [message('==')],
-      output: `x == 1 ? 1 : 2`,
+      errors: [error('==', `x == 1 ? 1 : 2`)],
     },
     // not conditional
     {
       code: `foo(!(x === 1))`,
-      errors: [message('!==')],
-      output: `foo(x !== 1)`,
+      errors: [error('!==', `foo(x !== 1)`)],
     },
     {
       code: `let foo = !(x <= 4)`,
-      errors: [message('>')],
-      output: `let foo = x > 4`,
+      errors: [error('>', `let foo = x > 4`)],
     },
     {
       code: `let foo = !!(a < b)`,
-      errors: [message('>=')],
-      output: 'let foo = !(a >= b)',
+      errors: [error('>=', 'let foo = !(a >= b)')],
     },
   ],
 });
 
-function message(invertedOperator: string): TSESLint.TestCaseError<string> {
-  return { messageId: 'useOppositeOperator', data: { invertedOperator } };
+function error(invertedOperator: string, output: string): TSESLint.TestCaseError<string> {
+  return {
+    messageId: 'useOppositeOperator',
+    data: { invertedOperator },
+    suggestions: [
+      {
+        messageId: 'suggestOperationInversion',
+        output,
+      },
+    ],
+  };
 }
