@@ -75,8 +75,13 @@ function visitUnaryExpression(
         suggest: [
           {
             messageId: 'suggestOperationInversion',
-            fix: fixer => fixer.replaceText(unaryExpression, `${start}${left} ${invertedOperator} ${right}${end}`),
-          },],
+            fix: fixer =>
+              fixer.replaceText(
+                unaryExpression,
+                `${start}${left} ${invertedOperator} ${right}${end}`,
+              ),
+          },
+        ],
         data: { invertedOperator },
         node: unaryExpression,
       });
