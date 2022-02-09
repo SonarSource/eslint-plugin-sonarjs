@@ -38,14 +38,16 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       useOppositeOperator: 'Use the opposite operator ({{invertedOperator}}) instead.',
+      suggestOperationInversion: 'Invert inner operation (apply if NaN is not expected)',
     },
     schema: [],
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      recommended: 'error',
+      recommended: false,
       url: docsUrl(__filename),
     },
+    hasSuggestions: true,
     fixable: 'code',
   },
   create(context) {
@@ -70,10 +72,18 @@ function visitUnaryExpression(
         unaryExpression.parent?.type === 'UnaryExpression' ? ['(', ')'] : ['', ''];
       context.report({
         messageId: 'useOppositeOperator',
+        suggest: [
+          {
+            messageId: 'suggestOperationInversion',
+            fix: fixer =>
+              fixer.replaceText(
+                unaryExpression,
+                `${start}${left} ${invertedOperator} ${right}${end}`,
+              ),
+          },
+        ],
         data: { invertedOperator },
         node: unaryExpression,
-        fix: fixer =>
-          fixer.replaceText(unaryExpression, `${start}${left} ${invertedOperator} ${right}${end}`),
       });
     }
   }

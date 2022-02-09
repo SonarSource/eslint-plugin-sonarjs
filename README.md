@@ -32,7 +32,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
 * Functions should not have identical implementations ([`no-identical-functions`])
-* Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*)
+* Boolean checks should not be inverted ([`no-inverted-boolean-check`]) (:wrench: *fixable*, *disabled*)
 * "switch" statements should not be nested ([`no-nested-switch`])
 * Template literals should not be nested ([`no-nested-template-literals`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
