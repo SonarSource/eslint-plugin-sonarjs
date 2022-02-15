@@ -1,6 +1,6 @@
 # prefer-single-boolean-return
 
-Return of boolean literal statements should be simplified.
+Return of boolean literal statements wrapped into `if-then-else` flow should be simplified.
 
 ## Noncompliant Code Example
 

@@ -202,6 +202,12 @@ ruleTester.run('prefer-single-boolean-return', rule, {
             }
             return true
           }
+
+          if (baz) {
+            if (something) {
+              return false
+            }
+          }
         }
       `,
       errors: [

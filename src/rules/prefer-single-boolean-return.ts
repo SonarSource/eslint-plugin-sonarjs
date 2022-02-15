@@ -31,7 +31,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       replaceIfThenElseByReturn:
-        'Replace this if-then-else statement by a single return statement.',
+        'Replace this if-then-else flow by a single return statement.',
     },
     schema: [],
     type: 'suggestion',
@@ -48,8 +48,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (
           // ignore `else if`
           !isIfStatement(node.parent) &&
-          (node.alternate ? returnsBoolean(node.alternate) : hasNextNodeReturnStatement(node)) &&
-          returnsBoolean(node.consequent)
+          returnsBoolean(node.consequent) &&
+          alternateReturnsBoolean(node)
         ) {
           context.report({
             messageId: 'replaceIfThenElseByReturn',
@@ -59,15 +59,17 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     };
 
-    function hasNextNodeReturnStatement(node: TSESTree.Node) {
-      const sourceCode = context.getSourceCode();
-      const nextToken = sourceCode.getTokenAfter(node);
-      if (nextToken) {
-        const nextNode = sourceCode.getNodeByRangeIndex(nextToken.range[0]);
-        if (nextNode) {
-          return isSimpleReturnBooleanLiteral(nextNode);
-        }
+    function alternateReturnsBoolean(node: TSESTree.IfStatement) {
+      if (node.alternate) {
+        return returnsBoolean(node.alternate);
       }
+
+      const { parent } = node;
+      if (parent?.type === 'BlockStatement') {
+        const ifStmtIndex = parent.body.findIndex(stmt => stmt === node);
+        return isSimpleReturnBooleanLiteral(parent.body[ifStmtIndex + 1]);
+      }
+
       return false;
     }
 
