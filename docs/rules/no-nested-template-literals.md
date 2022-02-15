@@ -22,3 +22,15 @@ let count = 3;
 let apples = color ? `${count} ${color}` : count;
 let message = `I have ${apples} apples`;
 ```
+
+## Exceptions
+
+The case when both the start and end of nesting template is on different line from nested literal, is ignored.
+
+```javascript
+let color = "red";
+let count = 3;
+let message = `I have 
+                  ${color ? `${count} ${color}` : count} 
+              apples`;
+```
