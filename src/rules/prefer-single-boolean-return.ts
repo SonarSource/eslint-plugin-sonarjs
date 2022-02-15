@@ -30,8 +30,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      replaceIfThenElseByReturn:
-        'Replace this if-then-else statement by a single return statement.',
+      replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
     },
     schema: [],
     type: 'suggestion',
@@ -44,22 +43,34 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     return {
-      IfStatement(node: TSESTree.Node) {
-        const ifStmt = node as TSESTree.IfStatement;
+      IfStatement(node: TSESTree.IfStatement) {
         if (
           // ignore `else if`
-          !isIfStatement(ifStmt.parent) &&
-          // `ifStmt.alternate` can be `null`, replace it with `undefined` in this case
-          returnsBoolean(ifStmt.alternate || undefined) &&
-          returnsBoolean(ifStmt.consequent)
+          !isIfStatement(node.parent) &&
+          returnsBoolean(node.consequent) &&
+          alternateReturnsBoolean(node)
         ) {
           context.report({
             messageId: 'replaceIfThenElseByReturn',
-            node: ifStmt,
+            node,
           });
         }
       },
     };
+
+    function alternateReturnsBoolean(node: TSESTree.IfStatement) {
+      if (node.alternate) {
+        return returnsBoolean(node.alternate);
+      }
+
+      const { parent } = node;
+      if (parent?.type === 'BlockStatement') {
+        const ifStmtIndex = parent.body.findIndex(stmt => stmt === node);
+        return isSimpleReturnBooleanLiteral(parent.body[ifStmtIndex + 1]);
+      }
+
+      return false;
+    }
 
     function returnsBoolean(statement: TSESTree.Statement | undefined) {
       return (
@@ -76,7 +87,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       );
     }
 
-    function isSimpleReturnBooleanLiteral(statement: TSESTree.Statement) {
+    function isSimpleReturnBooleanLiteral(statement: TSESTree.Node) {
       // `statement.argument` can be `null`, replace it with `undefined` in this case
       return isReturnStatement(statement) && isBooleanLiteral(statement.argument || undefined);
     }

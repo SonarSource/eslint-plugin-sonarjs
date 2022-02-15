@@ -1,6 +1,6 @@
 # prefer-single-boolean-return
 
-Return of boolean literal statements wrapped into `if-then-else` ones should be simplified.
+Return of boolean literal statements wrapped into `if-then-else` flow should be simplified.
 
 ## Noncompliant Code Example
 
@@ -10,6 +10,15 @@ if (expression) {
 } else {
   return false;
 }
+```
+
+or
+
+```javascript
+if (expression) {
+  return true;
+}
+return false;
 ```
 
 ## Compliant Solution
