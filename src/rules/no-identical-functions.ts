@@ -24,6 +24,8 @@ import { areEquivalent } from '../utils/equivalence';
 import { getMainFunctionTokenLocation, report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
+const DEFAULT_MIN_LINES = 3;
+
 type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression
@@ -32,7 +34,9 @@ type FunctionNode =
 const message =
   'Update this function so that its implementation is not identical to the one on line {{line}}.';
 
-const rule: TSESLint.RuleModule<string, string[]> = {
+type Options = (number | 'sonar-runtime')[];
+
+const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
     messages: {
       identicalFunctions: message,
@@ -45,13 +49,16 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
     schema: [
+      { type: 'integer', minimum: 3 },
       {
         enum: ['sonar-runtime'],
       },
     ],
   },
-  create(context: TSESLint.RuleContext<string, string[]>) {
+  create(context) {
     const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
+    const minLines: number =
+      typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_MIN_LINES;
 
     return {
       FunctionDeclaration(node: TSESTree.Node) {
@@ -136,7 +143,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const firstLine = tokens[0].loc.start.line;
         const lastLine = tokens[tokens.length - 1].loc.end.line;
 
-        return lastLine - firstLine > 1;
+        return lastLine - firstLine + 1 >= minLines;
       }
 
       return false;
