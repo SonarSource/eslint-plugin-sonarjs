@@ -317,7 +317,7 @@ ruleTester.run('no-identical-functions', rule, {
           return 42;
         },
       };`,
-      options: ['sonar-runtime'],
+      options: [3, 'sonar-runtime'],
       errors: [
         encodedMessage(3, 10, [
           { line: 3, column: 8, endLine: 3, endColumn: 11, message: 'Original implementation' },

@@ -36,15 +36,6 @@ const message =
 
 type Options = (number | 'sonar-runtime')[];
 
-const OPTION_SCHEMA = {
-  anyOf: [
-    { type: 'integer', minimum: 3 },
-    {
-      enum: ['sonar-runtime'],
-    },
-  ],
-};
-
 const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
     messages: {
@@ -57,7 +48,12 @@ const rule: TSESLint.RuleModule<string, Options> = {
       recommended: 'error',
       url: docsUrl(__filename),
     },
-    schema: [OPTION_SCHEMA, OPTION_SCHEMA],
+    schema: [
+      { type: 'integer', minimum: 3 },
+      {
+        enum: ['sonar-runtime'],
+      },
+    ],
   },
   create(context) {
     const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
