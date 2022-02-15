@@ -22,3 +22,15 @@ let count = 3;
 let apples = color ? `${count} ${color}` : count;
 let message = `I have ${apples} apples`;
 ```
+
+## Exceptions
+
+Nested template is ignored when the nesting one starts and ends on a different line.
+
+```javascript
+let color = "red";
+let count = 3;
+let message = `I have 
+                  ${color ? `${count} ${color}` : count} 
+              apples`;
+```
