@@ -25,7 +25,7 @@ let message = `I have ${apples} apples`;
 
 ## Exceptions
 
-The case when both the start and end of nesting template is on different line from nested literal, is ignored.
+Nested template is ignored when the nesting one starts and ends on a different line.
 
 ```javascript
 let color = "red";
