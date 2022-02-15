@@ -30,8 +30,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      replaceIfThenElseByReturn:
-        'Replace this if-then-else flow by a single return statement.',
+      replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
     },
     schema: [],
     type: 'suggestion',
