@@ -35,7 +35,7 @@ function getName() {
 
 ## Configuration
 
-Number of lines must be duplicated to trigger an issue. Default is 3. Lines inside curly braces are taken into consideration.
+This rule has a numeric option (defaulted to 3) to specify the minimum number of lines to trigger an issue. Lines between curly braces are taken into consideration.
 
 ```json
 {

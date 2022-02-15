@@ -317,7 +317,7 @@ ruleTester.run('no-identical-functions', rule, {
           return 42;
         },
       };`,
-      options: [3, 'sonar-runtime'],
+      options: ['sonar-runtime'],
       errors: [
         encodedMessage(3, 10, [
           { line: 3, column: 8, endLine: 3, endColumn: 11, message: 'Original implementation' },
@@ -331,17 +331,19 @@ ruleTester.run('no-identical-functions', rule, {
         //     ^^^^>
         return [
           1,
+          2,
         ];
       }
       function bar1() {
     //         ^^^^
         return [
           1,
+          2,
         ];
       }`,
-      options: [3, 'sonar-runtime'],
+      options: [4, 'sonar-runtime'],
       errors: [
-        encodedMessage(2, 8, [
+        encodedMessage(2, 9, [
           { line: 2, column: 15, endLine: 2, endColumn: 19, message: 'Original implementation' },
         ]),
       ],

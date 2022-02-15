@@ -36,6 +36,15 @@ const message =
 
 type Options = (number | 'sonar-runtime')[];
 
+const OPTION_SCHEMA = {
+  anyOf: [
+    { type: 'integer', minimum: 3 },
+    {
+      enum: ['sonar-runtime'],
+    },
+  ],
+};
+
 const rule: TSESLint.RuleModule<string, Options> = {
   meta: {
     messages: {
@@ -48,14 +57,9 @@ const rule: TSESLint.RuleModule<string, Options> = {
       recommended: 'error',
       url: docsUrl(__filename),
     },
-    schema: [
-      { type: 'integer', minimum: 3 },
-      {
-        enum: ['sonar-runtime'],
-      },
-    ],
+    schema: [OPTION_SCHEMA, OPTION_SCHEMA],
   },
-  create(context: TSESLint.RuleContext<string, Options>) {
+  create(context) {
     const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
     const minLines: number =
       typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_MIN_LINES;
@@ -143,7 +147,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
         const firstLine = tokens[0].loc.start.line;
         const lastLine = tokens[tokens.length - 1].loc.end.line;
 
-        return lastLine - firstLine > (minLines - 2);
+        return lastLine - firstLine + 1 >= minLines;
       }
 
       return false;
