@@ -126,6 +126,13 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 ## Available Configurations
 
 This plugin provides only `recommended` configuration. Almost all rules are activated in this profile with a few exceptions (check `disabled` tag in the rules list). `recommended` configuration activates rules with `error` severity. 
+
+## ESLint and Sonar
+
+This plugin exposes to ESLint users a subset of JS/TS rules from Sonar-* products (aka [SonarJS](https://github.com/SonarSource/SonarJS)). We extracted the rules which are not available in ESLint core or other ESLint plugins to be beneficial for ESLint community. 
+
+If you are a [SonarQube](https://www.sonarqube.org) or [SonarCloud](https://sonarcloud.io) user, to lint your code locally, we suggest to use [SonarLint](https://www.sonarlint.org) IDE extension (available for VSCode, JetBrains IDEs and Eclipse). You can connect SonarLint to your SonarQube/SonarCloud project to synchronize rules configuration, issue statuses, etc.
+
 ## Contributing
 
 You want to participate in the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
