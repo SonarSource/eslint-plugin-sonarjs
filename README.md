@@ -131,7 +131,7 @@ This plugin provides only `recommended` configuration. Almost all rules are acti
 
 This plugin exposes to ESLint users a subset of JS/TS rules from Sonar-* products (aka [SonarJS](https://github.com/SonarSource/SonarJS)). We extracted the rules which are not available in ESLint core or other ESLint plugins to be beneficial for ESLint community. 
 
-If you are a [SonarQube](https://www.sonarqube.org) or [SonarCloud](https://sonarcloud.io) user, we believe it's better to stop using ESLint to have easier code quality management. Note that you can install [SonarLint](https://www.sonarlint.org) IDE plugin (available for VSCode, JetBrains IDEs and Eclipse) connected to your SonarQube project to synchronize rules configuration, issue statuses, etc. 
+If you are a [SonarQube](https://www.sonarqube.org) or [SonarCloud](https://sonarcloud.io) user, to lint your code locally, we suggest to use [SonarLint](https://www.sonarlint.org) IDE extension (available for VSCode, JetBrains IDEs and Eclipse). You can connect SonarLint to your SonarQube/SonarCloud project to synchronize rules configuration, issue statuses, etc.
 
 ## Contributing
 
