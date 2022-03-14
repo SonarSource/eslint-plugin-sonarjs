@@ -54,13 +54,13 @@ async function run() {
 
   const eslint = new ESLint({
     overrideConfig: {
-      parser: "babel-eslint",
+      parser: "@babel/eslint-parser",
       parserOptions: {
         ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
         ecmaVersion: 2018,
         sourceType: "module",
       },
-      rules: getEslintRules(rules)
+      rules: getEslintRules(rules),
     },
     rulePaths: [rulesPath],
     useEslintrc: false,
@@ -76,9 +76,16 @@ async function run() {
   reportResults.forEach(result => {
     result.messages.forEach(message => {
       if (message.ruleId) {
-        addToResults(results, getFileNameForSnapshot(result.filePath), message.ruleId, message.line);
+        addToResults(
+          results,
+          getFileNameForSnapshot(result.filePath),
+          message.ruleId,
+          message.line,
+        );
       } else {
-        throw new Error(`Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`);
+        throw new Error(
+          `Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`,
+        );
       }
     });
   });
