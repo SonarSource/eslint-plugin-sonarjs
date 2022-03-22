@@ -17,7 +17,7 @@ Rules in this category aim to find places in code which have a high chance of be
 * Return values from functions without side effects should not be ignored ([`no-ignored-return`]) (*uses-types*)
 * Loops with at most one iteration should be refactored ([`no-one-iteration-loop`])
 * The output of functions that don't return anything should not be used ([`no-use-of-empty-return-value`])
-* Non-existent operators '=+', '=-' and '=!' should not be used ([`non-existent-operator`])
+* Non-existent operators '=+', '=-' and '=!' should not be used ([`non-existent-operator`]) (:wrench: *fixable*)
 
 ### Code Smell Detection :pig:
 
