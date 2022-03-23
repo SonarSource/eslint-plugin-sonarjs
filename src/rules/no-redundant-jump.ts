@@ -28,9 +28,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       removeRedundantJump: 'Remove this redundant jump.',
+      suggestJumpRemoval: 'Remove this redundant jump',
     },
     schema: [],
     type: 'suggestion',
+    hasSuggestions: true,
     docs: {
       description: 'Jump statements should not be redundant',
       recommended: 'error',
@@ -46,6 +48,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           context.report({
             messageId: 'removeRedundantJump',
             node,
+            suggest: [{ messageId: 'suggestJumpRemoval', fix: fixer => fixer.remove(node) }],
           });
         }
       }
