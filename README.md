@@ -43,7 +43,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * "catch" clauses should do more than rethrow ([`no-useless-catch`])
 * Local variables should not be declared and then immediately returned or thrown ([`prefer-immediate-return`]) (:wrench: *fixable*)
 * Object literal syntax should be used ([`prefer-object-literal`])
-* Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`])
+* Return of boolean expressions should not be wrapped into an "if-then-else" statement ([`prefer-single-boolean-return`]) (:wrench: *fixable*)
 * A "while" loop should be used instead of a "for" loop ([`prefer-while`]) (:wrench: *fixable*)
 
 [`cognitive-complexity`]: ./docs/rules/cognitive-complexity.md
