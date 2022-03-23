@@ -27,7 +27,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * "if ... else if" constructs should end with "else" clauses ([`elseif-without-else`]) (*disabled*)
 * "switch" statements should not have too many "case" clauses ([`max-switch-cases`])
 * Collapsible "if" statements should be merged ([`no-collapsible-if`])
-* Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`]) (*uses-types*)
+* Collection sizes and array length comparisons should make sense ([`no-collection-size-mischeck`]) (:wrench: *fixable*, *uses-types*)
 * String literals should not be duplicated ([`no-duplicate-string`])
 * Two branches in a conditional structure should not have exactly the same implementation ([`no-duplicated-branches`])
 * Boolean expressions should not be gratuitous ([`no-gratuitous-expressions`])
