@@ -100,6 +100,23 @@ ruleTester.run('Conditionals should start on new lines', rule, {
           endLine: 3,
           column: 9,
           endColumn: 11,
+          suggestions: [
+            {
+              messageId: 'suggestAddingElse',
+              output: `
+      if (cond1) {
+      } else if (cond2) {
+      }`,
+            },
+            {
+              messageId: 'suggestAddingNewline',
+              output: `
+      if (cond1) {
+      } 
+      if (cond2) {
+      }`,
+            },
+          ],
         },
       ],
     },
