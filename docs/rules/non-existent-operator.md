@@ -1,5 +1,7 @@
 # non-existent-operator
 
+:wrench: *fixable*
+
 The use of operators pairs (`=+`, `=-` or `=!`) where the reversed, single operator was meant (`+=`, `-=` or `!=`) will compile and run, but not produce the expected results.
 
 This rule raises an issue when `=+`, `=-` and `=!` are used without any space between the two operators and when there is at least one whitespace after.

@@ -26,9 +26,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       useExistingOperator: 'Was "{{operator}}=" meant instead?',
+      suggestExistingOperator: 'Replace with "{{operator}}" operator',
     },
     schema: [],
     type: 'problem',
+    hasSuggestions: true,
     docs: {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
       recommended: 'error',
@@ -75,12 +77,28 @@ function checkOperator(
       areAdjacent(assignmentOperatorToken, unaryOperatorToken) &&
       !areAdjacent(unaryOperatorToken, expressionFirstToken)
     ) {
+      const suggest: TSESLint.ReportSuggestionArray<string> = [];
+      if (unaryNode.parent?.type === 'AssignmentExpression') {
+        const range: [number, number] = [
+          assignmentOperatorToken.range[0],
+          unaryOperatorToken.range[1],
+        ];
+        const invertedOperators = unaryOperatorToken.value + assignmentOperatorToken.value;
+        suggest.push({
+          messageId: 'suggestExistingOperator',
+          data: {
+            operator: invertedOperators,
+          },
+          fix: fixer => fixer.replaceTextRange(range, invertedOperators),
+        });
+      }
       context.report({
         messageId: 'useExistingOperator',
         data: {
           operator: unaryNode.operator,
         },
         loc: { start: assignmentOperatorToken.loc.start, end: unaryOperatorToken.loc.end },
+        suggest,
       });
     }
   }
