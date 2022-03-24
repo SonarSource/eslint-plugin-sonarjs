@@ -31,7 +31,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     messages: {
       fixCollectionSizeCheck:
         'Fix this expression; {{propertyName}} of "{{objectName}}" is always greater or equal to zero.',
-      suggestFixedSizeCheck: 'Replace {{operation}} check with "{{operator}}"',
+      suggestFixedSizeCheck: 'Use "{{operator}}" for {{operation}} check',
     },
     schema: [],
     type: 'problem',
