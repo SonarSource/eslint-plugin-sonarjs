@@ -267,5 +267,54 @@ ruleTester.run('Conditionals should start on new lines', rule, {
         },
       ],
     },
+    {
+      code: `
+      function myFunc() {
+        foo(); if (cond1) {
+        } if (cond2) {
+        }
+      }`,
+      options: ['sonar-runtime'],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          data: {
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 4,
+                  column: 8,
+                  endLine: 4,
+                  endColumn: 9,
+                  message: '',
+                },
+              ],
+              message: 'Move this "if" to a new line or add the missing "else".',
+            }),
+          },
+          suggestions: [
+            {
+              messageId: 'suggestAddingElse',
+              output: `
+      function myFunc() {
+        foo(); if (cond1) {
+        } else if (cond2) {
+        }
+      }`,
+            },
+            {
+              messageId: 'suggestAddingNewline',
+              output: `
+      function myFunc() {
+        foo(); if (cond1) {
+        } 
+               if (cond2) {
+        }
+      }`,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
