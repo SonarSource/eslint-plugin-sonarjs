@@ -36,7 +36,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 * "switch" statements should not be nested ([`no-nested-switch`])
 * Template literals should not be nested ([`no-nested-template-literals`])
 * Boolean literals should not be redundant ([`no-redundant-boolean`])
-* Jump statements should not be redundant ([`no-redundant-jump`])
+* Jump statements should not be redundant ([`no-redundant-jump`]) (:wrench: *fixable*)
 * Conditionals should start on new lines ([`no-same-line-conditional`]) (:wrench: *fixable*)
 * "switch" statements should have at least 3 "case" clauses ([`no-small-switch`])
 * Collection and array contents should be used ([`no-unused-collection`])

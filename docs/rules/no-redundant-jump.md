@@ -1,5 +1,7 @@
 # no-redundant-jump
 
+:wrench: *fixable*
+
 Jump statements, such as `return`, `break` and `continue` let you change the default flow of program execution, but jump statements that direct the control flow to the original direction are just a waste of keystrokes.
 
 ## Noncompliant Code Example
