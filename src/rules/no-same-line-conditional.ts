@@ -83,7 +83,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
                   fix: fixer =>
                     fixer.insertTextBefore(
                       followingIf,
-                      '\n' + ' '.repeat(precedingIf.range[0] - 1),
+                      '\n' + ' '.repeat(precedingIf.loc.start.column),
                     ),
                 },
               ],
