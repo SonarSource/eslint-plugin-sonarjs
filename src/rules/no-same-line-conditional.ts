@@ -35,8 +35,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     messages: {
       sameLineCondition: message,
       sonarRuntime: '{{sonarRuntimeData}}',
+      suggestAddingElse: 'Add "else" keyword',
+      suggestAddingNewline: 'Move this "if" to a new line',
     },
     type: 'problem',
+    hasSuggestions: true,
     docs: {
       description: 'Conditionals should start on new lines',
       recommended: 'error',
@@ -70,6 +73,20 @@ const rule: TSESLint.RuleModule<string, string[]> = {
             {
               messageId: 'sameLineCondition',
               loc: followingIfToken.loc,
+              suggest: [
+                {
+                  messageId: 'suggestAddingElse',
+                  fix: fixer => fixer.insertTextBefore(followingIfToken, 'else '),
+                },
+                {
+                  messageId: 'suggestAddingNewline',
+                  fix: fixer =>
+                    fixer.insertTextBefore(
+                      followingIf,
+                      '\n' + ' '.repeat(precedingIf.loc.start.column),
+                    ),
+                },
+              ],
             },
             [issueLocation(precedingIfLastToken.loc)],
             message,
