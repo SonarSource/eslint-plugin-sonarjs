@@ -94,6 +94,17 @@ ruleTester.run('Jump statements should not be redundant', rule, {
           return; // Noncompliant
       }`,
     ),
+    {
+      code: `function foo(x) { console.log(x); return; }`,
+      errors: [
+        {
+          messageId: 'removeRedundantJump',
+          suggestions: [
+            { messageId: 'suggestJumpRemoval', output: `function foo(x) { console.log(x);  }` },
+          ],
+        },
+      ],
+    },
   ],
   valid: [
     {
