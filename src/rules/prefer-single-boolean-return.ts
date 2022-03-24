@@ -31,9 +31,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
+      suggestIfThenElseReplacement: 'Replace with single return statement',
     },
     schema: [],
     type: 'suggestion',
+    hasSuggestions: true,
     docs: {
       description:
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
@@ -53,6 +55,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           context.report({
             messageId: 'replaceIfThenElseByReturn',
             node,
+            suggest: getSuggestion(node),
           });
         }
       },
@@ -90,6 +93,26 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     function isSimpleReturnBooleanLiteral(statement: TSESTree.Node) {
       // `statement.argument` can be `null`, replace it with `undefined` in this case
       return isReturnStatement(statement) && isBooleanLiteral(statement.argument || undefined);
+    }
+
+    function getSuggestion(ifStmt: TSESTree.IfStatement): TSESLint.ReportSuggestionArray<string> {
+      return [
+        {
+          messageId: 'suggestIfThenElseReplacement',
+          fix: fixer => {
+            const singleReturn = `return ${context.getSourceCode().getText(ifStmt.test)};`;
+            if (ifStmt.alternate) {
+              return fixer.replaceText(ifStmt, singleReturn);
+            } else {
+              const parent = ifStmt.parent as TSESTree.BlockStatement;
+              const ifStmtIndex = parent.body.findIndex(stmt => stmt === ifStmt);
+              const returnStmt = parent.body[ifStmtIndex + 1];
+              const range: [number, number] = [ifStmt.range[0], returnStmt.range[1]];
+              return fixer.replaceTextRange(range, singleReturn);
+            }
+          },
+        },
+      ];
     }
   },
 };

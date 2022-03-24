@@ -227,5 +227,64 @@ ruleTester.run('prefer-single-boolean-return', rule, {
         },
       ],
     },
+    {
+      code: `
+function foo() {
+  if (bar()) {
+    if (baz()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return qux();
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  if (bar()) {
+    return baz();
+  }
+  return qux();
+}`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  if (bar()) {
+    if (baz()) {
+      return true;
+    }
+    return false;
+  }
+  return qux();
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  if (bar()) {
+    return baz();
+  }
+  return qux();
+}`,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

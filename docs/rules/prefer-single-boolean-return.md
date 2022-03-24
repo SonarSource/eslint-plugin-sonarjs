@@ -1,5 +1,7 @@
 # prefer-single-boolean-return
 
+:wrench: *fixable*
+
 Return of boolean literal statements wrapped into `if-then-else` flow should be simplified.
 
 ## Noncompliant Code Example
