@@ -54,6 +54,16 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
           endLine: 1,
           column: 5,
           endColumn: 24,
+          suggestions: [
+            {
+              messageId: 'suggestFixedSizeCheck',
+              data: {
+                operation: 'size',
+                operator: '==',
+              },
+              output: `if (collection.size == 0) {}`,
+            },
+          ],
         },
       ],
     },
@@ -86,6 +96,16 @@ ruleTester.run('Collection sizes and array length comparisons should make sense'
           endLine: 1,
           column: 5,
           endColumn: 27,
+          suggestions: [
+            {
+              messageId: 'suggestFixedSizeCheck',
+              data: {
+                operation: 'length',
+                operator: '>',
+              },
+              output: `if (collection.length > 0) {}`,
+            },
+          ],
         },
       ],
     },

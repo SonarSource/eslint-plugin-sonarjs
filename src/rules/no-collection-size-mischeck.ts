@@ -31,9 +31,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     messages: {
       fixCollectionSizeCheck:
         'Fix this expression; {{propertyName}} of "{{objectName}}" is always greater or equal to zero.',
+      suggestFixedSizeCheck: 'Use "{{operator}}" for {{operation}} check',
     },
     schema: [],
     type: 'problem',
+    hasSuggestions: true,
     docs: {
       description: 'Collection sizes and array length comparisons should make sense',
       recommended: 'error',
@@ -63,6 +65,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
                   objectName: context.getSourceCode().getText(object),
                 },
                 node,
+                suggest: getSuggestion(expr, property.name, context),
               });
             }
           }
@@ -80,6 +83,28 @@ function isCollection(node: TSESTree.Node, services: RequiredParserServices) {
   const checker = services.program.getTypeChecker();
   const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
   return !!tp.symbol && CollectionLike.includes(tp.symbol.name);
+}
+
+function getSuggestion(
+  expr: TSESTree.BinaryExpression,
+  operation: string,
+  context: TSESLint.RuleContext<string, string[]>,
+): TSESLint.ReportSuggestionArray<string> {
+  const { left, operator } = expr;
+  const operatorToken = context
+    .getSourceCode()
+    .getTokenAfter(left, token => token.value === operator)!;
+  const fixedOperator = operator === '<' ? '==' : '>';
+  return [
+    {
+      messageId: 'suggestFixedSizeCheck',
+      data: {
+        operation,
+        operator: fixedOperator,
+      },
+      fix: fixer => fixer.replaceText(operatorToken, fixedOperator),
+    },
+  ];
 }
 
 export = rule;
