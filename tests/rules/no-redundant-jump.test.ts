@@ -100,7 +100,31 @@ ruleTester.run('Jump statements should not be redundant', rule, {
         {
           messageId: 'removeRedundantJump',
           suggestions: [
-            { messageId: 'suggestJumpRemoval', output: `function foo(x) { console.log(x);  }` },
+            { messageId: 'suggestJumpRemoval', output: `function foo(x) { console.log(x); }` },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x) { 
+  console.log(x);
+  // comment1
+  // comment2
+  return;
+}`,
+      errors: [
+        {
+          messageId: 'removeRedundantJump',
+          suggestions: [
+            { 
+              messageId: 'suggestJumpRemoval', 
+              output: `
+function foo(x) { 
+  console.log(x);
+  // comment1
+  // comment2
+}` },
           ],
         },
       ],

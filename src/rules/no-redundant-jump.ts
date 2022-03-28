@@ -45,10 +45,21 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       if (!withArgument) {
         const block = node.parent as TSESTree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
+          const previousComments = context.getSourceCode().getCommentsBefore(node);
+          const previousToken =
+            previousComments.length === 0
+              ? context.getSourceCode().getTokenBefore(node)!
+              : previousComments[previousComments.length - 1];
+
           context.report({
             messageId: 'removeRedundantJump',
             node,
-            suggest: [{ messageId: 'suggestJumpRemoval', fix: fixer => fixer.remove(node) }],
+            suggest: [
+              {
+                messageId: 'suggestJumpRemoval',
+                fix: fixer => fixer.removeRange([previousToken.range[1], node.range[1]]),
+              },
+            ],
           });
         }
       }
