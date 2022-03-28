@@ -117,14 +117,15 @@ function foo(x) {
         {
           messageId: 'removeRedundantJump',
           suggestions: [
-            { 
-              messageId: 'suggestJumpRemoval', 
+            {
+              messageId: 'suggestJumpRemoval',
               output: `
 function foo(x) { 
   console.log(x);
   // comment1
   // comment2
-}` },
+}`,
+            },
           ],
         },
       ],
