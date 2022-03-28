@@ -81,8 +81,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
                 {
                   messageId: 'suggestAddingNewline',
                   fix: fixer =>
-                    fixer.insertTextBefore(
-                      followingIf,
+                    fixer.replaceTextRange(
+                      [precedingIf.range[1], followingIf.range[0]],
                       '\n' + ' '.repeat(precedingIf.loc.start.column),
                     ),
                 },

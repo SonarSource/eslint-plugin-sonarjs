@@ -112,7 +112,7 @@ ruleTester.run('Conditionals should start on new lines', rule, {
               messageId: 'suggestAddingNewline',
               output: `
       if (cond1) {
-      } 
+      }
       if (cond2) {
       }`,
             },
@@ -307,7 +307,7 @@ ruleTester.run('Conditionals should start on new lines', rule, {
               output: `
       function myFunc() {
         foo(); if (cond1) {
-        } 
+        }
                if (cond2) {
         }
       }`,
