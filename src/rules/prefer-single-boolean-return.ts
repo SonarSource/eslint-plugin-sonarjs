@@ -31,9 +31,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
-      suggestIfThenElseReplacement: 'Replace with single return statement',
+      suggestIfThenElseReplacement: 'Replace with single return statement using "!!" cast',
       suggestUnsafeIfThenElseReplacement:
-        'Replace with single return statement (beware of return value usages)',
+        'Replace with single return statement without cast (condition should be boolean!)',
     },
     schema: [],
     type: 'suggestion',
