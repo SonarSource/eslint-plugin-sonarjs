@@ -130,10 +130,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         },
       ];
       if (shouldCast && !shouldNegate) {
-        const unsafeCondition = shouldNegate ? `!(${testText})` : testText;
         suggestions.push({
           messageId: 'suggestUnsafeIfThenElseReplacement',
-          fix: getFix(unsafeCondition),
+          fix: getFix(testText),
         });
       }
       return suggestions;
