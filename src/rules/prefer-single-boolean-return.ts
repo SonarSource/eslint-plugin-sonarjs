@@ -31,9 +31,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
       replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
-      suggestIfThenElseReplacement: 'Replace with single return statement',
-      suggestUnsafeIfThenElseReplacement:
-        'Replace with single return statement (beware of return value usages)',
+      suggest: 'Replace with single return statement',
+      suggestCast: 'Replace with single return statement using "!!" cast',
+      suggestBoolean:
+        'Replace with single return statement without cast (condition should be boolean!)',
     },
     schema: [],
     type: 'suggestion',
@@ -115,27 +116,17 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       const shouldNegate = isReturningFalse(ifStmt.consequent);
       const shouldCast = !isBooleanExpression(ifStmt.test);
       const testText = context.getSourceCode().getText(ifStmt.test);
-      let safeCondition: string;
+
       if (shouldNegate) {
-        safeCondition = `!(${testText})`;
-      } else if (shouldCast) {
-        safeCondition = `!!(${testText})`;
+        return [{ messageId: 'suggest', fix: getFix(`!(${testText})`) }];
+      } else if (!shouldCast) {
+        return [{ messageId: 'suggest', fix: getFix(testText) }];
       } else {
-        safeCondition = testText;
+        return [
+          { messageId: 'suggestCast', fix: getFix(`!!(${testText})`) },
+          { messageId: 'suggestBoolean', fix: getFix(testText) },
+        ];
       }
-      const suggestions: TSESLint.ReportSuggestionArray<string> = [
-        {
-          messageId: 'suggestIfThenElseReplacement',
-          fix: getFix(safeCondition),
-        },
-      ];
-      if (shouldCast && !shouldNegate) {
-        suggestions.push({
-          messageId: 'suggestUnsafeIfThenElseReplacement',
-          fix: getFix(testText),
-        });
-      }
-      return suggestions;
     }
 
     function isReturningFalse(stmt: TSESTree.Statement): boolean {

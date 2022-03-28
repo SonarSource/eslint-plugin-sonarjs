@@ -244,7 +244,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggestCast',
               output: `
 function foo() {
   if (bar()) {
@@ -254,7 +254,7 @@ function foo() {
 }`,
             },
             {
-              messageId: 'suggestUnsafeIfThenElseReplacement',
+              messageId: 'suggestBoolean',
               output: `
 function foo() {
   if (bar()) {
@@ -283,7 +283,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggestCast',
               output: `
 function foo() {
   if (bar()) {
@@ -293,7 +293,7 @@ function foo() {
 }`,
             },
             {
-              messageId: 'suggestUnsafeIfThenElseReplacement',
+              messageId: 'suggestBoolean',
               output: `
 function foo() {
   if (bar()) {
@@ -320,7 +320,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggest',
               output: `
 function foo() {
   return !bar();
@@ -344,7 +344,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggest',
               output: `
 function foo() {
   return bar() > 0;
@@ -368,7 +368,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggest',
               output: `
 function foo() {
   return !(baz() > 0);
@@ -392,7 +392,7 @@ function foo() {
           messageId: 'replaceIfThenElseByReturn',
           suggestions: [
             {
-              messageId: 'suggestIfThenElseReplacement',
+              messageId: 'suggest',
               output: `
 function foo() {
   return !(baz());
