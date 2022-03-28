@@ -248,7 +248,7 @@ function foo() {
               output: `
 function foo() {
   if (bar()) {
-    return baz();
+    return !!(baz());
   }
   return qux();
 }`,
@@ -277,9 +277,105 @@ function foo() {
               output: `
 function foo() {
   if (bar()) {
-    return baz();
+    return !!(baz());
   }
   return qux();
+}`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  if (!bar()) {
+    return true;
+  } else {
+    return false;
+  }
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  return !bar();
+}`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  if (bar() > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  return bar() > 0;
+}`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  if (baz() > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  return !(baz() > 0);
+}`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  if (baz()) {
+    return false;
+  } else {
+    return true;
+  }
+}`,
+      errors: [
+        {
+          messageId: 'replaceIfThenElseByReturn',
+          suggestions: [
+            {
+              messageId: 'suggestIfThenElseReplacement',
+              output: `
+function foo() {
+  return !(!!(baz()));
 }`,
             },
           ],

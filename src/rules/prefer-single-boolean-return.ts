@@ -100,7 +100,14 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         {
           messageId: 'suggestIfThenElseReplacement',
           fix: fixer => {
-            const singleReturn = `return ${context.getSourceCode().getText(ifStmt.test)};`;
+            let conditionText = context.getSourceCode().getText(ifStmt.test);
+            if (!isBooleanExpression(ifStmt.test)) {
+              conditionText = `!!(${conditionText})`;
+            }
+            if (isReturningFalse(ifStmt.consequent)) {
+              conditionText = `!(${conditionText})`;
+            }
+            const singleReturn = `return ${conditionText};`;
             if (ifStmt.alternate) {
               return fixer.replaceText(ifStmt, singleReturn);
             } else {
@@ -113,6 +120,22 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           },
         },
       ];
+    }
+
+    function isReturningFalse(stmt: TSESTree.Statement): boolean {
+      const returnStmt = (
+        stmt.type === 'BlockStatement' ? stmt.body[0] : stmt
+      ) as TSESTree.ReturnStatement;
+      return (returnStmt.argument as TSESTree.Literal).value === false;
+    }
+
+    function isBooleanExpression(expr: TSESTree.Expression) {
+      return (
+        (expr.type === 'UnaryExpression' || expr.type === 'BinaryExpression') &&
+        ['!', '==', '===', '!=', '!==', '<', '<=', '>', '>=', 'in', 'instanceof'].includes(
+          expr.operator,
+        )
+      );
     }
   },
 };
