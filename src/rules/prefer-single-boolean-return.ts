@@ -32,6 +32,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     messages: {
       replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
       suggestIfThenElseReplacement: 'Replace with single return statement',
+      suggestUnsafeIfThenElseReplacement:
+        'Replace with single return statement (beware of return value usages)',
     },
     schema: [],
     type: 'suggestion',
@@ -95,31 +97,46 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       return isReturnStatement(statement) && isBooleanLiteral(statement.argument || undefined);
     }
 
-    function getSuggestion(ifStmt: TSESTree.IfStatement): TSESLint.ReportSuggestionArray<string> {
-      return [
+    function getSuggestion(ifStmt: TSESTree.IfStatement) {
+      const getFix = (condition: string) => {
+        return (fixer: TSESLint.RuleFixer) => {
+          const singleReturn = `return ${condition};`;
+          if (ifStmt.alternate) {
+            return fixer.replaceText(ifStmt, singleReturn);
+          } else {
+            const parent = ifStmt.parent as TSESTree.BlockStatement;
+            const ifStmtIndex = parent.body.findIndex(stmt => stmt === ifStmt);
+            const returnStmt = parent.body[ifStmtIndex + 1];
+            const range: [number, number] = [ifStmt.range[0], returnStmt.range[1]];
+            return fixer.replaceTextRange(range, singleReturn);
+          }
+        };
+      };
+      const shouldNegate = isReturningFalse(ifStmt.consequent);
+      const shouldCast = !isBooleanExpression(ifStmt.test);
+      const testText = context.getSourceCode().getText(ifStmt.test);
+      let safeCondition: string;
+      if (shouldNegate) {
+        safeCondition = `!(${testText})`;
+      } else if (shouldCast) {
+        safeCondition = `!!(${testText})`;
+      } else {
+        safeCondition = testText;
+      }
+      const suggestions: TSESLint.ReportSuggestionArray<string> = [
         {
           messageId: 'suggestIfThenElseReplacement',
-          fix: fixer => {
-            let conditionText = context.getSourceCode().getText(ifStmt.test);
-            if (!isBooleanExpression(ifStmt.test)) {
-              conditionText = `!!(${conditionText})`;
-            }
-            if (isReturningFalse(ifStmt.consequent)) {
-              conditionText = `!(${conditionText})`;
-            }
-            const singleReturn = `return ${conditionText};`;
-            if (ifStmt.alternate) {
-              return fixer.replaceText(ifStmt, singleReturn);
-            } else {
-              const parent = ifStmt.parent as TSESTree.BlockStatement;
-              const ifStmtIndex = parent.body.findIndex(stmt => stmt === ifStmt);
-              const returnStmt = parent.body[ifStmtIndex + 1];
-              const range: [number, number] = [ifStmt.range[0], returnStmt.range[1]];
-              return fixer.replaceTextRange(range, singleReturn);
-            }
-          },
+          fix: getFix(safeCondition),
         },
       ];
+      if (shouldCast && !shouldNegate) {
+        const unsafeCondition = shouldNegate ? `!(${testText})` : testText;
+        suggestions.push({
+          messageId: 'suggestUnsafeIfThenElseReplacement',
+          fix: getFix(unsafeCondition),
+        });
+      }
+      return suggestions;
     }
 
     function isReturningFalse(stmt: TSESTree.Statement): boolean {

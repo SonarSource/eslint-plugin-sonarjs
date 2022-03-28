@@ -253,6 +253,16 @@ function foo() {
   return qux();
 }`,
             },
+            {
+              messageId: 'suggestUnsafeIfThenElseReplacement',
+              output: `
+function foo() {
+  if (bar()) {
+    return baz();
+  }
+  return qux();
+}`,
+            },
           ],
         },
       ],
@@ -278,6 +288,16 @@ function foo() {
 function foo() {
   if (bar()) {
     return !!(baz());
+  }
+  return qux();
+}`,
+            },
+            {
+              messageId: 'suggestUnsafeIfThenElseReplacement',
+              output: `
+function foo() {
+  if (bar()) {
+    return baz();
   }
   return qux();
 }`,
@@ -375,7 +395,7 @@ function foo() {
               messageId: 'suggestIfThenElseReplacement',
               output: `
 function foo() {
-  return !(!!(baz()));
+  return !(baz());
 }`,
             },
           ],
