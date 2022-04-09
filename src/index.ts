@@ -19,6 +19,8 @@
  */
 import type { TSESLint } from '@typescript-eslint/experimental-utils';
 
+type Configuration = TSESLint.Linter.Config & { plugins: string[] };
+
 const sonarjsRules: string[] = [
   'cognitive-complexity',
   'elseif-without-else',
@@ -56,18 +58,22 @@ const sonarjsRules: string[] = [
 
 const sonarjsRuleModules: { [key: string]: any } = {};
 
-const configs: { recommended: TSESLint.Linter.Config & { plugins: string[] } } = {
+const configs: { recommended: Configuration; 'recommended-warn': Configuration } = {
   recommended: { plugins: ['sonarjs'], rules: {} },
+  'recommended-warn': { plugins: ['sonarjs'], rules: {} },
 };
 
 sonarjsRules.forEach(rule => {
   sonarjsRuleModules[rule] = require(`./rules/${rule}`);
+
   const {
     meta: {
       docs: { recommended },
     },
   } = sonarjsRuleModules[rule];
+
   configs.recommended.rules![`sonarjs/${rule}`] = recommended === false ? 'off' : recommended;
+  configs['recommended-warn'].rules![`sonarjs/${rule}`] = recommended === false ? 'off' : 'warn';
 });
 
 export { sonarjsRuleModules as rules, configs };
