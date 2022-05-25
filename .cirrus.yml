@@ -1,21 +1,21 @@
-gcp_credentials: ENCRYPTED[!17c59813193e86cc337bce848b358412b90f50bc5fe1b8b39d363cdf14a41ebe76cfba0482e7f81d076994b9f6dbfb4c!]
+gcp_credentials: ENCRYPTED[!149d4005ecdba4cdd78bb5ba22756ebb98bf8e3367ee2e9ab08c5a1608c0d3e3b501904b67a1d67c0b63085e469d7dde!]
 
 env:
   GITHUB_TOKEN: ENCRYPTED[!f458126aa9ed2ac526f220c5acb51dd9cc255726b34761a56fc78d4294c11089502a882888cef0ca7dd4085e72e611a5!]
   SONAR_TOKEN: ENCRYPTED[!4e5894b7b32f763db69e70fb56188d3f42539db36374b1f97c425f37a7ecd441c28a9da267c461b9cc8fb53124f14c22!]
-  REPOX_CLI_CONFIG_QA_DEPLOYER: ENCRYPTED[!5aec4f862abfef35be645c235bbe93c72642ddbf9734b27dabdfe4e3a2d800b32d6e3474e2a11546ddd18dc076391b01!]
-  REPOX_CLI_CONFIG_BUILD_PROMOTER: ENCRYPTED[!e4f8d6e32933306ee4d11f1e04bb9cc3c88fa45e53f1252342279da960fa5ae01c55e3f144a55ba8245ae3bab5b08c64!]
+  REPOX_CLI_CONFIG_QA_DEPLOYER: ENCRYPTED[!b52b55df9afe3117bfa59ea8084e7f724a55816557dfb9838626d10dc7df63116900c4d0d0cc74c5d10aedce12d5ce7a!]
+  REPOX_CLI_CONFIG_BUILD_PROMOTER: ENCRYPTED[!906c4d977477eb00bd4cbd4f46bd8508fcdd29c74c2ca39191511bb5407d209c98b6ef308136f09663762f61ba3cd792!]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
 only_sonarsource_qa: &ONLY_SONARSOURCE_QA
-  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
 
 container_definition: &CONTAINER_DEFINITION
-  builder_image_project: language-team
-  builder_image_name: docker-builder-lt-v1
-  cluster_name: cirrus-ci-lt-cluster
-  zone: us-central1-a
+  builder_image_project: release-engineering-ci-prod
+  builder_image_name: family/docker-builder
+  cluster_name: cirrus-ci
+  zone: europe-west4-b
   namespace: default
   use_in_memory_disk: true
 
