@@ -492,7 +492,12 @@ ruleTester.run('cognitive-complexity', rule, {
           if (x) {} // +1
         }
         if (x) {} // +1
-        return <h1>Hello, world</h1>;
+        return (
+          <>
+            <h1>Hello, world</h1>
+            <p>cat</p>
+          </>
+        );
       }`,
       parserOptions: { ecmaFeatures: { jsx: true } },
       options: [0],
@@ -505,7 +510,12 @@ ruleTester.run('cognitive-complexity', rule, {
           if (x) {} // +1
         }
         if (x) {} // +1
-        return <h1>Hello, world</h1>;
+        return (
+          <>
+            <h1>Hello, world</h1>
+            <p>cat</p>
+          </>
+        );
       })`,
       parserOptions: { ecmaFeatures: { jsx: true } },
       options: [0],
