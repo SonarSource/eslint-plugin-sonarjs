@@ -121,7 +121,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
 function isInsideJSX(context: TSESLint.RuleContext<string, string[]>): boolean {
   const ancestors = context.getAncestors();
-  return !!ancestors.find(ancestor => ancestor.type === 'JSXExpressionContainer')
+  return !!ancestors.find(ancestor => ancestor.type === 'JSXExpressionContainer');
 }
 
 function collectKnownIdentifiers(expression: TSESTree.Expression) {
