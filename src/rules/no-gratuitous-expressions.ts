@@ -171,6 +171,7 @@ function isLogicalAndRhs(
   expression: TSESTree.Node,
 ): expression is TSESTree.LogicalExpression {
   return (
+    expression.parent?.type !== 'LogicalExpression' &&
     expression.type === 'LogicalExpression' &&
     expression.operator === '&&' &&
     expression.right === id
