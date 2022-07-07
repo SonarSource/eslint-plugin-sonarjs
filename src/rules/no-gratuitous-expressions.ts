@@ -83,7 +83,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const id = node as TSESTree.Identifier;
         const symbol = getSymbol(id, context.getScope());
         const { parent } = node;
-        if (!symbol || !parent) {
+        if (!symbol || !parent || (isInsideJSX(context) && isLogicalAndRhs(id, parent))) {
           return;
         }
         if (
@@ -118,6 +118,16 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     };
   },
 };
+
+function isInsideJSX(context: TSESLint.RuleContext<string, string[]>): boolean {
+  const ancestors = context.getAncestors();
+  for (let i = 0; i < ancestors.length; i++) {
+    if (ancestors[i].type === 'JSXExpressionContainer') {
+      return true;
+    }
+  }
+  return false;
+}
 
 function collectKnownIdentifiers(expression: TSESTree.Expression) {
   const truthy: TSESTree.Identifier[] = [];
@@ -158,6 +168,17 @@ function isLogicalOrLhs(
     expression.type === 'LogicalExpression' &&
     expression.operator === '||' &&
     expression.left === id
+  );
+}
+
+function isLogicalAndRhs(
+  id: TSESTree.Identifier,
+  expression: TSESTree.Node,
+): expression is TSESTree.LogicalExpression {
+  return (
+    expression.type === 'LogicalExpression' &&
+    expression.operator === '&&' &&
+    expression.right === id
   );
 }
 
