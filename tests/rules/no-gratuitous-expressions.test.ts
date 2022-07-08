@@ -82,6 +82,19 @@ ruleTester.run('no-gratuitous-expressions', rule, {
       }
       `,
     },
+    {
+      code: `
+      function render(children, right) {
+        if (children) {
+          return (
+            <div>
+              {right && children}
+            </div>
+          );
+        }
+      }
+      `,
+    },
   ],
   invalid: [
     {
@@ -365,6 +378,44 @@ ruleTester.run('no-gratuitous-expressions', rule, {
           column: 11,
           endLine: 4,
           endColumn: 12,
+        },
+      ],
+    },
+    {
+      code: `
+      function render(children, right) {
+        if (right) {
+          return (
+            <div>
+              {right && children}
+            </div>
+          );
+        }
+      }
+      `,
+      options: ['sonar-runtime'],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          data: {
+            value: 'truthy',
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  message: 'Evaluated here to be truthy',
+                  line: 3,
+                  column: 12,
+                  endLine: 3,
+                  endColumn: 17,
+                },
+              ],
+              message: 'This always evaluates to truthy. Consider refactoring this code.',
+            }),
+          },
+          line: 6,
+          column: 16,
+          endLine: 6,
+          endColumn: 21,
         },
       ],
     },
