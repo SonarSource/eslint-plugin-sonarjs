@@ -49,6 +49,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
     const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
 
+    function isInsideJSX(): boolean {
+      const ancestors = context.getAncestors();
+      return !!ancestors.find(ancestor => ancestor.type === 'JSXExpressionContainer');
+    }
+
     return {
       IfStatement: (node: TSESTree.Node) => {
         const { test } = node as TSESTree.IfStatement;
@@ -83,7 +88,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const id = node as TSESTree.Identifier;
         const symbol = getSymbol(id, context.getScope());
         const { parent } = node;
-        if (!symbol || !parent || (isInsideJSX(context) && isLogicalAndRhs(id, parent))) {
+        if (!symbol || !parent || (isInsideJSX() && isLogicalAndRhs(id, parent))) {
           return;
         }
         if (
@@ -118,11 +123,6 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     };
   },
 };
-
-function isInsideJSX(context: TSESLint.RuleContext<string, string[]>): boolean {
-  const ancestors = context.getAncestors();
-  return !!ancestors.find(ancestor => ancestor.type === 'JSXExpressionContainer');
-}
 
 function collectKnownIdentifiers(expression: TSESTree.Expression) {
   const truthy: TSESTree.Identifier[] = [];
