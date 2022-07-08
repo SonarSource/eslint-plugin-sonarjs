@@ -126,8 +126,9 @@ function addToResults(results: Results, filePath: string, ruleId: string, line: 
 
 function getFileNameForSnapshot(path: string): string {
   const marker = "/javascript-test-sources/";
-  const pos = path.indexOf(marker);
-  return path.substr(pos + marker.length);
+  const unixPath = path.replace(/\\+/g, '/');
+  const pos = unixPath.indexOf(marker);
+  return unixPath.substr(pos + marker.length);
 }
 
 interface Results {
