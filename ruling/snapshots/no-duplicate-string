@@ -183,15 +183,13 @@ src/react-native/Libraries/Utilities/PerformanceLogger.js: 74
 src/react-native/Libraries/polyfills/Object.es6.js: 24
 src/react-native/Libraries/vendor/core/toIterator.js: 27
 src/react-native/RNTester/js/AlertExample.js: 37,49
-src/react-native/RNTester/js/AlertIOSExample.js: 68,113
+src/react-native/RNTester/js/AlertIOSExample.js: 113
 src/react-native/RNTester/js/AsyncStorageExample.js: 45
 src/react-native/RNTester/js/BorderExample.js: 197,198
 src/react-native/RNTester/js/DatePickerAndroidExample.js: 34
 src/react-native/RNTester/js/ImageExample.js: 196
-src/react-native/RNTester/js/LayoutExample.js: 97
-src/react-native/RNTester/js/MaskedViewExample.js: 75
-src/react-native/RNTester/js/PointerEventsExample.js: 67,69,80,82
-src/react-native/RNTester/js/TextExample.android.js: 89,135,192,219,313,393
+src/react-native/RNTester/js/PointerEventsExample.js: 67,80
+src/react-native/RNTester/js/TextExample.android.js: 89,135,393
 src/react-native/RNTester/js/TextExample.ios.js: 456
 src/react-native/RNTester/js/TextInputExample.android.js: 25,551
 src/react-native/RNTester/js/TextInputExample.ios.js: 40
@@ -206,8 +204,6 @@ src/react-native/scripts/android-e2e-test.js: 101
 src/react-native/scripts/bump-oss-version.js: 65
 src/react/fixtures/art/VectorWidget.js: 134
 src/react/fixtures/attribute-behavior/src/attributes.js: 34,59,67,109,182,226,302,316,330,344,464,526,571,611,625,640,652,658,664,670,676,801,807,813,847,878,884,916,1053,1065,1095,1101,1107,1292,1298,1316,1371,1469,1574,1695,1701,1719,1725,1755,1767,1773,1779,1785,1791,1797,1895,1901,1907,1971,1977,2001,2007,2045,2057,2063,2103,2118,2206,2219,2268,2269,2270,2271,2272,2273,2274,2289
-src/react/fixtures/dom/src/components/fixtures/error-handling/index.js: 99
-src/react/fixtures/dom/src/components/fixtures/selects/index.js: 38
 src/react/packages/react-dom/src/server/ReactPartialRenderer.js: 988,989,1004
 src/react/packages/react-reconciler/src/ReactDebugFiberPerf.js: 411
 src/react/packages/react-reconciler/src/ReactFiberClassComponent.js: 298
@@ -225,7 +221,6 @@ src/react/scripts/release/build-commands/update-noop-renderer-dependencies.js: 1
 src/reveal.js/js/reveal.js: 493,628,676,681,902,908,930,952,953,1123,2003,2080,2672,3186,3424,3547,3806,4144
 src/reveal.js/plugin/markdown/markdown.js: 181,227,228,229
 src/reveal.js/plugin/notes/notes.js: 37,72
-src/spectrum/admin/src/views/dashboard/components/overviewNumbers.js: 94,97
 src/spectrum/api/migrations/seed/default/communities.js: 16,18,20
 src/spectrum/api/migrations/seed/default/threads.js: 34,36,64,66,94
 src/spectrum/api/migrations/seed/default/users.js: 53,55
@@ -252,10 +247,8 @@ src/spectrum/shared/graphql/queries/community/getCommunities.js: 32
 src/spectrum/src/components/buttons/style.js: 123
 src/spectrum/src/components/draftjs-editor/index.js: 261
 src/spectrum/src/components/editForm/user.js: 323
-src/spectrum/src/components/modals/AdminEmailAddressVerificationModal/index.js: 72
 src/spectrum/src/components/modals/DeleteDoubleCheckModal/index.js: 272
 src/spectrum/src/components/upsell/style.js: 355
-src/spectrum/src/views/communityMembers/components/importSlack.js: 162
 src/spectrum/src/views/communitySettings/components/brandedLogin.js: 129
 src/spectrum/src/views/newCommunity/index.js: 121,182
 src/spectrum/src/views/notifications/index.js: 102
