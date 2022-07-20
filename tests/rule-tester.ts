@@ -18,7 +18,9 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import { RuleTester } from '@typescript-eslint/experimental-utils/dist/eslint-utils';
+import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+
+const { RuleTester } = ESLintUtils;
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

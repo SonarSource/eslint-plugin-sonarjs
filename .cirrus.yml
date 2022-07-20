@@ -25,7 +25,8 @@ build_task:
     matrix:
       - dockerfile: .cirrus/nodejs-12.Dockerfile
       - dockerfile: .cirrus/nodejs-14.Dockerfile
-      - dockerfile: .cirrus/nodejs-15.Dockerfile
+      - dockerfile: .cirrus/nodejs-16.Dockerfile
+      - dockerfile: .cirrus/nodejs-18.Dockerfile
     <<: *CONTAINER_DEFINITION
     cpu: 3
     memory: 8G

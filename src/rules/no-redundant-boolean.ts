@@ -72,7 +72,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     };
 
-    function checkBooleanLiteral(expression: TSESTree.Expression) {
+    function checkBooleanLiteral(expression: TSESTree.Expression | TSESTree.PrivateIdentifier) {
       if (isBooleanLiteral(expression)) {
         context.report({ messageId: 'removeUnnecessaryBoolean', node: expression });
       }

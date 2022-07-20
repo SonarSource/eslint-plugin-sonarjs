@@ -2,7 +2,7 @@ FROM eu.gcr.io/release-engineering-ci-prod/base:j11-latest
 
 USER root
 
-ENV NODE_VERSION v12.22.12
+ENV NODE_VERSION v18.6.0
 
 RUN  wget -U "nodejs" -q -O nodejs.tar.gz https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz \
     && tar -xzf "nodejs.tar.gz" -C /usr/local --strip-components=1 --no-same-owner \
@@ -17,4 +17,3 @@ RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-
 USER sonarsource
 
 ENV PATH "/opt/sonar-scanner/bin:${PATH}"
-ENV SONARCLOUD_ANALYSIS true
