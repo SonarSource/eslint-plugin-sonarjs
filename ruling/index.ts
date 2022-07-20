@@ -60,6 +60,15 @@ async function run() {
         ecmaVersion: 2018,
         sourceType: "module",
         requireConfigFile: false,
+        babelOptions: {
+          babelrc: false,
+          configFile: false,
+          parserOpts: {
+            allowReturnOutsideFunction: true,
+          },
+          presets: ["@babel/preset-env", "@babel/preset-flow", "@babel/preset-react"],
+          plugins: ["@babel/plugin-proposal-function-bind", "@babel/plugin-proposal-export-default-from"]
+        }
       },
       rules: getEslintRules(rules),
     },
