@@ -24,6 +24,7 @@ build_task:
   gke_container:
     matrix:
       - dockerfile: .cirrus/nodejs-12.Dockerfile
+      - dockerfile: .cirrus/nodejs-16.Dockerfile
       - dockerfile: .cirrus/nodejs-18.Dockerfile
     <<: *CONTAINER_DEFINITION
     cpu: 3
