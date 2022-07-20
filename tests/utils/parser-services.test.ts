@@ -19,11 +19,10 @@
  */
 import * as path from 'path';
 import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
-import { RuleModule } from '@typescript-eslint/experimental-utils/dist/ts-eslint';
 import { isRequiredParserServices } from '../../src/utils/parser-services';
 import { RuleTester } from '../rule-tester';
 
-const rule: RuleModule<string, string[]> = {
+const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     type: 'problem',
     messages: {
