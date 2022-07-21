@@ -16,7 +16,7 @@ jobs:
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v2
         env:
-          JF_ARTIFACTORY_1: ${{ secrets.REPOX_CLI_CONFIG_QA_DEPLOYER }}          
+          JF_ENV_1: ${{ secrets.REPOX_CLI_CONFIG_QA_DEPLOYER_LT }}
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
@@ -25,13 +25,13 @@ jobs:
       - name: Publish npm package            
         env:
           NPM_TOKEN: ${{ secrets.SONARTECH_NPM_TOKEN }}
-          REPOX_CLI_CONFIG_BUILD_PROMOTER: ${{ secrets.REPOX_CLI_CONFIG_BUILD_PROMOTER }}
+          REPOX_CLI_CONFIG_BUILD_PROMOTER_LT: ${{ secrets.REPOX_CLI_CONFIG_BUILD_PROMOTER_LT }}
         run: |
           jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
           jfrog rt npm-ci          
           npm publish
           jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=${{ github.event.release.tag_name }}
           jfrog rt build-publish eslint-plugin-sonarjs ${{ github.event.release.tag_name }}
-          jfrog config import $REPOX_CLI_CONFIG_BUILD_PROMOTER
+          jfrog config import $REPOX_CLI_CONFIG_BUILD_PROMOTER_LT
           jfrog rt bpr --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
           jfrog rt bpr --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
