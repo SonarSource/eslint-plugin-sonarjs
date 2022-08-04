@@ -131,6 +131,24 @@ ruleTester.run('no-identical-functions', rule, {
         });
       `,
     },
+    {
+      code: `
+        function foo() {
+          {
+            {
+              return true;
+            }
+          }
+        }
+        function bar() {
+          {
+            {
+              return true;
+            }
+          }
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -334,6 +352,30 @@ ruleTester.run('no-identical-functions', rule, {
       options: [3, 'sonar-runtime'],
       errors: [
         encodedMessage(2, 7, [
+          { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
+        ]),
+      ],
+    },
+    {
+      code: `
+        function foo(a) {
+          try {
+            return a;
+          } catch {
+            return 2 * a;
+          }
+        }
+        function bar(a) {
+          try {
+            return a;
+          } catch {
+            return 2 * a;
+          }
+        }
+      `,
+      options: [3, 'sonar-runtime'],
+      errors: [
+        encodedMessage(2, 9, [
           { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
         ]),
       ],

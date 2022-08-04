@@ -129,7 +129,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
 
     function isBigEnough(node: TSESTree.Node) {
-      if (node.type !== 'BlockStatement' || node.body.length < minLines) {
+      if (!hasEnoughStatements(node)) {
         return false;
       }
 
@@ -154,5 +154,23 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
   },
 };
+
+function hasEnoughStatements(node: TSESTree.Node) {
+  function checkNode(child: TSESTree.Node): boolean {
+    if (child.type === 'BlockStatement') {
+      return checkNodes(child.body);
+    } else if (child.type === 'ReturnStatement') {
+      return false;
+    } else {
+      return child.type.endsWith('Statement');
+    }
+  }
+
+  function checkNodes(nodes: TSESTree.Node[]): boolean {
+    return nodes.length > 1 || (nodes.length === 1 && hasEnoughStatements(nodes[0]));
+  }
+
+  return checkNode(node);
+}
 
 export = rule;
