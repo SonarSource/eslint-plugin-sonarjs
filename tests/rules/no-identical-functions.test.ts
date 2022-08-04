@@ -131,16 +131,6 @@ ruleTester.run('no-identical-functions', rule, {
         });
       `,
     },
-    {
-      code: `
-        function foo(a, b) {
-          a += b; b -= a; return a + b;
-        }
-        function bar(a, b) {
-          a += b; b -= a; return a + b;
-        }
-      `,
-    },
   ],
   invalid: [
     {
