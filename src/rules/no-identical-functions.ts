@@ -129,6 +129,10 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
 
     function isBigEnough(node: TSESTree.Node) {
+      if (node.type !== 'BlockStatement' || node.body.length < minLines) {
+        return false;
+      }
+
       const tokens = context.getSourceCode().getTokens(node);
 
       if (tokens.length > 0 && tokens[0].value === '{') {

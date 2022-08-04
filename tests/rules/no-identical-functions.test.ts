@@ -87,6 +87,50 @@ ruleTester.run('no-identical-functions', rule, {
       };`,
       options: [4],
     },
+    {
+      code: `
+        items1.map(item => (
+            <Item name='{item.name}'>
+              <Value value='{item.value1}' />
+              <Value value='{item.value2}' />
+            </Item>
+          )
+        );
+        items2.map(item => (
+            <Item name='{item.name}'>
+              <Value value='{item.value1}' />
+              <Value value='{item.value2}' />
+            </Item>
+          )
+        );
+      `,
+    },
+    {
+      code: `
+        items1.map(function(item) {
+          return [
+            item.value1,
+            item.value2
+          ];
+        });
+        items2.map(function(item) {
+          return [
+            item.value1,
+            item.value2
+          ];
+        });
+      `,
+    },
+    {
+      code: `
+        function foo(a, b) {
+          a += b; b -= a; return a + b;
+        }
+        function bar(a, b) {
+          a += b; b -= a; return a + b;
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -225,56 +269,6 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
-      let foo = () => (
-        [
-          1,
-        ]
-      )
-
-      let bar = () => (
-        [
-          1,
-        ]
-      )`,
-      errors: [message(2, 8)],
-    },
-    {
-      // few nodes, but many lines
-      code: `
-      function foo1() {
-        return [
-          1,
-        ];
-      }
-
-      function bar1() { // Noncompliant
-        return [
-          1,
-        ];
-      }`,
-      errors: [message(2, 8)],
-    },
-    {
-      code: `
-      const x = {
-        data: function () {
-          return {
-            a: 2
-          }
-        }
-      }
-
-      const y = {
-        data: function () {
-          return {
-            a: 2
-          }
-        }
-      }`,
-      errors: [message(3, 11)],
-    },
-    {
-      code: `
       const x = {
         foo() {
           console.log("Hello");
@@ -325,26 +319,22 @@ ruleTester.run('no-identical-functions', rule, {
       ],
     },
     {
-      // few nodes, but many lines
       code: `
-      function foo1() {
-        //     ^^^^>
-        return [
-          1,
-          2,
-        ];
-      }
-      function bar1() {
-    //         ^^^^
-        return [
-          1,
-          2,
-        ];
-      }`,
-      options: [4, 'sonar-runtime'],
+        function foo(a, b) {
+          a += b; b -= a; return {
+            b
+          };
+        }
+        function bar(a, b) {
+          a += b; b -= a; return {
+            b
+          };
+        }
+      `,
+      options: [3, 'sonar-runtime'],
       errors: [
-        encodedMessage(2, 9, [
-          { line: 2, column: 15, endLine: 2, endColumn: 19, message: 'Original implementation' },
+        encodedMessage(2, 7, [
+          { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
         ]),
       ],
     },
