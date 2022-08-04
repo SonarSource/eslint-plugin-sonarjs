@@ -89,6 +89,16 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
+        function foo(a, b) {
+          a += b; b -= a; return a + b;
+        }
+        function bar(a, b) {
+          a += b; b -= a; return a + b;
+        }
+      `,
+    },
+    {
+      code: `
         items1.map(item => (
             <Item name='{item.name}'>
               <Value value='{item.value1}' />
