@@ -77,7 +77,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     };
 
     function visitFunction(node: FunctionNode) {
-      if (isBigEnough(node.body)) {
+      if (isApplicable(node) && isBigEnough(node.body)) {
         functions.push({ function: node, parent: node.parent });
       }
     }
@@ -129,10 +129,6 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
 
     function isBigEnough(node: TSESTree.Node) {
-      if (!hasEnoughStatements(node)) {
-        return false;
-      }
-
       const tokens = context.getSourceCode().getTokens(node);
 
       if (tokens.length > 0 && tokens[0].value === '{') {
@@ -155,22 +151,25 @@ const rule: TSESLint.RuleModule<string, Options> = {
   },
 };
 
-function hasEnoughStatements(node: TSESTree.Node) {
-  function checkNode(child: TSESTree.Node): boolean {
-    if (child.type === 'BlockStatement') {
-      return checkNodes(child.body);
-    } else if (child.type === 'ReturnStatement') {
-      return false;
-    } else {
-      return child.type.endsWith('Statement');
-    }
+function isApplicable(functionNode: FunctionNode) {
+  // Matches: function foo() {}
+  function isFunctionDeclaration() {
+    return functionNode.type === 'FunctionDeclaration';
   }
 
-  function checkNodes(nodes: TSESTree.Node[]): boolean {
-    return nodes.length > 1 || (nodes.length === 1 && hasEnoughStatements(nodes[0]));
+  // Matches: class A { foo() {} }
+  function isMethodDefinition() {
+    const methodNode = functionNode.parent;
+    return methodNode?.type === 'MethodDefinition' && methodNode.value === functionNode;
   }
 
-  return checkNode(node);
+  // Matches: const foo = () => {};
+  function isVariableDeclarator() {
+    const variableNode = functionNode.parent;
+    return variableNode?.type === 'VariableDeclarator' && variableNode.init === functionNode;
+  }
+
+  return isFunctionDeclaration() || isMethodDefinition() || isVariableDeclarator();
 }
 
 export = rule;

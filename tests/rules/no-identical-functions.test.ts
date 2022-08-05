@@ -72,82 +72,19 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
-      const x = {
+      class Foo {
         foo() {
           console.log("Hello");
           console.log("World");
           return 42;
-        },
-
+        }
         bar() {
           console.log("Hello");
           console.log("World");
           return 42;
-        },
-      };`,
+        }
+      }`,
       options: [4],
-    },
-    {
-      code: `
-        function foo(a, b) {
-          a += b; b -= a; return a + b;
-        }
-        function bar(a, b) {
-          a += b; b -= a; return a + b;
-        }
-      `,
-    },
-    {
-      code: `
-        items1.map(item => (
-            <Item name='{item.name}'>
-              <Value value='{item.value1}' />
-              <Value value='{item.value2}' />
-            </Item>
-          )
-        );
-        items2.map(item => (
-            <Item name='{item.name}'>
-              <Value value='{item.value1}' />
-              <Value value='{item.value2}' />
-            </Item>
-          )
-        );
-      `,
-    },
-    {
-      code: `
-        items1.map(function(item) {
-          return [
-            item.value1,
-            item.value2
-          ];
-        });
-        items2.map(function(item) {
-          return [
-            item.value1,
-            item.value2
-          ];
-        });
-      `,
-    },
-    {
-      code: `
-        function foo() {
-          {
-            {
-              return true;
-            }
-          }
-        }
-        function bar() {
-          {
-            {
-              return true;
-            }
-          }
-        }
-      `,
     },
   ],
   invalid: [
@@ -287,57 +224,6 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
-      const x = {
-        foo() {
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-
-        bar() {
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-      };`,
-      errors: [
-        {
-          messageId: 'identicalFunctions',
-          data: {
-            line: 3,
-          },
-          line: 9,
-          column: 9,
-          endColumn: 12,
-        },
-      ],
-    },
-    {
-      code: `
-      const x = {
-        foo() {
-      //^^^>
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-
-        bar() {
-      //^^^
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-      };`,
-      options: [3, 'sonar-runtime'],
-      errors: [
-        encodedMessage(3, 10, [
-          { line: 3, column: 8, endLine: 3, endColumn: 11, message: 'Original implementation' },
-        ]),
-      ],
-    },
-    {
-      code: `
         function foo(a, b) {
           a += b; b -= a; return {
             b
@@ -379,6 +265,38 @@ ruleTester.run('no-identical-functions', rule, {
           { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
         ]),
       ],
+    },
+    {
+      code: `
+        class Foo {
+          foo() {
+            console.log("Hello");
+            console.log("World");
+            return 42;
+          }
+          bar() {
+            console.log("Hello");
+            console.log("World");
+            return 42;
+          }
+        }
+      `,
+      errors: [message(3, 8)],
+    },
+    {
+      code: `
+        const foo = () => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        };
+        const bar = () => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        };
+      `,
+      errors: [message(2, 7)],
     },
   ],
 });
