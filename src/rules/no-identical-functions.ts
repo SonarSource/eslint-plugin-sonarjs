@@ -64,10 +64,14 @@ const rule: TSESLint.RuleModule<string, Options> = {
       FunctionDeclaration(node: TSESTree.Node) {
         visitFunction(node as TSESTree.FunctionDeclaration);
       },
-      FunctionExpression(node: TSESTree.Node) {
+      'VariableDeclarator > FunctionExpression, MethodDefinition > FunctionExpression': (
+        node: TSESTree.Node,
+      ) => {
         visitFunction(node as TSESTree.FunctionExpression);
       },
-      ArrowFunctionExpression(node: TSESTree.Node) {
+      'VariableDeclarator > ArrowFunctionExpression, MethodDefinition > ArrowFunctionExpression': (
+        node: TSESTree.Node,
+      ) => {
         visitFunction(node as TSESTree.ArrowFunctionExpression);
       },
 
@@ -77,7 +81,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     };
 
     function visitFunction(node: FunctionNode) {
-      if (isApplicable(node) && isBigEnough(node.body)) {
+      if (isBigEnough(node.body)) {
         functions.push({ function: node, parent: node.parent });
       }
     }
@@ -150,26 +154,5 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
   },
 };
-
-function isApplicable(functionNode: FunctionNode) {
-  // Matches: function foo() {}
-  function isFunctionDeclaration() {
-    return functionNode.type === 'FunctionDeclaration';
-  }
-
-  // Matches: class A { foo() {} }
-  function isMethodDefinition() {
-    const methodNode = functionNode.parent;
-    return methodNode?.type === 'MethodDefinition' && methodNode.value === functionNode;
-  }
-
-  // Matches: const foo = () => {};
-  function isVariableDeclarator() {
-    const variableNode = functionNode.parent;
-    return variableNode?.type === 'VariableDeclarator' && variableNode.init === functionNode;
-  }
-
-  return isFunctionDeclaration() || isMethodDefinition() || isVariableDeclarator();
-}
 
 export = rule;
