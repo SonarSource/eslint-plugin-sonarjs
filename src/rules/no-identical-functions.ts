@@ -64,10 +64,14 @@ const rule: TSESLint.RuleModule<string, Options> = {
       FunctionDeclaration(node: TSESTree.Node) {
         visitFunction(node as TSESTree.FunctionDeclaration);
       },
-      FunctionExpression(node: TSESTree.Node) {
+      'VariableDeclarator > FunctionExpression, MethodDefinition > FunctionExpression': (
+        node: TSESTree.Node,
+      ) => {
         visitFunction(node as TSESTree.FunctionExpression);
       },
-      ArrowFunctionExpression(node: TSESTree.Node) {
+      'VariableDeclarator > ArrowFunctionExpression, MethodDefinition > ArrowFunctionExpression': (
+        node: TSESTree.Node,
+      ) => {
         visitFunction(node as TSESTree.ArrowFunctionExpression);
       },
 

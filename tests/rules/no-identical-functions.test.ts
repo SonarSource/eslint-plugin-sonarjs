@@ -72,19 +72,18 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
-      const x = {
+      class Foo {
         foo() {
           console.log("Hello");
           console.log("World");
           return 42;
-        },
-
+        }
         bar() {
           console.log("Hello");
           console.log("World");
           return 42;
-        },
-      };`,
+        }
+      }`,
       options: [4],
     },
   ],
@@ -225,128 +224,79 @@ ruleTester.run('no-identical-functions', rule, {
     },
     {
       code: `
-      let foo = () => (
-        [
-          1,
-        ]
-      )
-
-      let bar = () => (
-        [
-          1,
-        ]
-      )`,
-      errors: [message(2, 8)],
-    },
-    {
-      // few nodes, but many lines
-      code: `
-      function foo1() {
-        return [
-          1,
-        ];
-      }
-
-      function bar1() { // Noncompliant
-        return [
-          1,
-        ];
-      }`,
-      errors: [message(2, 8)],
-    },
-    {
-      code: `
-      const x = {
-        data: function () {
-          return {
-            a: 2
-          }
+        function foo(a, b) {
+          a += b; b -= a; return {
+            b
+          };
         }
-      }
-
-      const y = {
-        data: function () {
-          return {
-            a: 2
-          }
+        function bar(a, b) {
+          a += b; b -= a; return {
+            b
+          };
         }
-      }`,
-      errors: [message(3, 11)],
-    },
-    {
-      code: `
-      const x = {
-        foo() {
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-
-        bar() {
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-      };`,
-      errors: [
-        {
-          messageId: 'identicalFunctions',
-          data: {
-            line: 3,
-          },
-          line: 9,
-          column: 9,
-          endColumn: 12,
-        },
-      ],
-    },
-    {
-      code: `
-      const x = {
-        foo() {
-      //^^^>
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-
-        bar() {
-      //^^^
-          console.log("Hello");
-          console.log("World");
-          return 42;
-        },
-      };`,
+      `,
       options: [3, 'sonar-runtime'],
       errors: [
-        encodedMessage(3, 10, [
-          { line: 3, column: 8, endLine: 3, endColumn: 11, message: 'Original implementation' },
+        encodedMessage(2, 7, [
+          { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
         ]),
       ],
     },
     {
-      // few nodes, but many lines
       code: `
-      function foo1() {
-        //     ^^^^>
-        return [
-          1,
-          2,
-        ];
-      }
-      function bar1() {
-    //         ^^^^
-        return [
-          1,
-          2,
-        ];
-      }`,
-      options: [4, 'sonar-runtime'],
+        function foo(a) {
+          try {
+            return a;
+          } catch {
+            return 2 * a;
+          }
+        }
+        function bar(a) {
+          try {
+            return a;
+          } catch {
+            return 2 * a;
+          }
+        }
+      `,
+      options: [3, 'sonar-runtime'],
       errors: [
         encodedMessage(2, 9, [
-          { line: 2, column: 15, endLine: 2, endColumn: 19, message: 'Original implementation' },
+          { line: 2, column: 17, endLine: 2, endColumn: 20, message: 'Original implementation' },
         ]),
       ],
+    },
+    {
+      code: `
+        class Foo {
+          foo() {
+            console.log("Hello");
+            console.log("World");
+            return 42;
+          }
+          bar() {
+            console.log("Hello");
+            console.log("World");
+            return 42;
+          }
+        }
+      `,
+      errors: [message(3, 8)],
+    },
+    {
+      code: `
+        const foo = () => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        };
+        const bar = () => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        };
+      `,
+      errors: [message(2, 7)],
     },
   ],
 });
