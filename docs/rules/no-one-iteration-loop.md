@@ -7,12 +7,12 @@ At worst that was not the initial intention of the author and so the body of the
 ## Noncompliant Code Example
 
 ```javascript
-for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
+for (let i = 0; i < 10; i++) { // noncompliant, loop only executes once
   console.log("i is " + i);
   break;
 }
 ...
-for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
+for (let i = 0; i < 10; i++) { // noncompliant, loop only executes once
   if (i == x) {
     break;
   } else {
@@ -25,11 +25,11 @@ for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
 ## Compliant Solution
 
 ```javascript
-for (int i = 0; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
   console.log("i is " + i);
 }
 ...
-for (int i = 0; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
   if (i == x) {
     break;
   } else {
