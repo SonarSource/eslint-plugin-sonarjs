@@ -26,7 +26,7 @@ import docsUrl from '../utils/docs-url';
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      removeUnnecessaryBoolean: 'Remove the unnecessary boolean literal.',
+      removeUnnecessaryBoolean: 'Refactor the code to avoid using this boolean literal.',
     },
     schema: [],
     type: 'suggestion',
