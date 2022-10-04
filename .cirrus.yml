@@ -23,7 +23,6 @@ build_task:
   <<: *ONLY_SONARSOURCE_QA
   gke_container:
     matrix:
-      - dockerfile: .cirrus/nodejs-12.Dockerfile
       - dockerfile: .cirrus/nodejs-14.Dockerfile
       - dockerfile: .cirrus/nodejs-16.Dockerfile
       - dockerfile: .cirrus/nodejs-18.Dockerfile
@@ -50,7 +49,7 @@ ws_scan_task:
   depends_on:
     - build
   gke_container:
-    dockerfile: .cirrus/nodejs-12.Dockerfile
+    dockerfile: .cirrus/nodejs-14.Dockerfile
     <<: *CONTAINER_DEFINITION
     cpu: 2
     memory: 2G
