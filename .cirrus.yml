@@ -49,7 +49,7 @@ ws_scan_task:
   depends_on:
     - build
   gke_container:
-    dockerfile: .cirrus/nodejs-14.Dockerfile
+    dockerfile: .cirrus/nodejs-18.Dockerfile
     <<: *CONTAINER_DEFINITION
     cpu: 2
     memory: 2G
