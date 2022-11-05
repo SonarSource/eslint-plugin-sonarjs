@@ -1,5 +1,9 @@
 # no-element-overwrite
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 It is highly suspicious when a value is saved for a key or index and then unconditionally overwritten. Such replacements are likely in error.
 
 ## Noncompliant Code Example

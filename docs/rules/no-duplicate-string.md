@@ -1,4 +1,8 @@
 # no-duplicate-string
+
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
 Duplicated string literals make the process of refactoring error-prone, since you must be sure to update all occurrences.
 On the other hand, constants can be referenced from many places, but only need to be updated in a single place.
 

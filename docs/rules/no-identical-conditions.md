@@ -1,5 +1,9 @@
 # no-identical-conditions
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 A chain of `if`/`else if` statements is evaluated from top to bottom. At most, only
 one branch will be executed: the first one with a condition that evaluates to `true`.
 

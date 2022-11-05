@@ -1,5 +1,9 @@
 # no-all-duplicated-branches
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Having all branches in a `switch` or `if` chain with the same implementation is an error.
 Either a copy-paste error was made and something different should be executed,
 or there shouldn't be a `switch`/`if` chain at all. Note that this rule does not apply to

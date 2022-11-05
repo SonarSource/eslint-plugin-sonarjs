@@ -1,5 +1,9 @@
 # no-duplicated-branches
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Having two `case`s in a `switch` statement or two branches in an `if` chain with the same implementation is at best
 duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then in an `if`
 chain they should be combined, or for a `switch`, one should fall through to the other.

@@ -1,6 +1,10 @@
 # non-existent-operator
 
-:wrench: *fixable*
+💼 This rule is enabled in the ✅ `recommended` config.
+
+💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
+<!-- end auto-generated rule header -->
 
 The use of operators pairs (`=+`, `=-` or `=!`) where the reversed, single operator was meant (`+=`, `-=` or `!=`) will compile and run, but not produce the expected results.
 

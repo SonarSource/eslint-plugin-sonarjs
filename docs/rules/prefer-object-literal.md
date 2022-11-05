@@ -1,5 +1,9 @@
 # prefer-object-literal
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Object literal syntax, which initializes an object's properties inside the object declaration is cleaner and clearer than the alternative: creating an empty object, and then giving it properties one by one.
 
 An issue is raised when the following pattern is met:

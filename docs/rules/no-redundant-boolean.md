@@ -1,5 +1,9 @@
 # no-redundant-boolean
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Redundant Boolean literals should be removed from expressions to improve readability.
 
 ## Noncompliant Code Example
