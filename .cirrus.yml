@@ -5,10 +5,10 @@ env:
   CIRRUS_VAULT_AUTH_PATH: jwt-cirrusci
   CIRRUS_VAULT_ROLE: cirrusci-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}
 
-  GITHUB_TOKEN: ENCRYPTED[!f458126aa9ed2ac526f220c5acb51dd9cc255726b34761a56fc78d4294c11089502a882888cef0ca7dd4085e72e611a5!]
-  SONAR_TOKEN: ENCRYPTED[!4e5894b7b32f763db69e70fb56188d3f42539db36374b1f97c425f37a7ecd441c28a9da267c461b9cc8fb53124f14c22!]
-  REPOX_CLI_CONFIG_QA_DEPLOYER: ENCRYPTED[!07d065a3727e6f270943618078b68718ff229941f1133c92e587f8e258c086f50f61a75f99496a8b2d7045da177b3ad1!]
-  REPOX_CLI_CONFIG_BUILD_PROMOTER: ENCRYPTED[!a4c9e5455d42b4395387b7489c47bb4c70e85cae5641b77b3b7e53b68ae57bc7b2e591ca4dd640138e15551f2915b08f!]
+  SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
+  ARTIFACTORY_URL: https://repox.jfrog.io/
+  ARTIFACTORY_DEPLOY_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
+  ARTIFACTORY_PROMOTE_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
@@ -37,9 +37,9 @@ build_task:
     CIRRUS_CLONE_DEPTH: 10
     SONARSOURCE_QA: true
   script:
-    - jfrog config import $REPOX_CLI_CONFIG_QA_DEPLOYER
+    - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
-    - init_git_submodules -r
+    - git submodule update --init --depth 1 -r
     - jfrog rt npm-ci
     - npm run typecheck
     - npm run build
@@ -60,7 +60,7 @@ ws_scan_task:
   # run only on master and long-term branches
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
   env:
-    WS_APIKEY: ENCRYPTED[!3929c6148b9dfc751a2d17c590b15d755f82cd9c108f2de5f24a5b32f2a0c26144e921fab7e2c959fc2824d6d6d1550d!]
+    WS_APIKEY: VAULT[development/kv/data/mend data.apikey]
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   whitesource_script:
