@@ -335,6 +335,12 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
         return checkFirstLetter(parent.id.name);
       }
 
+      const { parent: upperParent } = parent as TSESTree.FunctionLike;
+
+      if (upperParent && upperParent.type === 'VariableDeclarator' && upperParent.id.type === 'Identifier') {
+        return checkFirstLetter(upperParent.id.name);
+      }
+
       return false;
     }
 
