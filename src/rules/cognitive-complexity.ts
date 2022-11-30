@@ -118,7 +118,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     /** Stack of enclosing functions */
     const enclosingFunctions: TSESTree.FunctionLike[] = [];
 
-    /** Indicator if inside a JSX expression */
+    /** Nesting level in JSX expressions */
     let jsxLevel = 0;
 
     let secondLevelFunctions: Array<{
