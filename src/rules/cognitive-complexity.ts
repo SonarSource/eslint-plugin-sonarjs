@@ -113,6 +113,9 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     /** Stack of enclosing functions */
     const enclosingFunctions: TSESTree.FunctionLike[] = [];
 
+    /** Indicator if inside a JSX expression */
+    let jsxLevel = 0;
+
     let secondLevelFunctions: Array<{
       node: TSESTree.FunctionLike;
       parent: TSESTree.Node | undefined;
@@ -153,7 +156,12 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           });
         }
       },
-
+      'JSXElement,JSXFragment'() {
+        jsxLevel++;
+      },
+      'JSXElement,JSXFragment:exit'() {
+        jsxLevel--;
+      },
       IfStatement(node: TSESTree.Node) {
         visitIfStatement(node as TSESTree.IfStatement);
       },
@@ -339,6 +347,10 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     }
 
     function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
+      if (jsxLevel > 0) {
+        return;
+      }
+
       if (!consideredLogicalExpressions.has(logicalExpression)) {
         const flattenedLogicalExpressions = flattenLogicalExpression(logicalExpression);
 

@@ -22,7 +22,51 @@ import { ruleTester } from '../rule-tester';
 import rule = require('../../src/rules/cognitive-complexity');
 
 ruleTester.run('cognitive-complexity', rule, {
-  valid: [{ code: `function zero_complexity() {}`, options: [0] }],
+  valid: [
+    { code: `function zero_complexity() {}`, options: [0] },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <span>{ obj.title?.text }</span>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <>
+              { obj.isFriendly && <strong>Welcome</strong> }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <span title={ obj.isFriendly || obj.disclaimer }>Text</span>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <button type="button" disabled={ obj.user?.isBot ?? obj.isDemo }>Logout</button>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+  ],
   invalid: [
     // if
     {
