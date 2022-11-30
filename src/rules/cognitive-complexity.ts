@@ -19,15 +19,20 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3776
 
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
-import { isArrowFunctionExpression, isIfStatement, isLogicalExpression } from '../utils/nodes';
+import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import {
-  getMainFunctionTokenLocation,
+  isArrowFunctionExpression,
+  isConditionalExpression,
+  isIfStatement,
+  isLogicalExpression,
+} from '../utils/nodes';
+import {
   getFirstToken,
   getFirstTokenAfter,
-  report,
+  getMainFunctionTokenLocation,
   IssueLocation,
   issueLocation,
+  report,
 } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
@@ -347,7 +352,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     }
 
     function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
-      if (jsxLevel > 0) {
+      if (jsxLevel > 0 && isJsxShortCircuit(logicalExpression)) {
         return;
       }
 
@@ -357,7 +362,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
         let previous: TSESTree.LogicalExpression | undefined;
         for (const current of flattenedLogicalExpressions) {
           if (!previous || previous.operator !== current.operator) {
-            const operatorTokenLoc = getFirstTokenAfter(logicalExpression.left, context)!.loc;
+            const operatorTokenLoc = getFirstTokenAfter(current.left, context)!.loc;
             addComplexity(operatorTokenLoc);
           }
           previous = current;
@@ -448,3 +453,11 @@ type ComplexityPoint = {
   complexity: number;
   location: TSESTree.SourceLocation;
 };
+
+function isJsxShortCircuit(logicalExpression: TSESTree.LogicalExpression) {
+  let rightHand = logicalExpression.right;
+  while (isLogicalExpression(rightHand)) {
+    rightHand = rightHand.right;
+  }
+  return !isConditionalExpression(rightHand);
+}

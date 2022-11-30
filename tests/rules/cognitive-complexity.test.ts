@@ -50,7 +50,7 @@ ruleTester.run('cognitive-complexity', rule, {
       code: `
       function Component(obj) {
         return (
-          <span title={ obj.isFriendly || obj.disclaimer }>Text</span>
+          <span title={ obj.title || obj.disclaimer }>Text</span>
         );
       }`,
       parserOptions: { ecmaFeatures: { jsx: true } },
@@ -559,6 +559,40 @@ ruleTester.run('cognitive-complexity', rule, {
       parserOptions: { ecmaFeatures: { jsx: true } },
       options: [0],
       errors: [message(1, { line: 2 }), message(1, { line: 3 })],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <>
+            <span title={ obj.user?.name ?? (obj.isDemo ? 'demo' : 'none') }>Text</span>
+            { obj.isUser && (obj.name || (obj.isDemo ? 'Demo' : 'None')) }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0, 'sonar-runtime'],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          data: {
+            complexityAmount: 4,
+            threshold: 0,
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                { line: 5, column: 41, endLine: 5, endColumn: 43, message: '+1' }, // ??
+                { line: 5, column: 56, endLine: 5, endColumn: 57, message: '+1' }, // ?:
+                { line: 6, column: 25, endLine: 6, endColumn: 27, message: '+1' }, // &&
+                { line: 6, column: 38, endLine: 6, endColumn: 40, message: '+1' }, // ||
+                { line: 6, column: 53, endLine: 6, endColumn: 54, message: '+1' }, // ?:
+              ],
+              message:
+                'Refactor this function to reduce its Cognitive Complexity from 5 to the 0 allowed.',
+              cost: 5,
+            }),
+          },
+        },
+      ],
     },
   ],
 });
