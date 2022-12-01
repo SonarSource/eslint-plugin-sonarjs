@@ -20,12 +20,7 @@
 // https://sonarsource.github.io/rspec/#/rspec/S3776
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
-import {
-  isArrowFunctionExpression,
-  isConditionalExpression,
-  isIfStatement,
-  isLogicalExpression,
-} from '../utils/nodes';
+import { isArrowFunctionExpression, isIfStatement, isLogicalExpression } from '../utils/nodes';
 import {
   getFirstToken,
   getFirstTokenAfter,
@@ -118,9 +113,6 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     /** Stack of enclosing functions */
     const enclosingFunctions: TSESTree.FunctionLike[] = [];
 
-    /** Nesting level in JSX expressions */
-    let jsxLevel = 0;
-
     let secondLevelFunctions: Array<{
       node: TSESTree.FunctionLike;
       parent: TSESTree.Node | undefined;
@@ -160,12 +152,6 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
             data: { complexityAmount: fileComplexity },
           });
         }
-      },
-      'JSXElement,JSXFragment'() {
-        jsxLevel++;
-      },
-      'JSXElement,JSXFragment:exit'() {
-        jsxLevel--;
       },
       IfStatement(node: TSESTree.Node) {
         visitIfStatement(node as TSESTree.IfStatement);
@@ -352,7 +338,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     }
 
     function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
-      if (jsxLevel > 0 && isJsxShortCircuit(logicalExpression)) {
+      if (isJsxShortCircuitNode(logicalExpression)) {
         return;
       }
 
@@ -367,6 +353,29 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           }
           previous = current;
         }
+      }
+    }
+
+    function isJsxShortCircuitNode(logicalExpression: TSESTree.LogicalExpression) {
+      const isShortCircuit =
+        logicalExpression.parent?.type === 'JSXExpressionContainer' &&
+        isJsxShortCircuitSubNode(logicalExpression, logicalExpression.left) &&
+        isJsxShortCircuitSubNode(logicalExpression, logicalExpression.right);
+      if (isShortCircuit) {
+        consideredLogicalExpressions.add(logicalExpression);
+      }
+      return isShortCircuit;
+    }
+
+    function isJsxShortCircuitSubNode(root: TSESTree.LogicalExpression, node: TSESTree.Node) {
+      if (node.type === 'LogicalExpression') {
+        const isShortCircuit = node.operator === root.operator;
+        if (isShortCircuit) {
+          consideredLogicalExpressions.add(node);
+        }
+        return isShortCircuit;
+      } else {
+        return node.type !== 'ConditionalExpression';
       }
     }
 
@@ -453,11 +462,3 @@ type ComplexityPoint = {
   complexity: number;
   location: TSESTree.SourceLocation;
 };
-
-function isJsxShortCircuit(logicalExpression: TSESTree.LogicalExpression) {
-  let rightHand = logicalExpression.right;
-  while (isLogicalExpression(rightHand)) {
-    rightHand = rightHand.right;
-  }
-  return !isConditionalExpression(rightHand);
-}

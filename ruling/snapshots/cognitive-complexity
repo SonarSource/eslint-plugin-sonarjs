@@ -371,6 +371,7 @@ src/react-native/Libraries/Lists/FillRateHelper.js: 138
 src/react-native/Libraries/Lists/ListView/ListView.js: 408,661
 src/react-native/Libraries/Lists/VirtualizeUtils.js: 75
 src/react-native/Libraries/Lists/VirtualizedList.js: 718,1395
+src/react-native/Libraries/Lists/VirtualizedSectionList.js: 259
 src/react-native/Libraries/Network/XHRInterceptor.js: 71
 src/react-native/Libraries/Performance/Systrace.js: 101
 src/react-native/Libraries/ReactNative/requireNativeComponent.js: 101
@@ -506,6 +507,7 @@ src/spectrum/src/components/listItems/index.js: 129
 src/spectrum/src/components/modals/ChangeChannelModal/channelSelector.js: 22
 src/spectrum/src/components/modals/DeleteDoubleCheckModal/index.js: 74
 src/spectrum/src/components/profile/community.js: 60
+src/spectrum/src/components/profile/user.js: 68
 src/spectrum/src/components/threadComposer/components/composer.js: 120,215,346
 src/spectrum/src/helpers/utils.js: 96
 src/spectrum/src/registerServiceWorker.js: 24
@@ -522,6 +524,7 @@ src/spectrum/src/views/directMessages/containers/newThread.js: 201
 src/spectrum/src/views/explore/components/search.js: 115
 src/spectrum/src/views/explore/view.js: 109
 src/spectrum/src/views/navbar/components/notificationsTab.js: 51,234
+src/spectrum/src/views/navbar/index.js: 75
 src/spectrum/src/views/notifications/components/sortAndGroupNotificationMessages.js: 3
 src/spectrum/src/views/thread/components/actionBar.js: 209
 src/spectrum/src/views/thread/index.js: 223,286
