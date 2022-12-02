@@ -153,6 +153,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           });
         }
       },
+
       IfStatement(node: TSESTree.Node) {
         visitIfStatement(node as TSESTree.IfStatement);
       },

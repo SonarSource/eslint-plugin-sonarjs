@@ -21,6 +21,8 @@ import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { ruleTester } from '../rule-tester';
 import rule = require('../../src/rules/cognitive-complexity');
 
+const SONAR_RUNTIME_OPTION = 'sonar-runtime';
+
 ruleTester.run('cognitive-complexity', rule, {
   valid: [
     { code: `function zero_complexity() {}`, options: [0] },
@@ -273,7 +275,7 @@ ruleTester.run('cognitive-complexity', rule, {
 
         return foo(a && b) && c; // +1 "&&", +1 "&&"
       }`,
-      options: [0, 'sonar-runtime'],
+      options: [0, SONAR_RUNTIME_OPTION],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -318,6 +320,30 @@ ruleTester.run('cognitive-complexity', rule, {
     },
 
     // expressions
+    {
+      code: `
+      function and_or_locations() {
+        foo(1 && 2 || 3 && 4);
+      }`,
+      options: [0, SONAR_RUNTIME_OPTION],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          data: {
+            threshold: 0,
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                { line: 3, column: 14, endLine: 3, endColumn: 16, message: '+1' }, // &&
+                { line: 3, column: 19, endLine: 3, endColumn: 21, message: '+1' }, // ||
+                { line: 3, column: 24, endLine: 3, endColumn: 26, message: '+1' }, // &&
+              ],
+              message: cognitiveComplexityMessage(3),
+              cost: 3,
+            }),
+          },
+        },
+      ],
+    },
     {
       code: `
       function and_or() {
@@ -582,7 +608,7 @@ ruleTester.run('cognitive-complexity', rule, {
         );
       }`,
       parserOptions: { ecmaFeatures: { jsx: true } },
-      options: [0, 'sonar-runtime'],
+      options: [0, SONAR_RUNTIME_OPTION],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -593,8 +619,7 @@ ruleTester.run('cognitive-complexity', rule, {
                 { line: 5, column: 41, endLine: 5, endColumn: 43, message: '+1' }, // ??
                 { line: 5, column: 56, endLine: 5, endColumn: 57, message: '+1' }, // ?:
               ],
-              message:
-                'Refactor this function to reduce its Cognitive Complexity from 2 to the 0 allowed.',
+              message: cognitiveComplexityMessage(2),
               cost: 2,
             }),
           },
@@ -611,7 +636,7 @@ ruleTester.run('cognitive-complexity', rule, {
         );
       }`,
       parserOptions: { ecmaFeatures: { jsx: true } },
-      options: [0, 'sonar-runtime'],
+      options: [0, SONAR_RUNTIME_OPTION],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -622,8 +647,7 @@ ruleTester.run('cognitive-complexity', rule, {
                 { line: 5, column: 25, endLine: 5, endColumn: 27, message: '+1' }, // &&
                 { line: 5, column: 38, endLine: 5, endColumn: 40, message: '+1' }, // ||
               ],
-              message:
-                'Refactor this function to reduce its Cognitive Complexity from 2 to the 0 allowed.',
+              message: cognitiveComplexityMessage(2),
               cost: 2,
             }),
           },
@@ -640,7 +664,7 @@ ruleTester.run('cognitive-complexity', rule, {
         );
       }`,
       parserOptions: { ecmaFeatures: { jsx: true } },
-      options: [0, 'sonar-runtime'],
+      options: [0, SONAR_RUNTIME_OPTION],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -651,8 +675,7 @@ ruleTester.run('cognitive-complexity', rule, {
                 { line: 5, column: 25, endLine: 5, endColumn: 27, message: '+1' }, // &&
                 { line: 5, column: 40, endLine: 5, endColumn: 41, message: '+1' }, // ||
               ],
-              message:
-                'Refactor this function to reduce its Cognitive Complexity from 2 to the 0 allowed.',
+              message: cognitiveComplexityMessage(2),
               cost: 2,
             }),
           },
@@ -797,6 +820,10 @@ class TopLevel {
     },
   ],
 });
+
+function cognitiveComplexityMessage(cost: number) {
+  return `Refactor this function to reduce its Cognitive Complexity from ${cost} to the 0 allowed.`;
+}
 
 function message(complexityAmount: number, other: Partial<TSESLint.TestCaseError<string>> = {}) {
   return {
