@@ -64,6 +64,18 @@ ruleTester.run('cognitive-complexity', rule, {
       code: `
       function Component(obj) {
         return (
+          <>
+              { obj.x && obj.y && obj.z && <strong>Welcome</strong> }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
           <span title={ obj.title || obj.disclaimer }>Text</span>
         );
       }`,

@@ -339,7 +339,9 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     }
 
     function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
-      if (isJsxShortCircuitNode(logicalExpression)) {
+      const jsxShortCircuitNodes = getJsxShortCircuitNodes(logicalExpression);
+      if (jsxShortCircuitNodes) {
+        jsxShortCircuitNodes.forEach(node => consideredLogicalExpressions.add(node));
         return;
       }
 
@@ -357,26 +359,32 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
       }
     }
 
-    function isJsxShortCircuitNode(logicalExpression: TSESTree.LogicalExpression) {
-      const isShortCircuit =
-        logicalExpression.parent?.type === 'JSXExpressionContainer' &&
-        isJsxShortCircuitSubNode(logicalExpression, logicalExpression.left) &&
-        isJsxShortCircuitSubNode(logicalExpression, logicalExpression.right);
-      if (isShortCircuit) {
-        consideredLogicalExpressions.add(logicalExpression);
+    function getJsxShortCircuitNodes(logicalExpression: TSESTree.LogicalExpression) {
+      if (logicalExpression.parent?.type !== 'JSXExpressionContainer') {
+        return null;
+      } else {
+        return getJsxShortCircuitSubNodes(logicalExpression, logicalExpression);
       }
-      return isShortCircuit;
     }
 
-    function isJsxShortCircuitSubNode(root: TSESTree.LogicalExpression, node: TSESTree.Node) {
-      if (node.type === 'LogicalExpression') {
-        const isShortCircuit = node.operator === root.operator;
-        if (isShortCircuit) {
-          consideredLogicalExpressions.add(node);
-        }
-        return isShortCircuit;
+    function getJsxShortCircuitSubNodes(
+      root: TSESTree.LogicalExpression,
+      node: TSESTree.Node,
+    ): TSESTree.Node[] | null {
+      if (
+        node.type === 'ConditionalExpression' ||
+        (node.type === 'LogicalExpression' && node.operator !== root.operator)
+      ) {
+        return null;
+      } else if (node.type !== 'LogicalExpression') {
+        return [];
       } else {
-        return node.type !== 'ConditionalExpression';
+        const leftNodes = getJsxShortCircuitSubNodes(root, node.left);
+        const rightNodes = getJsxShortCircuitSubNodes(root, node.right);
+        if (leftNodes == null || rightNodes == null) {
+          return null;
+        }
+        return [...leftNodes, node, ...rightNodes];
       }
     }
 
