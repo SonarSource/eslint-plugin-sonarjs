@@ -340,7 +340,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
 
     function visitLogicalExpression(logicalExpression: TSESTree.LogicalExpression) {
       const jsxShortCircuitNodes = getJsxShortCircuitNodes(logicalExpression);
-      if (jsxShortCircuitNodes) {
+      if (jsxShortCircuitNodes != null) {
         jsxShortCircuitNodes.forEach(node => consideredLogicalExpressions.add(node));
         return;
       }
