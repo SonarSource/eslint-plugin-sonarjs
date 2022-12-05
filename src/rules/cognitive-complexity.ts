@@ -30,6 +30,7 @@ import {
   report,
 } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
+import { getJsxShortCircuitNodes } from '../utils/jsx';
 
 const DEFAULT_THRESHOLD = 15;
 
@@ -356,35 +357,6 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           }
           previous = current;
         }
-      }
-    }
-
-    function getJsxShortCircuitNodes(logicalExpression: TSESTree.LogicalExpression) {
-      if (logicalExpression.parent?.type !== 'JSXExpressionContainer') {
-        return null;
-      } else {
-        return getJsxShortCircuitSubNodes(logicalExpression, logicalExpression);
-      }
-    }
-
-    function getJsxShortCircuitSubNodes(
-      root: TSESTree.LogicalExpression,
-      node: TSESTree.Node,
-    ): TSESTree.Node[] | null {
-      if (
-        node.type === 'ConditionalExpression' ||
-        (node.type === 'LogicalExpression' && node.operator !== root.operator)
-      ) {
-        return null;
-      } else if (node.type !== 'LogicalExpression') {
-        return [];
-      } else {
-        const leftNodes = getJsxShortCircuitSubNodes(root, node.left);
-        const rightNodes = getJsxShortCircuitSubNodes(root, node.right);
-        if (leftNodes == null || rightNodes == null) {
-          return null;
-        }
-        return [...leftNodes, node, ...rightNodes];
       }
     }
 
