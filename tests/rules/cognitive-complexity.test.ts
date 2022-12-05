@@ -19,10 +19,79 @@
  */
 import { TSESLint } from '@typescript-eslint/experimental-utils';
 import { ruleTester } from '../rule-tester';
+import { IssueLocation } from '../../src/utils/locations';
 import rule = require('../../src/rules/cognitive-complexity');
 
 ruleTester.run('cognitive-complexity', rule, {
-  valid: [{ code: `function zero_complexity() {}`, options: [0] }],
+  valid: [
+    { code: `function zero_complexity() {}`, options: [0] },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <span>{ obj.title?.text }</span>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <>
+              { obj.isFriendly && <strong>Welcome</strong> }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <>
+              { obj.isFriendly && obj.isLoggedIn && <strong>Welcome</strong> }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <>
+              { obj.x && obj.y && obj.z && <strong>Welcome</strong> }
+          </>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <span title={ obj.title || obj.disclaimer }>Text</span>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+    {
+      code: `
+      function Component(obj) {
+        return (
+          <button type="button" disabled={ obj.user?.isBot ?? obj.isDemo }>Logout</button>
+        );
+      }`,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [0],
+    },
+  ],
   invalid: [
     // if
     {
@@ -196,8 +265,8 @@ ruleTester.run('cognitive-complexity', rule, {
       options: [0],
       errors: [message(2)],
     },
-    {
-      code: `
+    testCaseWithSonarRuntime(
+      `
       function check_secondaries() {
         if (condition) {       // +1 "if"
           if (condition) {} else {} // +2 "if", +1 "else"
@@ -217,51 +286,46 @@ ruleTester.run('cognitive-complexity', rule, {
 
         return foo(a && b) && c; // +1 "&&", +1 "&&"
       }`,
-      options: [0, 'sonar-runtime'],
-      errors: [
+      [
+        { line: 3, column: 8, endLine: 3, endColumn: 10, message: '+1' }, // if
+        { line: 7, column: 10, endLine: 7, endColumn: 14, message: '+1' }, // else
         {
-          messageId: 'sonarRuntime',
-          data: {
-            complexityAmount: 13,
-            threshold: 0,
-            sonarRuntimeData: JSON.stringify({
-              secondaryLocations: [
-                { line: 3, column: 8, endLine: 3, endColumn: 10, message: '+1' }, // if
-                { line: 7, column: 10, endLine: 7, endColumn: 14, message: '+1' }, // else
-                {
-                  line: 4,
-                  column: 10,
-                  endLine: 4,
-                  endColumn: 12,
-                  message: '+2 (incl. 1 for nesting)',
-                }, // if
-                { line: 4, column: 28, endLine: 4, endColumn: 32, message: '+1' }, // else
-                {
-                  line: 6,
-                  column: 10,
-                  endLine: 6,
-                  endColumn: 15,
-                  message: '+2 (incl. 1 for nesting)',
-                }, // catch
-                { line: 11, column: 8, endLine: 11, endColumn: 13, message: '+1' }, // while
-                { line: 12, column: 10, endLine: 12, endColumn: 15, message: '+1' }, // break
-                { line: 15, column: 10, endLine: 15, endColumn: 11, message: '+1' }, // ?
-                { line: 17, column: 8, endLine: 17, endColumn: 14, message: '+1' }, // switch
-                { line: 19, column: 27, endLine: 19, endColumn: 29, message: '+1' }, // &&
-                { line: 19, column: 21, endLine: 19, endColumn: 23, message: '+1' }, // &&
-              ],
-              message:
-                'Refactor this function to reduce its Cognitive Complexity from 13 to the 0 allowed.',
-              cost: 13,
-            }),
-            ...message(13),
-            cost: 13,
-          },
-        },
+          line: 4,
+          column: 10,
+          endLine: 4,
+          endColumn: 12,
+          message: '+2 (incl. 1 for nesting)',
+        }, // if
+        { line: 4, column: 28, endLine: 4, endColumn: 32, message: '+1' }, // else
+        {
+          line: 6,
+          column: 10,
+          endLine: 6,
+          endColumn: 15,
+          message: '+2 (incl. 1 for nesting)',
+        }, // catch
+        { line: 11, column: 8, endLine: 11, endColumn: 13, message: '+1' }, // while
+        { line: 12, column: 10, endLine: 12, endColumn: 15, message: '+1' }, // break
+        { line: 15, column: 10, endLine: 15, endColumn: 11, message: '+1' }, // ?
+        { line: 17, column: 8, endLine: 17, endColumn: 14, message: '+1' }, // switch
+        { line: 19, column: 27, endLine: 19, endColumn: 29, message: '+1' }, // &&
+        { line: 19, column: 21, endLine: 19, endColumn: 23, message: '+1' }, // &&
       ],
-    },
+      13,
+    ),
 
     // expressions
+    testCaseWithSonarRuntime(
+      `
+      function and_or_locations() {
+        foo(1 && 2 || 3 && 4);
+      }`,
+      [
+        { line: 3, column: 14, endLine: 3, endColumn: 16, message: '+1' }, // &&
+        { line: 3, column: 19, endLine: 3, endColumn: 21, message: '+1' }, // ||
+        { line: 3, column: 24, endLine: 3, endColumn: 26, message: '+1' }, // &&
+      ],
+    ),
     {
       code: `
       function and_or() {
@@ -516,6 +580,48 @@ ruleTester.run('cognitive-complexity', rule, {
       options: [0],
       errors: [message(1, { line: 2 }), message(1, { line: 3 })],
     },
+    testCaseWithSonarRuntime(
+      `
+      function Component(obj) {
+        return (
+          <>
+            <span title={ obj.user?.name ?? (obj.isDemo ? 'demo' : 'none') }>Text</span>
+          </>
+        );
+      }`,
+      [
+        { line: 5, column: 41, endLine: 5, endColumn: 43, message: '+1' }, // ??
+        { line: 5, column: 56, endLine: 5, endColumn: 57, message: '+1' }, // ?:
+      ],
+    ),
+    testCaseWithSonarRuntime(
+      `
+      function Component(obj) {
+        return (
+          <>
+            { obj.isUser && (obj.name || obj.surname) }
+          </>
+        );
+      }`,
+      [
+        { line: 5, column: 25, endLine: 5, endColumn: 27, message: '+1' }, // &&
+        { line: 5, column: 38, endLine: 5, endColumn: 40, message: '+1' }, // ||
+      ],
+    ),
+    testCaseWithSonarRuntime(
+      `
+      function Component(obj) {
+        return (
+          <>
+            { obj.isUser && (obj.isDemo ? <strong>Demo</strong> : <em>None</em>) }
+          </>
+        );
+      }`,
+      [
+        { line: 5, column: 25, endLine: 5, endColumn: 27, message: '+1' }, // &&
+        { line: 5, column: 40, endLine: 5, endColumn: 41, message: '+1' }, // ||
+      ],
+    ),
   ],
 });
 
@@ -654,6 +760,30 @@ class TopLevel {
     },
   ],
 });
+
+function testCaseWithSonarRuntime(
+  code: string,
+  secondaryLocations: IssueLocation[],
+  complexity?: number,
+): TSESLint.InvalidTestCase<string, (number | 'sonar-runtime')[]> {
+  const cost = complexity ?? secondaryLocations.length;
+  const message = `Refactor this function to reduce its Cognitive Complexity from ${cost} to the 0 allowed.`;
+  const sonarRuntimeData = JSON.stringify({ secondaryLocations, message, cost });
+  return {
+    code,
+    parserOptions: { ecmaFeatures: { jsx: true } },
+    options: [0, 'sonar-runtime'],
+    errors: [
+      {
+        messageId: 'sonarRuntime',
+        data: {
+          threshold: 0,
+          sonarRuntimeData,
+        },
+      },
+    ],
+  };
+}
 
 function message(complexityAmount: number, other: Partial<TSESLint.TestCaseError<string>> = {}) {
   return {
