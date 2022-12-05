@@ -5,6 +5,8 @@ on:
 
 jobs:
   publish:
+    permissions:
+      id-token: write # required for SonarSource/vault-action-wrapper
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
