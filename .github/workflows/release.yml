@@ -41,11 +41,9 @@ jobs:
           npm publish
           jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=${{ github.event.release.tag_name }}
           jfrog rt build-publish eslint-plugin-sonarjs ${{ github.event.release.tag_name }}
-      - name: Setup JFrog for promotion
-        uses: SonarSource/jfrog-setup-wrapper@eb712d76540e5d1f3756303f30387657fb204e52  # tag=2.4.1-1
-        with:
-          jfrogAccessToken: ${{ fromJSON(steps.secrets.outputs.vault).promoter_access_token }}
       - name: Promote npm package
+        env:
+          PROMOTER_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).promoter_access_token }}
         run: |
-          jfrog rt bpr --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
-          jfrog rt bpr --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
+          jfrog rt bpr --access-token $PROMOTER_TOKEN https://repox.jfrog.io/artifactory --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
+          jfrog rt bpr --access-token $PROMOTER_TOKEN https://repox.jfrog.io/artifactory --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
