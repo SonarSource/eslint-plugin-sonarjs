@@ -43,6 +43,8 @@ build_task:
   env:
     CIRRUS_CLONE_DEPTH: 10
     SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
   script:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
