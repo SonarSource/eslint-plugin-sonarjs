@@ -15,8 +15,6 @@ only_sonarsource_qa: &ONLY_SONARSOURCE_QA
 
 container_definition: &CONTAINER_DEFINITION
   dockerfile: .cirrus/nodejs.Dockerfile
-  docker_arguments:
-      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
   cluster_name: ${CIRRUS_CLUSTER_NAME}
   builder_role: cirrus-builder
   builder_image: docker-builder-v*
@@ -31,11 +29,14 @@ build_task:
   eks_container:
     matrix:
       - docker_arguments:
-        - NODE_VERSION: 14
+          NODE_VERSION: 14
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       - docker_arguments:
-        - NODE_VERSION: 16
+          NODE_VERSION: 16
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       - docker_arguments:
-        - NODE_VERSION: 18
+          NODE_VERSION: 18
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
     <<: *CONTAINER_DEFINITION
     cpu: 3
     memory: 8G
@@ -60,6 +61,8 @@ ws_scan_task:
     - build
   eks_container:
     <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
     cpu: 2
     memory: 2G
   # run only on master and long-term branches
