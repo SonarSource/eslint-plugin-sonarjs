@@ -14,8 +14,7 @@ only_sonarsource_qa: &ONLY_SONARSOURCE_QA
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
 
 container_definition: &CONTAINER_DEFINITION
-  docker_arguments:
-      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+  dockerfile: .cirrus/nodejs.Dockerfile
   cluster_name: ${CIRRUS_CLUSTER_NAME}
   builder_role: cirrus-builder
   builder_image: docker-builder-v*
@@ -29,15 +28,23 @@ build_task:
   <<: *ONLY_SONARSOURCE_QA
   eks_container:
     matrix:
-      - dockerfile: .cirrus/nodejs-14.Dockerfile
-      - dockerfile: .cirrus/nodejs-16.Dockerfile
-      - dockerfile: .cirrus/nodejs-18.Dockerfile
+      - docker_arguments:
+          NODE_VERSION: 14
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+      - docker_arguments:
+          NODE_VERSION: 16
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+      - docker_arguments:
+          NODE_VERSION: 18
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
     <<: *CONTAINER_DEFINITION
     cpu: 3
     memory: 8G
   env:
     CIRRUS_CLONE_DEPTH: 10
     SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
   script:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
@@ -55,8 +62,9 @@ ws_scan_task:
   depends_on:
     - build
   eks_container:
-    dockerfile: .cirrus/nodejs-18.Dockerfile
     <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
     cpu: 2
     memory: 2G
   # run only on master and long-term branches
