@@ -1,7 +1,7 @@
 # no-identical-conditions
 
 A chain of `if-else-if` and `switch-case` statements is evaluated from top to bottom. At most, only
-one branch will be executed: the first one with a condition that evaluates to `true` or that matches the discriminant.
+one branch will be executed: the first one with a condition that evaluates to `true` or that matches the discriminant of the `switch`.
 
 Therefore, duplicating a condition automatically leads to dead code. Usually, this is due to a
 copy/paste error. At best, it's simply dead code and at worst, it's a bug that is likely to induce
