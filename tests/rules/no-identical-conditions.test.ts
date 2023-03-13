@@ -160,5 +160,43 @@ ruleTester.run('no-identical-conditions', rule, {
         },
       ],
     },
+    {
+      code: `
+        switch (a) {
+          case 1:
+            f();
+            break;
+          case 2:
+            g();
+            break;
+          case 1:
+            h();
+            break;
+          case 1:
+            i();
+            break;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'duplicatedCase',
+          data: {
+            line: 3,
+          },
+          line: 9,
+          column: 16,
+          endColumn: 17,
+        },
+        {
+          messageId: 'duplicatedCase',
+          data: {
+            line: 3,
+          },
+          line: 12,
+          column: 16,
+          endColumn: 17,
+        },
+      ],
+    },
   ],
 });
