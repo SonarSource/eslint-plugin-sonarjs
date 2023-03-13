@@ -28,6 +28,16 @@ ruleTester.run('no-identical-conditions', rule, {
     {
       code: 'if (a) {} else {}',
     },
+    {
+      code: `
+      switch (a) {
+        case 1:  break;
+        case 2:  break;
+        case 3:  break;
+        default: break;
+      }
+      `,
+    },
   ],
   invalid: [
     {
@@ -109,6 +119,44 @@ ruleTester.run('no-identical-conditions', rule, {
           line: 4,
           column: 18,
           endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        switch (a) {
+          case 1:
+            f();
+            break;
+          case 2:
+            g();
+            break;
+          case 1:
+            h();
+            break;
+        }
+      `,
+      options: ['sonar-runtime'],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          data: {
+            line: 9,
+            column: 15,
+            endColumn: 16,
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 3,
+                  column: 15,
+                  endLine: 3,
+                  endColumn: 16,
+                  message: 'Original',
+                },
+              ],
+              message: 'This case duplicates the one on line 3',
+            }),
+          },
         },
       ],
     },

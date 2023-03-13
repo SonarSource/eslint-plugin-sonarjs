@@ -25,17 +25,20 @@ import { areEquivalent } from '../utils/equivalence';
 import { report, issueLocation } from '../utils/locations';
 import docsUrl from '../utils/docs-url';
 
-const message = 'This branch duplicates the one on line {{line}}';
+const duplicatedBranchMessage = 'This branch duplicates the one on line {{line}}';
+const duplicatedCaseMessage = 'This case duplicates the one on line {{line}}';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
     messages: {
-      duplicatedBranch: message,
+      duplicatedBranch: duplicatedBranchMessage,
+      duplicatedCase: duplicatedCaseMessage,
       sonarRuntime: '{{sonarRuntimeData}}',
     },
     type: 'problem',
     docs: {
-      description: 'Related "if/else if" statements should not have the same condition',
+      description:
+        'Related "if-else-if" and "switch-case" statements should not have the same condition',
       recommended: 'error',
       url: docsUrl(__filename),
     },
@@ -47,6 +50,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     ],
   },
   create(context) {
+    const sourceCode = context.getSourceCode();
     return {
       IfStatement(node: TSESTree.Node) {
         const ifStmt = node as TSESTree.IfStatement;
@@ -54,7 +58,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         let statement = ifStmt.alternate;
         while (statement) {
           if (isIfStatement(statement)) {
-            if (areEquivalent(condition, statement.test, context.getSourceCode())) {
+            if (areEquivalent(condition, statement.test, sourceCode)) {
               const line = ifStmt.loc && ifStmt.loc.start.line;
               if (line && condition.loc) {
                 report(
@@ -67,13 +71,41 @@ const rule: TSESLint.RuleModule<string, string[]> = {
                     node: statement.test,
                   },
                   [issueLocation(condition.loc, condition.loc, 'Original')],
-                  message,
+                  duplicatedBranchMessage,
                 );
               }
             }
             statement = statement.alternate;
           } else {
             break;
+          }
+        }
+      },
+      SwitchStatement(node: TSESTree.Node) {
+        const switchStmt = node as TSESTree.SwitchStatement;
+        const previousTests: TSESTree.Expression[] = [];
+        for (const switchCase of switchStmt.cases) {
+          if (switchCase.test) {
+            const { test } = switchCase;
+            const duplicateTest = previousTests.find(previousTest =>
+              areEquivalent(test, previousTest, sourceCode),
+            );
+            if (duplicateTest) {
+              report(
+                context,
+                {
+                  messageId: 'duplicatedCase',
+                  data: {
+                    line: duplicateTest.loc.start.line,
+                  },
+                  node: test,
+                },
+                [issueLocation(duplicateTest.loc, duplicateTest.loc, 'Original')],
+                duplicatedCaseMessage,
+              );
+            } else {
+              previousTests.push(test);
+            }
           }
         }
       },
