@@ -20,6 +20,8 @@
 import { ruleTester } from '../rule-tester';
 import rule = require('../../src/rules/no-identical-conditions');
 
+const SONAR_RUNTIME = 'sonar-runtime';
+
 ruleTester.run('no-identical-conditions', rule, {
   valid: [
     {
@@ -27,6 +29,18 @@ ruleTester.run('no-identical-conditions', rule, {
     },
     {
       code: 'if (a) {} else {}',
+    },
+    {
+      code: 'if (a && b) {} else if (a) {}',
+    },
+    {
+      code: 'if (a && b) {} else if (c && d) {}',
+    },
+    {
+      code: 'if (a || b) {} else if (c || d) {}',
+    },
+    {
+      code: 'if (a ?? b) {} else if (c) {}',
     },
     {
       code: `
@@ -47,7 +61,7 @@ ruleTester.run('no-identical-conditions', rule, {
       `,
       errors: [
         {
-          messageId: 'duplicatedBranch',
+          messageId: 'duplicatedCondition',
           data: {
             line: 2,
           },
@@ -64,7 +78,7 @@ ruleTester.run('no-identical-conditions', rule, {
         else if (a) {}
         //       ^
       `,
-      options: ['sonar-runtime'],
+      options: [SONAR_RUNTIME],
       errors: [
         {
           messageId: 'sonarRuntime',
@@ -77,10 +91,10 @@ ruleTester.run('no-identical-conditions', rule, {
                   column: 12,
                   endLine: 2,
                   endColumn: 13,
-                  message: 'Original',
+                  message: 'Covering',
                 },
               ],
-              message: 'This branch duplicates the one on line 2',
+              message: 'This condition is covered by the one on line 2',
             }),
           },
         },
@@ -94,7 +108,7 @@ ruleTester.run('no-identical-conditions', rule, {
       `,
       errors: [
         {
-          messageId: 'duplicatedBranch',
+          messageId: 'duplicatedCondition',
           data: {
             line: 3,
           },
@@ -112,7 +126,7 @@ ruleTester.run('no-identical-conditions', rule, {
       `,
       errors: [
         {
-          messageId: 'duplicatedBranch',
+          messageId: 'duplicatedCondition',
           data: {
             line: 2,
           },
@@ -121,6 +135,126 @@ ruleTester.run('no-identical-conditions', rule, {
           endColumn: 19,
         },
       ],
+    },
+    {
+      code: `
+        if (a || b) {}
+        // >^^^^^^
+        else if (a) {}
+        //       ^`,
+      options: [SONAR_RUNTIME],
+      errors: [
+        {
+          messageId: 'sonarRuntime',
+          line: 4,
+          column: 18,
+          endLine: 4,
+          endColumn: 19,
+          data: {
+            line: 2,
+            sonarRuntimeData: JSON.stringify({
+              secondaryLocations: [
+                {
+                  line: 2,
+                  column: 12,
+                  endLine: 2,
+                  endColumn: 18,
+                  message: 'Covering',
+                },
+              ],
+              message: 'This condition is covered by the one on line 2',
+            }),
+          },
+        },
+      ],
+    },
+    {
+      code: `if (a || b) {} else if (b) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if ((a === b && fn(c)) || d) {} else if (a === b && fn(c)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (a && b) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a && b) ; else if (b && a) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b) {} else if (c && a || b) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b) {} else if (c && (a || b)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b && c) {} else if (d && (a || e && c && b)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b && c) {} else if (b && c && d) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b) {} else if (b && c) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b) {} else if ((a || b) && c) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if ((a && (b || c)) || d) {} else if ((c || b) && e && a) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a && b || b && c) {} else if (a && b && c) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b && c) {} else if (d && (c && e && b || a)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || (b && (c || d))) {} else if ((d || c) && b) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b) {} else if ((b || a) && c) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b) {} else if (c) {} else if (d) {} else if (b && (a || c)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b || c) {} else if (a || (b && d) || (c && e)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || (b || c)) {} else if (a || (b && c)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a || b) {} else if (c) {} else if (d) {} else if ((a || c) && (b || d)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (b) {} else if (c && (a || d && b)) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (a || a) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
+    },
+    {
+      code: `if (a) {} else if (a && a) {}`,
+      errors: [{ messageId: 'duplicatedCondition' }],
     },
     {
       code: `
@@ -136,7 +270,7 @@ ruleTester.run('no-identical-conditions', rule, {
             break;
         }
       `,
-      options: ['sonar-runtime'],
+      options: [SONAR_RUNTIME],
       errors: [
         {
           messageId: 'sonarRuntime',
