@@ -19,7 +19,13 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S2757
 
-import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/experimental-utils';
+
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
@@ -27,6 +33,11 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     messages: {
       useExistingOperator: 'Was "{{operator}}=" meant instead?',
       suggestExistingOperator: 'Replace with "{{operator}}" operator',
+      confusingEqual: 'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
+      confusingAssign: 'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
+      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
+      notNeedInAssign: 'Unnecessary non-null assertion (!) in assignment left hand.',
+      wrapUpLeft: 'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
     },
     schema: [],
     type: 'problem',
@@ -44,15 +55,25 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (assignmentExpression.operator === '=') {
           checkOperator(context, assignmentExpression.right);
         }
+        checkAssertion(context, assignmentExpression);
       },
       VariableDeclarator(node: TSESTree.Node) {
         const variableDeclarator = node as TSESTree.VariableDeclarator;
         checkOperator(context, variableDeclarator.init);
       },
+      BinaryExpression(node: TSESTree.BinaryExpression) {
+        checkAssertion(context, node);
+      },
     };
   },
 };
 
+/**
+ * Reports if operator is "=+", "=-" or "=!"
+ *
+ * @param context
+ * @param unaryNode
+ */
 function checkOperator(
   context: TSESLint.RuleContext<string, string[]>,
   unaryNode?: TSESTree.Expression | null,
@@ -115,3 +136,63 @@ function areAdjacent(first: TSESLint.AST.Token, second: TSESLint.AST.Token): boo
 }
 
 export = rule;
+
+/**
+ * Reports if non-null assertion at confusing place like: "! =", "! ==" or "! ==="
+ *
+ * @param context
+ * @param node
+ */
+function checkAssertion(
+  context: TSESLint.RuleContext<string, string[]>,
+  node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+) {
+  const sourceCode = context.getSourceCode();
+  if (!['=', '==', '==='].includes(node.operator)) {
+    return;
+  }
+  const isAssign = node.operator === '=';
+  const leftHandFinalToken = sourceCode.getLastToken(node.left);
+  const tokenAfterLeft = sourceCode.getTokenAfter(node.left);
+  if (
+    !(
+      leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator &&
+      leftHandFinalToken?.value === '!' &&
+      tokenAfterLeft?.value !== ')'
+    )
+  ) {
+    return;
+  }
+  if (isLeftHandPrimaryExpression(node.left)) {
+    context.report({
+      node,
+      messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
+      suggest: [
+        {
+          messageId: isAssign ? 'notNeedInAssign' : 'notNeedInEqualTest',
+          fix: (fixer): TSESLint.RuleFix[] => [fixer.remove(leftHandFinalToken)],
+        },
+      ],
+    });
+  } else {
+    context.report({
+      node,
+      messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
+      suggest: [
+        {
+          messageId: 'wrapUpLeft',
+          fix: (fixer): TSESLint.RuleFix[] => [
+            fixer.insertTextBefore(node.left, '('),
+            fixer.insertTextAfter(node.left, ')'),
+          ],
+        },
+      ],
+    });
+  }
+}
+
+function isLeftHandPrimaryExpression(
+  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+): boolean {
+  return node.type === AST_NODE_TYPES.TSNonNullExpression;
+}

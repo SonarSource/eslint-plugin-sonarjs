@@ -20,7 +20,7 @@
 import { ruleTester } from '../rule-tester';
 import * as rule from '../../src/rules/non-existent-operator';
 
-ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", rule, {
+ruleTester.run("Confusing and non-existent operators should not be used", rule, {
   valid: [
     {
       code: `
@@ -39,6 +39,12 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
         other =~ 1;
         `,
     },
+    'a == b!;',
+    'a = b!;',
+    'a !== b;',
+    'a != b;',
+    '(a + b!) == c;',
+    '(a + b!) = c;',
   ],
   invalid: [
     {
@@ -124,6 +130,134 @@ ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", 
           column: 7,
           endColumn: 9,
           suggestions: [],
+        },
+      ],
+    },
+    {
+      code: 'a! == b;',
+      errors: [
+        {
+          messageId: 'confusingEqual',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInEqualTest',
+              output: 'a == b;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a! === b;',
+      errors: [
+        {
+          messageId: 'confusingEqual',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInEqualTest',
+              output: 'a === b;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a + b! == c;',
+      errors: [
+        {
+          messageId: 'confusingEqual',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'wrapUpLeft',
+              output: '(a + b!) == c;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(obj = new new OuterObj().InnerObj).Name! == c;',
+      errors: [
+        {
+          messageId: 'confusingEqual',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInEqualTest',
+              output: '(obj = new new OuterObj().InnerObj).Name == c;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(a==b)! ==c;',
+      errors: [
+        {
+          messageId: 'confusingEqual',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInEqualTest',
+              output: '(a==b) ==c;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a! = b;',
+      errors: [
+        {
+          messageId: 'confusingAssign',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInAssign',
+              output: 'a = b;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(obj = new new OuterObj().InnerObj).Name! = c;',
+      errors: [
+        {
+          messageId: 'confusingAssign',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInAssign',
+              output: '(obj = new new OuterObj().InnerObj).Name = c;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '(a=b)! =c;',
+      errors: [
+        {
+          messageId: 'confusingAssign',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInAssign',
+              output: '(a=b) =c;',
+            },
+          ],
         },
       ],
     },
