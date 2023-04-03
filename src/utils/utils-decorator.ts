@@ -1,6 +1,6 @@
 /*
- * SonarQube JavaScript Plugin
- * Copyright (C) 2011-2023 SonarSource SA
+ * eslint-plugin-sonarjs
+ * Copyright (C) 2018-2021 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or

@@ -20,9 +20,9 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2757
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
+import { rules as typeScriptESLintRules } from '@typescript-eslint/eslint-plugin';
 import docsUrl from '../utils/docs-url';
 import { mergeRules } from '../utils';
-import { rules as typeScriptESLintRules } from '@typescript-eslint/eslint-plugin';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
