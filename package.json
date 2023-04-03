@@ -105,5 +105,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.57.0"
   }
 }
