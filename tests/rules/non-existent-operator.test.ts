@@ -18,7 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ruleTester } from '../rule-tester';
-import * as rule from '../../src/rules/non-existent-operator';
+import rule = require('../../src/rules/non-existent-operator');
 
 ruleTester.run("Non-existent operators '=+', '=-' and '=!' should not be used", rule, {
   valid: [

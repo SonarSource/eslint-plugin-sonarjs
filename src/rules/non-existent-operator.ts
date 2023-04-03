@@ -21,6 +21,8 @@
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils';
 import docsUrl from '../utils/docs-url';
+import { mergeRules } from '../utils';
+import { rules as typeScriptESLintRules } from '@typescript-eslint/eslint-plugin';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
   meta: {
@@ -114,4 +116,25 @@ function areAdjacent(first: TSESLint.AST.Token, second: TSESLint.AST.Token): boo
   );
 }
 
-export = rule;
+//export = rule;
+const noConfusingNonNullAssertionRule = typeScriptESLintRules['no-confusing-non-null-assertion'];
+
+const mergedRules: TSESLint.RuleModule<string, string[]> = {
+  meta: {
+    messages: {
+      ...rule.meta.messages,
+      ...noConfusingNonNullAssertionRule.meta.messages,
+    },
+    schema: rule.meta.schema,
+    type: rule.meta.type,
+    hasSuggestions: rule.meta.hasSuggestions,
+    docs: rule.meta.docs,
+  },
+  create: (context: Readonly<TSESLint.RuleContext<string, string[]>>) => {
+    return mergeRules(
+      rule.create(context) as any,
+      noConfusingNonNullAssertionRule.create(context as any) as any,
+    ) as TSESLint.RuleListener;
+  },
+};
+export = mergedRules;
