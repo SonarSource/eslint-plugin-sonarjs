@@ -116,7 +116,6 @@ function areAdjacent(first: TSESLint.AST.Token, second: TSESLint.AST.Token): boo
   );
 }
 
-//export = rule;
 const noConfusingNonNullAssertionRule = typeScriptESLintRules['no-confusing-non-null-assertion'];
 
 const mergedRules: TSESLint.RuleModule<string, string[]> = {
