@@ -120,14 +120,11 @@ const noConfusingNonNullAssertionRule = typeScriptESLintRules['no-confusing-non-
 
 const mergedRules: TSESLint.RuleModule<string, string[]> = {
   meta: {
+    ...rule.meta,
     messages: {
       ...rule.meta.messages,
       ...noConfusingNonNullAssertionRule.meta.messages,
     },
-    schema: rule.meta.schema,
-    type: rule.meta.type,
-    hasSuggestions: rule.meta.hasSuggestions,
-    docs: rule.meta.docs,
   },
   create: (context: Readonly<TSESLint.RuleContext<string, string[]>>) => {
     return mergeRules(
