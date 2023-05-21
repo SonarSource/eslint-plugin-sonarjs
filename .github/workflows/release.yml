@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
-      REPOX_URL: "https://repox.jfrog.io/artifactory"
       NPM_REPOSITORY: "sonarsource-npm-public"
       SCOPE: ""
       PACKAGE: "eslint-plugin-sonarjs"
@@ -20,6 +19,7 @@ jobs:
         uses: SonarSource/vault-action-wrapper@d1c1ab4ca5ad07fd9cdfe1eff038a39673dfca64  # tag=2.4.2-1
         with:
           secrets:
+            development/kv/data/repox url | repox_url;
             development/artifactory/token/SonarSource-eslint-plugin-sonarjs-qa-deployer access_token  | qa_deployer_access_token;
             development/artifactory/token/SonarSource-eslint-plugin-sonarjs-promoter access_token  | promoter_access_token;
             development/kv/data/npmjs sonartech_npm_token  | npm_token;
@@ -41,11 +41,10 @@ jobs:
           npm publish
           jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=${{ github.event.release.tag_name }}
           jfrog rt build-publish eslint-plugin-sonarjs ${{ github.event.release.tag_name }}
-      - name: Setup JFrog for promotion
-        uses: SonarSource/jfrog-setup-wrapper@eb712d76540e5d1f3756303f30387657fb204e52  # tag=2.4.1-1
-        with:
-          jfrogAccessToken: ${{ fromJSON(steps.secrets.outputs.vault).promoter_access_token }}
       - name: Promote npm package
+        env:
+          PROMOTER_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).promoter_access_token }}
+          REPOX_URL: ${{ fromJSON(steps.secrets.outputs.vault).repox_url }}
         run: |
-          jfrog rt bpr --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
-          jfrog rt bpr --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
+          jfrog rt bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
+          jfrog rt bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
