@@ -22,7 +22,7 @@ SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
 | [no-element-overwrite](docs/rules/no-element-overwrite.md)                 | Collection elements should not be replaced unconditionally                              | ✅  |    |    |    |
 | [no-empty-collection](docs/rules/no-empty-collection.md)                   | Empty collections should not be accessed or iterated                                    | ✅  |    |    |    |
 | [no-extra-arguments](docs/rules/no-extra-arguments.md)                     | Function calls should not pass extra arguments                                          | ✅  |    |    |    |
-| [no-identical-conditions](docs/rules/no-identical-conditions.md)           | Related "if/else if" statements should not have the same condition                      | ✅  |    |    |    |
+| [no-identical-conditions](docs/rules/no-identical-conditions.md)           | Related "if-else-if" and "switch-case" statements should not have the same condition    | ✅  |    |    |    |
 | [no-identical-expressions](docs/rules/no-identical-expressions.md)         | Identical expressions should not be used on both sides of a binary operator             | ✅  |    |    |    |
 | [no-identical-functions](docs/rules/no-identical-functions.md)             | Functions should not have identical implementations                                     | ✅  |    |    |    |
 | [no-ignored-return](docs/rules/no-ignored-return.md)                       | Return values from functions without side effects should not be ignored                 | ✅  |    |    |    |
