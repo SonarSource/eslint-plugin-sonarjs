@@ -30,7 +30,6 @@ ruleTester.run('Template literals should not be nested', rule, {
     {
       code: 'let message = `I have ${color ? nestedMessage : count} apples`;',
     },
-    { code: 'let message = `I have \n${color ? `${count} ${color}` : count} \napples`;' },
   ],
   invalid: [
     {
@@ -145,6 +144,10 @@ ruleTester.run('Template literals should not be nested', rule, {
     },
     {
       code: 'let message = `I have \n${color ? `${count} ${color}` : count} apples`;',
+      errors: [{ messageId: 'nestedTemplateLiterals' }],
+    },
+    {
+      code: 'let message = `I have \n${color ? `${count} ${color}` : count} \napples`;',
       errors: [{ messageId: 'nestedTemplateLiterals' }],
     },
   ],

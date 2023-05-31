@@ -20,7 +20,6 @@
 // https://sonarsource.github.io/rspec/#/rspec/S4624
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
-import { ancestorsChain } from '../utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
@@ -39,18 +38,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   create(context) {
     return {
       'TemplateLiteral TemplateLiteral': (node: TSESTree.Node) => {
-        const ancestors = ancestorsChain(node, new Set(['TemplateLiteral']));
-        const nestingTemplate = ancestors[ancestors.length - 1];
-
-        const { start: nestingStart, end: nestingEnd } = nestingTemplate.loc;
-        const { start: nestedStart, end: nestedEnd } = node.loc;
-
-        if (nestedStart.line === nestingStart.line || nestedEnd.line === nestingEnd.line) {
-          context.report({
-            messageId: 'nestedTemplateLiterals',
-            node,
-          });
-        }
+        context.report({
+          messageId: 'nestedTemplateLiterals',
+          node,
+        });
       },
     };
   },

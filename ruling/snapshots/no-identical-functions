@@ -3,14 +3,14 @@ src/brackets/src/extensions/default/InlineTimingFunctionEditor/unittests.js: 280
 src/brackets/src/utils/StringMatch.js: 141
 src/jest/packages/expect/src/asymmetric_matchers.js: 156
 src/jquery/external/sinon/sinon.js: 4934,5459,6411
-src/react/packages/react/src/ReactBaseClasses.js: 126
-src/react/packages/react-art/src/ReactART.js: 152
 src/react-native/Libraries/Lists/VirtualizedList.js: 1701
 src/react-native/Libraries/Renderer/ReactFabric-dev.js: 13354
 src/react-native/Libraries/Renderer/ReactNativeRenderer-dev.js: 13724
 src/react-native/RNTester/js/ActionSheetIOSExample.js: 67,138
 src/react-native/RNTester/js/NetInfoExample.js: 72
 src/react-router/website/modules/components/EnvironmentSmall.js: 331
+src/react/packages/react-art/src/ReactART.js: 152
+src/react/packages/react/src/ReactBaseClasses.js: 126
 src/spectrum/src/views/notifications/components/mentionThreadNotification.js: 96
 src/spectrum/src/views/notifications/components/newThreadNotification.js: 126
 src/vue/packages/weex-vue-framework/factory.js: 6593
