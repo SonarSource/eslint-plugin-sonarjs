@@ -7,11 +7,19 @@ To prevent generating some false-positives, literals having less than 10 charact
 
 ## Configuration
 
-Number of times a literal must be duplicated to trigger an issue. Default is 3.
+Number of times a literal must be duplicated to trigger an issue. Default is `3`.
 
 ```json
 {
   "no-duplicate-string": "error",
-  "no-duplicate-string": ["error", 5]
+  "no-duplicate-string": ["error", { "threshold": 5 }]
 }
 ```
+
+Comma-separated list of strings that must be ignored. Default is `"application/json"`.
+
+```json
+{
+  "no-duplicate-string": "error",
+  "no-duplicate-string": ["error", { "ignoreStrings": "foo,bar,baz" }]
+}

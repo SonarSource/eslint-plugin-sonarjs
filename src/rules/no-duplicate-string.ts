@@ -25,6 +25,7 @@ import { issueLocation, report } from '../utils/locations';
 
 // Number of times a literal must be duplicated to trigger an issue
 const DEFAULT_THRESHOLD = 3;
+const DEFAULT_IGNORE_STRINGS = 'application/json';
 const MIN_LENGTH = 10;
 const NO_SEPARATOR_REGEXP = /^\w*$/;
 const EXCLUDED_CONTEXTS = [
@@ -36,7 +37,9 @@ const EXCLUDED_CONTEXTS = [
 ];
 const message = 'Define a constant instead of duplicating this literal {{times}} times.';
 
-type Options = (number | 'sonar-runtime')[];
+type Options =
+  | [{ threshold?: number; ignoreStrings?: string } | undefined, 'sonar-runtime']
+  | [{ threshold?: number; ignoreStrings?: string } | undefined];
 type Context = TSESLint.RuleContext<string, Options>;
 
 const rule: TSESLint.RuleModule<string, Options> = {
@@ -52,16 +55,21 @@ const rule: TSESLint.RuleModule<string, Options> = {
       url: docsUrl(__filename),
     },
     schema: [
-      { type: 'integer', minimum: 2 },
+      {
+        type: 'object',
+        properties: {
+          threshold: { type: 'integer', minimum: 2 },
+          ignoreStrings: { type: 'string', default: DEFAULT_IGNORE_STRINGS },
+        },
+      },
       { enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */ },
     ],
   },
 
   create(context) {
     const literalsByValue: Map<string, TSESTree.Literal[]> = new Map();
-    const threshold: number =
-      typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_THRESHOLD;
-
+    const { threshold, ignoreStrings } = extractOptions(context);
+    const whitelist = ignoreStrings.split(',');
     return {
       Literal: (node: TSESTree.Node) => {
         const literal = node as TSESTree.Literal;
@@ -74,6 +82,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
           const stringContent = literal.value.trim();
 
           if (
+            !whitelist.includes(literal.value) &&
             !isExcludedByUsageContext(context, literal) &&
             stringContent.length >= MIN_LENGTH &&
             !stringContent.match(NO_SEPARATOR_REGEXP)
@@ -128,6 +137,19 @@ function isRequireContext(parent: TSESTree.Node, context: Context) {
 
 function isObjectPropertyKey(parent: TSESTree.Node, literal: TSESTree.Literal) {
   return parent.type === 'Property' && parent.key === literal;
+}
+
+function extractOptions(context: Context) {
+  let threshold: number = DEFAULT_THRESHOLD;
+  let ignoreStrings: string = DEFAULT_IGNORE_STRINGS;
+  const options = context.options[0];
+  if (typeof options?.threshold === 'number') {
+    threshold = options.threshold;
+  }
+  if (typeof options?.ignoreStrings === 'string') {
+    ignoreStrings = options.ignoreStrings;
+  }
+  return { threshold, ignoreStrings };
 }
 
 export = rule;
