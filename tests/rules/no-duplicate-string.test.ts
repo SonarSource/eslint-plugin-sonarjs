@@ -27,7 +27,13 @@ ruleTester.run('no-duplicate-string', rule, {
     console.log("some message");
     console.log("some message");
     console.log('some message');`,
-      options: [4],
+      options: [{ threshold: 4 }],
+    },
+    {
+      code: ` // too small
+    console.log("a&b");
+    console.log("a&b");
+    console.log("a&b");`,
     },
     {
       code: ` // too small
@@ -151,6 +157,21 @@ ruleTester.run('no-duplicate-string', rule, {
       }
       `,
     },
+    {
+      code: `
+      'application/json';
+      'application/json';
+      'application/json';;
+      `,
+    },
+    {
+      code: `
+      console.log('Hello world!');
+      console.log('Hello world!');
+      console.log('Hello world!');
+      `,
+      options: [{ threshold: 2, ignoreStrings: 'Hello world!' }, 'sonar-runtime'],
+    },
   ],
   invalid: [
     {
@@ -196,7 +217,7 @@ ruleTester.run('no-duplicate-string', rule, {
           endColumn: 31,
         },
       ],
-      options: [2, 'sonar-runtime'],
+      options: [{ threshold: 2 }, 'sonar-runtime'],
     },
     {
       code: `
@@ -228,7 +249,7 @@ ruleTester.run('no-duplicate-string', rule, {
           line: 2,
         },
       ],
-      options: [2],
+      options: [{ threshold: 2 }],
     },
     {
       code: `

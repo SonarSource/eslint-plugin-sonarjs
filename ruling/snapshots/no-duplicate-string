@@ -142,7 +142,6 @@ src/express/lib/response.js: 132,194
 src/freeCodeCamp/common/app/redux/utils.test.js: 54
 src/freeCodeCamp/common/app/routes/Challenges/utils/index.test.js: 24,25,28,90,112,164,274,321,322,350,405,477,597,811
 src/freeCodeCamp/common/app/routes/Challenges/views/step/redux/step-challenge-epic.test.js: 48,62,69
-src/freeCodeCamp/common/utils/ajax-stream.js: 283
 src/freeCodeCamp/public/js/calculator.js: 9,16,149
 src/freeCodeCamp/public/js/lib/loop-protect/loop-protect.js: 283
 src/freeCodeCamp/seed/unpackedChallenge.js: 218,246
