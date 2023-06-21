@@ -267,5 +267,18 @@ ruleTester.run('no-identical-expressions', rule, {
         },
       ],
     },
+    {
+      code: `
+1n << 1nR
+      `,
+      errors: [
+        {
+          messageId: 'correctIdenticalSubExpressions',
+          data: {
+            operator: '<<',
+          },
+        },
+      ],
+    },
   ],
 });
