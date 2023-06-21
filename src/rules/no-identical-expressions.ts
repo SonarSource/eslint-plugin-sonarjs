@@ -56,9 +56,6 @@ function isOneOntoOneShifting(node: TSESTree.BinaryExpression | TSESTree.Logical
   return node.operator === '<<' && isLiteral(node.left) && node.left.value === 1;
 }
 
-var foo = 12;
-foo;
-
 const message =
   'Correct one of the identical sub-expressions on both sides of operator "{{operator}}"';
 
@@ -101,6 +98,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (expr.left.loc) {
           secondaryLocations.push(issueLocation(expr.left.loc));
         }
+
+        var foo = 12;
+        foo;
+
         report(
           context,
           {
