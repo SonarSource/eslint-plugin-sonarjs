@@ -1,5 +1,9 @@
 # no-unused-collection
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 When a collection is populated but its contents are never used, then it is surely some kind of mistake. Either refactoring has rendered the collection moot, or an access is missing.
 
 This rule raises an issue when no methods are called on a collection other than those that add or remove values.

@@ -1,6 +1,10 @@
 # no-redundant-jump
 
-:wrench: *fixable*
+💼 This rule is enabled in the ✅ `recommended` config.
+
+💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions).
+
+<!-- end auto-generated rule header -->
 
 Jump statements, such as `return`, `break` and `continue` let you change the default flow of program execution, but jump statements that direct the control flow to the original direction are just a waste of keystrokes.
 

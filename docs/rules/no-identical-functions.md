@@ -1,5 +1,9 @@
 # no-identical-functions
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 When two functions have the same implementation, either it was a mistake - something else was intended - or the
 duplication was intentional, but may be confusing to maintainers. In the latter case, the code should be refactored.
 

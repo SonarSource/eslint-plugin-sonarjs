@@ -1,5 +1,9 @@
 # no-gratuitous-expressions
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 If a boolean expression doesn’t change the evaluation of the condition, then it is entirely unnecessary, and can be removed. If it is gratuitous
 because it does not match the programmer’s intent, then it’s a bug and the expression should be fixed.
 

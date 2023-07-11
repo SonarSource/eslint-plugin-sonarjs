@@ -12,26 +12,26 @@ Report bugs and suggest improvements. If something doesn't work well for you or 
 * Create a test file `<rule name>.test.ts` in `test/rules`.
 * Add the rule to `src/index.ts`.
 * In folder `docs/rules` create a rule documentation file `<rule name>.md`
-* In `README.md` add a reference to this documentation file.
+* Run `npm run update:eslint-docs` to update the `README.md` rules list and the rule doc header
 * Run [Ruling](#ruling) test.
 
 ## Testing
 
 To run unit tests:
 
-```
+```sh
 npm run test
 ```
 
 To run unit tests in watch mode:
 
-```
+```sh
 npm run test -- --watch
 ```
 
 And finally to run unit tests with coverage:
 
-```
+```sh
 npm run test -- --coverage
 ```
 

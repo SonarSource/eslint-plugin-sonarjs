@@ -1,5 +1,9 @@
 # no-nested-template-literals
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Template literals (previously named "template strings") are an elegant way to build a string without using the `+` operator to make strings concatenation more readable.
 
 However, it’s possible to build complex string literals by nesting together multiple template literals, and therefore lose readability and maintainability.

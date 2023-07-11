@@ -1,5 +1,9 @@
 # no-identical-expressions
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 Using the same value on either side of a binary operator is almost always a mistake. In the case 
 of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted 
 code, and should be simplified. In the case of bitwise operators and most binary mathematical 

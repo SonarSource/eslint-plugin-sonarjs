@@ -1,5 +1,9 @@
 # no-extra-arguments
 
+💼 This rule is enabled in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 You can easily call a JavaScript function with more arguments than the function needs, but the extra arguments will be just ignored by function execution.
 
 ## Noncompliant Code Example

@@ -1,5 +1,9 @@
 # elseif-without-else
 
+🚫 This rule is _disabled_ in the ✅ `recommended` config.
+
+<!-- end auto-generated rule header -->
+
 This rule applies whenever an `if` statement is followed by one or more `else if` statements; the final `else if` should be followed by an `else` statement.
 
 The requirement for a final `else` statement is defensive programming.
