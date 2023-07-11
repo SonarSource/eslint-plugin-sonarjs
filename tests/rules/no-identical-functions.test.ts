@@ -298,6 +298,21 @@ ruleTester.run('no-identical-functions', rule, {
       `,
       errors: [message(2, 7)],
     },
+    {
+      code: `
+        setTimeout(() => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        }, 100);
+        setTimeout(() => {
+          console.log("Hello");
+          console.log("World");
+          return 42;
+        }, 100);
+      `,
+      errors: [message(2, 7)],
+    },
   ],
 });
 
