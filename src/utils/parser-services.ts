@@ -19,10 +19,8 @@
  */
 import type { ParserServices, ParserServicesWithTypeInformation } from '@typescript-eslint/utils';
 
-export type RequiredParserServices = ParserServicesWithTypeInformation;
+export type TypeServices = ParserServicesWithTypeInformation;
 
-export function isRequiredParserServices(
-  services: ParserServices | undefined,
-): services is RequiredParserServices {
+export function hasTypeServices(services: ParserServices | undefined): services is TypeServices {
   return services?.program != null;
 }

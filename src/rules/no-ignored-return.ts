@@ -20,7 +20,7 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2201
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import { hasTypeServices, TypeServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
 
@@ -187,7 +187,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   defaultOptions: [],
   create(context: TSESLint.RuleContext<string, string[]>) {
-    if (!isRequiredParserServices(context.parserServices)) {
+    if (!hasTypeServices(context.parserServices)) {
       return {};
     }
     const services = context.parserServices;
@@ -220,7 +220,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 function isReplaceWithCallback(
   methodName: string,
   callArguments: Array<TSESTree.Expression | TSESTree.SpreadElement>,
-  services: RequiredParserServices,
+  services: TypeServices,
 ) {
   if (methodName === 'replace' && callArguments.length > 1) {
     const type = getTypeFromTreeNode(callArguments[1], services);
@@ -252,7 +252,7 @@ function reportDescriptor(
   }
 }
 
-function hasSideEffect(methodName: string, objectType: any, services: RequiredParserServices) {
+function hasSideEffect(methodName: string, objectType: any, services: TypeServices) {
   const typeAsString = typeToString(objectType, services);
   if (typeAsString !== null) {
     const methods = METHODS_WITHOUT_SIDE_EFFECTS[typeAsString];
@@ -261,7 +261,7 @@ function hasSideEffect(methodName: string, objectType: any, services: RequiredPa
   return true;
 }
 
-function typeToString(tp: any, services: RequiredParserServices): string | null {
+function typeToString(tp: any, services: TypeServices): string | null {
   const typechecker = services.program.getTypeChecker();
 
   const baseType = typechecker.getBaseTypeOfLiteralType(tp);

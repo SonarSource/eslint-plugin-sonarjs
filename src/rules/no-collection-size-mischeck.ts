@@ -20,7 +20,7 @@
 // https://sonarsource.github.io/rspec/#/rspec/S3981
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import { hasTypeServices, TypeServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
@@ -45,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   defaultOptions: [],
   create(context) {
     const services = context.parserServices;
-    const isTypeCheckerAvailable = isRequiredParserServices(services);
+    const isTypeCheckerAvailable = hasTypeServices(services);
     return {
       BinaryExpression: (node: TSESTree.Node) => {
         const expr = node as TSESTree.BinaryExpression;
@@ -80,7 +80,7 @@ function isZeroLiteral(node: TSESTree.Node) {
   return node.type === 'Literal' && node.value === 0;
 }
 
-function isCollection(node: TSESTree.Node, services: RequiredParserServices) {
+function isCollection(node: TSESTree.Node, services: TypeServices) {
   const checker = services.program.getTypeChecker();
   const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
   return !!tp.symbol && CollectionLike.includes(tp.symbol.name);
