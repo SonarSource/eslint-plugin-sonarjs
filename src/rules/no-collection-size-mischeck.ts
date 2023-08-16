@@ -81,8 +81,7 @@ function isZeroLiteral(node: TSESTree.Node) {
 }
 
 function isCollection(node: TSESTree.Node, services: TypeServices) {
-  const checker = services.program.getTypeChecker();
-  const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
+  const tp = services.getTypeAtLocation(node);
   return !!tp.symbol && CollectionLike.includes(tp.symbol.name);
 }
 

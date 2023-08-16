@@ -199,11 +199,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           const { parent } = node;
           if (parent && parent.type === 'ExpressionStatement') {
             const methodName = context.getSourceCode().getText(callee.property);
-            const objectType = services.program
-              .getTypeChecker()
-              .getTypeAtLocation(
-                services.esTreeNodeToTSNodeMap.get(callee.object as TSESTree.Node),
-              );
+            const objectType = services.getTypeAtLocation(callee.object);
             if (
               !hasSideEffect(methodName, objectType, services) &&
               !isReplaceWithCallback(methodName, call.arguments, services)
