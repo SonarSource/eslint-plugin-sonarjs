@@ -52,6 +52,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
+  defaultOptions: [],
   create(context) {
     function checkStatements(statements: TSESTree.Node[]) {
       const sourceCode = context.getSourceCode();

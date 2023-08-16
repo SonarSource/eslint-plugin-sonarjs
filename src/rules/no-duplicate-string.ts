@@ -65,7 +65,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
       { enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */ },
     ],
   },
-
+  defaultOptions: [{ threshold: DEFAULT_THRESHOLD, ignoreStrings: DEFAULT_IGNORE_STRINGS }],
   create(context) {
     const literalsByValue: Map<string, TSESTree.Literal[]> = new Map();
     const { threshold, ignoreStrings } = extractOptions(context);

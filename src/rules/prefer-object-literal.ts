@@ -46,6 +46,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
+  defaultOptions: [],
   create(context) {
     return {
       BlockStatement: (node: TSESTree.Node) =>

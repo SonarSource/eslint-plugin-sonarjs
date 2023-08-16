@@ -49,6 +49,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
+  defaultOptions: [],
   create(context) {
     return {
       IfStatement(node: TSESTree.Node) {

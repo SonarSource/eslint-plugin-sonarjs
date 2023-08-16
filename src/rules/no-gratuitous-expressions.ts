@@ -45,6 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
+  defaultOptions: [],
   create(context) {
     const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
     const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();

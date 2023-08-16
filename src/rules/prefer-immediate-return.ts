@@ -43,6 +43,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
     fixable: 'code',
   },
+  defaultOptions: [],
   create(context) {
     return {
       BlockStatement(node: TSESTree.Node) {

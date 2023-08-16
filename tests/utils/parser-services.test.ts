@@ -31,6 +31,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
     schema: [],
   },
+  defaultOptions: [],
   create(context: TSESLint.RuleContext<string, string[]>) {
     return {
       Program: (node: TSESTree.Node) => {

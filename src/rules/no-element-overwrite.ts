@@ -54,6 +54,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
+  defaultOptions: [],
   create(context) {
     return {
       SwitchCase(node: TSESTree.Node) {

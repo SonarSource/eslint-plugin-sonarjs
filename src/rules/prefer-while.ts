@@ -36,6 +36,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
     fixable: 'code',
   },
+  defaultOptions: [],
   create(context) {
     return {
       ForStatement(node: TSESTree.Node) {

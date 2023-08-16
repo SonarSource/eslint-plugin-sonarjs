@@ -48,6 +48,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       },
     ],
   },
+  defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
     return {

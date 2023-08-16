@@ -46,6 +46,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
       },
     ],
   },
+  defaultOptions: [DEFAULT_MAX_SWITCH_CASES],
   create(context) {
     if (context.options.length > 0) {
       maxSwitchCases = context.options[0];

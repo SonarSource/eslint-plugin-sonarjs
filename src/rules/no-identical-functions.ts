@@ -55,6 +55,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
       },
     ],
   },
+  defaultOptions: [DEFAULT_MIN_LINES],
   create(context) {
     const functions: Array<{ function: FunctionNode; parent: TSESTree.Node | undefined }> = [];
     const minLines: number =

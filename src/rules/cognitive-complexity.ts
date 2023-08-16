@@ -67,6 +67,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
       },
     ],
   },
+  defaultOptions: [DEFAULT_THRESHOLD],
   create(context) {
     const threshold =
       typeof context.options[0] === 'number' ? context.options[0] : DEFAULT_THRESHOLD;

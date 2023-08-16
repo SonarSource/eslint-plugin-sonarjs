@@ -38,6 +38,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
+  defaultOptions: [],
   // @ts-ignore The typings of @typescript-eslint/utils does not contain the 'onX' methods.
   create(context) {
     const loopingNodes: Set<TSESTree.Node> = new Set();

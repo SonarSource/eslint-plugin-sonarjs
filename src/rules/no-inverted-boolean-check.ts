@@ -49,6 +49,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     fixable: 'code',
   },
+  defaultOptions: [],
   create(context) {
     return {
       UnaryExpression: (node: TSESTree.Node) =>
