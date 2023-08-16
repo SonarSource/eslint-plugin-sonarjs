@@ -35,7 +35,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Collapsible "if" statements should be merged',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

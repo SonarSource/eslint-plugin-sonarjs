@@ -39,7 +39,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Two branches in a conditional structure should not have exactly the same implementation',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

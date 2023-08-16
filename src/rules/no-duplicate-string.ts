@@ -51,7 +51,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'suggestion',
     docs: {
       description: 'String literals should not be duplicated',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

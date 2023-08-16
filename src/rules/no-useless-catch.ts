@@ -34,7 +34,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: '"catch" clauses should do more than rethrow',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

@@ -45,7 +45,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'problem',
     docs: {
       description: 'Functions should not have identical implementations',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

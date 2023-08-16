@@ -32,7 +32,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean literals should not be redundant',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

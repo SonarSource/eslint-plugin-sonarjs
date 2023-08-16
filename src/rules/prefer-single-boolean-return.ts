@@ -42,7 +42,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

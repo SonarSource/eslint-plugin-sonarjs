@@ -47,7 +47,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Function calls should not pass extra arguments',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

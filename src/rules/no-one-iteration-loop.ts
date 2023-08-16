@@ -34,7 +34,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Loops with at most one iteration should be refactored',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

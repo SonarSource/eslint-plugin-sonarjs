@@ -36,7 +36,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'suggestion',
     docs: {
       description: '"switch" statements should not have too many "case" clauses',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

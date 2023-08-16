@@ -38,7 +38,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Related "if-else-if" and "switch-case" statements should not have the same condition',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [

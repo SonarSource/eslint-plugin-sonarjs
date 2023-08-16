@@ -44,7 +44,6 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      recommended: false,
       url: docsUrl(__filename),
     },
     hasSuggestions: true,

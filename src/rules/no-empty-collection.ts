@@ -89,7 +89,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Empty collections should not be accessed or iterated',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

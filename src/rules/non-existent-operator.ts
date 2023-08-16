@@ -33,7 +33,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     docs: {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

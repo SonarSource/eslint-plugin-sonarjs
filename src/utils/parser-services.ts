@@ -17,14 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import type { ParserServices } from '@typescript-eslint/utils';
+import type { ParserServices, ParserServicesWithTypeInformation } from '@typescript-eslint/utils';
 
-export type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
-};
+export type RequiredParserServices = ParserServicesWithTypeInformation;
 
 export function isRequiredParserServices(
   services: ParserServices | undefined,
 ): services is RequiredParserServices {
-  return services?.hasFullTypeInformation === true;
+  return services?.program != null;
 }

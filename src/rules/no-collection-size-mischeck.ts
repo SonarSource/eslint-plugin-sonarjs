@@ -38,7 +38,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     docs: {
       description: 'Collection sizes and array length comparisons should make sense',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
