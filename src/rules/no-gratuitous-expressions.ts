@@ -42,7 +42,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       {
         // internal parameter for rules having secondary locations
         enum: ['sonar-runtime'],
-      },
+      } as any,
     ],
   },
   defaultOptions: [],

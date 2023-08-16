@@ -64,7 +64,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
       {
         // internal parameter
         enum: ['sonar-runtime', 'metric'],
-      },
+      } as any,
     ],
   },
   defaultOptions: [DEFAULT_THRESHOLD],

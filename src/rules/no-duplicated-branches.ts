@@ -46,7 +46,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       {
         // internal parameter
         enum: ['sonar-runtime'],
-      },
+      } as any,
     ],
   },
   defaultOptions: [],

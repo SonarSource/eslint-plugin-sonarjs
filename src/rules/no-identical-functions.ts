@@ -52,7 +52,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
       { type: 'integer', minimum: 3 },
       {
         enum: ['sonar-runtime'],
-      },
+      } as any,
     ],
   },
   defaultOptions: [DEFAULT_MIN_LINES],

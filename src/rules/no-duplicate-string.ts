@@ -62,7 +62,9 @@ const rule: TSESLint.RuleModule<string, Options> = {
           ignoreStrings: { type: 'string', default: DEFAULT_IGNORE_STRINGS },
         },
       },
-      { enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */ },
+      {
+        enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */,
+      } as any,
     ],
   },
   defaultOptions: [{ threshold: DEFAULT_THRESHOLD, ignoreStrings: DEFAULT_IGNORE_STRINGS }],
