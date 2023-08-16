@@ -78,18 +78,18 @@
     "collectCoverageFrom": [
       "src/**/*.ts"
     ],
-    "globals": {
-      "ts-jest": {
-        "babelConfig": false
-      }
-    },
     "moduleFileExtensions": [
       "ts",
       "js",
       "json"
     ],
     "transform": {
-      "^.+\\.ts$": "ts-jest"
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "babelConfig": true
+        }
+      ]
     },
     "testMatch": [
       "<rootDir>/tests/**/*.test.ts"
