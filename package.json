@@ -46,6 +46,7 @@
     "@types/minimist": "1.2.2",
     "@types/node": "14.14.31",
     "@typescript-eslint/parser": "6.4.0",
+    "@typescript-eslint/rule-tester": "6.4.0",
     "@typescript-eslint/utils": "6.4.0",
     "eslint": "8.47.0",
     "eslint-config-prettier": "8.5.0",
