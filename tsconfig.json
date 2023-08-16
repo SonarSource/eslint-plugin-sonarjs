@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2015",
     "module": "commonjs",
-    "moduleResolution": "Node16",
+    "moduleResolution": "nodenext",
     "lib": ["es2017"],
     "strict": true,
     "noImplicitAny": true,
