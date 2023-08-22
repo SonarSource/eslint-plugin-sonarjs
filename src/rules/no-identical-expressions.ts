@@ -53,7 +53,11 @@ function hasIdentifierOperands(node: TSESTree.BinaryExpression | TSESTree.Logica
 }
 
 function isOneOntoOneShifting(node: TSESTree.BinaryExpression | TSESTree.LogicalExpression) {
-  return node.operator === '<<' && isLiteral(node.left) && (node.left.value === 1 || node.left.value === 1n);
+  return (
+    node.operator === '<<' &&
+    isLiteral(node.left) &&
+    (node.left.value === 1 || node.left.value === 1n)
+  );
 }
 
 const message =
