@@ -23,6 +23,7 @@ import rule = require('../../src/rules/no-identical-expressions');
 ruleTester.run('no-identical-expressions', rule, {
   valid: [
     { code: `1 << 1;` },
+    { code: `1n << 1n;` },
     { code: `foo(), foo();` },
     { code: `if (Foo instanceof Foo) { }` },
     {
