@@ -4,12 +4,13 @@ FROM ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-latest
 USER root
 
 ARG NODE_VERSION=18
+ARG SCANNER_VERSION=5.0.1.3006
 
 RUN apt-get update && apt-get install -y nodejs=${NODE_VERSION}.*
 
-RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747.zip" -o /tmp/sonar-scanner.zip \
+RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SCANNER_VERSION}.zip" -o /tmp/sonar-scanner.zip \
   && unzip -d /opt /tmp/sonar-scanner.zip \
-  && mv /opt/sonar-scanner-4.7.0.2747 /opt/sonar-scanner \
+  && mv /opt/sonar-scanner-${SCANNER_VERSION} /opt/sonar-scanner \
   && rm /tmp/sonar-scanner.zip
 
 USER sonarsource
