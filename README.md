@@ -1,12 +1,12 @@
 # eslint-plugin-sonarjs [![npm version](https://badge.fury.io/js/eslint-plugin-sonarjs.svg)](https://badge.fury.io/js/eslint-plugin-sonarjs) [![Build Status](https://api.cirrus-ci.com/github/SonarSource/eslint-plugin-sonarjs.svg?branch=master)](https://cirrus-ci.com/github/SonarSource/eslint-plugin-sonarjs) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=alert_status)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=coverage)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs)
 
-SonarJS rules for ESLint to detect bugs and suspicious patterns in your code.
+SonarJS rules for ESLint to help developers produce [Clean Code](https://www.sonarsource.com/solutions/clean-code/) by detecting bugs and suspicious patterns.
 
 ## Rules
 
 ### Bug Detection :bug:
 
-Rules in this category aim to find places in code which have a high chance of being bugs, i.e. don't work as intended.
+Rules in this category aim to find places in code that have a high chance of being bugs, i.e. don't work as intended.
 
 * All branches in a conditional structure should not have exactly the same implementation ([`no-all-duplicated-branches`])
 * Collection elements should not be replaced unconditionally ([`no-element-overwrite`])
@@ -21,7 +21,7 @@ Rules in this category aim to find places in code which have a high chance of be
 
 ### Code Smell Detection :pig:
 
-Code Smells, or maintainability issues, are raised for places of code which might be costly to change in the future. These rules also help to keep the high code quality and readability. And finally some rules report issues on different suspicious code patters.
+Code Smells, or maintainability issues, are raised for places of code which might be costly to change in the future. These rules also help to keep the high code quality and readability. And finally, some rules report issues on different suspicious code patterns.
 
 * Cognitive Complexity of functions should not be too high ([`cognitive-complexity`])
 * "if ... else if" constructs should end with "else" clauses ([`elseif-without-else`]) (*disabled*)
@@ -87,7 +87,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 ## Usage
 
 * If you don't have ESLint yet configured for your project, follow [these instructions](https://github.com/eslint/eslint#installation-and-usage).
-* Install `eslint-plugin-sonarjs` using `npm` (or `yarn`) for you project or globally:
+* Install `eslint-plugin-sonarjs` using `npm` (or `yarn`) for your project or globally:
 
 ```sh
 npm install eslint-plugin-sonarjs --save-dev # install for your project
@@ -125,14 +125,14 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 
 ## Available Configurations
 
-This plugin provides only `recommended` configuration. Almost all rules are activated in this profile with a few exceptions (check `disabled` tag in the rules list). `recommended` configuration activates rules with `error` severity. 
+This plugin provides only a `recommended` configuration. Almost all rules are activated in this profile with a few exceptions (check the `disabled` tag in the rules list). The `recommended` configuration activates rules with `error` severity. 
 
 ## ESLint and Sonar
 
-This plugin exposes to ESLint users a subset of JS/TS rules from Sonar-* products (aka [SonarJS](https://github.com/SonarSource/SonarJS)). We extracted the rules which are not available in ESLint core or other ESLint plugins to be beneficial for ESLint community. 
+This plugin exposes to ESLint users a subset of JS/TS rules from Sonar-* products (aka [SonarJS](https://github.com/SonarSource/SonarJS)). We extracted the rules that are not available in ESLint core or other ESLint plugins to be beneficial for the ESLint community. 
 
-If you are a [SonarQube](https://www.sonarqube.org) or [SonarCloud](https://sonarcloud.io) user, to lint your code locally, we suggest to use [SonarLint](https://www.sonarlint.org) IDE extension (available for VSCode, JetBrains IDEs and Eclipse). You can connect SonarLint to your SonarQube/SonarCloud project to synchronize rules configuration, issue statuses, etc.
+If you are a [SonarQube](https://www.sonarqube.org) or [SonarCloud](https://sonarcloud.io) user, to lint your code locally, we suggest using [SonarLint](https://www.sonarlint.org) IDE extension (available for VSCode, JetBrains IDEs and Eclipse). You can connect SonarLint to your SonarQube/SonarCloud project to synchronize rules configuration, issue statuses, etc.
 
 ## Contributing
 
-You want to participate in the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
+Do you want to participate in the development of the project? Have a look at our [contributing](./docs/CONTRIBUTING.md) guide!
