@@ -75,6 +75,11 @@ ruleTester.run('prefer-literal', rule, {
     {
       code: `var x = {a: 2}; x.b = 5;`,
     },
+    {
+      code: `
+      const O = {};
+      O.self = O;`,
+    },
   ],
   invalid: [
     {

@@ -69,9 +69,8 @@ function checkObjectInitialization(
     const objectDeclaration = getObjectDeclaration(statements[index]);
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (objectDeclaration && isIdentifier(objectDeclaration.id)) {
-      if (
-        isPropertyAssignment(statements[index + 1], objectDeclaration.id, context.getSourceCode())
-      ) {
+      const stmt = statements[index + 1];
+      if (isPropertyAssignment(stmt, objectDeclaration.id, context.getSourceCode())) {
         context.report({ messageId: 'declarePropertiesInsideObject', node: objectDeclaration });
       }
     }
@@ -103,17 +102,29 @@ function isPropertyAssignment(
       return (
         !left.computed &&
         isSingleLineExpression(right, sourceCode) &&
-        areEquivalent(left.object, objectIdentifier, sourceCode)
+        areEquivalent(left.object, objectIdentifier, sourceCode) &&
+        !isCircularReference(left, right, sourceCode)
       );
     }
   }
   return false;
-}
 
-function isSingleLineExpression(expression: TSESTree.Expression, sourceCode: TSESLint.SourceCode) {
-  const first = sourceCode.getFirstToken(expression)!.loc;
-  const last = sourceCode.getLastToken(expression)!.loc;
-  return first.start.line === last.end.line;
+  function isSingleLineExpression(
+    expression: TSESTree.Expression,
+    sourceCode: TSESLint.SourceCode,
+  ) {
+    const first = sourceCode.getFirstToken(expression)!.loc;
+    const last = sourceCode.getLastToken(expression)!.loc;
+    return first.start.line === last.end.line;
+  }
+
+  function isCircularReference(
+    left: TSESTree.MemberExpression,
+    right: TSESTree.Expression,
+    sourceCode: TSESLint.SourceCode,
+  ) {
+    return areEquivalent(left.object, right, sourceCode);
+  }
 }
 
 export = rule;

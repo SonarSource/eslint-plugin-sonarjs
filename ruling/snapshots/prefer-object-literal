@@ -9,7 +9,6 @@ src/brackets/src/extensibility/ExtensionManager.js: 313
 src/brackets/src/extensions/default/HealthData/HealthDataManager.js: 53
 src/brackets/src/extensions/default/InlineColorEditor/ColorEditor.js: 557,570,582
 src/brackets/src/extensions/default/JavaScriptRefactoring/RefactoringUtils.js: 365
-src/jest/packages/pretty-format/perf/test.js: 182
 src/jquery/external/sinon/sinon.js: 4500
 src/reveal.js/plugin/search/search.js: 165
 src/spectrum/api/models/user.js: 407
