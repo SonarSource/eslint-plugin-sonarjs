@@ -20,8 +20,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { ESLint } from 'eslint';
-import lodash from 'lodash';
-import minimist from 'minimist';
+import * as lodash from 'lodash';
+import * as minimist from 'minimist';
 
 const rulesPath = path.join(__dirname, '../lib/rules');
 
