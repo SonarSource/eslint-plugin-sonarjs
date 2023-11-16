@@ -1,6 +1,6 @@
 # no-collection-size-mischeck
 
-:wrench: *fixable*
+:wrench: _fixable_
 
 The size of a collection and the length of an array are always greater than or equal to zero. So testing that a size or length is greater than or equal to zero doesn't make sense, since the result is always `true`. Similarly testing that it is less than zero will always return `false`. Perhaps the intent was to check the non-emptiness of the collection or array instead.
 

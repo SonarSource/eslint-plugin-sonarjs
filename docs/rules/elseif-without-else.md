@@ -15,6 +15,7 @@ if (x == 0) {
   doSomethingElse();
 }
 ```
+
 ## Compliant Solution
 
 ```javascript
@@ -23,7 +24,7 @@ if (x == 0) {
 } else if (x == 1) {
   doSomethingElse();
 } else {
-  throw "Unexpected value for x";
+  throw 'Unexpected value for x';
 }
 ```
 

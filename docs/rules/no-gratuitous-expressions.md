@@ -7,7 +7,8 @@ because it does not match the programmer’s intent, then it’s a bug and the e
 
 ```javascript
 if (a) {
-  if (a) { // Noncompliant
+  if (a) {
+    // Noncompliant
     doSomething();
   }
 }

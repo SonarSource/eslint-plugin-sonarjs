@@ -10,13 +10,15 @@ Specifically, you should structure your code to avoid the need for nested `switc
 function foo(n, m) {
   switch (n) {
     case 0:
-      switch (m) {  // Noncompliant; nested switch
+      switch (
+        m // Noncompliant; nested switch
         // ...
+      ) {
       }
     case 1:
-      // ...
+    // ...
     default:
-      // ...
+    // ...
   }
 }
 ```
@@ -29,15 +31,17 @@ function foo(n, m) {
     case 0:
       bar(m);
     case 1:
-      // ...
+    // ...
     default:
-      // ...
+    // ...
   }
 }
 
 function bar(m) {
-  switch(m) {
+  switch (
+    m
     // ...
+  ) {
   }
 }
 ```

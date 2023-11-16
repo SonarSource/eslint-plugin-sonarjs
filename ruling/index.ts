@@ -17,48 +17,48 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import * as fs from "fs";
-import * as path from "path";
-import { ESLint } from "eslint";
-import * as lodash from "lodash";
-import * as minimist from "minimist";
+import * as fs from 'fs';
+import * as path from 'path';
+import { ESLint } from 'eslint';
+import lodash from 'lodash';
+import minimist from 'minimist';
 
-const rulesPath = path.join(__dirname, "../lib/rules");
+const rulesPath = path.join(__dirname, '../lib/rules');
 
 run();
 
 async function run() {
   const argv = minimist(process.argv.slice(2), {
-    string: ["rule"],
-    boolean: ["update"],
+    string: ['rule'],
+    boolean: ['update'],
   });
 
   const rules = getRules(argv.rule);
 
   if (!rules.length) {
-    console.error("No rules found!");
+    console.error('No rules found!');
     process.exit(1);
   }
 
-  console.log("Found rules:");
+  console.log('Found rules:');
   rules.forEach(rule => {
-    console.log("  *", rule);
+    console.log('  *', rule);
   });
-  console.log("");
+  console.log('');
 
-  const sourcesPath = path.join(__dirname, "javascript-test-sources/src");
+  const sourcesPath = path.join(__dirname, 'javascript-test-sources/src');
   if (!fs.existsSync(sourcesPath)) {
-    console.error("No sources found!");
+    console.error('No sources found!');
     process.exit(1);
   }
 
   const eslint = new ESLint({
     overrideConfig: {
-      parser: "@babel/eslint-parser",
+      parser: '@babel/eslint-parser',
       parserOptions: {
         ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
         ecmaVersion: 2018,
-        sourceType: "module",
+        sourceType: 'module',
         requireConfigFile: false,
         babelOptions: {
           babelrc: false,
@@ -66,16 +66,19 @@ async function run() {
           parserOpts: {
             allowReturnOutsideFunction: true,
           },
-          presets: ["@babel/preset-env", "@babel/preset-flow", "@babel/preset-react"],
-          plugins: ["@babel/plugin-proposal-function-bind", "@babel/plugin-proposal-export-default-from"]
-        }
+          presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
+          plugins: [
+            '@babel/plugin-proposal-function-bind',
+            '@babel/plugin-proposal-export-default-from',
+          ],
+        },
       },
       rules: getEslintRules(rules),
     },
     rulePaths: [rulesPath],
     useEslintrc: false,
     allowInlineConfig: false,
-    ignorePath: path.join(__dirname, ".eslintignore"),
+    ignorePath: path.join(__dirname, '.eslintignore'),
   });
 
   const reportResults = await eslint.lintFiles([sourcesPath]);
@@ -113,8 +116,8 @@ async function run() {
 function getRules(rule?: string) {
   const rules = fs
     .readdirSync(rulesPath)
-    .filter(file => file.endsWith(".js"))
-    .map(file => file.substring(0, file.indexOf(".js")));
+    .filter(file => file.endsWith('.js'))
+    .map(file => file.substring(0, file.indexOf('.js')));
 
   if (rule) {
     return rules.includes(rule) ? [rule] : [];
@@ -124,9 +127,9 @@ function getRules(rule?: string) {
 }
 
 function getEslintRules(rules: string[]) {
-  const eslintRules: { [rule: string]: "error" } = {};
+  const eslintRules: { [rule: string]: 'error' } = {};
   rules.forEach(rule => {
-    eslintRules[rule] = "error";
+    eslintRules[rule] = 'error';
   });
   return eslintRules;
 }
@@ -142,7 +145,7 @@ function addToResults(results: Results, filePath: string, ruleId: string, line: 
 }
 
 function getFileNameForSnapshot(path: string): string {
-  const marker = "/javascript-test-sources/";
+  const marker = '/javascript-test-sources/';
   const unixPath = path.replace(/\\+/g, '/');
   const pos = unixPath.indexOf(marker);
   return unixPath.substr(pos + marker.length);
@@ -165,7 +168,7 @@ function writeResults(results: Results) {
         content.push(`${file}: ${lines.join()}`);
       });
 
-    writeSnapshot(rule, content.join("\n") + "\n");
+    writeSnapshot(rule, content.join('\n') + '\n');
   });
 }
 
@@ -186,20 +189,20 @@ function checkResults(actual: Results) {
       const missingLines = lodash.difference(expectedLines, actualLines);
       if (missingLines.length > 0) {
         passed = false;
-        console.log("Missing issues:");
-        console.log("  * Rule:", rule);
-        console.log("  * File:", file);
-        console.log("  * Lines:", missingLines.join(", "));
+        console.log('Missing issues:');
+        console.log('  * Rule:', rule);
+        console.log('  * File:', file);
+        console.log('  * Lines:', missingLines.join(', '));
         console.log();
       }
 
       const extraLines = lodash.difference(actualLines, expectedLines);
       if (extraLines.length > 0) {
         passed = false;
-        console.log("Extra issues:");
-        console.log("  * Rule:", rule);
-        console.log("  * File:", file);
-        console.log("  * Lines:", extraLines.join(", "));
+        console.log('Extra issues:');
+        console.log('  * Rule:', rule);
+        console.log('  * File:', file);
+        console.log('  * Lines:', extraLines.join(', '));
         console.log();
       }
     });
@@ -209,24 +212,24 @@ function checkResults(actual: Results) {
 }
 
 function writeSnapshot(rule: string, content: string): void {
-  const fileName = path.join(__dirname, "snapshots", rule);
+  const fileName = path.join(__dirname, 'snapshots', rule);
   fs.writeFileSync(fileName, content);
 }
 
 function readSnapshots(rules: string[]): Results {
-  const snapshotsDir = path.join(__dirname, "snapshots");
+  const snapshotsDir = path.join(__dirname, 'snapshots');
   const results: Results = {};
 
   rules.forEach(rule => {
     results[rule] = {};
     const content = readSnapshotFile(snapshotsDir, rule);
     content.forEach(line => {
-      const colonIndex = line.indexOf(":");
+      const colonIndex = line.indexOf(':');
       if (colonIndex !== -1) {
         const file = line.substring(0, colonIndex);
         const lines = line
           .substr(colonIndex + 1)
-          .split(",")
+          .split(',')
           .map(s => parseInt(s, 10));
         results[rule][file] = lines;
       }
@@ -239,7 +242,7 @@ function readSnapshots(rules: string[]): Results {
 function readSnapshotFile(snapshotsDir: string, ruleName: string) {
   const rulePath = path.join(snapshotsDir, ruleName);
   if (fs.existsSync(rulePath)) {
-    return fs.readFileSync(rulePath, "utf-8").split("\n");
+    return fs.readFileSync(rulePath, 'utf-8').split('\n');
   } else {
     return [];
   }

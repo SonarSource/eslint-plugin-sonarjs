@@ -5,8 +5,8 @@ env:
 
   SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
   ARTIFACTORY_URL: https://repox.jfrog.io/
-  ARTIFACTORY_DEPLOY_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
-  ARTIFACTORY_PROMOTE_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
+  ARTIFACTORY_DEPLOY_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
+  ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
@@ -75,7 +75,7 @@ ws_scan_task:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   whitesource_script:
     - ./scripts/run_ws_scan.sh
-  allow_failures: "true"
+  allow_failures: 'true'
   always:
     ws_artifacts:
-      path: "whitesource/**/*"
+      path: 'whitesource/**/*'

@@ -4,24 +4,24 @@ Object literal syntax, which initializes an object's properties inside the objec
 
 An issue is raised when the following pattern is met:
 
-* An empty object is created.
-* A consecutive single-line statement adds a property to the created object.
+- An empty object is created.
+- A consecutive single-line statement adds a property to the created object.
 
 ## Noncompliant Code Example
 
 ```javascript
 var person = {}; // Noncompliant
-person.firstName = "John";
-person.middleInitial = "Q";
-person.lastName = "Public";
+person.firstName = 'John';
+person.middleInitial = 'Q';
+person.lastName = 'Public';
 ```
 
 ## Compliant Solution
 
 ```javascript
 var person = {
-  firstName: "John",
-  middleInitial: "Q",
-  lastName: "Public",
+  firstName: 'John',
+  middleInitial: 'Q',
+  lastName: 'Public',
 };
 ```

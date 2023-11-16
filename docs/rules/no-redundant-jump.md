@@ -1,6 +1,6 @@
 # no-redundant-jump
 
-:wrench: *fixable*
+:wrench: _fixable_
 
 Jump statements, such as `return`, `break` and `continue` let you change the default flow of program execution, but jump statements that direct the control flow to the original direction are just a waste of keystrokes.
 
@@ -9,7 +9,7 @@ Jump statements, such as `return`, `break` and `continue` let you change the def
 ```javascript
 function redundantJump(x) {
   if (x == 1) {
-    console.log("x == 1");
+    console.log('x == 1');
     return; // Noncompliant
   }
 }
@@ -20,7 +20,7 @@ function redundantJump(x) {
 ```javascript
 function redundantJump(x) {
   if (x == 1) {
-    console.log("x == 1");
+    console.log('x == 1');
   }
 }
 ```

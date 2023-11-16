@@ -6,10 +6,10 @@ You can easily call a JavaScript function with more arguments than the function 
 
 ```javascript
 function say(a, b) {
-  print(a + " " + b);
+  print(a + ' ' + b);
 }
 
-say("hello", "world", "!"); // Noncompliant; last argument is not used
+say('hello', 'world', '!'); // Noncompliant; last argument is not used
 ```
 
 ## Exceptions
