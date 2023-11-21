@@ -27,6 +27,27 @@ container_definition: &CONTAINER_DEFINITION
 build_task:
   <<: *ONLY_SONARSOURCE_QA
   eks_container:
+    <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+    cpu: 3
+    memory: 8G
+  env:
+    SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
+  script:
+    - if [ -n "${CIRRUS_BASE_BRANCH}" ]; then git fetch origin "${CIRRUS_BASE_BRANCH}"; fi
+    - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+    - jfrog rt npm-ci
+    - npm run build
+    - ./scripts/test-ci.sh
+    - ./scripts/analyze_and_publish.sh
+
+qa_task:
+  <<: *ONLY_SONARSOURCE_QA
+  eks_container:
     matrix:
       - docker_arguments:
           NODE_VERSION: 14
@@ -45,15 +66,12 @@ build_task:
   node_version_script:
     - node --version
   script:
-    - if [ -n "${CIRRUS_BASE_BRANCH}" ]; then git fetch origin "${CIRRUS_BASE_BRANCH}"; fi
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - git submodule update --init --depth 1 -r
     - jfrog rt npm-ci
     - npm run build
-    - ./scripts/test-ci.sh
     - npm run ruling
-    - ./scripts/analyze_and_publish.sh
 
 ws_scan_task:
   depends_on:
