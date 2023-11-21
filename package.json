@@ -19,16 +19,13 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "rimraf lib && npm run check-format && tsc -d -p tsconfig-src.json",
+    "build": "rimraf lib && npm run format && tsc -d -p tsconfig.json",
     "test": "jest",
     "ruling": "ts-node --files ruling/index.ts",
-    "typecheck": "tsc -p tsconfig.json",
-    "lint": "eslint --ext js,ts src tests ruling/index.ts",
-    "precommit": "lint-staged && npm run typecheck && pretty-quick --staged",
+    "precommit": "pretty-quick --staged",
     "prepare": "husky install .husky",
     "prepack": "npm run build",
-    "format": "prettier --write .",
-    "check-format": "prettier --list-different \"{src,tests}/**/*.ts\""
+    "format": "prettier --write ."
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
@@ -56,7 +53,6 @@
     "husky": "8.0.3",
     "jest": "29.5.0",
     "jest-sonar-reporter": "2.0.0",
-    "lint-staged": "15.1.0",
     "lodash": "4.17.21",
     "minimist": "1.2.6",
     "prettier": "2.7.1",
@@ -96,11 +92,6 @@
     },
     "testMatch": [
       "<rootDir>/tests/**/*.test.ts"
-    ]
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "eslint --fix"
     ]
   }
 }

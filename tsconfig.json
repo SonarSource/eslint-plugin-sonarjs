@@ -7,8 +7,10 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noEmit": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noEmit": false,
+    "outDir": "lib",
+    "sourceMap": true
   },
   "include": ["ruling", "src", "tests", "typings"],
   "exclude": ["ruling/javascript-test-sources"]
