@@ -1,4 +1,5 @@
 .github
+.jfrog
 coverage
 lib
 javascript-test-sources
