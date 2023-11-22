@@ -72,6 +72,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     const whitelist = ignoreStrings.split(',');
     return {
       Literal: (node: TSESTree.Node) => {
+        console.log('testing new line');
         const literal = node as TSESTree.Literal;
         const { parent } = literal;
         if (
