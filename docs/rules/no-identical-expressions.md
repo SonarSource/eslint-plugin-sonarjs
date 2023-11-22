@@ -1,9 +1,9 @@
 # no-identical-expressions
 
-Using the same value on either side of a binary operator is almost always a mistake. In the case 
-of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted 
-code, and should be simplified. In the case of bitwise operators and most binary mathematical 
-operators, having the same value on both sides of an operator yields predictable results, and 
+Using the same value on either side of a binary operator is almost always a mistake. In the case
+of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted
+code, and should be simplified. In the case of bitwise operators and most binary mathematical
+operators, having the same value on both sides of an operator yields predictable results, and
 should be simplified.
 
 This rule ignores `*`, `+`, and `=`.
@@ -11,10 +11,10 @@ This rule ignores `*`, `+`, and `=`.
 ## Noncompliant Code Example
 
 ```javascript
-if (a == b && a == b) { // if the first one is true, the second one is too
+if (a == b && a == b) { // Noncompliant: if the first one is true, the second one is too
   doX();
 }
-if (a > a) { // always false
+if (a > a) { // Noncompliant: always false
   doW();
 }
 
@@ -32,7 +32,7 @@ Moreover comma operator , and `instanceof` operator are ignored as there are use
 
 ```javascript
 if (f !== f) { // test for NaN value
-  console.log("f is NaN");
+  console.log('f is NaN');
 }
 
 var i = 1 << 1; // Compliant

@@ -6,7 +6,7 @@ If a function does not return anything, it makes no sense to use its output. Spe
 
 ```javascript
 function foo() {
-  console.log("Hello, World!");
+  console.log('Hello, World!');
 }
 
 a = foo();
@@ -16,7 +16,7 @@ a = foo();
 
 ```javascript
 function foo() {
-  console.log("Hello, World!");
+  console.log('Hello, World!');
 }
 
 foo();

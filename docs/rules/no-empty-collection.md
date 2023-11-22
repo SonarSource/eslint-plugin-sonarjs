@@ -7,9 +7,9 @@ When a collection is empty it makes no sense to access or iterate it. Doing so a
 ```javascript
 let strings = [];
 
-if (strings.includes("foo")) {}  // Noncompliant
+if (strings.includes('foo')) {} // Noncompliant
 
-for (str of strings) {}  // Noncompliant
+for (str of strings) {} // Noncompliant
 
 strings.forEach(str => doSomething(str)); // Noncompliant
 ```

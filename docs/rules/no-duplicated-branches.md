@@ -28,8 +28,7 @@ if (a >= 0 && a < 10) {
   doTheThing();
 } else if (a >= 10 && a < 20) {
   doTheOtherThing();
-} else if (a >= 20 && a < 50) {
-  // Noncompliant; duplicates first condition
+} else if (a >= 20 && a < 50) { // Noncompliant; duplicates first condition
   doFirstThing();
   doTheThing();
 } else {

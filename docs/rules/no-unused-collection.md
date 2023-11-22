@@ -8,7 +8,7 @@ This rule raises an issue when no methods are called on a collection other than 
 
 ```javascript
 function getLength(a, b, c) {
-  const strings = [];  // Noncompliant
+  const strings = []; // Noncompliant
   strings.push(a);
   strings.push(b);
   strings.push(c);

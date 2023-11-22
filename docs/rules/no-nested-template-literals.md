@@ -9,7 +9,7 @@ In such situations, it’s preferable to move the nested template into a separat
 ## Noncompliant Code Example
 
 ```javascript
-let color = "red";
+let color = 'red';
 let count = 3;
 let message = `I have ${color ? `${count} ${color}` : count} apples`; // Noncompliant; nested template strings not easy to read
 ```
@@ -17,7 +17,7 @@ let message = `I have ${color ? `${count} ${color}` : count} apples`; // Noncomp
 ## Compliant Solution
 
 ```javascript
-let color = "red";
+let color = 'red';
 let count = 3;
 let apples = color ? `${count} ${color}` : count;
 let message = `I have ${apples} apples`;
@@ -28,7 +28,7 @@ let message = `I have ${apples} apples`;
 Nested template is ignored when the nesting one starts and ends on a different line.
 
 ```javascript
-let color = "red";
+let color = 'red';
 let count = 3;
 let message = `I have 
                   ${color ? `${count} ${color}` : count} 

@@ -5,8 +5,8 @@ env:
 
   SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
   ARTIFACTORY_URL: https://repox.jfrog.io/
-  ARTIFACTORY_DEPLOY_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
-  ARTIFACTORY_PROMOTE_ACCESS_TOKEN : VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
+  ARTIFACTORY_DEPLOY_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
+  ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
 
@@ -27,6 +27,29 @@ container_definition: &CONTAINER_DEFINITION
 build_task:
   <<: *ONLY_SONARSOURCE_QA
   eks_container:
+    <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+    cpu: 3
+    memory: 8G
+  env:
+    SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
+  script:
+    - if [ -n "${CIRRUS_BASE_BRANCH}" ]; then git fetch origin "${CIRRUS_BASE_BRANCH}"; fi
+    - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+    - jfrog rt npm-ci
+    - npm run check-format
+    - npm run build
+    - ./scripts/test-ci.sh
+    - ./scripts/analyze_and_publish.sh
+
+qa_task:
+  depends_on:
+    - build
+  eks_container:
     matrix:
       - docker_arguments:
           NODE_VERSION: 14
@@ -41,7 +64,6 @@ build_task:
     cpu: 3
     memory: 8G
   env:
-    CIRRUS_CLONE_DEPTH: 10
     SONARSOURCE_QA: true
   node_version_script:
     - node --version
@@ -50,13 +72,8 @@ build_task:
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - git submodule update --init --depth 1 -r
     - jfrog rt npm-ci
-    - npm run typecheck
     - npm run build
-    - ./scripts/test-ci.sh
-    - npm run check-format
-    - npm run lint
     - npm run ruling
-    - ./scripts/analyze_and_publish.sh
 
 ws_scan_task:
   depends_on:
@@ -75,7 +92,7 @@ ws_scan_task:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   whitesource_script:
     - ./scripts/run_ws_scan.sh
-  allow_failures: "true"
+  allow_failures: 'true'
   always:
     ws_artifacts:
-      path: "whitesource/**/*"
+      path: 'whitesource/**/*'

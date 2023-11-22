@@ -9,6 +9,7 @@
 .idea/
 .vscode/
 .github/
+.husky
 
 coverage/
 docs/
@@ -20,13 +21,13 @@ tests/
 .gitattributes
 .gitmodules
 .npmignore
+.prettierignore
 .travis.yml
 .eslintrc.js
 .editorconfig
 sonar-project.properties
 test-report.xml
 tsconfig.json
-tsconfig-src.json
 .cirrus/
 .cirrus.yml
 .jfrog/

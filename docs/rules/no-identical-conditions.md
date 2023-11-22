@@ -34,12 +34,9 @@ switch (param) {
 ## Compliant Solution
 
 ```javascript
-if (param == 1)
-  openWindow();
-else if (param == 2)
-  closeWindow();
-else if (param == 3)
-  moveWindowToTheBackground();
+if (param == 1) openWindow();
+else if (param == 2) closeWindow();
+else if (param == 3) moveWindowToTheBackground();
 
 switch (param) {
   case 1:
