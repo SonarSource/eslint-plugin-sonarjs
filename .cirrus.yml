@@ -41,12 +41,14 @@ build_task:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - jfrog rt npm-ci
+    - npm run check-format
     - npm run build
     - ./scripts/test-ci.sh
     - ./scripts/analyze_and_publish.sh
 
 qa_task:
-  <<: *ONLY_SONARSOURCE_QA
+  depends_on:
+    - build
   eks_container:
     matrix:
       - docker_arguments:
