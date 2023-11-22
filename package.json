@@ -19,13 +19,14 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "rimraf lib && npm run format && tsc -d -p tsconfig.json",
+    "build": "rimraf lib && tsc -d -p tsconfig.json",
     "test": "jest",
     "ruling": "ts-node --files ruling/index.ts",
     "precommit": "pretty-quick --staged",
     "prepare": "husky install .husky",
     "prepack": "npm run build",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check-format": "prettier --list-different ."
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
