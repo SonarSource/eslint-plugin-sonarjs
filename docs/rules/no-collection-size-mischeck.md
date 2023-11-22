@@ -7,19 +7,27 @@ The size of a collection and the length of an array are always greater than or e
 ## Noncompliant Code Example
 
 ```javascript
-if (someSet.size >= 0) {...} // Noncompliant
+if (someSet.size >= 0) { // Noncompliant
+  //...
+}
 
-if (someMap.size < 0) {...} // Noncompliant
+if (someMap.size < 0) { // Noncompliant
+  //...
+}
 
-const result = someArray.length >= 0;  // Noncompliant
+const result = someArray.length >= 0; // Noncompliant
 ```
 
 ## Compliant Solution
 
 ```javascript
-if (someSet.size > 0) {...}
+if (someSet.size > 0) {
+  //...
+}
 
-if (someMap.size == 0) {...}
+if (someMap.size == 0) {
+  //...
+}
 
 const result = someArray.length > 0;
 ```

@@ -9,9 +9,7 @@ Code is clearest when each statement has its own line. Nonetheless, it is a comm
 ```javascript
 if (condition1) {
   // ...
-}
-if (condition2) {
-  // Noncompliant
+} if (condition2) { // Noncompliant
   //...
 }
 ```

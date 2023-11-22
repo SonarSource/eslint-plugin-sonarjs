@@ -7,11 +7,15 @@ It is needlessly complex to invert the result of a boolean comparison. The oppos
 ## Noncompliant Code Example
 
 ```javascript
-if (!(a === 2)) { ... }  // Noncompliant
+if (!(a === 2)) { // Noncompliant
+  //...
+}
 ```
 
 ## Compliant Solution
 
 ```javascript
-if (a !== 2) { ... }
+if (a !== 2) {
+  //...
+}
 ```

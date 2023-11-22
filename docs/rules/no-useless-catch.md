@@ -9,8 +9,7 @@ Such clauses should either be eliminated or populated with the appropriate logic
 ```javascript
 try {
   doSomething();
-} catch (ex) {
-  // Noncompliant
+} catch (ex) { // Noncompliant
   throw ex;
 }
 ```

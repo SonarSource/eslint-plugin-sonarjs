@@ -12,8 +12,7 @@ function calculateCode() {
   return code;
 }
 
-function getName() {
-  // Noncompliant
+function getName() { // Noncompliant
   doTheThing();
   doOtherThing();
   return code;

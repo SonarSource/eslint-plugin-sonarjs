@@ -11,12 +11,10 @@ This rule ignores `*`, `+`, and `=`.
 ## Noncompliant Code Example
 
 ```javascript
-if (a == b && a == b) {
-  // if the first one is true, the second one is too
+if (a == b && a == b) { // Noncompliant: if the first one is true, the second one is too
   doX();
 }
-if (a > a) {
-  // always false
+if (a > a) { // Noncompliant: always false
   doW();
 }
 
@@ -33,8 +31,7 @@ Similarly, left-shifting 1 onto 1 is common in the construction of bit masks, an
 Moreover comma operator , and `instanceof` operator are ignored as there are use-cases when there usage is valid.
 
 ```javascript
-if (f !== f) {
-  // test for NaN value
+if (f !== f) { // test for NaN value
   console.log('f is NaN');
 }
 
