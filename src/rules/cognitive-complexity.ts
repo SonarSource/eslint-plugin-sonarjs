@@ -346,6 +346,10 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
         return;
       }
 
+      if (isDefaultValuePattern(logicalExpression)) {
+        return;
+      }
+
       if (!consideredLogicalExpressions.has(logicalExpression)) {
         const flattenedLogicalExpressions = flattenLogicalExpression(logicalExpression);
 
@@ -357,6 +361,28 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           }
           previous = current;
         }
+      }
+    }
+
+    function isDefaultValuePattern(node: TSESTree.LogicalExpression) {
+      const { left, right, operator, parent } = node;
+
+      const operators = ['||', '??'];
+      const literals = ['Literal', 'ArrayExpression', 'ObjectExpression'];
+
+      switch (parent?.type) {
+        /* Matches: const x = a || literal */
+        case 'VariableDeclarator':
+          return operators.includes(operator) && literals.includes(right.type);
+        /* Matches: a = a || literal */
+        case 'AssignmentExpression':
+          return (
+            operators.includes(operator) &&
+            literals.includes(right.type) &&
+            context.getSourceCode().getText(parent.left) === context.getSourceCode().getText(left)
+          );
+        default:
+          return false;
       }
     }
 

@@ -91,6 +91,24 @@ ruleTester.run('cognitive-complexity', rule, {
       parserOptions: { ecmaFeatures: { jsx: true } },
       options: [0],
     },
+    {
+      code: `
+      function f(a, b, c) {
+        const x = a || [];
+        const y = b || {};
+        const z = c ?? '';
+      }`,
+      options: [0],
+    },
+    {
+      code: `
+      function f(a, b, c) {
+        a = a || [];
+        b = b || {};
+        c = c ?? '';
+      }`,
+      options: [0],
+    },
   ],
   invalid: [
     // if
