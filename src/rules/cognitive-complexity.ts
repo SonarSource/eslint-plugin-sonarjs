@@ -120,7 +120,12 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           context.report({
             node,
             messageId: 'fileComplexity',
-            data: { complexityAmount: programComplexity.complexityPoints.reduce((acc, cur) => acc + cur.complexity, 0) },
+            data: {
+              complexityAmount: programComplexity.complexityPoints.reduce(
+                (acc, cur) => acc + cur.complexity,
+                0,
+              ),
+            },
           });
         }
       },
@@ -163,12 +168,15 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     };
 
     function onEnterFunction(node: TSESTree.FunctionLike) {
-      scopes.push({ node, nestingLevel: 0, nestingNodes: new Set(), complexityPoints: []});
+      scopes.push({ node, nestingLevel: 0, nestingNodes: new Set(), complexityPoints: [] });
     }
 
     function onLeaveFunction(node: TSESTree.FunctionLike) {
       const functionComplexity = scopes.pop()!;
-      checkFunction(functionComplexity.complexityPoints, getMainFunctionTokenLocation(node, node.parent, context));
+      checkFunction(
+        functionComplexity.complexityPoints,
+        getMainFunctionTokenLocation(node, node.parent, context),
+      );
     }
 
     function visitIfStatement(ifStatement: TSESTree.IfStatement) {
