@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/SonarSource/eslint-plugin-sonarjs",
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "scripts": {
     "build": "rimraf lib && tsc -d -p tsconfig.json",
