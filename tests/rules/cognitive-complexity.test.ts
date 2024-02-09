@@ -91,6 +91,24 @@ ruleTester.run('cognitive-complexity', rule, {
       parserOptions: { ecmaFeatures: { jsx: true } },
       options: [0],
     },
+    {
+      code: `
+      function f(a, b, c) {
+        const x = a || [];
+        const y = b || {};
+        const z = c ?? '';
+      }`,
+      options: [0],
+    },
+    {
+      code: `
+      function f(a, b, c) {
+        a = a || [];
+        b = b || {};
+        c = c ?? '';
+      }`,
+      options: [0],
+    },
   ],
   invalid: [
     // if
@@ -457,12 +475,12 @@ ruleTester.run('cognitive-complexity', rule, {
       code: `
       function nesting_func_with_complexity() {  // Noncompliant
         if (condition) {}          // +1
-        function nested_func() {   // (nesting level +1)
-          if (condition) {}        // +2
+        function nested_func() {                 // Noncompliant
+          if (condition) {}        // +1
         }
       }`,
       options: [0],
-      errors: [message(3, { line: 2 })],
+      errors: [message(1, { line: 2 }), message(1, { line: 4 })],
     },
     {
       code: `
@@ -478,38 +496,38 @@ ruleTester.run('cognitive-complexity', rule, {
     {
       code: `
       function two_level_function_nesting() {
-        function nested1() {      // Noncompliant
-          function nested2() {    // (nesting +1)
-            if (condition) {}     // +2
+        function nested1() {
+          function nested2() {    // Noncompliant
+            if (condition) {}     // +1
           }
         }
       }`,
       options: [0],
-      errors: [message(2, { line: 3 })],
+      errors: [message(1, { line: 4 })],
     },
     {
       code: `
       function two_level_function_nesting_2() {
         function nested1() {     // Noncompliant
           if (condition) {}      // +1
-          function nested2() {   // (nesting +1)
-            if (condition) {}    // +2
+          function nested2() {   // Noncompliant
+            if (condition) {}    // +1
           }
         }
       }`,
       options: [0],
-      errors: [message(3, { line: 3 })],
+      errors: [message(1, { line: 3 }), message(1, { line: 5 })],
     },
     {
       code: `
       function with_complexity_after_nested_function() { // Noncompliant
-        function nested_func() {   // (nesting level +1)
-          if (condition) {}        // +2
+        function nested_func() {                         // Noncompliant
+          if (condition) {}        // +1
         }
         if (condition) {}          // +1
       }`,
       options: [0],
-      errors: [message(3, { line: 2 })],
+      errors: [message(1, { line: 2 }), message(1, { line: 3 })],
     },
     {
       code: `
@@ -756,7 +774,7 @@ class TopLevel {
 }
       `,
       options: [0, 'metric'],
-      errors: [{ messageId: 'fileComplexity', data: { complexityAmount: 25 } }],
+      errors: [{ messageId: 'fileComplexity', data: { complexityAmount: 5 } }],
     },
   ],
 });
