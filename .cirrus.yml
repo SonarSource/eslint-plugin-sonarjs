@@ -52,13 +52,13 @@ qa_task:
   eks_container:
     matrix:
       - docker_arguments:
-          NODE_VERSION: 14
-          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
-      - docker_arguments:
           NODE_VERSION: 16
           CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       - docker_arguments:
           NODE_VERSION: 18
+          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+      - docker_arguments:
+          NODE_VERSION: 20
           CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
     <<: *CONTAINER_DEFINITION
     cpu: 3
