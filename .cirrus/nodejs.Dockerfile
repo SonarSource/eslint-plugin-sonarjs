@@ -6,7 +6,8 @@ USER root
 ARG NODE_VERSION=18
 ARG SCANNER_VERSION=5.0.1.3006
 
-RUN apt-get update && apt-get install -y nodejs=${NODE_VERSION}.*
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+    && apt-get install -y nodejs=${NODE_VERSION}.*
 
 RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SCANNER_VERSION}.zip" -o /tmp/sonar-scanner.zip \
   && unzip -d /opt /tmp/sonar-scanner.zip \
