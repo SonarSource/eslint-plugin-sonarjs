@@ -51,6 +51,7 @@ ruleTester.run('no-use-of-empty-return-value', rule, {
     },
     { code: 'function* noReturn() { yield 1; } noReturn().next();' },
     { code: 'function* noReturn() { yield 1; } noReturn();' },
+    { code: 'declare function withReturn(): number; let x = withReturn();' },
   ],
   invalid: [
     invalidPrefixWithFunction('console.log(noReturn());'),
@@ -69,6 +70,9 @@ ruleTester.run('no-use-of-empty-return-value', rule, {
     ),
     invalid('var funcExpr = function noReturn () { 1; console.log(noReturn()); };'),
     invalid('var noReturn = () => { var x = () => {return 1}  }; x = noReturn();'),
+    invalid('declare function noReturn(): never; let x = noReturn();'),
+    invalid('declare function noReturn(): void; let x = noReturn();'),
+    invalid('declare function noReturn(): undefined; let x = noReturn();'),
   ],
 });
 
