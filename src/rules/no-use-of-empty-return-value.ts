@@ -26,6 +26,7 @@ import docsUrl from '../utils/docs-url';
 const EMPTY_RETURN_VALUE_KEYWORDS = new Set<TSESTree.AST_NODE_TYPES>([
   TSESTree.AST_NODE_TYPES.TSVoidKeyword,
   TSESTree.AST_NODE_TYPES.TSNeverKeyword,
+  TSESTree.AST_NODE_TYPES.TSUndefinedKeyword,
 ]);
 
 function isReturnValueUsed(callExpr: TSESTree.Node) {
