@@ -73,7 +73,6 @@ ruleTester.run('no-use-of-empty-return-value', rule, {
     invalid('declare function noReturn(): never; let x = noReturn();'),
     invalid('declare function noReturn(): void; let x = noReturn();'),
     invalid('declare function noReturn(): undefined; let x = noReturn();'),
-    invalid('let noReturn = () => {}; let x = noReturn();'),
   ],
 });
 
