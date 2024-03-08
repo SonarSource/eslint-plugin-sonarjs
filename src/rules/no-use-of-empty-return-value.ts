@@ -139,7 +139,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
       TSDeclareFunction(node: TSESTree.Node) {
         const declareFunction = node as TSESTree.TSDeclareFunction;
-        if (declareFunction.returnType?.typeAnnotation.type && !EMPTY_RETURN_VALUE_KEYWORDS.has(declareFunction.returnType?.typeAnnotation.type)) {
+        if (
+          declareFunction.returnType?.typeAnnotation.type &&
+          !EMPTY_RETURN_VALUE_KEYWORDS.has(declareFunction.returnType?.typeAnnotation.type)
+        ) {
           functionsWithReturnValue.add(declareFunction);
         }
       },
