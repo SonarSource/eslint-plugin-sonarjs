@@ -186,7 +186,7 @@ function isElementWrite(statement: TSESTree.ExpressionStatement, ref: TSESLint.S
 function isMemberExpressionReference(lhs: TSESTree.Node, ref: TSESLint.Scope.Reference): boolean {
   return (
     lhs.type === 'MemberExpression' &&
-    (isReferenceTo(ref, lhs.object) || isMemberExpressionReference(lhs.object, ref))
+    (isReferenceTo(ref, lhs.object))
   );
 }
 
