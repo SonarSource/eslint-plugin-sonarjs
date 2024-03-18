@@ -34,7 +34,7 @@ function invalidTest(code: string) {
   };
 }
 
-ruleTester.run('Primitive return types should be used.', rule, {
+ruleTester.run('Collection contents should be used', rule, {
   valid: [
     {
       code: `
@@ -169,6 +169,13 @@ ruleTester.run('Primitive return types should be used.', rule, {
     {
       code: `export const collection = new Map()`,
     },
+    {
+      code: `
+        const a = {foo: false};
+        const xs = [a];
+        xs[0].foo = true;
+      `,
+    },
   ],
   invalid: [
     {
@@ -195,11 +202,6 @@ ruleTester.run('Primitive return types should be used.', rule, {
     invalidTest(`function nok2() {
           let arrayConstructor = new Array(); // Noncompliant
           arrayConstructor[1] = 42;
-      }
-      `),
-    invalidTest(`function nok2_1() {
-          let arrayConstructor = new Array(); // Noncompliant
-          arrayConstructor[1][2] = 42;
       }
       `),
     invalidTest(`function nok3() {
