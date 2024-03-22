@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3981
 
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 
