@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 
 /**
  * Equivalence is implemented by comparing node types and their tokens.

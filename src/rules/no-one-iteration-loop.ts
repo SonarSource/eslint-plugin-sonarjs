@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S1751
 
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { Rule } from 'eslint';
 import { isContinueStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
@@ -38,7 +38,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       url: docsUrl(__filename),
     },
   },
-  // @ts-ignore The typings of @typescript-eslint/experimental-utils does not contain the 'onX' methods.
+  // @ts-ignore The typings of @typescript-eslint/utils does not contain the 'onX' methods.
   create(context) {
     const loopingNodes: Set<TSESTree.Node> = new Set();
     const loops: Set<TSESTree.Node> = new Set();

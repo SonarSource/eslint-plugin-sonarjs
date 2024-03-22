@@ -19,7 +19,7 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3923
 
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { isIfStatement } from '../utils/nodes';
 import { areEquivalent } from '../utils/equivalence';
 import { collectIfBranches, collectSwitchBranches } from '../utils/conditions';

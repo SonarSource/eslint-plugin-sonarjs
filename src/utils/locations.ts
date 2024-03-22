@@ -18,7 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import type { TSESTree, TSESLint } from '@typescript-eslint/experimental-utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 export type MutableReportDescriptor = Writeable<TSESLint.ReportDescriptor<string>>;
