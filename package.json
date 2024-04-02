@@ -18,6 +18,10 @@
   "engines": {
     "node": ">=16"
   },
+  "files": [
+    "lib",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "rimraf lib && tsc -d -p tsconfig.json",
     "test": "jest",
@@ -30,6 +34,9 @@
   },
   "peerDependencies": {
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/utils": "5.30.7"
   },
   "devDependencies": {
     "@babel/core": "7.23.2",
