@@ -19,14 +19,14 @@
  */
 // https://sonarsource.github.io/rspec/#/rspec/S3699
 
-import { TSESTree, type TSESLint } from '@typescript-eslint/utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { isFunctionExpression, isArrowFunctionExpression, isBlockStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
 
-const EMPTY_RETURN_VALUE_KEYWORDS = new Set<TSESTree.AST_NODE_TYPES>([
-  TSESTree.AST_NODE_TYPES.TSVoidKeyword,
-  TSESTree.AST_NODE_TYPES.TSNeverKeyword,
-  TSESTree.AST_NODE_TYPES.TSUndefinedKeyword,
+const EMPTY_RETURN_VALUE_KEYWORDS = new Set([
+  'TSVoidKeyword',
+  'TSNeverKeyword',
+  'TSUndefinedKeyword',
 ]);
 
 function isReturnValueUsed(callExpr: TSESTree.Node) {
@@ -35,25 +35,25 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
     return false;
   }
 
-  if (parent.type === TSESTree.AST_NODE_TYPES.LogicalExpression) {
+  if (parent.type === 'LogicalExpression') {
     return parent.left === callExpr;
   }
 
-  if (parent.type === TSESTree.AST_NODE_TYPES.SequenceExpression) {
+  if (parent.type === 'SequenceExpression') {
     return parent.expressions[parent.expressions.length - 1] === callExpr;
   }
 
-  if (parent.type === TSESTree.AST_NODE_TYPES.ConditionalExpression) {
+  if (parent.type === 'ConditionalExpression') {
     return parent.test === callExpr;
   }
 
   return (
-    parent.type !== TSESTree.AST_NODE_TYPES.ExpressionStatement &&
-    parent.type !== TSESTree.AST_NODE_TYPES.ArrowFunctionExpression &&
-    parent.type !== TSESTree.AST_NODE_TYPES.UnaryExpression &&
-    parent.type !== TSESTree.AST_NODE_TYPES.AwaitExpression &&
-    parent.type !== TSESTree.AST_NODE_TYPES.ReturnStatement &&
-    parent.type !== TSESTree.AST_NODE_TYPES.ThrowStatement
+    parent.type !== 'ExpressionStatement' &&
+    parent.type !== 'ArrowFunctionExpression' &&
+    parent.type !== 'UnaryExpression' &&
+    parent.type !== 'AwaitExpression' &&
+    parent.type !== 'ReturnStatement' &&
+    parent.type !== 'ThrowStatement'
   );
 }
 
@@ -108,9 +108,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           const ancestors = [...context.getAncestors()].reverse();
           const functionNode = ancestors.find(
             node =>
-              node.type === TSESTree.AST_NODE_TYPES.FunctionExpression ||
-              node.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration ||
-              node.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression,
+              node.type === 'FunctionExpression' ||
+              node.type === 'FunctionDeclaration' ||
+              node.type === 'ArrowFunctionExpression',
           );
 
           functionsWithReturnValue.add(functionNode as TSESTree.FunctionLike);
