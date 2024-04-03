@@ -36,7 +36,7 @@
     "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.30.7"
+    "@typescript-eslint/utils": "^5.30.7"
   },
   "devDependencies": {
     "@babel/core": "7.23.2",
@@ -52,7 +52,6 @@
     "@types/minimist": "1.2.2",
     "@types/node": "14.14.31",
     "@typescript-eslint/parser": "5.30.7",
-    "@typescript-eslint/utils": "5.30.7",
     "eslint": "8.47.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
