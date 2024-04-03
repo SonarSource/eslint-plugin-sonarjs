@@ -18,6 +18,10 @@
   "engines": {
     "node": ">=16"
   },
+  "files": [
+    "lib",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "rimraf lib && tsc -d -p tsconfig.json",
     "test": "jest",
