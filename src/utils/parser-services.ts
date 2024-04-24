@@ -23,5 +23,5 @@ import type { ParserServicesWithTypeInformation } from '@typescript-eslint/types
 export function isParserServicesWithTypeInformation(
   services: Partial<ParserServices> | undefined,
 ): services is ParserServicesWithTypeInformation {
-  return services?.program !== null;
+  return !!services?.program;
 }
