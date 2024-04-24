@@ -20,11 +20,7 @@
 import type { ParserServices } from '@typescript-eslint/utils';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
-export type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
-};
-
-export function isRequiredParserServices(
+export function isParserServicesWithTypeInformation(
   services: ParserServices | undefined,
 ): services is ParserServicesWithTypeInformation {
   return services?.program !== null;

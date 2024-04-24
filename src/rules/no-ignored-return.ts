@@ -21,7 +21,7 @@
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
-import { isRequiredParserServices } from '../utils/parser-services';
+import { isParserServicesWithTypeInformation } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
 
@@ -188,7 +188,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
   },
   create(context: TSESLint.RuleContext<string, string[]>) {
-    if (!isRequiredParserServices(context.parserServices)) {
+    if (!isParserServicesWithTypeInformation(context.parserServices)) {
       return {};
     }
     const services = context.parserServices;

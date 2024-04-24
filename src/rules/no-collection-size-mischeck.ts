@@ -21,7 +21,7 @@
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
-import { isRequiredParserServices } from '../utils/parser-services';
+import { isParserServicesWithTypeInformation } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
@@ -46,7 +46,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     const services = context.parserServices;
-    const isTypeCheckerAvailable = isRequiredParserServices(services);
+    const isTypeCheckerAvailable = isParserServicesWithTypeInformation(services);
     return {
       BinaryExpression: (node: TSESTree.Node) => {
         const expr = node as TSESTree.BinaryExpression;
