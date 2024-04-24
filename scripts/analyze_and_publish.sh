@@ -18,7 +18,7 @@ sonar-scanner \
   -DbuildNumber=$BUILD_NUMBER
 
 #upload to repox QA repository
-jfrog npm-publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
+jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
 #publish buildinfo
 jfrog build-publish eslint-plugin-sonarjs $BUILD_NUMBER
 #QA tests could be run now to validate the artifacts and on success we promote.
