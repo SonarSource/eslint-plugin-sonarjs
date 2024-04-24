@@ -40,7 +40,7 @@ build_task:
     - if [ -n "${CIRRUS_BASE_BRANCH}" ]; then git fetch origin "${CIRRUS_BASE_BRANCH}"; fi
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
-    - jfrog npm-ci
+    - jfrog rt npm-ci
     - npm run check-format
     - npm run build
     - ./scripts/test-ci.sh
@@ -71,7 +71,7 @@ qa_task:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - git submodule update --init --depth 1 -r
-    - jfrog npm-ci
+    - jfrog rt npm-ci
     - npm run build
     - npm run ruling
 
