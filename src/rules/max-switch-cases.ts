@@ -66,7 +66,7 @@ function visitSwitchStatement(
     switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
   if (nonEmptyCases.length > maxSwitchCases) {
-    const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;
+    const switchKeyword = context.sourceCode.getFirstToken(switchStatement)!;
     context.report({
       messageId: 'reduceNumberOfNonEmptySwitchCases',
       loc: switchKeyword.loc,

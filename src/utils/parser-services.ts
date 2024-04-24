@@ -21,7 +21,7 @@ import type { ParserServices } from '@typescript-eslint/utils';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
 export function isParserServicesWithTypeInformation(
-  services: ParserServices | undefined,
+  services: Partial<ParserServices> | undefined,
 ): services is ParserServicesWithTypeInformation {
   return services?.program !== null;
 }

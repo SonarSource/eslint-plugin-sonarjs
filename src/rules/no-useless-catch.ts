@@ -54,9 +54,9 @@ function visitCatchClause(
   if (
     catchClause.param &&
     statements.length === 1 &&
-    onlyRethrows(statements[0], catchClause.param, context.getSourceCode())
+    onlyRethrows(statements[0], catchClause.param, context.sourceCode)
   ) {
-    const catchKeyword = context.getSourceCode().getFirstToken(catchClause)!;
+    const catchKeyword = context.sourceCode.getFirstToken(catchClause)!;
     context.report({
       messageId: 'uselessCatch',
       loc: catchKeyword.loc,

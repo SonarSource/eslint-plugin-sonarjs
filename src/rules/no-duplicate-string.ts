@@ -140,7 +140,7 @@ function isExcludedByUsageContext(context: Context, literal: TSESTree.Literal) {
 
 function isRequireContext(parent: TSESTree.Node, context: Context) {
   return (
-    parent.type === 'CallExpression' && context.getSourceCode().getText(parent.callee) === 'require'
+    parent.type === 'CallExpression' && context.sourceCode.getText(parent.callee) === 'require'
   );
 }
 

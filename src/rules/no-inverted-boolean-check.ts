@@ -67,8 +67,8 @@ function visitUnaryExpression(
     const condition: TSESTree.BinaryExpression = unaryExpression.argument;
     const invertedOperator = invertedOperators[condition.operator];
     if (invertedOperator) {
-      const left = context.getSourceCode().getText(condition.left);
-      const right = context.getSourceCode().getText(condition.right);
+      const left = context.sourceCode.getText(condition.left);
+      const right = context.sourceCode.getText(condition.right);
       const [start, end] =
         unaryExpression.parent?.type === 'UnaryExpression' ? ['(', ')'] : ['', ''];
       context.report({

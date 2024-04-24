@@ -63,7 +63,7 @@ function checkOperator(
     unaryNode.type === 'UnaryExpression' &&
     isUnaryOperatorOfInterest(unaryNode.operator)
   ) {
-    const sourceCode = context.getSourceCode();
+    const { sourceCode } = context;
     const assignmentOperatorToken = sourceCode.getTokenBefore(
       unaryNode,
       token => token.value === '=',

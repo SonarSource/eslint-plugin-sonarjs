@@ -188,10 +188,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
   },
   create(context: TSESLint.RuleContext<string, string[]>) {
-    if (!isParserServicesWithTypeInformation(context.parserServices)) {
+    const services = context.sourceCode.parserServices;
+    if (!isParserServicesWithTypeInformation(services)) {
       return {};
     }
-    const services = context.parserServices;
     return {
       CallExpression: (node: TSESTree.Node) => {
         const call = node as TSESTree.CallExpression;
@@ -199,7 +199,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (callee.type === 'MemberExpression') {
           const { parent } = node;
           if (parent && parent.type === 'ExpressionStatement') {
-            const methodName = context.getSourceCode().getText(callee.property);
+            const methodName = context.sourceCode.getText(callee.property);
             const objectType = services.program
               .getTypeChecker()
               .getTypeAtLocation(

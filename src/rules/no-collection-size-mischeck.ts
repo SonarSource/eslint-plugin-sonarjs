@@ -93,9 +93,7 @@ function getSuggestion(
   context: TSESLint.RuleContext<string, string[]>,
 ): TSESLint.ReportSuggestionArray<string> {
   const { left, operator } = expr;
-  const operatorToken = context
-    .getSourceCode()
-    .getTokenAfter(left, token => token.value === operator)!;
+  const operatorToken = context.sourceCode.getTokenAfter(left, token => token.value === operator)!;
   const fixedOperator = operator === '<' ? '==' : '>';
   return [
     {

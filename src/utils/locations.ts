@@ -67,8 +67,7 @@ export function getMainFunctionTokenLocation<T = string>(
       location = token && token.loc;
     }
   } else if (fn.type === 'ArrowFunctionExpression') {
-    const token = context
-      .getSourceCode()
+    const token = context.sourceCode
       .getTokensBefore(fn.body)
       .reverse()
       .find(token => token.value === '=>');
@@ -171,22 +170,19 @@ function getTokenByValue<T = string>(
   value: string,
   context: TSESLint.RuleContext<string, T[]>,
 ) {
-  return context
-    .getSourceCode()
-    .getTokens(node)
-    .find(token => token.value === value);
+  return context.sourceCode.getTokens(node).find(token => token.value === value);
 }
 
 export function getFirstTokenAfter<T = string>(
   node: TSESTree.Node,
   context: TSESLint.RuleContext<string, T[]>,
 ): TSESLint.AST.Token | null {
-  return context.getSourceCode().getTokenAfter(node);
+  return context.sourceCode.getTokenAfter(node);
 }
 
 export function getFirstToken<T = string>(
   node: TSESTree.Node,
   context: TSESLint.RuleContext<string, T[]>,
 ): TSESLint.AST.Token {
-  return context.getSourceCode().getTokens(node)[0];
+  return context.sourceCode.getTokens(node)[0];
 }

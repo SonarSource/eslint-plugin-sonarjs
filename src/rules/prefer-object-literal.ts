@@ -71,7 +71,7 @@ function checkObjectInitialization(
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (objectDeclaration && isIdentifier(objectDeclaration.id)) {
       const nextStmt = statements[index + 1];
-      if (isPropertyAssignment(nextStmt, objectDeclaration.id, context.getSourceCode())) {
+      if (isPropertyAssignment(nextStmt, objectDeclaration.id, context.sourceCode)) {
         context.report({ messageId: 'declarePropertiesInsideObject', node: objectDeclaration });
       }
     }
