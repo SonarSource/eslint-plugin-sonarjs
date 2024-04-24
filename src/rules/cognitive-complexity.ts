@@ -62,7 +62,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     type: 'suggestion',
     docs: {
       description: 'Cognitive Complexity of functions should not be too high',
-      recommended: 'recommended',
+      recommended: 'strict',
       url: docsUrl(__filename),
     },
     schema: [
