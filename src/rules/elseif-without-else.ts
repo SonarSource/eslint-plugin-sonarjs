@@ -32,7 +32,6 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: '"if ... else if" constructs should end with "else" clauses',
-      recommended: 'strict',
       url: docsUrl(__filename),
     },
   },

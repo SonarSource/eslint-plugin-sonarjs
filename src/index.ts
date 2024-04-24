@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import type { TSESLint } from '@typescript-eslint/utils';
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 const sonarjsRules: string[] = [
   'cognitive-complexity',
@@ -56,8 +57,17 @@ const sonarjsRules: string[] = [
 
 const sonarjsRuleModules: { [key: string]: any } = {};
 
-const configs: { recommended: TSESLint.Linter.Config & { plugins: string[] } } = {
-  recommended: { plugins: ['sonarjs'], rules: {} },
+const plugin = {
+  configs: {},
+  rules: {},
+};
+
+const recommendedLegacyConfig: TSESLint.Linter.Config = { plugins: ['sonarjs'], rules: {} };
+const recommendedConfig: FlatConfig.Config = {
+  plugins: {
+    sonarjs: plugin,
+  },
+  rules: {},
 };
 
 sonarjsRules.forEach(rule => {
@@ -67,7 +77,14 @@ sonarjsRules.forEach(rule => {
       docs: { recommended },
     },
   } = sonarjsRuleModules[rule];
-  configs.recommended.rules![`sonarjs/${rule}`] = recommended === false ? 'off' : recommended;
+  recommendedConfig.rules![`sonarjs/${rule}`] = recommended === undefined ? 'off' : 'error';
 });
+recommendedLegacyConfig.rules = recommendedConfig.rules;
+
+const configs = {
+  recommended: recommendedConfig,
+  'recommended-legacy': recommendedLegacyConfig,
+};
+plugin.configs = configs;
 
 export { sonarjsRuleModules as rules, configs };

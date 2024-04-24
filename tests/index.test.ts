@@ -29,6 +29,7 @@ it('should declare all rules in recommended config', () => {
     expect(configs.recommended.rules).toHaveProperty(`sonarjs/${rule}`);
   });
   expect(Object.keys(configs.recommended.rules!)).toHaveLength(existingRules.length);
+  expect(new Set(Object.values(configs.recommended.rules!))).toEqual(new Set(['off', 'error']));
 });
 
 it('should declare all rules', () => {
@@ -48,4 +49,10 @@ it('should document all rules', () => {
       `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${rule}.md`,
     );
   });
+});
+
+it('should export legacy config', () => {
+  const legacyConfig = configs['recommended-legacy'];
+  expect(legacyConfig.plugins).toEqual(['sonarjs']);
+  expect(legacyConfig.rules).toEqual(configs.recommended.rules);
 });
