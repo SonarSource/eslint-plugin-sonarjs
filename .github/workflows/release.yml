@@ -36,15 +36,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).npm_token }}
         run: |
-          jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
-          jfrog rt npm-ci
+          jfrog npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+          jfrog npm-ci
           npm publish
-          jfrog rt npm-publish --build-name=eslint-plugin-sonarjs --build-number=${{ github.event.release.tag_name }}
-          jfrog rt build-publish eslint-plugin-sonarjs ${{ github.event.release.tag_name }}
+          jfrog npm-publish --build-name=eslint-plugin-sonarjs --build-number=${{ github.event.release.tag_name }}
+          jfrog build-publish eslint-plugin-sonarjs ${{ github.event.release.tag_name }}
       - name: Promote npm package
         env:
           PROMOTER_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).promoter_access_token }}
           REPOX_URL: ${{ fromJSON(steps.secrets.outputs.vault).repox_url }}
         run: |
-          jfrog rt bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
-          jfrog rt bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
+          jfrog bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status it-passed eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-builds
+          jfrog bpr --access-token $PROMOTER_TOKEN --url $REPOX_URL --status released eslint-plugin-sonarjs ${{ github.event.release.tag_name }} sonarsource-npm-public-releases
