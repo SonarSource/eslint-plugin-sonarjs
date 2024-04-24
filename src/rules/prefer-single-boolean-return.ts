@@ -28,6 +28,7 @@ import {
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       replaceIfThenElseByReturn: 'Replace this if-then-else flow by a single return statement.',
@@ -42,7 +43,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Return of boolean expressions should not be wrapped into an "if-then-else" statement',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

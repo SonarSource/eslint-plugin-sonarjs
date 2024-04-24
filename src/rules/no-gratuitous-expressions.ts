@@ -27,6 +27,7 @@ import docsUrl from '../utils/docs-url';
 const message = 'This always evaluates to {{value}}. Consider refactoring this code.';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       refactorBooleanExpression: message,
@@ -35,12 +36,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean expressions should not be gratuitous',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter for rules having secondary locations
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

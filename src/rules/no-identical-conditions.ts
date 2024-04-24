@@ -28,6 +28,7 @@ const duplicatedConditionMessage = 'This condition is covered by the one on line
 const duplicatedCaseMessage = 'This case duplicates the one on line {{line}}';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       duplicatedCondition: duplicatedConditionMessage,
@@ -38,12 +39,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Related "if-else-if" and "switch-case" statements should not have the same condition',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

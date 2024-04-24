@@ -43,6 +43,12 @@ type Options =
 type Context = TSESLint.RuleContext<string, Options>;
 
 const rule: TSESLint.RuleModule<string, Options> = {
+  defaultOptions: [
+    {
+      threshold: DEFAULT_THRESHOLD,
+      ignoreStrings: DEFAULT_IGNORE_STRINGS,
+    },
+  ],
   meta: {
     messages: {
       defineConstant: message,
@@ -51,7 +57,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'suggestion',
     docs: {
       description: 'String literals should not be duplicated',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
@@ -62,7 +68,10 @@ const rule: TSESLint.RuleModule<string, Options> = {
           ignoreStrings: { type: 'string', default: DEFAULT_IGNORE_STRINGS },
         },
       },
-      { enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */ },
+      {
+        type: 'string',
+        enum: ['sonar-runtime'] /* internal parameter for rules having secondary locations */,
+      },
     ],
   },
 

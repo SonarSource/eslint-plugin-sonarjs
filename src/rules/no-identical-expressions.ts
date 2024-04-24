@@ -64,6 +64,7 @@ const message =
   'Correct one of the identical sub-expressions on both sides of operator "{{operator}}"';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       correctIdenticalSubExpressions: message,
@@ -72,12 +73,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Identical expressions should not be used on both sides of a binary operator',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

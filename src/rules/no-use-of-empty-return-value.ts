@@ -58,6 +58,7 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
 }
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       removeUseOfOutput:
@@ -67,7 +68,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: "The output of functions that don't return anything should not be used",
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

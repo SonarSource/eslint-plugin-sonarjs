@@ -52,6 +52,7 @@ const message =
   'Refactor this function to reduce its Cognitive Complexity from {{complexityAmount}} to the {{threshold}} allowed.';
 
 const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       refactorFunction: message,
@@ -61,13 +62,14 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
     type: 'suggestion',
     docs: {
       description: 'Cognitive Complexity of functions should not be too high',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       { type: 'integer', minimum: 0 },
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime', 'metric'],
       },
     ],

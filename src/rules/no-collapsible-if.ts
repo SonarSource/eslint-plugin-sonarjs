@@ -27,6 +27,7 @@ import docsUrl from '../utils/docs-url';
 const message = 'Merge this if statement with the nested one.';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       mergeNestedIfStatement: message,
@@ -35,12 +36,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Collapsible "if" statements should be merged',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

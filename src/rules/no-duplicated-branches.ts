@@ -30,6 +30,7 @@ const message =
   "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       sameConditionalBlock: message,
@@ -39,12 +40,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Two branches in a conditional structure should not have exactly the same implementation',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

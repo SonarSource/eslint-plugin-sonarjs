@@ -19,9 +19,12 @@
  */
 
 import type { TSESTree } from '@typescript-eslint/utils';
-import { RequiredParserServices } from './parser-services';
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
-export function getTypeFromTreeNode(node: TSESTree.Node, services: RequiredParserServices) {
+export function getTypeFromTreeNode(
+  node: TSESTree.Node,
+  services: ParserServicesWithTypeInformation,
+) {
   const checker = services.program.getTypeChecker();
   return checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
 }

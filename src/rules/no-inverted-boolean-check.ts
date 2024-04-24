@@ -35,6 +35,7 @@ const invertedOperators: { [operator: string]: string } = {
 };
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       useOppositeOperator: 'Use the opposite operator ({{invertedOperator}}) instead.',
@@ -44,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      recommended: false,
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     hasSuggestions: true,

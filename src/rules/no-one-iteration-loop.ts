@@ -26,6 +26,7 @@ import docsUrl from '../utils/docs-url';
 import CodePath = Rule.CodePath;
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       refactorLoop: 'Refactor this loop to do more than one iteration.',
@@ -34,7 +35,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Loops with at most one iteration should be refactored',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

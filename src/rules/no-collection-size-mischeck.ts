@@ -20,13 +20,15 @@
 // https://sonarsource.github.io/rspec/#/rspec/S3981
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
+import { isRequiredParserServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 
 const CollectionLike = ['Array', 'Map', 'Set', 'WeakMap', 'WeakSet'];
 const CollectionSizeLike = ['length', 'size'];
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       fixCollectionSizeCheck:
@@ -38,7 +40,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     docs: {
       description: 'Collection sizes and array length comparisons should make sense',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
@@ -56,7 +58,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
             if (
               property.type === 'Identifier' &&
               CollectionSizeLike.includes(property.name) &&
-              (!isTypeCheckerAvailable || isCollection(object, services!))
+              (!isTypeCheckerAvailable || isCollection(object, services))
             ) {
               context.report({
                 messageId: 'fixCollectionSizeCheck',
@@ -79,7 +81,7 @@ function isZeroLiteral(node: TSESTree.Node) {
   return node.type === 'Literal' && node.value === 0;
 }
 
-function isCollection(node: TSESTree.Node, services: RequiredParserServices) {
+function isCollection(node: TSESTree.Node, services: ParserServicesWithTypeInformation) {
   const checker = services.program.getTypeChecker();
   const tp = checker.getTypeAtLocation(services.esTreeNodeToTSNodeMap.get(node));
   return !!tp.symbol && CollectionLike.includes(tp.symbol.name);

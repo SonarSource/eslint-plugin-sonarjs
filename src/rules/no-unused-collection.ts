@@ -24,6 +24,7 @@ import { collectionConstructor, writingMethods } from '../utils/collections';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       unusedCollection: "Either use this collection's contents or remove the collection.",
@@ -32,7 +33,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Collection and array contents should be used',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

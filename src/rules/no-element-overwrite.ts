@@ -36,6 +36,7 @@ const message =
   'Verify this is the index that was intended; "{{index}}" was already set on line {{line}}.';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       verifyIntendedIndex: message,
@@ -44,12 +45,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Collection elements should not be replaced unconditionally',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],

@@ -10,7 +10,8 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": false,
     "outDir": "lib",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "nodenext"
   },
   "include": ["src/**/*.ts"]
 }

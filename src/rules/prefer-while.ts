@@ -23,6 +23,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       replaceForWithWhileLoop: 'Replace this "for" loop with a "while" loop.',
@@ -31,7 +32,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'A "while" loop should be used instead of a "for" loop',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     fixable: 'code',

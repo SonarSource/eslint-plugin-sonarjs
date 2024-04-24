@@ -29,6 +29,7 @@ import {
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       doImmediateAction:
@@ -38,7 +39,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Local variables should not be declared and then immediately returned or thrown',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     fixable: 'code',

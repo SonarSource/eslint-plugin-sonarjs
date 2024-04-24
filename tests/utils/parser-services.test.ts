@@ -23,6 +23,7 @@ import { isRequiredParserServices } from '../../src/utils/parser-services';
 import { RuleTester } from '../rule-tester';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     type: 'problem',
     messages: {

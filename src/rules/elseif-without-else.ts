@@ -23,6 +23,7 @@ import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       addMissingElseClause: 'Add the missing "else" clause.',
@@ -31,7 +32,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: '"if ... else if" constructs should end with "else" clauses',
-      recommended: false,
+      recommended: 'stylistic',
       url: docsUrl(__filename),
     },
   },

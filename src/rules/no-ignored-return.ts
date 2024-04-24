@@ -20,7 +20,8 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2201
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
+import { isRequiredParserServices } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
 
@@ -172,6 +173,7 @@ const METHODS_WITHOUT_SIDE_EFFECTS: { [index: string]: Set<string> } = {
 };
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       useForEach: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
@@ -181,7 +183,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Return values from functions without side effects should not be ignored',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
@@ -219,7 +221,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 function isReplaceWithCallback(
   methodName: string,
   callArguments: Array<TSESTree.Expression | TSESTree.SpreadElement>,
-  services: RequiredParserServices,
+  services: ParserServicesWithTypeInformation,
 ) {
   if (methodName === 'replace' && callArguments.length > 1) {
     const type = getTypeFromTreeNode(callArguments[1], services);
@@ -251,7 +253,11 @@ function reportDescriptor(
   }
 }
 
-function hasSideEffect(methodName: string, objectType: any, services: RequiredParserServices) {
+function hasSideEffect(
+  methodName: string,
+  objectType: any,
+  services: ParserServicesWithTypeInformation,
+) {
   const typeAsString = typeToString(objectType, services);
   if (typeAsString !== null) {
     const methods = METHODS_WITHOUT_SIDE_EFFECTS[typeAsString];
@@ -260,7 +266,7 @@ function hasSideEffect(methodName: string, objectType: any, services: RequiredPa
   return true;
 }
 
-function typeToString(tp: any, services: RequiredParserServices): string | null {
+function typeToString(tp: any, services: ParserServicesWithTypeInformation): string | null {
   const typechecker = services.program.getTypeChecker();
 
   const baseType = typechecker.getBaseTypeOfLiteralType(tp);
