@@ -24,6 +24,7 @@ import { ancestorsChain } from '../utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       nestedTemplateLiterals: 'Refactor this code to not use nested template literals.',
@@ -32,7 +33,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Template literals should not be nested',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

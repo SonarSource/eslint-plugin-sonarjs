@@ -19,10 +19,11 @@
  */
 import * as path from 'path';
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices } from '../../src/utils/parser-services';
+import { isParserServicesWithTypeInformation } from '../../src/utils/parser-services';
 import { RuleTester } from '../rule-tester';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     type: 'problem',
     messages: {
@@ -35,7 +36,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     return {
       Program: (node: TSESTree.Node) => {
         const services = context.parserServices;
-        const hasTypeInformation = isRequiredParserServices(services);
+        const hasTypeInformation = isParserServicesWithTypeInformation(services);
         const message = hasTypeInformation ? 'availableTypeInformation' : 'missingTypeInformation';
         context.report({
           messageId: message,

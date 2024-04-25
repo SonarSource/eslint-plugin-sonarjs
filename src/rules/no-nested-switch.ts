@@ -23,6 +23,7 @@ import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       removeNestedSwitch: 'Refactor the code to eliminate this nested "switch".',
@@ -31,16 +32,17 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: '"switch" statements should not be nested',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
   create(context) {
     return {
       'SwitchStatement SwitchStatement': (node: TSESTree.Node) => {
-        const switchToken = context
-          .getSourceCode()
-          .getFirstToken(node, token => token.value === 'switch');
+        const switchToken = context.sourceCode.getFirstToken(
+          node,
+          token => token.value === 'switch',
+        );
         context.report({
           messageId: 'removeNestedSwitch',
           loc: switchToken!.loc,

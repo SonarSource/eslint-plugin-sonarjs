@@ -37,6 +37,7 @@ const message =
 type Options = (number | 'sonar-runtime')[];
 
 const rule: TSESLint.RuleModule<string, Options> = {
+  defaultOptions: [DEFAULT_MIN_LINES],
   meta: {
     messages: {
       identicalFunctions: message,
@@ -45,12 +46,13 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'problem',
     docs: {
       description: 'Functions should not have identical implementations',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       { type: 'integer', minimum: 3 },
       {
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],
@@ -94,11 +96,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
           const originalFunction = functions[j].function;
 
           if (
-            areEquivalent(
-              duplicatingFunction.body,
-              originalFunction.body,
-              context.getSourceCode(),
-            ) &&
+            areEquivalent(duplicatingFunction.body, originalFunction.body, context.sourceCode) &&
             originalFunction.loc
           ) {
             const loc = getMainFunctionTokenLocation(
@@ -133,7 +131,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
 
     function isBigEnough(node: TSESTree.Node) {
-      const tokens = context.getSourceCode().getTokens(node);
+      const tokens = context.sourceCode.getTokens(node);
 
       if (tokens.length > 0 && tokens[0].value === '{') {
         tokens.shift();

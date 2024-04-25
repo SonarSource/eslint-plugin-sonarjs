@@ -29,6 +29,7 @@ import {
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       doImmediateAction:
@@ -38,7 +39,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Local variables should not be declared and then immediately returned or thrown',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     fixable: 'code',
@@ -46,14 +47,14 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   create(context) {
     return {
       BlockStatement(node: TSESTree.Node) {
-        processStatements((node as TSESTree.BlockStatement).body);
+        processStatements(node, (node as TSESTree.BlockStatement).body);
       },
       SwitchCase(node: TSESTree.Node) {
-        processStatements((node as TSESTree.SwitchCase).consequent);
+        processStatements(node, (node as TSESTree.SwitchCase).consequent);
       },
     };
 
-    function processStatements(statements: TSESTree.Statement[]) {
+    function processStatements(node: TSESTree.Node, statements: TSESTree.Statement[]) {
       if (statements.length > 1) {
         const last = statements[statements.length - 1];
         const returnedIdentifier = getOnlyReturnedVariable(last);
@@ -62,7 +63,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const declaredIdentifier = getOnlyDeclaredVariable(lastButOne);
 
         if (returnedIdentifier && declaredIdentifier) {
-          const sameVariable = getVariables(context).find(variable => {
+          const sameVariable = getVariables(node, context).find(variable => {
             return (
               variable.references.find(ref => ref.identifier === returnedIdentifier) !==
                 undefined &&
@@ -96,9 +97,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       expressionToReturn: TSESTree.Expression,
       returnedExpression: TSESTree.Expression,
     ): any {
-      const expressionText = context.getSourceCode().getText(expressionToReturn);
+      const expressionText = context.sourceCode.getText(expressionToReturn);
       const rangeToRemoveStart = lastButOne.range[0];
-      const commentsBetweenStatements = context.getSourceCode().getCommentsAfter(lastButOne);
+      const commentsBetweenStatements = context.sourceCode.getCommentsAfter(lastButOne);
       const rangeToRemoveEnd =
         commentsBetweenStatements.length > 0
           ? commentsBetweenStatements[0].range[0]
@@ -127,9 +128,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       return undefined;
     }
 
-    function getVariables(context: TSESLint.RuleContext<string, string[]>) {
-      const { variableScope, variables: currentScopeVariables } = context.getScope();
-      if (variableScope === context.getScope()) {
+    function getVariables(node: TSESTree.Node, context: TSESLint.RuleContext<string, string[]>) {
+      const { variableScope, variables: currentScopeVariables } = context.sourceCode.getScope(node);
+      if (variableScope === context.sourceCode.getScope(node)) {
         return currentScopeVariables;
       } else {
         return currentScopeVariables.concat(variableScope.variables);

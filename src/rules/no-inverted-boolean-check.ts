@@ -35,6 +35,7 @@ const invertedOperators: { [operator: string]: string } = {
 };
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       useOppositeOperator: 'Use the opposite operator ({{invertedOperator}}) instead.',
@@ -44,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean checks should not be inverted',
-      recommended: false,
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     hasSuggestions: true,
@@ -66,8 +67,8 @@ function visitUnaryExpression(
     const condition: TSESTree.BinaryExpression = unaryExpression.argument;
     const invertedOperator = invertedOperators[condition.operator];
     if (invertedOperator) {
-      const left = context.getSourceCode().getText(condition.left);
-      const right = context.getSourceCode().getText(condition.right);
+      const left = context.sourceCode.getText(condition.left);
+      const right = context.sourceCode.getText(condition.right);
       const [start, end] =
         unaryExpression.parent?.type === 'UnaryExpression' ? ['(', ')'] : ['', ''];
       context.report({

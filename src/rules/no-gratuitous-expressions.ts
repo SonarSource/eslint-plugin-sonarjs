@@ -27,6 +27,7 @@ import docsUrl from '../utils/docs-url';
 const message = 'This always evaluates to {{value}}. Consider refactoring this code.';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       refactorBooleanExpression: message,
@@ -35,12 +36,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean expressions should not be gratuitous',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter for rules having secondary locations
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],
@@ -49,8 +51,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     const truthyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
     const falsyMap: Map<TSESTree.Statement, TSESLint.Scope.Reference[]> = new Map();
 
-    function isInsideJSX(): boolean {
-      const ancestors = context.getAncestors();
+    function isInsideJSX(node: TSESTree.Node): boolean {
+      const ancestors = context.sourceCode.getAncestors(node);
       return !!ancestors.find(ancestor => ancestor.type === 'JSXExpressionContainer');
     }
 
@@ -66,7 +68,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const { parent } = node;
         if (isIfStatement(parent)) {
           // we visit 'consequent' and 'alternate' and not if-statement directly in order to get scope for 'consequent'
-          const currentScope = context.getScope();
+          const currentScope = context.sourceCode.getScope(node);
 
           if (parent.consequent === node) {
             const { truthy, falsy } = collectKnownIdentifiers(parent.test);
@@ -86,9 +88,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
       Identifier: (node: TSESTree.Node) => {
         const id = node as TSESTree.Identifier;
-        const symbol = getSymbol(id, context.getScope());
+        const symbol = getSymbol(id, context.sourceCode.getScope(node));
         const { parent } = node;
-        if (!symbol || !parent || (isInsideJSX() && isLogicalAndRhs(id, parent))) {
+        if (!symbol || !parent || (isInsideJSX(node) && isLogicalAndRhs(id, parent))) {
           return;
         }
         if (

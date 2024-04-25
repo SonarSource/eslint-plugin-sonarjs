@@ -23,6 +23,7 @@ import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       smallSwitch: '"switch" statements should have at least 3 "case" clauses',
@@ -31,7 +32,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: '"switch" statements should have at least 3 "case" clauses',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
@@ -42,7 +43,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const { cases } = switchStatement;
         const hasDefault = cases.some(x => !x.test);
         if (cases.length < 2 || (cases.length === 2 && hasDefault)) {
-          const firstToken = context.getSourceCode().getFirstToken(node);
+          const firstToken = context.sourceCode.getFirstToken(node);
           if (firstToken) {
             context.report({
               messageId: 'smallSwitch',

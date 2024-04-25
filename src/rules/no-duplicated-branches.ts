@@ -30,6 +30,7 @@ const message =
   "This {{type}}'s code block is the same as the block for the {{type}} on line {{line}}.";
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       sameConditionalBlock: message,
@@ -39,12 +40,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     docs: {
       description:
         'Two branches in a conditional structure should not have exactly the same implementation',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],
@@ -110,11 +112,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
             );
 
             if (
-              areEquivalent(
-                firstClauseWithoutBreak,
-                secondClauseWithoutBreak,
-                context.getSourceCode(),
-              )
+              areEquivalent(firstClauseWithoutBreak, secondClauseWithoutBreak, context.sourceCode)
             ) {
               reportIssue(cases[i], cases[j], 'case');
               break;
@@ -127,8 +125,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     function hasRequiredSize(nodes: TSESTree.Statement[]) {
       if (nodes.length > 0) {
         const tokens = [
-          ...context.getSourceCode().getTokens(nodes[0]),
-          ...context.getSourceCode().getTokens(nodes[nodes.length - 1]),
+          ...context.sourceCode.getTokens(nodes[0]),
+          ...context.sourceCode.getTokens(nodes[nodes.length - 1]),
         ].filter(token => token.value !== '{' && token.value !== '}');
         return (
           tokens.length > 0 && tokens[tokens.length - 1].loc.end.line > tokens[0].loc.start.line
@@ -138,7 +136,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     }
 
     function compareIfBranches(a: TSESTree.Statement, b: TSESTree.Statement) {
-      const equivalent = areEquivalent(a, b, context.getSourceCode());
+      const equivalent = areEquivalent(a, b, context.sourceCode);
       if (equivalent && b.loc) {
         reportIssue(a, b, 'branch');
       }
@@ -164,12 +162,12 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         branches.length > 1 &&
         branches
           .slice(1)
-          .every((branch, index) => areEquivalent(branch, branches[index], context.getSourceCode()))
+          .every((branch, index) => areEquivalent(branch, branches[index], context.sourceCode))
       );
     }
 
     function reportIssue(node: TSESTree.Node, equivalentNode: TSESTree.Node, type: string) {
-      const equivalentNodeLoc = equivalentNode.loc as TSESTree.SourceLocation;
+      const equivalentNodeLoc = equivalentNode.loc;
       report(
         context,
         {

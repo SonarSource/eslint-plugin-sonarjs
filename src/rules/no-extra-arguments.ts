@@ -39,6 +39,7 @@ import docsUrl from '../utils/docs-url';
 const message = 'This function expects {{expectedArguments}}, but {{providedArguments}} provided.';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       tooManyArguments: message,
@@ -47,12 +48,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Function calls should not pass extra arguments',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],
@@ -70,8 +72,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       CallExpression(node: TSESTree.Node) {
         const callExpr = node as TSESTree.CallExpression;
         if (isIdentifier(callExpr.callee)) {
-          const reference = context
-            .getScope()
+          const reference = context.sourceCode
+            .getScope(node)
             .references.find(ref => ref.identifier === callExpr.callee);
           const definition = reference && getSingleDefinition(reference);
           if (definition) {
@@ -131,11 +133,13 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
     function checkArguments(identifier: TSESTree.Identifier) {
       if (identifier.name === 'arguments') {
-        const reference = context.getScope().references.find(ref => ref.identifier === identifier);
+        const reference = context.sourceCode
+          .getScope(identifier)
+          .references.find(ref => ref.identifier === identifier);
         const definition = reference && getSingleDefinition(reference);
         // special `arguments` variable has no definition
         if (!definition) {
-          const ancestors = context.getAncestors().reverse();
+          const ancestors = context.sourceCode.getAncestors(identifier).reverse();
           const fn = ancestors.find(
             node => isFunctionDeclaration(node) || isFunctionExpression(node),
           );

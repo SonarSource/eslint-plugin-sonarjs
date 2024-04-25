@@ -20,7 +20,9 @@
 // https://sonarsource.github.io/rspec/#/rspec/S2201
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { isRequiredParserServices, RequiredParserServices } from '../utils/parser-services';
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
+import type { Type } from 'typescript';
+import { isParserServicesWithTypeInformation } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
 
@@ -172,6 +174,7 @@ const METHODS_WITHOUT_SIDE_EFFECTS: { [index: string]: Set<string> } = {
 };
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       useForEach: `Consider using "forEach" instead of "map" as its return value is not being used here.`,
@@ -181,15 +184,15 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Return values from functions without side effects should not be ignored',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
   create(context: TSESLint.RuleContext<string, string[]>) {
-    if (!isRequiredParserServices(context.parserServices)) {
+    const services = context.sourceCode.parserServices;
+    if (!isParserServicesWithTypeInformation(services)) {
       return {};
     }
-    const services = context.parserServices;
     return {
       CallExpression: (node: TSESTree.Node) => {
         const call = node as TSESTree.CallExpression;
@@ -197,7 +200,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (callee.type === 'MemberExpression') {
           const { parent } = node;
           if (parent && parent.type === 'ExpressionStatement') {
-            const methodName = context.getSourceCode().getText(callee.property);
+            const methodName = context.sourceCode.getText(callee.property);
             const objectType = services.program
               .getTypeChecker()
               .getTypeAtLocation(
@@ -219,7 +222,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 function isReplaceWithCallback(
   methodName: string,
   callArguments: Array<TSESTree.Expression | TSESTree.SpreadElement>,
-  services: RequiredParserServices,
+  services: ParserServicesWithTypeInformation,
 ) {
   if (methodName === 'replace' && callArguments.length > 1) {
     const type = getTypeFromTreeNode(callArguments[1], services);
@@ -251,7 +254,11 @@ function reportDescriptor(
   }
 }
 
-function hasSideEffect(methodName: string, objectType: any, services: RequiredParserServices) {
+function hasSideEffect(
+  methodName: string,
+  objectType: Type,
+  services: ParserServicesWithTypeInformation,
+) {
   const typeAsString = typeToString(objectType, services);
   if (typeAsString !== null) {
     const methods = METHODS_WITHOUT_SIDE_EFFECTS[typeAsString];
@@ -260,7 +267,7 @@ function hasSideEffect(methodName: string, objectType: any, services: RequiredPa
   return true;
 }
 
-function typeToString(tp: any, services: RequiredParserServices): string | null {
+function typeToString(tp: Type, services: ParserServicesWithTypeInformation): string | null {
   const typechecker = services.program.getTypeChecker();
 
   const baseType = typechecker.getBaseTypeOfLiteralType(tp);
