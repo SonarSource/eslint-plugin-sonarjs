@@ -21,6 +21,7 @@
 
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
+import type { Type } from 'typescript';
 import { isParserServicesWithTypeInformation } from '../utils/parser-services';
 import docsUrl from '../utils/docs-url';
 import { getTypeFromTreeNode } from '../utils';
@@ -255,7 +256,7 @@ function reportDescriptor(
 
 function hasSideEffect(
   methodName: string,
-  objectType: any,
+  objectType: Type,
   services: ParserServicesWithTypeInformation,
 ) {
   const typeAsString = typeToString(objectType, services);
@@ -266,7 +267,7 @@ function hasSideEffect(
   return true;
 }
 
-function typeToString(tp: any, services: ParserServicesWithTypeInformation): string | null {
+function typeToString(tp: Type, services: ParserServicesWithTypeInformation): string | null {
   const typechecker = services.program.getTypeChecker();
 
   const baseType = typechecker.getBaseTypeOfLiteralType(tp);
