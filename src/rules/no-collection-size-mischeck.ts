@@ -45,7 +45,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     },
   },
   create(context) {
-    const services = context.parserServices;
+    const services = context.sourceCode.parserServices;
     const isTypeCheckerAvailable = isParserServicesWithTypeInformation(services);
     return {
       BinaryExpression: (node: TSESTree.Node) => {
@@ -64,7 +64,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
                 messageId: 'fixCollectionSizeCheck',
                 data: {
                   propertyName: property.name,
-                  objectName: context.getSourceCode().getText(object),
+                  objectName: context.sourceCode.getText(object),
                 },
                 node,
                 suggest: getSuggestion(expr, property.name, context),

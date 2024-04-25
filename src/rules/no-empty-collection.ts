@@ -96,8 +96,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     return {
-      'Program:exit': () => {
-        reportEmptyCollectionsUsage(context.getScope(), context);
+      'Program:exit': (node: TSESTree.Node) => {
+        reportEmptyCollectionsUsage(context.sourceCode.getScope(node), context);
       },
     };
   },

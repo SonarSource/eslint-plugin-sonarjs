@@ -55,8 +55,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           consequent = consequent.body[0];
         }
         if (isIfStatementWithoutElse(node) && isIfStatementWithoutElse(consequent)) {
-          const ifKeyword = context.getSourceCode().getFirstToken(consequent);
-          const enclosingIfKeyword = context.getSourceCode().getFirstToken(node);
+          const ifKeyword = context.sourceCode.getFirstToken(consequent);
+          const enclosingIfKeyword = context.sourceCode.getFirstToken(node);
           if (ifKeyword && enclosingIfKeyword) {
             report(
               context,

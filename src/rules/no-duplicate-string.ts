@@ -128,7 +128,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
 };
 
 function isExcludedByUsageContext(context: Context, literal: TSESTree.Literal) {
-  const parent = literal.parent!;
+  const { parent } = literal;
   const parentType = parent.type;
 
   return (

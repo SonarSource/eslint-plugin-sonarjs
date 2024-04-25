@@ -98,7 +98,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       if (
         hasRelevantOperator(expr) &&
         !isOneOntoOneShifting(expr) &&
-        areEquivalent(expr.left, expr.right, context.getSourceCode())
+        areEquivalent(expr.left, expr.right, context.sourceCode)
       ) {
         const secondaryLocations: IssueLocation[] = [];
         if (expr.left.loc) {

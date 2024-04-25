@@ -87,7 +87,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
           if (!loopingNodes.has(loop)) {
             context.report({
               messageId: 'refactorLoop',
-              loc: context.getSourceCode().getFirstToken(loop)!.loc,
+              loc: context.sourceCode.getFirstToken(loop)!.loc,
             });
           }
         });

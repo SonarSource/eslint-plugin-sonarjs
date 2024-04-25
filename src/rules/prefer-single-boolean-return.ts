@@ -116,7 +116,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       };
       const shouldNegate = isReturningFalse(ifStmt.consequent);
       const shouldCast = !isBooleanExpression(ifStmt.test);
-      const testText = context.getSourceCode().getText(ifStmt.test);
+      const testText = context.sourceCode.getText(ifStmt.test);
 
       if (shouldNegate) {
         return [{ messageId: 'suggest', fix: getFix(`!(${testText})`) }];

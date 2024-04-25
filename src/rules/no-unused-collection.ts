@@ -39,9 +39,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     return {
-      'Program:exit': () => {
+      'Program:exit': (node: TSESTree.Node) => {
         const unusedArrays: TSESLint.Scope.Variable[] = [];
-        collectUnusedCollections(context.getScope(), unusedArrays);
+        collectUnusedCollections(context.sourceCode.getScope(node), unusedArrays);
 
         unusedArrays.forEach(unusedArray => {
           context.report({

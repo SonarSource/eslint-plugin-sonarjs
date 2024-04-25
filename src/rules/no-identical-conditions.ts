@@ -51,7 +51,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     ],
   },
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const { sourceCode } = context;
     return {
       IfStatement(node: TSESTree.Node) {
         const { test } = node as TSESTree.IfStatement;

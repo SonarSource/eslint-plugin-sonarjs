@@ -43,7 +43,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         const { cases } = switchStatement;
         const hasDefault = cases.some(x => !x.test);
         if (cases.length < 2 || (cases.length === 2 && hasDefault)) {
-          const firstToken = context.getSourceCode().getFirstToken(node);
+          const firstToken = context.sourceCode.getFirstToken(node);
           if (firstToken) {
             context.report({
               messageId: 'smallSwitch',

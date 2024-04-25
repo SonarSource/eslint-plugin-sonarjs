@@ -56,7 +56,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   },
   create(context) {
     function checkStatements(statements: TSESTree.Node[]) {
-      const sourceCode = context.getSourceCode();
+      const { sourceCode } = context;
       const siblingIfStatements = getSiblingIfStatements(statements);
 
       siblingIfStatements.forEach(siblingIfStatement => {

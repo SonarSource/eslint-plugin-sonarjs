@@ -40,7 +40,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       IfStatement: (node: TSESTree.Node) => {
         const ifstmt = node as TSESTree.IfStatement;
         if (isElseIf(ifstmt) && !ifstmt.alternate) {
-          const sourceCode = context.getSourceCode();
+          const { sourceCode } = context;
           const elseKeyword = sourceCode.getTokenBefore(
             node,
             token => token.type === 'Keyword' && token.value === 'else',

@@ -96,11 +96,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
           const originalFunction = functions[j].function;
 
           if (
-            areEquivalent(
-              duplicatingFunction.body,
-              originalFunction.body,
-              context.getSourceCode(),
-            ) &&
+            areEquivalent(duplicatingFunction.body, originalFunction.body, context.sourceCode) &&
             originalFunction.loc
           ) {
             const loc = getMainFunctionTokenLocation(
@@ -135,7 +131,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     }
 
     function isBigEnough(node: TSESTree.Node) {
-      const tokens = context.getSourceCode().getTokens(node);
+      const tokens = context.sourceCode.getTokens(node);
 
       if (tokens.length > 0 && tokens[0].value === '{') {
         tokens.shift();

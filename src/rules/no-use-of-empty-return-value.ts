@@ -85,9 +85,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (!isReturnValueUsed(callExpr)) {
           return;
         }
-        const scope = context.getScope();
+        const scope = context.sourceCode.getScope(node);
         const reference = scope.references.find(ref => ref.identifier === callExpr.callee);
-        if (reference && reference.resolved) {
+        if (reference?.resolved) {
           const variable = reference.resolved;
           if (variable.defs.length === 1) {
             const definition = variable.defs[0];
@@ -106,7 +106,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       ReturnStatement(node: TSESTree.Node) {
         const returnStmt = node as TSESTree.ReturnStatement;
         if (returnStmt.argument) {
-          const ancestors = [...context.getAncestors()].reverse();
+          const ancestors = [...context.sourceCode.getAncestors(node)].reverse();
           const functionNode = ancestors.find(
             node =>
               node.type === 'FunctionExpression' ||

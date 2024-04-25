@@ -78,7 +78,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       return (
         branches.length > 1 &&
         branches.slice(1).every((branch, index) => {
-          return areEquivalent(branch, branches[index], context.getSourceCode());
+          return areEquivalent(branch, branches[index], context.sourceCode);
         })
       );
     }

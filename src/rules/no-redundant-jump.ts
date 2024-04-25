@@ -46,10 +46,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       if (!withArgument) {
         const block = node.parent as TSESTree.BlockStatement;
         if (block.body[block.body.length - 1] === node && block.body.length > 1) {
-          const previousComments = context.getSourceCode().getCommentsBefore(node);
+          const previousComments = context.sourceCode.getCommentsBefore(node);
           const previousToken =
             previousComments.length === 0
-              ? context.getSourceCode().getTokenBefore(node)!
+              ? context.sourceCode.getTokenBefore(node)!
               : previousComments[previousComments.length - 1];
 
           context.report({
@@ -69,7 +69,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     function reportIfLastStatementInsideIf(
       node: TSESTree.ContinueStatement | TSESTree.ReturnStatement,
     ) {
-      const ancestors = context.getAncestors();
+      const ancestors = context.sourceCode.getAncestors(node);
       const ifStatement = ancestors[ancestors.length - 2];
       const upperBlock = ancestors[ancestors.length - 3] as TSESTree.BlockStatement;
       if (upperBlock.body[upperBlock.body.length - 1] === ifStatement) {

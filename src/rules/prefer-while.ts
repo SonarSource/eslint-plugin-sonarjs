@@ -41,7 +41,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     return {
       ForStatement(node: TSESTree.Node) {
         const forLoop = node as TSESTree.ForStatement;
-        const forKeyword = context.getSourceCode().getFirstToken(node);
+        const forKeyword = context.sourceCode.getFirstToken(node);
         if (!forLoop.init && !forLoop.update && forLoop.test && forKeyword) {
           context.report({
             messageId: `replaceForWithWhileLoop`,
@@ -54,14 +54,14 @@ const rule: TSESLint.RuleModule<string, string[]> = {
 
     function getFix(forLoop: TSESTree.ForStatement): any {
       const forLoopRange = forLoop.range;
-      const closingParenthesisToken = context.getSourceCode().getTokenBefore(forLoop.body);
+      const closingParenthesisToken = context.sourceCode.getTokenBefore(forLoop.body);
       const condition = forLoop.test;
 
       if (condition && forLoopRange && closingParenthesisToken) {
         return (fixer: TSESLint.RuleFixer) => {
           const start = forLoopRange[0];
           const end = closingParenthesisToken.range[1];
-          const conditionText = context.getSourceCode().getText(condition);
+          const conditionText = context.sourceCode.getText(condition);
           return fixer.replaceTextRange([start, end], `while (${conditionText})`);
         };
       }

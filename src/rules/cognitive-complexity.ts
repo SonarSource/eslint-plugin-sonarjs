@@ -275,7 +275,7 @@ const rule: TSESLint.RuleModule<string, (number | 'metric' | 'sonar-runtime')[]>
           return (
             operators.includes(operator) &&
             literals.includes(right.type) &&
-            context.getSourceCode().getText(parent.left) === context.getSourceCode().getText(left)
+            context.sourceCode.getText(parent.left) === context.sourceCode.getText(left)
           );
         default:
           return false;

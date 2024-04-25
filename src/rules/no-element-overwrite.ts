@@ -82,7 +82,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (keyWriteUsage) {
           if (
             collection &&
-            !areEquivalent(keyWriteUsage.collectionNode, collection, context.getSourceCode())
+            !areEquivalent(keyWriteUsage.collectionNode, collection, context.sourceCode)
           ) {
             usedKeys.clear();
           }
@@ -171,8 +171,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     }
 
     function isUsed(value: TSESTree.Node, expression: TSESTree.Expression) {
-      const valueTokens = context.getSourceCode().getTokens(value);
-      const expressionTokens = context.getSourceCode().getTokens(expression);
+      const valueTokens = context.sourceCode.getTokens(value);
+      const expressionTokens = context.sourceCode.getTokens(expression);
 
       const foundUsage = expressionTokens.find((token, index) => {
         if (eq(token, valueTokens[0])) {

@@ -39,9 +39,10 @@ const rule: TSESLint.RuleModule<string, string[]> = {
   create(context) {
     return {
       'SwitchStatement SwitchStatement': (node: TSESTree.Node) => {
-        const switchToken = context
-          .getSourceCode()
-          .getFirstToken(node, token => token.value === 'switch');
+        const switchToken = context.sourceCode.getFirstToken(
+          node,
+          token => token.value === 'switch',
+        );
         context.report({
           messageId: 'removeNestedSwitch',
           loc: switchToken!.loc,
