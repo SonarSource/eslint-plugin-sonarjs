@@ -23,7 +23,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "rimraf lib && tsc -d -p tsconfig.json",
+    "build": "rimraf lib && tsc -d -p src",
     "test": "jest",
     "ruling": "ts-node --files ruling/index.ts",
     "precommit": "pretty-quick --staged",
