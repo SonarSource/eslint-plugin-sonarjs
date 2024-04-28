@@ -45,6 +45,8 @@ build_task:
     - npm run build
     - ./scripts/test-ci.sh
     - ./scripts/analyze_and_publish.sh
+  on_failure:
+    - ls -al /tmp/cirrus-ci-build/
 
 qa_task:
   depends_on:
