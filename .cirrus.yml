@@ -46,7 +46,7 @@ build_task:
     - ./scripts/test-ci.sh
     - ./scripts/analyze_and_publish.sh
   on_failure:
-    - ls -al /tmp/cirrus-ci-build/
+    debug_script: ./scripts/debug.sh
 
 qa_task:
   depends_on:
