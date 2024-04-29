@@ -47,7 +47,7 @@ build_body: &BUILD_BODY
 build_task:
   <<: *BUILD_BODY
 
-tests_and_analyze_task:
+test_and_analyze_task:
   depends_on:
     - build
   <<: *BUILD_BODY
