@@ -19,50 +19,80 @@
  */
 import type { TSESLint } from '@typescript-eslint/utils';
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+import * as cognitiveComplexity from './rules/cognitive-complexity';
+import * as elseifWithoutElse from './rules/elseif-without-else';
+import * as maxSwitchCases from './rules/max-switch-cases';
+import * as noAllDuplicatedBranches from './rules/no-all-duplicated-branches';
+import * as noCollapsibleIf from './rules/no-collapsible-if';
+import * as noCollectionSizeMischeck from './rules/no-collection-size-mischeck';
+import * as noDuplicateString from './rules/no-duplicate-string';
+import * as noDuplicatedBranches from './rules/no-duplicated-branches';
+import * as noElementOverwrite from './rules/no-element-overwrite';
+import * as noEmptyCollection from './rules/no-empty-collection';
+import * as noExtraArguments from './rules/no-extra-arguments';
+import * as noGratuitousExpressions from './rules/no-gratuitous-expressions';
+import * as noIdenticalConditions from './rules/no-identical-conditions';
+import * as noIdenticalExpressions from './rules/no-identical-expressions';
+import * as noIdenticalFunctions from './rules/no-identical-functions';
+import * as noIgnoredReturn from './rules/no-ignored-return';
+import * as noInvertedBooleanCheck from './rules/no-inverted-boolean-check';
+import * as noNestedSwitch from './rules/no-nested-switch';
+import * as noNestedTemplateLiterals from './rules/no-nested-template-literals';
+import * as noOneIterationLoop from './rules/no-one-iteration-loop';
+import * as noRedundantBoolean from './rules/no-redundant-boolean';
+import * as noRedundantJump from './rules/no-redundant-jump';
+import * as noSameLineConditional from './rules/no-same-line-conditional';
+import * as noSmallSwitch from './rules/no-small-switch';
+import * as noUnusedCollection from './rules/no-unused-collection';
+import * as noUseOfEmptyReturnValue from './rules/no-use-of-empty-return-value';
+import * as noUselessCatch from './rules/no-useless-catch';
+import * as nonExistentOperator from './rules/non-existent-operator';
+import * as preferImmediateReturn from './rules/prefer-immediate-return';
+import * as preferObjectLiteral from './rules/prefer-object-literal';
+import * as preferSingleBooleanReturn from './rules/prefer-single-boolean-return';
+import * as preferWhile from './rules/prefer-while';
 
-const sonarjsRules: string[] = [
-  'cognitive-complexity',
-  'elseif-without-else',
-  'max-switch-cases',
-  'no-all-duplicated-branches',
-  'no-collapsible-if',
-  'no-collection-size-mischeck',
-  'no-duplicate-string',
-  'no-duplicated-branches',
-  'no-element-overwrite',
-  'no-empty-collection',
-  'no-extra-arguments',
-  'no-gratuitous-expressions',
-  'no-identical-conditions',
-  'no-identical-expressions',
-  'no-identical-functions',
-  'no-ignored-return',
-  'no-inverted-boolean-check',
-  'no-nested-switch',
-  'no-nested-template-literals',
-  'no-one-iteration-loop',
-  'no-redundant-boolean',
-  'no-redundant-jump',
-  'no-same-line-conditional',
-  'no-small-switch',
-  'no-unused-collection',
-  'no-use-of-empty-return-value',
-  'no-useless-catch',
-  'non-existent-operator',
-  'prefer-immediate-return',
-  'prefer-object-literal',
-  'prefer-single-boolean-return',
-  'prefer-while',
-];
-
-const sonarjsRuleModules: { [key: string]: any } = {};
+const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
+  'cognitive-complexity': cognitiveComplexity,
+  'elseif-without-else': elseifWithoutElse,
+  'max-switch-cases': maxSwitchCases,
+  'no-all-duplicated-branches': noAllDuplicatedBranches,
+  'no-collapsible-if': noCollapsibleIf,
+  'no-collection-size-mischeck': noCollectionSizeMischeck,
+  'no-duplicate-string': noDuplicateString,
+  'no-duplicated-branches': noDuplicatedBranches,
+  'no-element-overwrite': noElementOverwrite,
+  'no-empty-collection': noEmptyCollection,
+  'no-extra-arguments': noExtraArguments,
+  'no-gratuitous-expressions': noGratuitousExpressions,
+  'no-identical-conditions': noIdenticalConditions,
+  'no-identical-expressions': noIdenticalExpressions,
+  'no-identical-functions': noIdenticalFunctions,
+  'no-ignored-return': noIgnoredReturn,
+  'no-inverted-boolean-check': noInvertedBooleanCheck,
+  'no-nested-switch': noNestedSwitch,
+  'no-nested-template-literals': noNestedTemplateLiterals,
+  'no-one-iteration-loop': noOneIterationLoop,
+  'no-redundant-boolean': noRedundantBoolean,
+  'no-redundant-jump': noRedundantJump,
+  'no-same-line-conditional': noSameLineConditional,
+  'no-small-switch': noSmallSwitch,
+  'no-unused-collection': noUnusedCollection,
+  'no-use-of-empty-return-value': noUseOfEmptyReturnValue,
+  'no-useless-catch': noUselessCatch,
+  'non-existent-operator': nonExistentOperator,
+  'prefer-immediate-return': preferImmediateReturn,
+  'prefer-object-literal': preferObjectLiteral,
+  'prefer-single-boolean-return': preferSingleBooleanReturn,
+  'prefer-while': preferWhile,
+};
 
 const plugin = {
   configs: {},
   rules: {},
 };
 
-const recommendedLegacyConfig: TSESLint.Linter.Config = { plugins: ['sonarjs'], rules: {} };
+const recommendedLegacyConfig: TSESLint.Linter.ConfigType = { plugins: ['sonarjs'], rules: {} };
 const recommendedConfig: FlatConfig.Config = {
   plugins: {
     sonarjs: plugin,
@@ -70,15 +100,13 @@ const recommendedConfig: FlatConfig.Config = {
   rules: {},
 };
 
-sonarjsRules.forEach(rule => {
-  sonarjsRuleModules[rule] = require(`./rules/${rule}`);
-  const {
-    meta: {
-      docs: { recommended },
-    },
-  } = sonarjsRuleModules[rule];
-  recommendedConfig.rules![`sonarjs/${rule}`] = recommended === undefined ? 'off' : 'error';
-});
+for (const key in rules) {
+  const rule = rules[key];
+  const recommended = rule.meta.docs?.recommended;
+
+  recommendedConfig.rules![`sonarjs/${key}`] = recommended === undefined ? 'off' : 'error';
+}
+
 recommendedLegacyConfig.rules = recommendedConfig.rules;
 
 const configs = {
@@ -87,4 +115,4 @@ const configs = {
 };
 plugin.configs = configs;
 
-export { sonarjsRuleModules as rules, configs };
+export { rules, configs };
