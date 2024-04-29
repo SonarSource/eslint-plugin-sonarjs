@@ -18,9 +18,7 @@ sonar-scanner \
   -DbuildNumber=$BUILD_NUMBER
 
 #upload to repox QA repository
-ls -l /tmp/cirrus-ci-build/
-jfrog --version
-jfrog npm publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
+strace -e trace=open jfrog npm publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
 #publish buildinfo
 jfrog rt build-publish eslint-plugin-sonarjs $BUILD_NUMBER
 #QA tests could be run now to validate the artifacts and on success we promote.
