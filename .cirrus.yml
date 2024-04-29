@@ -47,20 +47,19 @@ build_body: &BUILD_BODY
 build_task:
   <<: *BUILD_BODY
 
-tests_task:
+tests_and_analyze_task:
   depends_on:
     - build
   <<: *BUILD_BODY
-  script:
+  test_script:
     - ./scripts/test-ci.sh
 
-analyze_and_publish_task:
+publish_task:
   depends_on:
     - build
   <<: *BUILD_BODY
-  script:
-    - ./scripts/test-ci.sh
-    - ./scripts/analyze_and_publish.sh
+  publish_script:
+    - ./scripts/publish.sh
 
 qa_task:
   depends_on:

@@ -8,6 +8,10 @@ set -euo pipefail
 if [ "${SONARCLOUD_ANALYSIS:-}" == "true" ]; then
   echo 'Running tests with coverage and reporter'
   npm run test -- --runInBand --coverage --testResultsProcessor jest-sonar-reporter
+  sonar-scanner \
+    -Dsonar.organization=sonarsource \
+    -Dsonar.host.url=https://sonarcloud.io \
+    -DbuildNumber=$BUILD_NUMBER
 else
   echo 'Running tests'
   npm run test
