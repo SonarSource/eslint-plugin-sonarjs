@@ -69,9 +69,9 @@ qa_task:
     - node --version
   script:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
-    - jfrog npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+    - jfrog npm config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - git submodule update --init --depth 1 -r
-    - jfrog rt npm-ci
+    - jfrog npm ci
     - npm run build
     - npm run ruling
 

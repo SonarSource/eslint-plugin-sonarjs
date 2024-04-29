@@ -18,11 +18,11 @@ sonar-scanner \
   -DbuildNumber=$BUILD_NUMBER
 
 #upload to repox QA repository
-jfrog npm-publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
+jfrog npm publish --build-name=eslint-plugin-sonarjs --build-number=$BUILD_NUMBER
 #publish buildinfo
-jfrog build-publish eslint-plugin-sonarjs $BUILD_NUMBER
+jfrog rt build-publish eslint-plugin-sonarjs $BUILD_NUMBER
 #QA tests could be run now to validate the artifacts and on success we promote.
 #configure jfrog cli to be able to promote build
 jfrog config edit repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_PROMOTE_ACCESS_TOKEN
 #promote from QA to public builds
-jfrog bpr --status it-passed eslint-plugin-sonarjs $BUILD_NUMBER sonarsource-npm-public-builds
+jfrog rt bpr --status it-passed eslint-plugin-sonarjs $BUILD_NUMBER sonarsource-npm-public-builds
