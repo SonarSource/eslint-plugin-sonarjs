@@ -6,8 +6,6 @@ USER root
 ARG NODE_VERSION=18
 ARG SCANNER_VERSION=5.0.1.3006
 
-RUN apt-get install -y strace
-
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs=${NODE_VERSION}.*
 
