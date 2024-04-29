@@ -80,6 +80,7 @@ const strictlyReadingMethods = new Set([
 ]);
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       reviewUsageOfIdentifier:
@@ -89,14 +90,14 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: 'Empty collections should not be accessed or iterated',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
   create(context) {
     return {
-      'Program:exit': () => {
-        reportEmptyCollectionsUsage(context.getScope(), context);
+      'Program:exit': (node: TSESTree.Node) => {
+        reportEmptyCollectionsUsage(context.sourceCode.getScope(node), context);
       },
     };
   },

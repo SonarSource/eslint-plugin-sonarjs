@@ -30,7 +30,7 @@ build_task:
     <<: *CONTAINER_DEFINITION
     docker_arguments:
       CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
-    cpu: 3
+    cpu: 1
     memory: 8G
   env:
     SONARSOURCE_QA: true

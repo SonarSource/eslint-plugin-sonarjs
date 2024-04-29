@@ -31,6 +31,7 @@ interface SiblingIfStatement {
 }
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       sameLineCondition: message,
@@ -42,19 +43,20 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     docs: {
       description: 'Conditionals should start on new lines',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
       {
         // internal parameter
+        type: 'string',
         enum: ['sonar-runtime'],
       },
     ],
   },
   create(context) {
     function checkStatements(statements: TSESTree.Node[]) {
-      const sourceCode = context.getSourceCode();
+      const { sourceCode } = context;
       const siblingIfStatements = getSiblingIfStatements(statements);
 
       siblingIfStatements.forEach(siblingIfStatement => {

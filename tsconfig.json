@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "commonjs",
+    "module": "nodenext",
     "lib": ["es2017"],
     "strict": true,
     "noImplicitAny": true,
@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": false,
     "outDir": "lib",
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts"]
+    "sourceMap": true,
+    "moduleResolution": "nodenext"
+  }
 }

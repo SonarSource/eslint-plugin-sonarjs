@@ -58,6 +58,7 @@ function isReturnValueUsed(callExpr: TSESTree.Node) {
 }
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       removeUseOfOutput:
@@ -67,7 +68,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'problem',
     docs: {
       description: "The output of functions that don't return anything should not be used",
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
@@ -84,9 +85,9 @@ const rule: TSESLint.RuleModule<string, string[]> = {
         if (!isReturnValueUsed(callExpr)) {
           return;
         }
-        const scope = context.getScope();
+        const scope = context.sourceCode.getScope(node);
         const reference = scope.references.find(ref => ref.identifier === callExpr.callee);
-        if (reference && reference.resolved) {
+        if (reference?.resolved) {
           const variable = reference.resolved;
           if (variable.defs.length === 1) {
             const definition = variable.defs[0];
@@ -105,7 +106,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       ReturnStatement(node: TSESTree.Node) {
         const returnStmt = node as TSESTree.ReturnStatement;
         if (returnStmt.argument) {
-          const ancestors = [...context.getAncestors()].reverse();
+          const ancestors = [...context.sourceCode.getAncestors(node)].reverse();
           const functionNode = ancestors.find(
             node =>
               node.type === 'FunctionExpression' ||

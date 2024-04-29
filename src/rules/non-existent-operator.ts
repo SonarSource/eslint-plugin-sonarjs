@@ -23,6 +23,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       useExistingOperator: 'Was "{{operator}}=" meant instead?',
@@ -33,7 +34,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     hasSuggestions: true,
     docs: {
       description: 'Non-existent operators "=+", "=-" and "=!" should not be used',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },
@@ -62,7 +63,7 @@ function checkOperator(
     unaryNode.type === 'UnaryExpression' &&
     isUnaryOperatorOfInterest(unaryNode.operator)
   ) {
-    const sourceCode = context.getSourceCode();
+    const { sourceCode } = context;
     const assignmentOperatorToken = sourceCode.getTokenBefore(
       unaryNode,
       token => token.value === '=',

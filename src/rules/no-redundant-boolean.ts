@@ -24,6 +24,7 @@ import { isBooleanLiteral, isIfStatement, isConditionalExpression } from '../uti
 import docsUrl from '../utils/docs-url';
 
 const rule: TSESLint.RuleModule<string, string[]> = {
+  defaultOptions: [],
   meta: {
     messages: {
       removeUnnecessaryBoolean: 'Refactor the code to avoid using this boolean literal.',
@@ -32,7 +33,7 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     type: 'suggestion',
     docs: {
       description: 'Boolean literals should not be redundant',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
   },

@@ -18,13 +18,10 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import type { ParserServices } from '@typescript-eslint/utils';
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
-export type RequiredParserServices = {
-  [k in keyof ParserServices]: Exclude<ParserServices[k], undefined>;
-};
-
-export function isRequiredParserServices(
-  services: ParserServices | undefined,
-): services is RequiredParserServices {
-  return services?.hasFullTypeInformation === true;
+export function isParserServicesWithTypeInformation(
+  services: Partial<ParserServices> | undefined,
+): services is ParserServicesWithTypeInformation {
+  return !!services?.program;
 }

@@ -28,6 +28,7 @@ let maxSwitchCases = DEFAULT_MAX_SWITCH_CASES;
 type Options = [number];
 
 const rule: TSESLint.RuleModule<string, Options> = {
+  defaultOptions: [DEFAULT_MAX_SWITCH_CASES],
   meta: {
     messages: {
       reduceNumberOfNonEmptySwitchCases:
@@ -36,7 +37,7 @@ const rule: TSESLint.RuleModule<string, Options> = {
     type: 'suggestion',
     docs: {
       description: '"switch" statements should not have too many "case" clauses',
-      recommended: 'error',
+      recommended: 'recommended',
       url: docsUrl(__filename),
     },
     schema: [
@@ -65,7 +66,7 @@ function visitSwitchStatement(
     switchCase => switchCase.consequent.length > 0 && !isDefaultCase(switchCase),
   );
   if (nonEmptyCases.length > maxSwitchCases) {
-    const switchKeyword = context.getSourceCode().getFirstToken(switchStatement)!;
+    const switchKeyword = context.sourceCode.getFirstToken(switchStatement)!;
     context.report({
       messageId: 'reduceNumberOfNonEmptySwitchCases',
       loc: switchKeyword.loc,
