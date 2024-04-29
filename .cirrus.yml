@@ -43,7 +43,39 @@ build_task:
     - jfrog rt npm-ci
     - npm run check-format
     - npm run build
+
+tests_task:
+  <<: *ONLY_SONARSOURCE_QA
+  eks_container:
+    <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+    cpu: 1
+    memory: 8G
+  env:
+    SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
+  depends_on:
+    - build
+  script:
     - ./scripts/test-ci.sh
+
+analyze_and_publish_task:
+  <<: *ONLY_SONARSOURCE_QA
+  eks_container:
+    <<: *CONTAINER_DEFINITION
+    docker_arguments:
+      CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
+    cpu: 1
+    memory: 8G
+  env:
+    SONARSOURCE_QA: true
+  node_version_script:
+    - node --version
+  depends_on:
+    - build
+  script:
     - ./scripts/analyze_and_publish.sh
 
 qa_task:
