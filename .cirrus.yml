@@ -63,6 +63,7 @@ tests_task:
     - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - jfrog rt npm-ci
+    - npm run build
     - ./scripts/test-ci.sh
 
 analyze_and_publish_task:
@@ -85,6 +86,7 @@ analyze_and_publish_task:
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - jfrog rt npm-ci
     - npm run build
+    - ./scripts/test-ci.sh
     - ./scripts/analyze_and_publish.sh
 
 qa_task:
