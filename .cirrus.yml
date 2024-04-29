@@ -59,6 +59,10 @@ tests_task:
   depends_on:
     - build
   script:
+    - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+    - git submodule update --init --depth 1 -r
+    - jfrog rt npm-ci
     - ./scripts/test-ci.sh
 
 analyze_and_publish_task:
@@ -76,6 +80,10 @@ analyze_and_publish_task:
   depends_on:
     - build
   script:
+    - jfrog config add repox --url $ARTIFACTORY_URL --access-token $ARTIFACTORY_DEPLOY_ACCESS_TOKEN
+    - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
+    - git submodule update --init --depth 1 -r
+    - jfrog rt npm-ci
     - ./scripts/analyze_and_publish.sh
 
 qa_task:
