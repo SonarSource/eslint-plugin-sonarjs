@@ -45,7 +45,7 @@ it('should document all rules', () => {
   existingRules.forEach(rule => {
     expect(README.includes(rule)).toBe(true);
     expect(fs.existsSync(`${root}/docs/rules/${rule}.md`)).toBe(true);
-    expect(rules[rule].meta.docs.url).toBe(
+    expect(rules[rule].meta.docs!.url).toBe(
       `https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/${rule}.md`,
     );
   });
