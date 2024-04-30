@@ -17,4 +17,3 @@ RUN curl "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-
 USER sonarsource
 
 ENV PATH "/opt/sonar-scanner/bin:${PATH}"
-ENV SONARCLOUD_ANALYSIS true

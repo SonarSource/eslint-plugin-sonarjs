@@ -24,7 +24,7 @@ container_definition: &CONTAINER_DEFINITION
   namespace: default
   use_in_memory_disk: true
 
-build_task:
+build_body: &BUILD_BODY
   <<: *ONLY_SONARSOURCE_QA
   eks_container:
     <<: *CONTAINER_DEFINITION
@@ -43,8 +43,23 @@ build_task:
     - jfrog rt npm-ci
     - npm run check-format
     - npm run build
+
+build_task:
+  <<: *BUILD_BODY
+
+test_and_analyze_task:
+  depends_on:
+    - build
+  <<: *BUILD_BODY
+  test_script:
     - ./scripts/test-ci.sh
-    - ./scripts/analyze_and_publish.sh
+
+publish_task:
+  depends_on:
+    - build
+  <<: *BUILD_BODY
+  publish_script:
+    - ./scripts/publish.sh
 
 qa_task:
   depends_on:
