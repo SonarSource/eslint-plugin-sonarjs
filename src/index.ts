@@ -38,7 +38,7 @@ import * as noIgnoredReturn from './rules/no-ignored-return';
 import * as noInvertedBooleanCheck from './rules/no-inverted-boolean-check';
 import * as noNestedSwitch from './rules/no-nested-switch';
 import * as noNestedTemplateLiterals from './rules/no-nested-template-literals';
-import * as noOneIterationLoop from './rules/no-one-iteration-loop';
+// import * as noOneIterationLoop from './rules/no-one-iteration-loop';
 import * as noRedundantBoolean from './rules/no-redundant-boolean';
 import * as noRedundantJump from './rules/no-redundant-jump';
 import * as noSameLineConditional from './rules/no-same-line-conditional';
@@ -72,7 +72,7 @@ const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
   'no-inverted-boolean-check': noInvertedBooleanCheck,
   'no-nested-switch': noNestedSwitch,
   'no-nested-template-literals': noNestedTemplateLiterals,
-  'no-one-iteration-loop': noOneIterationLoop,
+  // 'no-one-iteration-loop': noOneIterationLoop,
   'no-redundant-boolean': noRedundantBoolean,
   'no-redundant-jump': noRedundantJump,
   'no-same-line-conditional': noSameLineConditional,
@@ -115,4 +115,4 @@ const configs = {
 };
 plugin.configs = configs;
 
-export { rules, configs };
+export default { rules, configs };

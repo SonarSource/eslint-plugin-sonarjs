@@ -19,70 +19,56 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { ESLint } from 'eslint';
+import { ESLint as ESLint8 } from 'eslint';
+import { ESLint as ESLint9 } from 'eslint9';
+import * as parser from '@typescript-eslint/parser';
 import lodash from 'lodash';
 import minimist from 'minimist';
+import sonarjs from '../src';
 
+type ESLintVersion = 8 | 9;
 const rulesPath = path.join(__dirname, '../lib/rules');
+const DEFAULT_ESLINT_VERSION: ESLintVersion = 9;
 
-run();
+const argv = minimist(process.argv.slice(2), {
+  string: ['rule', 'version'],
+  boolean: ['update'],
+});
 
-async function run() {
-  const argv = minimist(process.argv.slice(2), {
-    string: ['rule'],
-    boolean: ['update'],
-  });
+const rules = getRules(argv.rule);
+const version = argv.version ? parseInt(argv.version, 10) : DEFAULT_ESLINT_VERSION;
 
-  const rules = getRules(argv.rule);
+function isSupportedVersion(version: number): version is ESLintVersion {
+  return [8, 9].includes(version);
+}
 
-  if (!rules.length) {
-    console.error('No rules found!');
-    process.exit(1);
-  }
+if (!isSupportedVersion(version)) {
+  console.error(`Unsupported version: ${version}`);
+  process.exit(1);
+}
 
-  console.log('Found rules:');
-  rules.forEach(rule => {
-    console.log('  *', rule);
-  });
-  console.log('');
+if (!rules.length) {
+  console.error('No rules found!');
+  process.exit(1);
+}
 
-  const sourcesPath = path.join(__dirname, 'javascript-test-sources/src');
-  if (!fs.existsSync(sourcesPath)) {
-    console.error('No sources found!');
-    process.exit(1);
-  }
+console.log('Found rules:');
+rules.forEach(rule => {
+  console.log('  *', rule);
+});
+console.log('');
 
-  const eslint = new ESLint({
-    overrideConfig: {
-      parser: '@babel/eslint-parser',
-      parserOptions: {
-        ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
-        ecmaVersion: 2018,
-        sourceType: 'module',
-        requireConfigFile: false,
-        babelOptions: {
-          babelrc: false,
-          configFile: false,
-          parserOpts: {
-            allowReturnOutsideFunction: true,
-          },
-          presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
-          plugins: [
-            '@babel/plugin-proposal-function-bind',
-            '@babel/plugin-proposal-export-default-from',
-          ],
-        },
-      },
-      rules: getEslintRules(rules),
-    },
-    rulePaths: [rulesPath],
-    useEslintrc: false,
-    allowInlineConfig: false,
-    ignorePath: path.join(__dirname, '.eslintignore'),
-  });
+const sourcesPath = path.join(__dirname, 'javascript-test-sources/src');
+if (!fs.existsSync(sourcesPath)) {
+  console.error('No sources found!');
+  process.exit(1);
+}
 
+run(version);
+
+async function run(version: ESLintVersion) {
+  const eslint = getESLint(version, rules);
   const reportResults = await eslint.lintFiles([sourcesPath]);
-
   const results: Results = {};
   rules.forEach(rule => (results[rule] = {}));
 
@@ -113,10 +99,91 @@ async function run() {
   }
 }
 
+function getESLint(version: ESLintVersion, rules: string[]) {
+  if (version === 8) {
+    return new ESLint8({
+      overrideConfig: {
+        parser: '@babel/eslint-parser',
+        parserOptions: {
+          ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
+          ecmaVersion: 2018,
+          sourceType: 'module',
+          requireConfigFile: false,
+          babelOptions: {
+            babelrc: false,
+            configFile: false,
+            parserOpts: {
+              allowReturnOutsideFunction: true,
+            },
+            presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
+            plugins: [
+              '@babel/plugin-proposal-function-bind',
+              '@babel/plugin-proposal-export-default-from',
+            ],
+          },
+        },
+        rules: getEslintRules(rules),
+      },
+      rulePaths: [rulesPath],
+      useEslintrc: false,
+      allowInlineConfig: false,
+      ignorePath: path.join(__dirname, '.eslintignore'),
+    });
+  } else {
+    const plugin: ESLint9.Plugin = {
+      configs: {},
+      rules: sonarjs.rules as any,
+    };
+    const config = {
+      plugins: {
+        sonarjs: plugin,
+      },
+      rules: sonarjs.configs.recommended.rules,
+    };
+    plugin.configs = {
+      recommended: config,
+    };
+    console.log(parser);
+    return new ESLint9({
+      overrideConfig: {
+        languageOptions: {
+          parser,
+          parserOptions: {
+            ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
+            ecmaVersion: 2018,
+            sourceType: 'module',
+            requireConfigFile: false,
+            babelOptions: {
+              babelrc: false,
+              configFile: false,
+              parserOpts: {
+                allowReturnOutsideFunction: true,
+              },
+              presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
+              plugins: [
+                '@babel/plugin-proposal-function-bind',
+                '@babel/plugin-proposal-export-default-from',
+              ],
+            },
+          },
+        },
+        // ignorePatterns: ['.eslintignore', '.eslint.rc'],
+        rules: getEslintRules(rules),
+      },
+      plugins: {
+        sonarjs: plugin,
+      },
+      allowInlineConfig: true,
+      overrideConfigFile: true,
+    } as any);
+  }
+}
+
 function getRules(rule?: string) {
   const rules = fs
     .readdirSync(rulesPath)
     .filter(file => file.endsWith('.js'))
+    .filter(file => file !== 'no-one-iteration-loop.js')
     .map(file => file.substring(0, file.indexOf('.js')));
 
   if (rule) {
@@ -129,7 +196,11 @@ function getRules(rule?: string) {
 function getEslintRules(rules: string[]) {
   const eslintRules: { [rule: string]: 'error' } = {};
   rules.forEach(rule => {
-    eslintRules[rule] = 'error';
+    if (rule === 'no-one-iteration-loops') {
+      // noop
+    } else {
+      eslintRules[`sonarjs/${rule}`] = 'error';
+    }
   });
   return eslintRules;
 }
