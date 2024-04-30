@@ -30,6 +30,9 @@ it('should declare all rules in recommended config', () => {
   });
   expect(Object.keys(configs.recommended.rules!)).toHaveLength(existingRules.length);
   expect(new Set(Object.values(configs.recommended.rules!))).toEqual(new Set(['off', 'error']));
+  existingRules.forEach(rule => {
+    expect(configs.recommended.plugins!['sonarjs'].rules).toHaveProperty(rule);
+  });
 });
 
 it('should declare all rules', () => {
