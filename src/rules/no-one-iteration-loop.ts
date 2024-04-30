@@ -23,7 +23,6 @@ import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { Rule } from 'eslint';
 import { isContinueStatement } from '../utils/nodes';
 import docsUrl from '../utils/docs-url';
-import CodePath = Rule.CodePath;
 
 const rule: TSESLint.RuleModule<string, string[]> = {
   defaultOptions: [],
@@ -47,7 +46,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       loop: TSESTree.WhileStatement | TSESTree.ForStatement;
       segments: Rule.CodePathSegment[];
     }> = [];
-    const currentCodePaths: Rule.CodePath[] = [];
+    const codePathSegments: Rule.CodePathSegment[][] = [];
+    let currentCodePathSegments: Rule.CodePathSegment[] = [];
 
     return {
       ForStatement(node: TSESTree.Node) {
@@ -59,11 +59,18 @@ const rule: TSESLint.RuleModule<string, string[]> = {
       DoWhileStatement(node: TSESTree.Node) {
         loops.add(node);
       },
-      onCodePathStart(codePath: CodePath) {
-        currentCodePaths.push(codePath);
+      onCodePathStart() {
+        codePathSegments.push(currentCodePathSegments);
+        currentCodePathSegments = [];
+      },
+      onCodePathSegmentStart(segment: Rule.CodePathSegment) {
+        currentCodePathSegments.push(segment);
+      },
+      onCodePathSegmentEnd() {
+        currentCodePathSegments.pop();
       },
       onCodePathEnd() {
-        currentCodePaths.pop();
+        currentCodePathSegments = codePathSegments.pop()!;
       },
       'WhileStatement > *'(node: TSESTree.Node) {
         visitLoopChild(node.parent as TSESTree.WhileStatement);
@@ -101,9 +108,8 @@ const rule: TSESLint.RuleModule<string, string[]> = {
     // we visit loop children and collect corresponding path segments as these segments are "toSegment"
     // in "onCodePathSegmentLoop" event.
     function visitLoopChild(parent: TSESTree.WhileStatement | TSESTree.ForStatement) {
-      if (currentCodePaths.length > 0) {
-        const currentCodePath = currentCodePaths[currentCodePaths.length - 1];
-        loopsAndTheirSegments.push({ segments: currentCodePath.currentSegments, loop: parent });
+      if (currentCodePathSegments.length > 0) {
+        loopsAndTheirSegments.push({ segments: [...currentCodePathSegments], loop: parent });
       }
     }
   },
