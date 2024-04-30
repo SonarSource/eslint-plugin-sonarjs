@@ -87,15 +87,12 @@ const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
   'prefer-while': preferWhile,
 };
 
-const plugin = {
-  configs: {},
-  rules: {},
-};
-
 const recommendedLegacyConfig: TSESLint.Linter.ConfigType = { plugins: ['sonarjs'], rules: {} };
 const recommendedConfig: FlatConfig.Config = {
   plugins: {
-    sonarjs: plugin,
+    sonarjs: {
+      rules,
+    },
   },
   rules: {},
 };
@@ -113,6 +110,5 @@ const configs = {
   recommended: recommendedConfig,
   'recommended-legacy': recommendedLegacyConfig,
 };
-plugin.configs = configs;
 
 export default { rules, configs };
