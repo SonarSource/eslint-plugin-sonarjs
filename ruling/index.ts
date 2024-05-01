@@ -19,8 +19,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { ESLint } from 'eslint';
-// import { ESLint } from 'eslint9';
+import { ESLint } from 'eslint-ruling';
 import * as babelParser from '@babel/eslint-parser';
 import lodash from 'lodash';
 import minimist from 'minimist';
@@ -55,6 +54,7 @@ if (!fs.existsSync(sourcesPath)) {
 run();
 
 async function run() {
+  console.log(`ESLint version ${ESLint.version}`);
   const eslint = getESLint(rules);
   const reportResults = await eslint.lintFiles([sourcesPath]);
   const results: Results = {};
