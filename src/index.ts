@@ -52,7 +52,7 @@ import * as preferObjectLiteral from './rules/prefer-object-literal';
 import * as preferSingleBooleanReturn from './rules/prefer-single-boolean-return';
 import * as preferWhile from './rules/prefer-while';
 
-const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
+export const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
   'cognitive-complexity': cognitiveComplexity,
   'elseif-without-else': elseifWithoutElse,
   'max-switch-cases': maxSwitchCases,
@@ -106,7 +106,7 @@ for (const key in rules) {
 
 recommendedLegacyConfig.rules = recommendedConfig.rules;
 
-const configs = {
+export const configs = {
   recommended: recommendedConfig,
   'recommended-legacy': recommendedLegacyConfig,
 };

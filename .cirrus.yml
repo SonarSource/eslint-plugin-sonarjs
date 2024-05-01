@@ -61,7 +61,7 @@ publish_task:
   publish_script:
     - ./scripts/publish.sh
 
-qa_task:
+qa_eslint8_task:
   depends_on:
     - build
   eks_container:
@@ -87,6 +87,7 @@ qa_task:
     - jfrog rt npm-config --repo-resolve npm --repo-deploy sonarsource-npm-public-qa
     - git submodule update --init --depth 1 -r
     - jfrog rt npm-ci
+    - npm install eslint-ruling@npm:eslint@8.57.0
     - npm run build
     - npm run ruling
 
@@ -95,9 +96,6 @@ qa_eslint9_task:
     - build
   eks_container:
     matrix:
-      - docker_arguments:
-          NODE_VERSION: 16
-          CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       - docker_arguments:
           NODE_VERSION: 18
           CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
