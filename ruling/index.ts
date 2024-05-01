@@ -19,34 +19,21 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { ESLint as ESLint8 } from 'eslint';
-import { ESLint as ESLint9 } from 'eslint9';
+import { ESLint } from 'eslint';
+// import { ESLint } from 'eslint9';
 import * as babelParser from '@babel/eslint-parser';
 import lodash from 'lodash';
 import minimist from 'minimist';
 import sonarjs from '../src';
 
-type ESLintVersion = 8 | 9;
 const rulesPath = path.join(__dirname, '../lib/rules');
-const DEFAULT_ESLINT_VERSION: ESLintVersion = 9;
 
 const argv = minimist(process.argv.slice(2), {
-  string: ['rule', 'version'],
+  string: ['rule'],
   boolean: ['update'],
 });
 
-// const rules = getRules(argv.rule);
-const rules = getRules('cognitive-complexity');
-const version = argv.version ? parseInt(argv.version, 10) : DEFAULT_ESLINT_VERSION;
-
-function isSupportedVersion(version: number): version is ESLintVersion {
-  return [8, 9].includes(version);
-}
-
-if (!isSupportedVersion(version)) {
-  console.error(`Unsupported version: ${version}`);
-  process.exit(1);
-}
+const rules = getRules(argv.rule);
 
 if (!rules.length) {
   console.error('No rules found!');
@@ -59,19 +46,16 @@ rules.forEach(rule => {
 });
 console.log('');
 
-const sourcesPath = path.join(
-  __dirname,
-  'javascript-test-sources/src/jest/packages/expect/src/jasmine_utils.js',
-);
+const sourcesPath = path.join(__dirname, 'javascript-test-sources/src/');
 if (!fs.existsSync(sourcesPath)) {
   console.error('No sources found!');
   process.exit(1);
 }
 
-run(version);
+run();
 
-async function run(version: ESLintVersion) {
-  const eslint = getESLint(version, rules);
+async function run() {
+  const eslint = getESLint(rules);
   const reportResults = await eslint.lintFiles([sourcesPath]);
   const results: Results = {};
 
@@ -81,13 +65,13 @@ async function run(version: ESLintVersion) {
         addToResults(
           results,
           getFileNameForSnapshot(result.filePath),
-          message.ruleId.substring('sonarjs/'.length),
+          parseMessageId(message.ruleId),
           message.line,
         );
       } else {
-        // throw new Error(
-        //   `Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`,
-        // );
+        throw new Error(
+          `Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`,
+        );
       }
     });
   });
@@ -102,9 +86,45 @@ async function run(version: ESLintVersion) {
   }
 }
 
-function getESLint(version: ESLintVersion, rules: string[]) {
-  if (version === 8) {
-    return new ESLint8({
+function getESLint(rules: string[]) {
+  if (isEslint9()) {
+    return new ESLint({
+      overrideConfig: {
+        languageOptions: {
+          parser: babelParser,
+          parserOptions: {
+            ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
+            ecmaVersion: 2018,
+            sourceType: 'module',
+            requireConfigFile: false,
+            babelOptions: {
+              babelrc: false,
+              configFile: false,
+              parserOpts: {
+                allowReturnOutsideFunction: true,
+              },
+              presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
+              plugins: [
+                '@babel/plugin-proposal-function-bind',
+                '@babel/plugin-proposal-export-default-from',
+              ],
+            },
+          },
+        },
+        linterOptions: {
+          reportUnusedDisableDirectives: false,
+        },
+        rules: getEslintRules(rules),
+      },
+      ignorePatterns: ['!**/node_modules/'], // don't skip nested node_modules in analysis
+      plugins: {
+        sonarjs,
+      },
+      allowInlineConfig: false,
+      overrideConfigFile: true,
+    } as any);
+  } else {
+    return new ESLint({
       overrideConfig: {
         parser: '@babel/eslint-parser',
         parserOptions: {
@@ -132,42 +152,6 @@ function getESLint(version: ESLintVersion, rules: string[]) {
       allowInlineConfig: false,
       ignorePath: path.join(__dirname, '.eslintignore'),
     });
-  } else {
-    return new ESLint9({
-      overrideConfig: {
-        languageOptions: {
-          parser: babelParser,
-          parserOptions: {
-            ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
-            ecmaVersion: 2018,
-            sourceType: 'module',
-            requireConfigFile: false,
-            babelOptions: {
-              babelrc: false,
-              configFile: false,
-              parserOpts: {
-                allowReturnOutsideFunction: true,
-              },
-              presets: ['@babel/preset-env', '@babel/preset-flow', '@babel/preset-react'],
-              plugins: [
-                '@babel/plugin-proposal-function-bind',
-                '@babel/plugin-proposal-export-default-from',
-              ],
-            },
-          },
-        },
-        linterOptions: {
-          reportUnusedDisableDirectives: false,
-        },
-        // ignorePatterns: ['.eslintignore', '.eslintrc.js'],
-        rules: getEslintRules(rules),
-      },
-      plugins: {
-        sonarjs,
-      },
-      allowInlineConfig: true,
-      overrideConfigFile: true,
-    } as any);
   }
 }
 
@@ -184,8 +168,16 @@ function getRules(rule?: string) {
   }
 }
 
+function isEslint9() {
+  return parseInt(ESLint.version, 10) >= 9;
+}
+
+function parseMessageId(messageId: string) {
+  return isEslint9() ? messageId.substring('sonarjs/'.length) : messageId;
+}
+
 function ruleKey(rule: string) {
-  return `sonarjs/${rule}`;
+  return isEslint9() ? `sonarjs/${rule}` : rule;
 }
 
 function getEslintRules(rules: string[]) {
