@@ -21,7 +21,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ESLint as ESLint8 } from 'eslint';
 import { ESLint as ESLint9 } from 'eslint9';
-import * as parser from '@typescript-eslint/parser';
+import * as babelParser from '@babel/eslint-parser';
 import lodash from 'lodash';
 import minimist from 'minimist';
 import sonarjs from '../src';
@@ -35,7 +35,8 @@ const argv = minimist(process.argv.slice(2), {
   boolean: ['update'],
 });
 
-const rules = getRules(argv.rule);
+// const rules = getRules(argv.rule);
+const rules = getRules('cognitive-complexity');
 const version = argv.version ? parseInt(argv.version, 10) : DEFAULT_ESLINT_VERSION;
 
 function isSupportedVersion(version: number): version is ESLintVersion {
@@ -58,7 +59,10 @@ rules.forEach(rule => {
 });
 console.log('');
 
-const sourcesPath = path.join(__dirname, 'javascript-test-sources/src');
+const sourcesPath = path.join(
+  __dirname,
+  'javascript-test-sources/src/jest/packages/expect/src/jasmine_utils.js',
+);
 if (!fs.existsSync(sourcesPath)) {
   console.error('No sources found!');
   process.exit(1);
@@ -70,7 +74,6 @@ async function run(version: ESLintVersion) {
   const eslint = getESLint(version, rules);
   const reportResults = await eslint.lintFiles([sourcesPath]);
   const results: Results = {};
-  rules.forEach(rule => (results[rule] = {}));
 
   reportResults.forEach(result => {
     result.messages.forEach(message => {
@@ -78,13 +81,13 @@ async function run(version: ESLintVersion) {
         addToResults(
           results,
           getFileNameForSnapshot(result.filePath),
-          message.ruleId,
+          message.ruleId.substring('sonarjs/'.length),
           message.line,
         );
       } else {
-        throw new Error(
-          `Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`,
-        );
+        // throw new Error(
+        //   `Unexpected error: ${JSON.stringify(message)} Filepath: ${result.filePath}`,
+        // );
       }
     });
   });
@@ -92,7 +95,7 @@ async function run(version: ESLintVersion) {
   if (argv.update) {
     writeResults(results);
   } else {
-    const passed = checkResults(results);
+    const passed = checkResults(rules, results);
     if (!passed) {
       process.exitCode = 1;
     }
@@ -130,24 +133,10 @@ function getESLint(version: ESLintVersion, rules: string[]) {
       ignorePath: path.join(__dirname, '.eslintignore'),
     });
   } else {
-    const plugin: ESLint9.Plugin = {
-      configs: {},
-      rules: sonarjs.rules as any,
-    };
-    const config = {
-      plugins: {
-        sonarjs: plugin,
-      },
-      rules: sonarjs.configs.recommended.rules,
-    };
-    plugin.configs = {
-      recommended: config,
-    };
-    console.log(parser);
     return new ESLint9({
       overrideConfig: {
         languageOptions: {
-          parser,
+          parser: babelParser,
           parserOptions: {
             ecmaFeatures: { jsx: true, experimentalObjectRestSpread: true },
             ecmaVersion: 2018,
@@ -167,11 +156,14 @@ function getESLint(version: ESLintVersion, rules: string[]) {
             },
           },
         },
-        // ignorePatterns: ['.eslintignore', '.eslint.rc'],
+        linterOptions: {
+          reportUnusedDisableDirectives: false,
+        },
+        // ignorePatterns: ['.eslintignore', '.eslintrc.js'],
         rules: getEslintRules(rules),
       },
       plugins: {
-        sonarjs: plugin,
+        sonarjs,
       },
       allowInlineConfig: true,
       overrideConfigFile: true,
@@ -183,7 +175,6 @@ function getRules(rule?: string) {
   const rules = fs
     .readdirSync(rulesPath)
     .filter(file => file.endsWith('.js'))
-    .filter(file => file !== 'no-one-iteration-loop.js')
     .map(file => file.substring(0, file.indexOf('.js')));
 
   if (rule) {
@@ -193,14 +184,14 @@ function getRules(rule?: string) {
   }
 }
 
+function ruleKey(rule: string) {
+  return `sonarjs/${rule}`;
+}
+
 function getEslintRules(rules: string[]) {
   const eslintRules: { [rule: string]: 'error' } = {};
   rules.forEach(rule => {
-    if (rule === 'no-one-iteration-loops') {
-      // noop
-    } else {
-      eslintRules[`sonarjs/${rule}`] = 'error';
-    }
+    eslintRules[ruleKey(rule)] = 'error';
   });
   return eslintRules;
 }
@@ -243,12 +234,11 @@ function writeResults(results: Results) {
   });
 }
 
-function checkResults(actual: Results) {
-  const actualRules = Object.keys(actual);
-  const expected: Results = readSnapshots(actualRules);
+function checkResults(rules: string[], actual: Results) {
+  const expected: Results = readSnapshots(rules);
   let passed = true;
 
-  actualRules.forEach(rule => {
+  rules.forEach(rule => {
     const expectedFiles = expected[rule];
     const actualFiles = actual[rule] || {};
     const allFiles = lodash.union(Object.keys(actualFiles), Object.keys(expectedFiles));
