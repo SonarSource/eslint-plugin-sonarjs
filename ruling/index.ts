@@ -27,34 +27,35 @@ import sonarjs from '../src';
 
 const rulesPath = path.join(__dirname, '../lib/rules');
 
-const argv = minimist(process.argv.slice(2), {
-  string: ['rule'],
-  boolean: ['update'],
-});
-
-const rules = getRules(argv.rule);
-
-if (!rules.length) {
-  console.error('No rules found!');
-  process.exit(1);
-}
-
-console.log('Found rules:');
-rules.forEach(rule => {
-  console.log('  *', rule);
-});
-console.log('');
-
-const sourcesPath = path.join(__dirname, 'javascript-test-sources/src/');
-if (!fs.existsSync(sourcesPath)) {
-  console.error('No sources found!');
-  process.exit(1);
-}
-
 run();
 
 async function run() {
   console.log(`ESLint version ${ESLint.version}`);
+
+  const argv = minimist(process.argv.slice(2), {
+    string: ['rule'],
+    boolean: ['update'],
+  });
+
+  const rules = getRules(argv.rule);
+
+  if (!rules.length) {
+    console.error('No rules found!');
+    process.exit(1);
+  }
+
+  console.log('Found rules:');
+  rules.forEach(rule => {
+    console.log('  *', rule);
+  });
+  console.log('');
+
+  const sourcesPath = path.join(__dirname, 'javascript-test-sources/src/');
+  if (!fs.existsSync(sourcesPath)) {
+    console.error('No sources found!');
+    process.exit(1);
+  }
+
   const eslint = getESLint(rules);
   const reportResults = await eslint.lintFiles([sourcesPath]);
   const results: Results = {};
