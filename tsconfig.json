@@ -11,6 +11,7 @@
     "noEmit": false,
     "outDir": "lib",
     "sourceMap": true,
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "typeRoots": ["node_modules/@types", "src/typings"]
   }
 }
