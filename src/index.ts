@@ -52,7 +52,7 @@ import * as preferObjectLiteral from './rules/prefer-object-literal';
 import * as preferSingleBooleanReturn from './rules/prefer-single-boolean-return';
 import * as preferWhile from './rules/prefer-while';
 
-export const rules: Record<string, TSESLint.RuleModule<string, Array<unknown>>> = {
+export const rules = {
   'cognitive-complexity': cognitiveComplexity,
   'elseif-without-else': elseifWithoutElse,
   'max-switch-cases': maxSwitchCases,
@@ -98,7 +98,7 @@ const recommendedConfig: FlatConfig.Config = {
 };
 
 for (const key in rules) {
-  const rule = rules[key];
+  const rule = rules[key as keyof typeof rules];
   const recommended = rule.meta.docs?.recommended;
 
   recommendedConfig.rules![`sonarjs/${key}`] = recommended === undefined ? 'off' : 'error';
