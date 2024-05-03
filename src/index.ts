@@ -51,6 +51,7 @@ import * as preferImmediateReturn from './rules/prefer-immediate-return';
 import * as preferObjectLiteral from './rules/prefer-object-literal';
 import * as preferSingleBooleanReturn from './rules/prefer-single-boolean-return';
 import * as preferWhile from './rules/prefer-while';
+import { name, version } from '../package.json';
 
 export const rules = {
   'cognitive-complexity': cognitiveComplexity,
@@ -111,4 +112,9 @@ export const configs = {
   'recommended-legacy': recommendedLegacyConfig,
 };
 
-export default { rules, configs };
+export const meta = {
+  name,
+  version,
+};
+
+export default { rules, configs, meta };

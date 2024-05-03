@@ -19,7 +19,8 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { configs, rules } from '../src';
+import semver from 'semver/preload';
+import { configs, rules, meta } from '../src';
 
 const rulesPath = path.join(__dirname, '../src/rules');
 const existingRules = fs.readdirSync(rulesPath).map(file => file.substring(0, file.indexOf('.ts')));
@@ -58,4 +59,9 @@ it('should export legacy config', () => {
   const legacyConfig = configs['recommended-legacy'];
   expect(legacyConfig.plugins).toEqual(['sonarjs']);
   expect(legacyConfig.rules).toEqual(configs.recommended.rules);
+});
+
+it('should export meta', () => {
+  expect(meta.name).toEqual('eslint-plugin-sonarjs');
+  expect(semver.valid(meta.version)).toBeTruthy();
 });

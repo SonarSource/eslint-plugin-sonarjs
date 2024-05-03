@@ -27,6 +27,8 @@ import sonarjs from '../src';
 
 const rulesPath = path.join(__dirname, '../lib/rules');
 
+console.log(sonarjs.meta);
+
 run();
 
 async function run() {

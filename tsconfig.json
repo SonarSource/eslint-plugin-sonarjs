@@ -12,6 +12,7 @@
     "outDir": "lib",
     "sourceMap": true,
     "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
     "typeRoots": ["node_modules/@types", "src/typings"]
   }
 }
