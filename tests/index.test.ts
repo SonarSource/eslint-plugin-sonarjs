@@ -62,6 +62,7 @@ it('should export legacy config', () => {
 });
 
 it('should export meta', () => {
+  console.log(meta);
   expect(meta.name).toEqual('eslint-plugin-sonarjs');
   expect(semver.valid(meta.version)).toBeTruthy();
 });
