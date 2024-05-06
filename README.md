@@ -82,7 +82,7 @@ Code Smells, or maintainability issues, are raised for places of code which migh
 ## Prerequisites
 
 - Node.js (>=16.x).
-- ESLint 5.x, 6.x, 7.x or 8.x (peer dependency for the plugin).
+- ESLint 8.x or 9.x (peer dependency for the plugin).
 
 ## Usage
 
@@ -94,25 +94,35 @@ npm install eslint-plugin-sonarjs --save-dev # install for your project
 npm install eslint-plugin-sonarjs -g         # or install globally
 ```
 
-- Add `eslint-plugin-sonarjs` to the `plugins` option of your `.eslintrc`:
+- Add `eslint-plugin-sonarjs` to the plugins of your ESLint config.
 
-```json
-{
-  "plugins": ["sonarjs"]
-}
+For ESLint 9: add `plugins` option to your `eslint.config.js` and include the recommended config to enable all rules:
+
+```code
+import sonarjs from "eslint-plugin-sonarjs";
+
+[
+  sonarjs.configs.recommended,
+  {
+    "plugins": {
+      sonarjs,
+    }
+  }
+]
 ```
 
-- Add `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
+For ESLint 8: add `plugins` option to your `.eslintrc` and `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
 
 ```json
 {
-  "extends": ["plugin:sonarjs/recommended"]
+  "plugins": ["sonarjs"],
+  "extends": ["plugin:sonarjs/recommended-legacy"]
 }
 ```
 
 - or enable only some rules manually:
 
-```javascript
+```json
 {
   "rules": {
     "sonarjs/cognitive-complexity": "error",
@@ -122,11 +132,12 @@ npm install eslint-plugin-sonarjs -g         # or install globally
 }
 ```
 
-- To enable all rules of this plugin, use `@typescript-eslint/parser` as a parser for ESLint ([like we do](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/6e06d59a233e07b28fbbd6398e08b9b0c63b18f9/.eslintrc.js#L4)) and set the [parserOptions.project](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsproject) option. Thanks to it, type information is available, which is beneficial or even essential for some rules.
+- To allow each of the rules to fully perform, use `@typescript-eslint/parser` as a parser for ESLint ([like we do](https://github.com/SonarSource/eslint-plugin-sonarjs/blob/6e06d59a233e07b28fbbd6398e08b9b0c63b18f9/.eslintrc.js#L4)) and set the [parserOptions.project](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#parseroptionsproject) option. Thanks to it, type information is available, which is beneficial or even essential for some rules.
 
 ## Available Configurations
 
 This plugin provides only a `recommended` configuration. Almost all rules are activated in this profile with a few exceptions (check the `disabled` tag in the rules list). The `recommended` configuration activates rules with `error` severity.
+We include a `recommended-legacy` configuration to be backward compatible with ESLint v8, with the same rule configuration..
 
 ## ESLint and Sonar
 

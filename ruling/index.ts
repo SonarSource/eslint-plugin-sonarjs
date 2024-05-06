@@ -25,7 +25,7 @@ import lodash from 'lodash';
 import minimist from 'minimist';
 import sonarjs from '../src';
 
-const rulesPath = path.join(__dirname, '../lib/rules');
+const rulesPath = path.join(__dirname, '../lib/src/rules');
 
 run();
 
