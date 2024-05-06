@@ -19,7 +19,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import semver from 'semver/preload';
+import { valid } from 'semver';
 import { configs, rules, meta } from '../src';
 
 const rulesPath = path.join(__dirname, '../src/rules');
@@ -62,7 +62,6 @@ it('should export legacy config', () => {
 });
 
 it('should export meta', () => {
-  console.log(meta);
   expect(meta.name).toEqual('eslint-plugin-sonarjs');
-  expect(semver.valid(meta.version)).toBeTruthy();
+  expect(valid(meta.version)).toBeTruthy();
 });
