@@ -1,9 +1,9 @@
 {
   "name": "eslint-plugin-sonarjs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "SonarJS rules for ESLint",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
   "repository": "git@github.com:SonarSource/eslint-plugin-sonarjs.git",
   "license": "LGPL-3.0-only",
   "keywords": [
