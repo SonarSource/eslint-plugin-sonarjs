@@ -111,7 +111,7 @@ import sonarjs from "eslint-plugin-sonarjs";
 ]
 ```
 
-For ESLint 8: add `plugins` option to your `.eslintrc` and `plugin:sonarjs/recommended` to the `extends` option to enable all recommended rules:
+For ESLint 8: add `plugins` option to your `.eslintrc` and `plugin:sonarjs/recommended-legacy` to the `extends` option to enable all recommended rules:
 
 ```json
 {
