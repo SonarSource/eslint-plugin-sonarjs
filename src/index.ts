@@ -90,6 +90,7 @@ export const rules = {
 
 const recommendedLegacyConfig: TSESLint.Linter.ConfigType = { plugins: ['sonarjs'], rules: {} };
 const recommendedConfig: FlatConfig.Config = {
+  name: 'sonarjs/recommended',
   plugins: {
     sonarjs: {
       rules,
