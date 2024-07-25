@@ -1,3 +1,9 @@
+# This repository has moved!
+
+This repository contains `eslint-plugin-sonarjs` up to version `^1.0.0`. For versions `>=2.0.0` please go to the repository of the [SonarJS analyzer](https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md). The new versions of `eslint-plugin-sonarjs` makes all SonarJS rules available for ESLint users, instead of a subset as it was with `^1.0.0` living here.
+
+No new changes are expected to land here.
+
 # eslint-plugin-sonarjs [![npm version](https://badge.fury.io/js/eslint-plugin-sonarjs.svg)](https://badge.fury.io/js/eslint-plugin-sonarjs) [![Build Status](https://api.cirrus-ci.com/github/SonarSource/eslint-plugin-sonarjs.svg?branch=master)](https://cirrus-ci.com/github/SonarSource/eslint-plugin-sonarjs) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=alert_status)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eslint-plugin-sonarjs&metric=coverage)](https://sonarcloud.io/dashboard?id=eslint-plugin-sonarjs)
 
 SonarJS rules for ESLint to help developers produce [Clean Code](https://www.sonarsource.com/solutions/clean-code/) by detecting bugs and suspicious patterns.
