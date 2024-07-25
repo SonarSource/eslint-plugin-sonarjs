@@ -2,7 +2,7 @@
 
 It now lives in the repository of the [SonarJS analyzer](https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md).
 
-eslint-plugin-sonarjs >2.0.0 makes all SonarJS rules available for ESLint users, instead of a subset as it was with ^1.0.0 living here.
+eslint-plugin-sonarjs >= 2.0.0 makes all SonarJS rules available for ESLint users, instead of a subset as it was with ^1.0.0 living here.
 
 No new changes are expected to land here.
 
