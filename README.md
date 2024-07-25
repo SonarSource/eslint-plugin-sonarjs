@@ -1,8 +1,6 @@
 # This repository has moved!
 
-It now lives in the repository of the [SonarJS analyzer](https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md).
-
-eslint-plugin-sonarjs >= 2.0.0 makes all SonarJS rules available for ESLint users, instead of a subset as it was with ^1.0.0 living here.
+This repository contains `eslint-plugin-sonarjs` up to version `^1.0.0`. For versions `>=2.0.0` please go to the repository of the [SonarJS analyzer](https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md). The new versions of `eslint-plugin-sonarjs` makes all SonarJS rules available for ESLint users, instead of a subset as it was with `^1.0.0` living here.
 
 No new changes are expected to land here.
 
