@@ -1,6 +1,6 @@
 /*
  * eslint-plugin-sonarjs
- * Copyright (C) 2018-2021 SonarSource SA
+ * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ ruleTester.run('Jump statements should not be redundant', rule, {
     },
     {
       code: `
-function foo(x) { 
+function foo(x) {
   console.log(x);
   // comment1
   // comment2
@@ -120,7 +120,7 @@ function foo(x) {
             {
               messageId: 'suggestJumpRemoval',
               output: `
-function foo(x) { 
+function foo(x) {
   console.log(x);
   // comment1
   // comment2
